@@ -1,0 +1,192 @@
+/* ================== BUTTONS ================== */
+.btn-custom-primary,
+.btn-orange {
+  background-color: #ff6b35;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 0.6rem;
+  padding: 10px 20px;
+  transition: all 0.3s ease;
+}
+
+.btn-custom-primary:hover,
+.btn-orange:hover {
+  background-color: #e0a200;
+  transform: translateY(-2px);
+}
+
+.btn-custom-secondary {
+  background-color: #023047;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 10px 20px;
+  border: none;
+  transition: all 0.3s ease;
+}
+.btn-custom-secondary:hover {
+  background-color: #03506f;
+  transform: translateY(-2px);
+}
+
+.btn-outline-brand {
+  border: 2px solid #ffae00;
+  color: #080000;
+  font-weight: 600;
+  border-radius: 0.6rem;
+  padding: 10px 20px;
+  transition: all 0.3s ease;
+}
+.btn-outline-brand:hover {
+  background: #ffae00;
+  color: #fff;
+}
+
+/* ================== HERO ================== */
+.hero {
+  min-height: 100vh;
+  color: #fff;
+  overflow: hidden;
+  position: relative;
+}
+.hero-bg {
+  object-fit: cover;
+  z-index: 0;
+}
+.overlay {
+  background: rgba(0, 0, 0, 0);
+  z-index: 1;
+}
+.hero .container {
+  z-index: 2;
+  position: relative;
+}
+.hero-eyebrow {
+  color: #2196f3;
+  font-weight: 600;
+}
+.hero-title {
+  color: #ff6b35;
+  font-weight: 800;
+}
+.hero-desc {
+  font-size: 1.1rem;
+  color: #333;
+}
+
+/* search */
+        .search-box {
+            position: relative;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .search-input {
+            border: 2px solid #e9ecef;
+            border-radius: 50px;
+            padding: 15px 60px 15px 25px;
+            font-size: 16px;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            border-color: var(--primary-orange);
+            box-shadow: 0 0 0 0.2rem rgba(255, 107, 53, 0.25);
+            outline: none;
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--primary-orange);
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .search-btn:hover {
+            background: #e55a2b;
+            transform: translateY(-50%) scale(1.05);
+        }
+
+/* kategori */
+.filter-btn {
+    border: 1px solid #ddd;
+    margin: 5px;
+    padding: 8px 18px;
+    border-radius: 30px;
+    background: #f9f9f9;
+    color: #333;
+    transition: all 0.3s ease;
+}
+
+.filter-btn:hover {
+    background: var(--primary-orange);
+    color: #fff;
+}
+
+.filter-btn.active {
+    background: var(--primary-orange);
+    color: #fff;
+    border-color: var(--primary-orange);
+}
+
+/* card */
+.course-image {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  height: 180px;
+  background: #f4f4f4;
+}
+
+.course-thumbnail {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.badge-category,
+.badge-level {
+  position: absolute;
+  top: 10px;
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  border-radius: 6px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.badge-category {
+  left: 10px;
+  background: #ff6b35;
+}
+
+.badge-level {
+  right: 10px;
+  background: #023047;
+}
+
+.course-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.course-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.course-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+
+

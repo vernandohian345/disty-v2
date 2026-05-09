@@ -1,0 +1,68 @@
+
+section {
+  scroll-margin-top: 80px;
+}
+
+/* Tentang Perusahaan */
+section .img-fluid {
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+section .img-fluid:hover {
+  transform: scale(1.03);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+section p {
+  line-height: 1.7;
+}
+.about-image-wrapper img {
+  max-width: 100%;
+  height: auto;
+  max-height: 300px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+
+/* Visi & Misi */
+.bg-light {
+  border-radius: 10px;
+}
+
+.bg-light h4 {
+  color: #ff8503;
+}
+
+.bg-light ul li {
+  margin-bottom: 8px;
+}
+
+/* Logo Section */
+section img {
+  transition: transform 0.3s ease;
+}
+
+section img:hover {
+  transform: rotate(2deg) scale(1.05);
+}
+
+/* section title */
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--dark-blue);
+  margin-bottom: 3rem;
+  position: relative;
+}
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 4px;
+  background: var(--primary-orange);
+  border-radius: 2px;
+}

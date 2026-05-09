@@ -1,0 +1,479 @@
+/* ================== VARIABLES ================== */
+:root {
+  --primary-orange: #ffb703;
+  --primary-orange-hover: #e0a002;
+  --primary-dark: #0f2441;
+  --secondary-dark: #023047;
+  --border-color: #f0f0f0;
+  --text-muted: #6c757d;
+  --shadow-sm: 0 6px 16px rgba(0,0,0,.04);
+  --shadow-md: 0 10px 24px rgba(0,0,0,.06);
+  --shadow-lg: 0 10px 30px rgba(0,0,0,.15);
+}
+
+/* ================== BUTTONS ================== */
+.btn-custom-primary,
+.btn-orange {
+  background-color: var(--primary-orange);
+  color: #fff;
+  font-weight: 600;
+  border-radius: 0.6rem;
+  padding: 10px 20px;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.btn-custom-primary:hover,
+.btn-orange:hover {
+  background-color: var(--primary-orange-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 183, 3, 0.4);
+  color: #fff;
+}
+
+.btn-custom-primary:active,
+.btn-orange:active {
+  transform: translateY(0);
+}
+
+.btn-custom-secondary {
+  background-color: var(--secondary-dark);
+  color: #fff;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 10px 20px;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.btn-custom-secondary:hover {
+  background-color: #03506f;
+  transform: translateY(-2px);
+  color: #fff;
+}
+
+.btn-outline-brand {
+  border: 2px solid var(--primary-orange);
+  color: #080000;
+  font-weight: 600;
+  border-radius: 0.6rem;
+  padding: 10px 20px;
+  background: transparent;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-brand:hover {
+  background: var(--primary-orange);
+  color: #fff;
+  border-color: var(--primary-orange);
+}
+
+/* ================== HERO SECTION ================== */
+.course-detail-hero {
+  background: #fff;
+}
+
+.course-detail-hero img {
+  border-radius: 12px;
+  box-shadow: var(--shadow-md);
+}
+
+.course-detail-hero .badge {
+  font-size: 0.9rem;
+  padding: 8px 16px;
+}
+
+.course-detail-hero ul li {
+  font-size: 1rem;
+  color: #333;
+}
+
+.course-detail-hero ul li i {
+  width: 25px;
+}
+
+/* ================== DESCRIPTION SECTION ================== */
+.course-desc-section {
+  background: #fff;
+}
+
+.desc-block {
+  background: #fff;
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 20px 22px;
+  box-shadow: var(--shadow-sm);
+}
+
+.desc-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--primary-dark);
+  display: flex;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.desc-title span {
+  display: inline-block;
+  width: 28px;
+  height: 6px;
+  border-radius: 4px;
+  background: var(--primary-orange);
+  margin-right: 10px;
+}
+
+.desc-title i {
+  margin-right: 8px;
+  color: var(--primary-orange);
+}
+
+/* ================== CHECKLIST ================== */
+.checklist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.checklist li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px dashed #eef0f3;
+}
+
+.checklist li:last-child {
+  border-bottom: 0;
+}
+
+.checklist i {
+  font-size: 1.05rem;
+  color: var(--primary-orange);
+  margin-top: 2px;
+}
+
+/* ================== BENEFIT CARD ================== */
+.benefit-card {
+  position: sticky;
+  top: 90px;
+  background: #fff;
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 25px;
+  box-shadow: var(--shadow-md);
+}
+
+.benefit-card h4 {
+  font-weight: 800;
+  color: var(--primary-dark);
+}
+
+.benefit-list {
+  list-style: none;
+  margin: 0 0 20px 0;
+  padding: 0;
+}
+
+.benefit-list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.benefit-list li:last-child {
+  border-bottom: none;
+}
+
+.benefit-list i {
+  width: 25px;
+  text-align: center;
+  font-size: 1.1rem;
+}
+
+/* ================== COURSE CARDS (Rekomendasi) ================== */
+.course-grid {
+  background: #f8f9fa;
+}
+
+.course-card {
+  border-radius: 15px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  border: 1px solid #e0e0e0;
+  background: #fff;
+  height: 100%;
+}
+
+.course-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
+}
+
+.course-image {
+  position: relative;
+  border-radius: 12px 12px 0 0;
+  overflow: hidden;
+  height: 200px;
+  background: #f4f4f4;
+}
+
+.course-thumbnail {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.course-card:hover .course-thumbnail {
+  transform: scale(1.05);
+}
+
+.badge-category,
+.badge-level {
+  position: absolute;
+  top: 10px;
+  padding: 6px 12px;
+  font-size: 0.75rem;
+  border-radius: 20px;
+  font-weight: 600;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.95);
+  color: #333;
+}
+
+.badge-category {
+  left: 10px;
+}
+
+.badge-level {
+  right: 10px;
+}
+
+.course-title {
+  padding: 15px;
+}
+
+.course-title h5 {
+  font-weight: 700;
+  color: var(--primary-dark);
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+.course-meta {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.course-date,
+.course-price {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.course-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+/* ================== MODAL ================== */
+.modal-backdrop.show {
+  background-color: rgba(0, 31, 69, 0.872);
+  backdrop-filter: blur(6px);
+}
+
+.modal-content {
+  border-radius: 15px;
+  border: none;
+  box-shadow: var(--shadow-lg);
+}
+
+.modal-header {
+  border-bottom: 2px solid var(--border-color);
+  background: #f8f9fa;
+}
+
+.modal-header .modal-title {
+  font-weight: 700;
+  color: var(--primary-dark);
+}
+
+.modal-body {
+  padding: 2rem;
+}
+
+/* ================== FORM ELEMENTS ================== */
+.form-label {
+  font-weight: 600;
+  color: var(--primary-dark);
+  margin-bottom: 8px;
+}
+
+.form-control {
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  padding: 10px 15px;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus {
+  border-color: var(--primary-orange);
+  box-shadow: 0 0 0 0.2rem rgba(255, 183, 3, 0.25);
+  outline: none;
+}
+
+.form-control::placeholder {
+  color: #adb5bd;
+}
+
+.form-check-input {
+  cursor: pointer;
+}
+
+.form-check-input:checked {
+  background-color: var(--primary-orange);
+  border-color: var(--primary-orange);
+}
+
+.form-check-input:focus {
+  border-color: var(--primary-orange);
+  box-shadow: 0 0 0 0.2rem rgba(255, 183, 3, 0.25);
+}
+
+.form-check-label {
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+/* ================== ALERTS & CARDS ================== */
+.alert {
+  border-radius: 10px;
+  border: none;
+}
+
+.card {
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+}
+
+.card-body.bg-light {
+  background-color: #f8f9fa !important;
+}
+
+/* ================== COLLAPSE (Rekening) ================== */
+#rekeningCollapse .card {
+  border: none;
+  box-shadow: var(--shadow-sm);
+}
+
+#rekeningCollapse input[readonly] {
+  background-color: #fff;
+  font-weight: 600;
+  color: var(--primary-dark);
+}
+
+/* ================== TOAST ================== */
+.toast {
+  border-radius: 10px;
+  box-shadow: var(--shadow-md);
+}
+
+.toast-body {
+  font-weight: 600;
+}
+
+/* ================== SWEETALERT CUSTOM ================== */
+.swal2-popup {
+  border-radius: 15px !important;
+  padding: 2rem !important;
+}
+
+.swal2-title {
+  font-size: 1.5rem !important;
+  font-weight: 700 !important;
+  color: var(--primary-dark) !important;
+}
+
+.swal2-html-container {
+  font-size: 0.95rem !important;
+  color: #333 !important;
+}
+
+.swal2-confirm.btn-orange {
+  padding: 10px 30px !important;
+  font-size: 1rem !important;
+}
+
+.swal2-cancel {
+  background-color: #6c757d !important;
+  padding: 10px 30px !important;
+  font-size: 1rem !important;
+}
+
+/* ================== UTILITIES ================== */
+.text-primary {
+  color: var(--primary-orange) !important;
+}
+
+.bg-light {
+  background-color: #f8f9fa !important;
+}
+
+.shadow-sm {
+  box-shadow: var(--shadow-sm) !important;
+}
+
+.shadow {
+  box-shadow: var(--shadow-md) !important;
+}
+
+/* ================== RESPONSIVE ================== */
+@media (max-width: 992px) {
+  .benefit-card {
+    position: relative;
+    top: 0;
+  }
+
+  .course-image {
+    height: 180px;
+  }
+
+  .modal-body {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .desc-title {
+    font-size: 1.1rem;
+  }
+
+  .course-detail-hero h2 {
+    font-size: 1.5rem;
+  }
+
+  .btn-orange,
+  .btn-custom-primary {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .benefit-card {
+    padding: 15px;
+  }
+
+  .desc-block {
+    padding: 15px;
+  }
+
+  .course-image {
+    height: 150px;
+  }
+}

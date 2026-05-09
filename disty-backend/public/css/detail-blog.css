@@ -1,0 +1,32 @@
+        /* CSS Kustom untuk memperbaiki masalah sidebar */
+        .sticky-sidebar-container {
+            position: relative;
+            height: 100%;
+        }
+
+        .sticky-sidebar {
+            position: sticky;
+            top: 100px; /* Sesuaikan dengan tinggi navbar Anda */
+            z-index: 990;
+            max-height: calc(100vh - 120px);
+            overflow-y: auto;
+        }
+
+        /* CSS untuk konten berita */
+        .populer-thumb {
+            object-fit: cover;
+            height: 70px;
+            width: 70px;
+        }
+
+        /* Memastikan konten utama memiliki prioritas tinggi */
+        .main-content {
+            position: relative;
+            z-index: 980;
+        }
+
+        /* Mencegah overflow pada gambar */
+        .img-fluid {
+            max-width: 100%;
+            height: auto;
+        }

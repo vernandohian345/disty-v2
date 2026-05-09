@@ -1,0 +1,12 @@
+# Laravel
+disty-backend/vendor
+disty-backend/node_modules
+disty-backend/.env
+
+# React
+disty-frontend/node_modules
+disty-frontend/dist
+
+# OS
+.DS_Store
+Thumbs.db
