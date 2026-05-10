@@ -1,20 +1,26 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Dashboard from "./pages/admin/Dashboard";
+// src/App.jsx
+
+import {
+    BrowserRouter,
+    Routes,
+    Route,
+} from "react-router-dom";
+
+import Home from "./pages/Home";
 
 function App() {
     return (
         <BrowserRouter>
+
             <Routes>
-                <Route
-                    path="/"
-                    element={<Dashboard />}
-                />
 
                 <Route
-                    path="/dashboard"
-                    element={<Dashboard />}
+                    path="/"
+                    element={<Home />}
                 />
+
             </Routes>
+
         </BrowserRouter>
     );
 }
