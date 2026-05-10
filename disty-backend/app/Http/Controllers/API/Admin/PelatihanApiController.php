@@ -160,7 +160,7 @@ class PelatihanApiController extends Controller
     // ✅ DELETE
     public function destroy(int $id)
     {
-        $pelatihan = \App\Models\Pelatihan::findOrFail($id);
+        $pelatihan = Pelatihan::findOrFail($id);
 
         // hapus gambar
         if (
