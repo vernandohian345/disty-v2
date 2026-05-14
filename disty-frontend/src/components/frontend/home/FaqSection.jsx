@@ -1,95 +1,100 @@
-export default function FaqSection() {
+import { useState } from "react";
+import { ChevronDown } from "lucide-react";
 
-    const faqs = [
-        {
-            question: "Apa itu Disty Akademi?",
-            answer:
-                "Disty Akademi adalah platform pelatihan dan sertifikasi online yang menyediakan program pembelajaran fleksibel dengan mentor berpengalaman dan sertifikat resmi.",
-        },
+const faqs = [
+  {
+    question: "Apa itu Disty Akademi?",
+    answer:
+      "Disty Akademi adalah platform pembelajaran digital yang menyediakan bootcamp, pelatihan, dan sertifikasi profesional untuk meningkatkan skill digital.",
+  },
 
-        {
-            question: "Apa saja fitur Disty Akademi?",
-            answer:
-                "Kami menyediakan kelas interaktif, kurikulum terstruktur, studi kasus nyata, grup mentoring, materi yang bisa diakses ulang, dan sertifikat resmi.",
-        },
+  {
+    question: "Apakah sertifikat resmi?",
+    answer:
+      "Ya, sertifikat yang diberikan dapat digunakan sebagai bukti kompetensi profesional dan mendukung pengembangan karir.",
+  },
 
-        {
-            question: "Bagaimana cara mendaftar program?",
-            answer:
-                "Anda dapat mendaftar melalui website kami dengan memilih program yang diinginkan, mengisi formulir pendaftaran, dan melakukan pembayaran sesuai instruksi.",
-        },
+  {
+    question: "Apakah program cocok untuk pemula?",
+    answer:
+      "Tentu. Program kami dirancang mulai dari level pemula hingga profesional dengan mentor berpengalaman.",
+  },
 
-        {
-            question: "Apakah sertifikat yang diberikan diakui?",
-            answer:
-                "Ya, sertifikat yang kami berikan diakui secara nasional oleh BNSP (Badan Nasional Sertifikasi Profesi) dan dihargai oleh industri.",
-        },
-    ];
+  {
+    question: "Bagaimana sistem pembelajarannya?",
+    answer:
+      "Pembelajaran dilakukan secara online dengan materi interaktif, live session, mentoring, dan project nyata.",
+  },
+];
 
-    return (
-        <section className="faq-section py-5" id="faq">
+export default function FAQSection() {
+  const [activeIndex, setActiveIndex] = useState(null);
 
-            <div className="container">
+  const toggleFAQ = (index) => {
+    setActiveIndex(activeIndex === index ? null : index);
+  };
 
-                <div className="text-center mb-5">
-                    <h2 className="section-title">
-                        Pertanyaan yang Sering Diajukan
-                    </h2>
+  return (
+    <section className="py-24 relative overflow-hidden">
+      <div className="absolute bottom-0 right-0 w-80 h-80 bg-primary/10 rounded-full blur-3xl"></div>
+
+      <div className="max-w-4xl mx-auto px-6 lg:px-10">
+        {/* Heading */}
+        <div className="text-center">
+          <div className="inline-flex items-center gap-2 bg-primary/10 text-[#f9c115] px-4 py-2 rounded-full text-sm font-semibold mb-6">
+            Frequently Asked Questions
+          </div>
+
+          <h2 className="text-4xl lg:text-5xl font-black text-darkText leading-tight">
+            Pertanyaan yang
+            <span className="text-[#f9c115] block">Sering Ditanyakan</span>
+          </h2>
+
+          <p className="mt-6 text-lg text-slate-600 leading-relaxed">
+            Temukan jawaban dari berbagai pertanyaan umum seputar program dan
+            layanan Disty Akademi.
+          </p>
+        </div>
+
+        {/* FAQ Items */}
+        <div className="mt-16 space-y-5">
+          {faqs.map((faq, index) => {
+            const isOpen = activeIndex === index;
+
+            return (
+              <div
+                key={index}
+                className="bg-background rounded-3xl p-6 shadow-soft"
+              >
+                {/* Question */}
+                <button
+                  onClick={() => toggleFAQ(index)}
+                  className="w-full flex items-center justify-between text-left"
+                >
+                  <h3 className="text-xl font-bold text-darkText pr-5">
+                    {faq.question}
+                  </h3>
+
+                  <ChevronDown
+                    className={`w-6 h-6 text-primary transition-transform duration-300 ${
+                      isOpen ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+
+                {/* Answer */}
+                <div
+                  className={`overflow-hidden transition-all duration-300 ${
+                    isOpen ? "max-h-40 mt-5" : "max-h-0"
+                  }`}
+                >
+                  <p className="text-slate-600 leading-relaxed">{faq.answer}</p>
                 </div>
-
-                <div className="row justify-content-center">
-
-                    <div className="col-lg-8">
-
-                        <div
-                            className="accordion"
-                            id="faqAccordion"
-                        >
-
-                            {faqs.map((faq, index) => (
-
-                                <div
-                                    className="accordion-item border-0 mb-3 faq-item"
-                                    key={index}
-                                >
-
-                                    <h2 className="accordion-header">
-
-                                        <button
-                                            className={`accordion-button ${index !== 0 ? "collapsed" : ""}`}
-                                            type="button"
-                                            data-bs-toggle="collapse"
-                                            data-bs-target={`#faq${index}`}
-                                        >
-                                            {faq.question}
-                                        </button>
-
-                                    </h2>
-
-                                    <div
-                                        id={`faq${index}`}
-                                        className={`accordion-collapse collapse ${index === 0 ? "show" : ""}`}
-                                        data-bs-parent="#faqAccordion"
-                                    >
-
-                                        <div className="accordion-body">
-                                            {faq.answer}
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                            ))}
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-    );
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
 }

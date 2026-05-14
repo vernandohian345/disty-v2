@@ -1,127 +1,141 @@
-// src/components/frontend/Navbar.jsx
+import { useState } from "react";
 
-import { Link } from "react-router-dom";
-import logo from "../../assets/images/logo.png";
-import "../../styles/app.css";
-import "../../styles/home.css";
+import { FaBars, FaTimes } from "react-icons/fa";
+
+import Button from "../ui/Button";
 
 export default function Navbar() {
-    return (
-        <nav className="navbar navbar-expand-lg navbar-light bg-white sticky-top shadow-sm">
-            <div className="container">
+  const [isOpen, setIsOpen] = useState(false);
 
-                {/* Logo */}
-                <Link className="navbar-brand" to="/">
-                    <img
-                        src={logo}
-                        alt="Disty Akademi"
-                        style={{ height: "45px" }}
-                    />
-                </Link>
-
-                {/* Toggle */}
-                <button
-                    className="navbar-toggler"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#navbarNav"
-                >
-                    <span className="navbar-toggler-icon"></span>
-                </button>
-
-                {/* Menu */}
-                <div
-                    className="collapse navbar-collapse"
-                    id="navbarNav"
-                >
-
-                    <ul className="navbar-nav ms-auto align-items-center">
-
-                        <li className="nav-item">
-                            <Link
-                                className="nav-link"
-                                to="/pelatihan"
-                            >
-                                Bootcamp
-                            </Link>
-                        </li>
-
-                        <li className="nav-item">
-                            <Link
-                                className="nav-link"
-                                to="/sertifikasi"
-                            >
-                                Sertifikasi
-                            </Link>
-                        </li>
-
-                        <li className="nav-item">
-                            <Link
-                                className="nav-link"
-                                to="/blog"
-                            >
-                                Blog
-                            </Link>
-                        </li>
-
-                        {/* Dropdown */}
-                        <li className="nav-item dropdown">
-
-                            <a
-                                className="nav-link dropdown-toggle"
-                                href="#"
-                                role="button"
-                                data-bs-toggle="dropdown"
-                            >
-                                Tentang Kami
-                            </a>
-
-                            <ul className="dropdown-menu">
-
-                                <li>
-                                    <Link
-                                        className="dropdown-item"
-                                        to="/profilPerusahaan"
-                                    >
-                                        Profil Perusahaan
-                                    </Link>
-                                </li>
-
-                                <li>
-                                    <Link
-                                        className="dropdown-item"
-                                        to="/legalitas"
-                                    >
-                                        Legalitas
-                                    </Link>
-                                </li>
-
-                            </ul>
-                        </li>
-
-                    </ul>
-
-                    {/* Auth Button */}
-                    <div className="d-flex align-items-center ms-3">
-
-                        <Link
-                            to="/login"
-                            className="btn btn-outline-brand"
-                        >
-                            Masuk
-                        </Link>
-
-                        <Link
-                            to="/daftar"
-                            className="btn btn-oranye btn-nav ms-2"
-                        >
-                            Daftar
-                        </Link>
-
-                    </div>
-
-                </div>
+  return (
+    <header className="fixed top-0 left-0 w-full z-50">
+      <div className="backdrop-blur-xl bg-white/80 border-b border-slate-200">
+        <div className="max-w-7xl mx-auto px-6 lg:px-10">
+          <div className="flex items-center justify-between h-20">
+            {/* Logo */}
+            <div className="flex items-center gap-3">
+              <img
+                src="/src/assets/images/logo.png"
+                alt="Disty Akademi"
+                className="w-11 h-11 object-contain"
+              />
             </div>
-        </nav>
-    );
+
+            {/* Desktop Menu */}
+            <nav className="hidden lg:flex items-center gap-8">
+              <a
+                href="#"
+                className="text-slate-600 hover:text-primary transition font-medium"
+              >
+                Beranda
+              </a>
+
+              <a
+                href="#"
+                className="text-slate-600 hover:text-primary transition font-medium"
+              >
+                Program
+              </a>
+
+              <a
+                href="#"
+                className="text-slate-600 hover:text-primary transition font-medium"
+              >
+                Artikel
+              </a>
+
+              <a
+                href="#"
+                className="text-slate-600 hover:text-primary transition font-medium"
+              >
+                FAQ
+              </a>
+            </nav>
+
+            {/* Right */}
+            <div className="flex items-center gap-4">
+              {/* Desktop Button */}
+              <div className="hidden lg:block">
+                <Button>Mulai Belajar</Button>
+              </div>
+
+              {/* Mobile Button */}
+              <button
+                onClick={() => setIsOpen(true)}
+                className="lg:hidden w-12 h-12 rounded-2xl bg-primary text-white flex items-center justify-center"
+              >
+                <FaBars />
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile Menu Overlay */}
+      <div
+        className={`fixed inset-0 bg-black/40 backdrop-blur-sm transition-all duration-300 ${
+          isOpen ? "opacity-100 visible" : "opacity-0 invisible"
+        }`}
+      >
+        {/* Drawer */}
+        <div
+          className={`absolute top-0 right-0 w-[85%] max-w-sm h-full bg-white p-8 transition-all duration-300 ${
+            isOpen ? "translate-x-0" : "translate-x-full"
+          }`}
+        >
+          {/* Top */}
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-2xl font-black text-darkText">Menu</h2>
+
+              <p className="text-slate-500 text-sm mt-1">Disty Akademi</p>
+            </div>
+
+            <button
+              onClick={() => setIsOpen(false)}
+              className="w-12 h-12 rounded-2xl bg-slate-100 flex items-center justify-center"
+            >
+              <FaTimes className="text-darkText" />
+            </button>
+          </div>
+
+          {/* Menu */}
+          <div className="mt-12 flex flex-col gap-6">
+            <a
+              href="#"
+              className="text-lg font-semibold text-darkText hover:text-primary transition"
+            >
+              Beranda
+            </a>
+
+            <a
+              href="#"
+              className="text-lg font-semibold text-darkText hover:text-primary transition"
+            >
+              Program
+            </a>
+
+            <a
+              href="#"
+              className="text-lg font-semibold text-darkText hover:text-primary transition"
+            >
+              Artikel
+            </a>
+
+            <a
+              href="#"
+              className="text-lg font-semibold text-darkText hover:text-primary transition"
+            >
+              FAQ
+            </a>
+          </div>
+
+          {/* Bottom CTA */}
+          <div className="mt-12">
+            <Button className="w-full">Mulai Belajar</Button>
+          </div>
+        </div>
+      </div>
+    </header>
+  );
 }

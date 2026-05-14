@@ -1,76 +1,65 @@
-import kemnaker from "../../../assets/images/mitra/kemnamker.png";
-import bnsp from "../../../assets/images/mitra/bnsp.png";
-import lspmod from "../../../assets/images/mitra/lspmod.png";
-import lspikn from "../../../assets/images/mitra/lspikn.png";
-import blkjbg from "../../../assets/images/mitra/blkjbg.png";
-import ui from "../../../assets/images/mitra/ui.png";
-import bi from "../../../assets/images/mitra/bi.png";
-import pln from "../../../assets/images/mitra/pln.png";
-import winpo from "../../../assets/images/mitra/winpo.png";
-import patri from "../../../assets/images/mitra/patri.png";
-import uptblk from "../../../assets/images/mitra/uptblk.png";
-import birawidha from "../../../assets/images/mitra/birawidha.png";
-import dinasjbg from "../../../assets/images/mitra/dinasjbg.png";
-import iain from "../../../assets/images/mitra/iain.png";
-import unwaha from "../../../assets/images/mitra/unwaha.png";
-
+import Reveal from "../../ui/Reveal";
+const partners = [
+  "/src/assets/images/mitra/bi.png",
+  "/src/assets/images/mitra/birawidha.png",
+  "/src/assets/images/mitra/blkjbg.png",
+  "/src/assets/images/mitra/bnsp.png",
+  "/src/assets/images/mitra/dinasjbg.png",
+  "/src/assets/images/mitra/iain.png",
+  "/src/assets/images/mitra/kemnamker.png",
+  "/src/assets/images/mitra/lspikn.png",
+  "/src/assets/images/mitra/lspmod.png",
+  "/src/assets/images/mitra/patri.png",
+  "/src/assets/images/mitra/pln.png",
+  "/src/assets/images/mitra/ui.png",
+  "/src/assets/images/mitra/unwaha.png",
+  "/src/assets/images/mitra/uptblk.png",
+  "/src/assets/images/mitra/winpo.png",
+];
 
 export default function PartnerSection() {
-
-    const partners = [
-        kemnaker,
-        bnsp,
-        lspmod,
-        lspikn,
-        blkjbg,
-        ui,
-        bi,
-        pln,
-        winpo,
-        patri,
-        uptblk,
-        birawidha,
-        dinasjbg,
-        iain,
-        unwaha,
-    ];
-
-    return (
-        <section className="py-5 bg-light">
-
-            <div className="container">
-
-                <div className="text-center mb-5">
-                    <h2 className="section-title">
-                        Mitra & Klien
-                    </h2>
-                </div>
-
-                <div className="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-4 justify-content-center">
-
-                    {partners.map((partner, index) => (
-
-                        <div
-                            className="col text-center"
-                            key={index}
-                        >
-                            <div className="partner-logo">
-
-                                <img
-                                    src={partner}
-                                    alt="Partner"
-                                    className="img-fluid"
-                                />
-
-                            </div>
-                        </div>
-
-                    ))}
-
-                </div>
-
+  return (
+    <section className="py-8 bg-white">
+      <Reveal>
+        <div className="max-w-7xl mx-auto px-6 lg:px-10">
+          {/* Heading */}
+          <div className="text-center max-w-3xl mx-auto">
+            <div className="inline-flex items-center gap-2 bg-primary/10 text-orange-300 px-4 py-2 rounded-full text-sm font-semibold mb-6">
+              Partner & Kolaborasi
             </div>
 
-        </section>
-    );
+            <h2 className="text-4xl lg:text-5xl font-black text-darkText leading-tight">
+              Dipercaya Oleh
+              <span className="text-orange-300 block">
+                Berbagai Partner Profesional
+              </span>
+            </h2>
+
+            <p className="mt-6 text-lg text-slate-600 leading-relaxed">
+              Disty Akademi bekerja sama dengan berbagai institusi, komunitas,
+              dan perusahaan untuk menghadirkan pengalaman belajar terbaik.
+            </p>
+          </div>
+
+          {/* Logo Grid */}
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 mt-16">
+            {partners.map((partner, index) => (
+              <Reveal key={index} delay={index * 0.05}>
+                <div
+                  key={index}
+                  className="bg-background rounded-3xl p-8 flex items-center justify-center shadow-soft hover:-translate-y-2 transition-all duration-300 group"
+                >
+                  <img
+                    src={partner}
+                    alt="Partner"
+                    className="h-12 object-contain grayscale group-hover:grayscale-0 transition duration-500"
+                  />
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </Reveal>
+    </section>
+  );
 }

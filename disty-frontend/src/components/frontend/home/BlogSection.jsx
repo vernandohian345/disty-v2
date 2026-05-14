@@ -1,100 +1,105 @@
-import blogImg from "../../../assets/images/magangdisty.png";
+import Button from "../../ui/Button";
+import Reveal from "../../ui/Reveal";
+
+const blogs = [
+  {
+    title: "5 Skill Digital yang Paling Dicari Tahun Ini",
+    category: "Career",
+    image:
+      "/src/assets/images/Beranda/5 Skill Digital yang Paling Dicari Tahun Ini.jpg",
+    date: "10 Mei 2026",
+  },
+
+  {
+    title: "Cara Memulai Karir sebagai UI/UX Designer",
+    category: "Design",
+    image: "/src/assets/images/training.jpg",
+    date: "8 Mei 2026",
+  },
+
+  {
+    title: "Tips Belajar Coding untuk Pemula",
+    category: "Programming",
+    image: "/src/assets/images/magangdisty.png",
+    date: "5 Mei 2026",
+  },
+];
 
 export default function BlogSection() {
+  return (
+    <section className="py-24 bg-white relative overflow-hidden">
+      <div className="absolute top-0 left-0 w-80 h-80 bg-purpleAccent/10 rounded-full blur-3xl"></div>
 
-    const blogs = [
-        {
-            title: "Pengumuman Seleksi Magang Mandiri Debugging 2",
-            date: "2 Sept 2025",
-        },
-        {
-            title: "Tips Sukses Menjadi Full-Stack Developer",
-            date: "28 Ags 2025",
-        },
-        {
-            title: "Kisah Sukses Alumni Bootcamp UI/UX Design",
-            date: "15 Ags 2025",
-        },
-        {
-            title: "Peluncuran Program Baru Data Science",
-            date: "1 Ags 2025",
-        },
-    ];
-
-    return (
-        <section className="py-5" id="blog">
-
-            <div className="container">
-
-                <div className="text-center mb-5">
-                    <h2 className="section-title">
-                        Berita & Blog Terakhir Kami
-                    </h2>
-                </div>
-
-                <div className="row g-4">
-
-                    {blogs.map((blog, index) => (
-
-                        <div
-                            className="col-lg-3 col-md-6"
-                            key={index}
-                        >
-
-                            <div className="card blog-card h-100">
-
-                                <img
-                                    src={blogImg}
-                                    className="card-img-top"
-                                    alt={blog.title}
-                                />
-
-                                <div className="card-body">
-
-                                    <p className="text-muted small mb-1">
-                                        <i className="far fa-calendar-alt"></i>
-                                        {" "}
-                                        {blog.date}
-                                    </p>
-
-                                    <h5 className="card-title">
-
-                                        <a
-                                            href="/detail-blog"
-                                            className="stretched-link text-dark text-decoration-none"
-                                        >
-                                            {blog.title}
-                                        </a>
-
-                                    </h5>
-
-                                    <p className="card-text text-muted small">
-                                        Admin Disty Akademi
-                                    </p>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    ))}
-
-                </div>
-
-                <div className="text-center mt-5">
-
-                    <a
-                        href="/blog"
-                        className="btn btn-orange"
-                    >
-                        Lihat Berita Lainnya
-                    </a>
-
-                </div>
-
+      <div className="max-w-7xl mx-auto px-6 lg:px-10">
+        {/* Heading */}
+        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
+          <div className="max-w-3xl">
+            <div className="inline-flex items-center gap-2 bg-primary/10 text-[#f9c115] px-4 py-2 rounded-full text-sm font-semibold mb-6">
+              Artikel & Insight
             </div>
 
-        </section>
-    );
+            <h2 className="text-4xl lg:text-5xl font-black text-darkText leading-tight">
+              Update Insight &
+              <span className="text-[#f9c115] block">
+                Informasi Digital Terbaru
+              </span>
+            </h2>
+          </div>
+
+          <Button className="flex items-center gap-2">
+            Lihat Semua Artikel
+          </Button>
+        </div>
+
+        {/* Cards */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16">
+          {blogs.map((blog, index) => (
+            <Reveal key={index} delay={index * 0.15}>
+              <div
+                key={index}
+                className="group bg-white rounded-[32px] overflow-hidden shadow-soft hover:-translate-y-3 hover:shadow-2xl transition-all duration-500"
+              >
+                {/* Image */}
+                <div className="overflow-hidden">
+                  <img
+                    src={blog.image}
+                    alt={blog.title}
+                    className="w-full h-64 object-cover group-hover:scale-110 transition duration-700"
+                  />
+                </div>
+
+                {/* Content */}
+                <div className="p-8">
+                  {/* Top Info */}
+                  <div className="flex items-center justify-between mb-5">
+                    <span className="bg-primary/10 text-orange-300 px-4 py-2 rounded-full text-sm font-semibold">
+                      {blog.category}
+                    </span>
+
+                    <span className="text-sm text-slate-500">{blog.date}</span>
+                  </div>
+
+                  {/* Title */}
+                  <h3 className="text-2xl font-bold text-darkText leading-snug group-hover:text-primary transition">
+                    {blog.title}
+                  </h3>
+
+                  {/* Description */}
+                  <p className="mt-4 text-slate-600 leading-relaxed">
+                    Pelajari insight terbaru seputar dunia digital, teknologi,
+                    dan pengembangan karir profesional.
+                  </p>
+
+                  {/* Button */}
+                  <button className="mt-6 text-orange-300 font-semibold hover:underline">
+                    Baca Selengkapnya →
+                  </button>
+                </div>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
 }
