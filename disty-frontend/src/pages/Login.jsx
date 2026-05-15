@@ -1,69 +1,376 @@
-import { useState } from 'react';
-import api from '../api/axios';
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { login, register } from "../services/authService";
 
 export default function Login() {
 
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const navigate = useNavigate();
 
-    const handleLogin = async (e) => {
+    const [isLogin, setIsLogin] = useState(true);
+
+    const [showPassword, setShowPassword] = useState(false);
+
+    const [formData, setFormData] = useState({
+        name: "",
+        email: "",
+        password: "",
+        password_confirmation: "",
+    });
+
+    const handleInputChange = (e) => {
+
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value,
+        });
+    };
+
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
+
+    const toggleMode = () => {
+
+        setIsLogin(!isLogin);
+
+        setFormData({
+            name: "",
+            email: "",
+            password: "",
+            password_confirmation: "",
+        });
+    };
+
+    const handleSubmit = async (e) => {
+
         e.preventDefault();
 
         try {
 
-            const response = await api.post('/login', {
-                email,
-                password
-            });
+            if (isLogin) {
 
-            localStorage.setItem(
-                'token',
-                response.data.token
-            );
+                const response = await login({
+                    email: formData.email,
+                    password: formData.password,
+                });
 
-            alert('Login berhasil');
+                localStorage.setItem(
+                    "token",
+                    response.data.token
+                );
 
-            console.log(response.data);
+                localStorage.setItem(
+                    "user",
+                    JSON.stringify(response.data.user)
+                );
+
+                alert("Login berhasil");
+
+                navigate("/");
+
+            } else {
+
+                await register(formData);
+
+                alert("Register berhasil");
+
+                setIsLogin(true);
+            }
 
         } catch (error) {
+
             console.log(error);
-            console.log(error.response);
-            console.log(error.response.data);
+
             alert(
-                JSON.stringify(error.response.data)
+                error.response?.data?.message ||
+                "Terjadi kesalahan"
             );
         }
     };
 
     return (
-        <div>
-            <h1>Login</h1>
+        <div className="container-fluid min-vh-100">
 
-            <form onSubmit={handleLogin}>
+            <div className="row min-vh-100">
 
-                <input
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                />
+                {/* LEFT */}
+                <div
+                    className="col-lg-6 d-none d-lg-flex align-items-center justify-content-center text-white"
+                    style={{
+                        background:
+                            "linear-gradient(135deg,#0f172a,#1d4ed8,#ea580c)",
+                    }}
+                >
 
-                <br /><br />
+                    <div className="px-5">
 
-                <input
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
+                        <h1
+                            className="fw-bold"
+                            style={{
+                                fontSize: "60px",
+                                lineHeight: "1.2",
+                            }}
+                        >
+                            AYO BERGABUNG DENGAN DISTY AKADEMI
+                        </h1>
+                        <h6
+                            className="fw-medium mt-3"
+                            style={{
+                                fontSize: "20px",
+                                lineHeight: "1.2",
+                            }}
+                        >
+                            Tingkatkan skillmu dan dapatkan sertifikat resmi
+                        </h6>
 
-                <br /><br />
+                    </div>
 
-                <button type="submit">
-                    Login
-                </button>
+                </div>
 
-            </form>
+                {/* RIGHT */}
+                <div className="col-lg-6 d-flex align-items-center justify-content-center bg-light">
+
+                    <div
+                        className="w-100"
+                        style={{ maxWidth: "450px" }}
+                    >
+
+                        {/* HEADER */}
+                        <div className="text-center mb-5">
+
+                            <div
+                                className="mx-auto mb-4 d-flex align-items-center justify-content-center"
+                                style={{
+                                    width: "60px",
+                                    height: "60px",
+                                    background: "#3b82f6",
+                                    borderRadius: "12px",
+                                }}
+                            >
+
+                                <div
+                                    style={{
+                                        width: "28px",
+                                        height: "28px",
+                                        background: "#fff",
+                                        borderRadius: "6px",
+                                        position: "relative",
+                                    }}
+                                >
+                                    <div
+                                        style={{
+                                            position: "absolute",
+                                            bottom: "0",
+                                            left: "50%",
+                                            transform: "translateX(-50%)",
+                                            width: "10px",
+                                            height: "14px",
+                                            background: "#f97316",
+                                            borderRadius: "0 0 4px 4px",
+                                        }}
+                                    ></div>
+                                </div>
+
+                            </div>
+
+                            <h2 className="fw-bold mb-2">
+
+                                {isLogin
+                                    ? "Welcome Back"
+                                    : "Join Us Today"}
+
+                            </h2>
+
+                            <p className="text-muted">
+
+                                {isLogin
+                                    ? "Welcome back to Disty Akademi"
+                                    : "Create your Disty account"}
+
+                            </p>
+
+                        </div>
+
+                        {/* FORM */}
+                        <form onSubmit={handleSubmit}>
+
+                            {/* NAME */}
+                            {!isLogin && (
+
+                                <div className="mb-3">
+
+                                    <label className="form-label">
+                                        Nama
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        name="name"
+                                        className="form-control"
+                                        value={formData.name}
+                                        onChange={handleInputChange}
+                                        required
+                                    />
+
+                                </div>
+
+                            )}
+
+                            {/* EMAIL */}
+                            <div className="mb-3">
+
+                                <label className="form-label">
+                                    Email
+                                </label>
+
+                                <input
+                                    type="email"
+                                    name="email"
+                                    className="form-control"
+                                    value={formData.email}
+                                    onChange={handleInputChange}
+                                    required
+                                />
+
+                            </div>
+
+                            {/* PASSWORD */}
+                            <div className="mb-3">
+
+                                <label className="form-label">
+                                    Password
+                                </label>
+
+                                <div className="position-relative">
+
+                                    <input
+                                        type={
+                                            showPassword
+                                                ? "text"
+                                                : "password"
+                                        }
+                                        name="password"
+                                        className="form-control pe-5"
+                                        value={formData.password}
+                                        onChange={handleInputChange}
+                                        required
+                                    />
+
+                                    <button
+                                        type="button"
+                                        onClick={togglePasswordVisibility}
+                                        className="btn position-absolute top-50 end-0 translate-middle-y border-0"
+                                    >
+
+                                        <i
+                                            className={`fa-solid ${
+                                                showPassword
+                                                    ? "fa-eye-slash"
+                                                    : "fa-eye"
+                                            }`}
+                                        ></i>
+
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                            {/* CONFIRM PASSWORD */}
+                            {!isLogin && (
+
+                                <div className="mb-3">
+
+                                    <label className="form-label">
+                                        Konfirmasi Password
+                                    </label>
+
+                                    <input
+                                        type="password"
+                                        name="password_confirmation"
+                                        className="form-control"
+                                        value={formData.password_confirmation}
+                                        onChange={handleInputChange}
+                                        required
+                                    />
+
+                                </div>
+
+                            )}
+
+                            {/* REMEMBER */}
+                            {isLogin && (
+
+                                <div className="d-flex justify-content-between mb-4">
+
+                                    <div className="form-check">
+
+                                        <input
+                                            className="form-check-input"
+                                            type="checkbox"
+                                        />
+
+                                        <label className="form-check-label">
+                                            Remember me
+                                        </label>
+
+                                    </div>
+
+                                    <Link
+                                        to="#"
+                                        className="text-decoration-none"
+                                    >
+                                        Forgot password?
+                                    </Link>
+
+                                </div>
+
+                            )}
+
+                            {/* BUTTON */}
+                            <button
+                                type="submit"
+                                className="btn btn-warning w-100 py-3 fw-semibold"
+                            >
+
+                                {isLogin
+                                    ? "Sign In"
+                                    : "Create Account"}
+
+                            </button>
+
+                        </form>
+
+                        {/* SWITCH */}
+                        <div className="text-center mt-4">
+
+                            <span className="text-muted">
+
+                                {isLogin
+                                    ? "Don't have an account?"
+                                    : "Already have account?"}
+
+                            </span>
+
+                            <button
+                                onClick={toggleMode}
+                                className="btn btn-link text-decoration-none fw-semibold"
+                            >
+
+                                {isLogin
+                                    ? " Sign Up"
+                                    : " Login"}
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
         </div>
-    )
+    );
 }
