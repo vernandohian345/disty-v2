@@ -3,7 +3,7 @@ import Reveal from "../../ui/Reveal";
 
 export default function AboutSection() {
   return (
-    <section className="pt-8 py-1 bg-white relative overflow-hidden">
+    <section className="pt-24 py-12 bg-white relative overflow-hidden">
       <div className="absolute bottom-0 left-5 right-0 w-80 h-80 bg-primary/10 rounded-full blur-3xl"></div>
 
       <div className="max-w-7xl mx-auto px-6 lg:px-10">
@@ -27,7 +27,7 @@ export default function AboutSection() {
                 initial={{ opacity: 0, y: 40 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8 }}
-                className="inline-flex items-center gap-2 bg-primary/10 text-orange-300 px-4 py-2 rounded-full text-sm font-semibold mb-6"
+                className="inline-flex items-center gap-2 bg-primary/10 text-[#f9c115] px-4 py-2 rounded-full text-sm font-semibold mb-6"
               >
                 Tentang Disty Akademi
               </div>
@@ -35,7 +35,7 @@ export default function AboutSection() {
               {/* Heading */}
               <h2 className="text-4xl lg:text-5xl font-black leading-tight text-darkText">
                 Satu Platform,
-                <span className="text-orange-300 block">
+                <span className="text-[#f9c115] block">
                   Semua Skill & Sertifikasi
                 </span>
               </h2>

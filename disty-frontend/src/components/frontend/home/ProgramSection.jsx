@@ -32,13 +32,13 @@ export default function ProgramSection() {
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
           {/* Heading */}
           <div className="text-center max-w-3xl mx-auto">
-            <div className="inline-flex items-center gap-2 bg-primary/10 text-orange-300 px-4 py-2 rounded-full text-sm font-semibold mb-6">
+            <div className="inline-flex items-center gap-2 bg-primary/10 text-[#f9c115] px-4 py-2 rounded-full text-sm font-semibold mb-6">
               Program Unggulan
             </div>
 
             <h2 className="text-4xl lg:text-5xl font-black text-darkText leading-tight">
               Pilih Program
-              <span className="text-orange-300 block">Sesuai Passion Kamu</span>
+              <span className="text-[#f9c115] block">Sesuai Passion Kamu</span>
             </h2>
 
             <p className="mt-6 text-lg text-slate-600 leading-relaxed">

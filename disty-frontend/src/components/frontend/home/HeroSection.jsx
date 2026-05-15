@@ -5,27 +5,31 @@ import heroImage from "../../../assets/images/beranda-hero.png";
 
 export default function HeroSection() {
   return (
-    <section className="pt-20 pb-16 lg:pt-24 lg:pb-24 bg-[#ffffff]">
-      <div className="max-w-[1800px] mx-auto px-3 sm:px-4 lg:px-6">
+    <section className="relative min-h-screen overflow-hidden bg-white">
+      <div className="max-w-[1800px] mx-auto px-4 lg:px-6 pt-6 lg:pt-6">
         {/* Hero Container */}
         <div className="relative overflow-hidden bg-[#ffe3ca] min-h-[calc(100vh-90px)] rounded-[32px]">
           {/* Background Glow */}
-          <div className="absolute left-0 bottom-0 w-[500px] h-[500px] bg-[#FCFCFD] blur-3xl rounded-full"></div>
+          <div className="absolute left-0 bottom-0 w-[500px] h-[500px] bg-[#fdb64d] blur-3xl rounded-full"></div>
 
           {/* Hero Image */}
           <div className="absolute inset-0 ">
             <img
               src={heroImage}
               alt="Hero"
-              className="w-full h-full object-cover object-center opacity-80"
+              className="w-full h-full object-cover object-[70%_center] opacity-90"
             />
 
             {/* Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-r from-[#2B1D16]/80 via-[#2B1D16]/30 to-transparent"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-[#2B1D16]/75 via-[#2B1D16]/45 to-transparent"></div>
           </div>
+          {/* Orange Glow 1 */}
+          <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-orange-400/25 rounded-full blur-3xl"></div>
+          {/* Orange Glow 2 */}
+          <div className="absolute bottom-0 left-1/3 w-[400px] h-[400px] bg-amber-300/20 rounded-full blur-3xl"></div>
 
           {/* Content */}
-          <div className="relative z-10 flex flex-col justify-between h-full min-h-[calc(100vh-90px)] px-6 py-16 sm:px-10 lg:px-20">
+          <div className="relative z-10 flex flex-col justify-between h-full min-h-[calc(100vh-90px)] px-6 py-16 sm:px-5 lg:px-10 lg:pt-28">
             {/* Top Spacer */}
             <div></div>
 
