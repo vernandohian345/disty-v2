@@ -66,7 +66,7 @@ export default function Login() {
 
                 alert("Login berhasil");
 
-                navigate("/");
+                navigate("/dashboard");
 
             } else {
 

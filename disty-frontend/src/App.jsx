@@ -5,6 +5,8 @@ import {
 } from "react-router-dom";
 
 import Login from "./pages/Login";
+import Dashboard from "./pages/Admin/Dashboard";
+import Pelatihan from "./pages/admin/Pelatihan";
 
 import HeroSection from "./components/frontend/home/HeroSection";
 import Navbar from "./components/frontend/Navbar";
@@ -14,6 +16,7 @@ import PartnerSection from "./components/frontend/home/PartnerSection";
 import BlogSection from "./components/frontend/home/BlogSection";
 import FAQSection from "./components/frontend/home/FaqSection";
 import Footer from "./components/frontend/Footer";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function HomePage() {
     return (
@@ -55,6 +58,26 @@ export default function App() {
                 <Route
                     path="/login"
                     element={<Login />}
+                />
+
+                {/* DASHBOARD */}
+                <Route
+                    path="/dashboard"
+                    element={
+                        <ProtectedRoute>
+                            <Dashboard />
+                        </ProtectedRoute>
+                    }
+                />
+
+                {/* PELATIHAN */}
+                <Route
+                    path="/admin/pelatihan"
+                    element={
+                        <ProtectedRoute>
+                            <Pelatihan />
+                        </ProtectedRoute>
+                    }
                 />
 
             </Routes>
