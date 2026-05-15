@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { login, register } from "../services/authService";
+import Dashboard from "./Admin/Dashboard";
 
 export default function Login() {
 
@@ -66,7 +67,7 @@ export default function Login() {
 
                 alert("Login berhasil");
 
-                navigate("/");
+                navigate("/Dashboard");
 
             } else {
 
