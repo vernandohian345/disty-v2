@@ -35,7 +35,7 @@ export default function BlogSection() {
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 bg-primary/10 text-[#f9c115] px-4 py-2 rounded-full text-sm font-semibold mb-6">
-              Artikel & Insight
+              Blog & Artikel
             </div>
 
             <h2 className="text-4xl lg:text-5xl font-black text-darkText leading-tight">
