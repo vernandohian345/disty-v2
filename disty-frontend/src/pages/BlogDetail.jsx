@@ -1,14 +1,7 @@
 import Navbar from "../components/frontend/Navbar";
 import Footer from "../components/frontend/Footer";
 
-import {
-  CalendarDays,
-  Eye,
-  Share2,
-  Facebook,
-  Twitter,
-  Linkedin,
-} from "lucide-react";
+import { CalendarDays, Eye, Share2 } from "lucide-react";
 
 import { useParams, Link } from "react-router-dom";
 
@@ -174,15 +167,15 @@ export default function BlogDetail() {
 
                 <div className="flex gap-4">
                   <button className="w-12 h-12 rounded-2xl bg-[#1877F2] text-white flex items-center justify-center hover:scale-105 transition-all">
-                    <Facebook size={20} />
+                    <span className="font-bold">f</span>
                   </button>
 
                   <button className="w-12 h-12 rounded-2xl bg-[#1DA1F2] text-white flex items-center justify-center hover:scale-105 transition-all">
-                    <Twitter size={20} />
+                    <span className="font-bold">X</span>
                   </button>
 
                   <button className="w-12 h-12 rounded-2xl bg-[#0A66C2] text-white flex items-center justify-center hover:scale-105 transition-all">
-                    <Linkedin size={20} />
+                    <span className="font-bold">in</span>
                   </button>
                 </div>
               </div>
