@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Login from "./pages/Login";
 import Blog from "./pages/Blog";
+import BlogDetail from "./pages/BlogDetail";
 
 import Dashboard from "./pages/Admin/Dashboard";
 import Pelatihan from "./pages/admin/Pelatihan";
@@ -52,6 +53,9 @@ export default function App() {
 
         {/* BLOG */}
         <Route path="/blog" element={<Blog />} />
+
+        {/* BLOG DETAIL */}
+        <Route path="/blog/:slug" element={<BlogDetail />} />
 
         {/* DASHBOARD */}
         <Route

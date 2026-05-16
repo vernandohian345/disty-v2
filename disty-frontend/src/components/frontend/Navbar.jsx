@@ -3,8 +3,6 @@ import { useState, useEffect, useRef } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 
 import {
-  FaBars,
-  FaTimes,
   FaUserCircle,
   FaBell,
   FaUser,
@@ -84,21 +82,6 @@ export default function Navbar() {
             justify-between
           "
         >
-          {/* LOGO */}
-          <div className="flex items-center gap-3 ml-9">
-            <img
-              src="/src/assets/images/logo-putih.png"
-              alt="Disty Akademi"
-              className="
-                w-[120px]
-                h-20
-                object-contain
-                cursor-pointer
-              "
-              onClick={() => navigate("/")}
-            />
-          </div>
-
           {/* DESKTOP */}
           <div
             className="
