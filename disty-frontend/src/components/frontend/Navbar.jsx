@@ -1,10 +1,10 @@
 import { useState } from "react";
+import { NavLink } from "react-router-dom";
 import { FaBars, FaTimes } from "react-icons/fa";
 
 import Button from "../ui/Button";
 
 export default function Navbar() {
-  const [activeMenu, setActiveMenu] = useState("Beranda");
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -24,61 +24,85 @@ export default function Navbar() {
           <div className="hidden md:flex items-center bg-white/85 border border-white/20 rounded-[18px] px-2 py-1.5 shadow-lg shadow-black/5 ml-auto">
             {/* Menu */}
             <nav className="flex items-center">
-              <button
-                onClick={() => setActiveMenu("Beranda")}
-                className={`relative px-4 py-2 text-sm font-medium transition-all duration-300 ${
-                  activeMenu === "Beranda"
-                    ? "text-orange-400"
-                    : "text-black/80 hover:text-orange-300"
-                }`}
+              <NavLink
+                to="/"
+                className={({ isActive }) =>
+                  `relative px-4 py-2 text-sm font-medium transition-all duration-300 ${
+                    isActive
+                      ? "text-orange-400"
+                      : "text-black/80 hover:text-orange-300"
+                  }`
+                }
               >
-                Beranda
-                {activeMenu === "Beranda" && (
-                  <span className="absolute left-1/2 -translate-x-1/2 bottom-0 w-8 h-[3px] bg-orange-400 rounded-full"></span>
+                {({ isActive }) => (
+                  <>
+                    Beranda
+                    {isActive && (
+                      <span className="absolute left-1/2 -translate-x-1/2 bottom-0 w-8 h-[3px] bg-orange-400 rounded-full"></span>
+                    )}
+                  </>
                 )}
-              </button>
+              </NavLink>
 
-              <button
-                onClick={() => setActiveMenu("Program")}
-                className={`relative px-4 py-2 text-sm font-medium transition-all duration-300 ${
-                  activeMenu === "Program"
-                    ? "text-orange-400"
-                    : "text-black/80 hover:text-orange-300"
-                }`}
+              <NavLink
+                to="/program"
+                className={({ isActive }) =>
+                  `relative px-4 py-2 text-sm font-medium transition-all duration-300 ${
+                    isActive
+                      ? "text-orange-400"
+                      : "text-black/80 hover:text-orange-300"
+                  }`
+                }
               >
-                Program
-                {activeMenu === "Program" && (
-                  <span className="absolute left-1/2 -translate-x-1/2 bottom-0 w-8 h-[3px] bg-orange-400 rounded-full"></span>
+                {({ isActive }) => (
+                  <>
+                    Program
+                    {isActive && (
+                      <span className="absolute left-1/2 -translate-x-1/2 bottom-0 w-8 h-[3px] bg-orange-400 rounded-full"></span>
+                    )}
+                  </>
                 )}
-              </button>
+              </NavLink>
 
-              <button
-                onClick={() => setActiveMenu("Blog")}
-                className={`relative px-4 py-2 text-sm font-medium transition-all duration-300 ${
-                  activeMenu === "Blog"
-                    ? "text-orange-400"
-                    : "text-black/80 hover:text-orange-300"
-                }`}
+              <NavLink
+                to="/blog"
+                className={({ isActive }) =>
+                  `relative px-4 py-2 text-sm font-medium transition-all duration-300 ${
+                    isActive
+                      ? "text-orange-400"
+                      : "text-black/80 hover:text-orange-300"
+                  }`
+                }
               >
-                Blog
-                {activeMenu === "Blog" && (
-                  <span className="absolute left-1/2 -translate-x-1/2 bottom-0 w-8 h-[3px] bg-orange-400 rounded-full"></span>
+                {({ isActive }) => (
+                  <>
+                    Blog
+                    {isActive && (
+                      <span className="absolute left-1/2 -translate-x-1/2 bottom-0 w-8 h-[3px] bg-orange-400 rounded-full"></span>
+                    )}
+                  </>
                 )}
-              </button>
+              </NavLink>
 
-              <button
-                onClick={() => setActiveMenu("Tentang Kami")}
-                className={`relative px-4 py-2 text-sm font-medium transition-all duration-300 ${
-                  activeMenu === "Tentang Kami"
-                    ? "text-orange-400"
-                    : "text-black/80 hover:text-orange-300"
-                }`}
+              <NavLink
+                to="/tentang kami"
+                className={({ isActive }) =>
+                  `relative px-4 py-2 text-sm font-medium transition-all duration-300 ${
+                    isActive
+                      ? "text-orange-400"
+                      : "text-black/80 hover:text-orange-300"
+                  }`
+                }
               >
-                Tentang Kami
-                {activeMenu === "Tentang Kami" && (
-                  <span className="absolute left-1/2 -translate-x-1/2 bottom-0 w-8 h-[3px] bg-orange-400 rounded-full"></span>
+                {({ isActive }) => (
+                  <>
+                    Tentang Kami
+                    {isActive && (
+                      <span className="absolute left-1/2 -translate-x-1/2 bottom-0 w-8 h-[3px] bg-orange-400 rounded-full"></span>
+                    )}
+                  </>
                 )}
-              </button>
+              </NavLink>
             </nav>
 
             <div className="flex items-center gap-2 ml-4">

@@ -1,10 +1,7 @@
-import {
-    BrowserRouter,
-    Routes,
-    Route,
-} from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Login from "./pages/Login";
+import Blog from "./pages/Blog";
 
 import HeroSection from "./components/frontend/home/HeroSection";
 import Navbar from "./components/frontend/Navbar";
@@ -16,49 +13,40 @@ import FAQSection from "./components/frontend/home/FaqSection";
 import Footer from "./components/frontend/Footer";
 
 function HomePage() {
-    return (
-        <>
-            <Navbar />
+  return (
+    <>
+      <Navbar />
 
-            <HeroSection />
+      <HeroSection />
 
-            <AboutSection />
+      <AboutSection />
 
-            <ProgramSection />
+      <ProgramSection />
 
-            <PartnerSection />
+      <PartnerSection />
 
-            <BlogSection />
+      <BlogSection />
 
-            <FAQSection />
+      <FAQSection />
 
-            <Footer />
-        </>
-    );
+      <Footer />
+    </>
+  );
 }
 
 export default function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        {/* HOME */}
+        <Route path="/" element={<HomePage />} />
 
-    return (
+        {/* LOGIN */}
+        <Route path="/login" element={<Login />} />
 
-        <BrowserRouter>
-
-            <Routes>
-
-                {/* HOME */}
-                <Route
-                    path="/"
-                    element={<HomePage />}
-                />
-
-                {/* LOGIN */}
-                <Route
-                    path="/login"
-                    element={<Login />}
-                />
-
-            </Routes>
-
-        </BrowserRouter>
-    );
+        {/* BLOG */}
+        <Route path="/blog" element={<Blog />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
