@@ -7,6 +7,7 @@ import {
 import Login from "./pages/Login";
 import Dashboard from "./pages/Admin/Dashboard";
 import Pelatihan from "./pages/admin/Pelatihan";
+import Blog from "./pages/admin/Blog";
 
 import HeroSection from "./components/frontend/home/HeroSection";
 import Navbar from "./components/frontend/Navbar";
@@ -17,9 +18,12 @@ import BlogSection from "./components/frontend/home/BlogSection";
 import FAQSection from "./components/frontend/home/FaqSection";
 import Footer from "./components/frontend/Footer";
 
+
 import Notifications from "./pages/Notifications";
 
 import RouteAdmin from "./components/AdminRoute";
+
+
 
 function HomePage() {
     return (
@@ -85,6 +89,17 @@ export default function App() {
                         </RouteAdmin>
                     }
                 />
+
+                {/* BLOG */}
+                <Route
+                    path="/admin/blog"
+                    element={
+                        <RouteAdmin>
+                            <Blog />
+                        </RouteAdmin>
+                    }
+                />
+
             </Routes>
 
         </BrowserRouter>
