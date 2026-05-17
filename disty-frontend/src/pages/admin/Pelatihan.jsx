@@ -1,5 +1,3 @@
-// src/pages/admin/Pelatihan.jsx
-
 import { useEffect, useState } from "react";
 
 import AdminLayout from "../../layouts/AdminLayout";
@@ -36,7 +34,7 @@ export default function Pelatihan() {
     const [editData, setEditData] =
         useState(null);
 
-    // MODAL DELETE
+    // DELETE MODAL
     const [deleteModal, setDeleteModal] =
         useState(false);
 
@@ -62,10 +60,6 @@ export default function Pelatihan() {
                 const response =
                     await getPelatihans();
 
-                console.log(
-                    response.data
-                );
-
                 setPelatihans(
                     response.data.data.data
                 );
@@ -90,13 +84,8 @@ export default function Pelatihan() {
 
             try {
 
-                const response =
-                    await createPelatihan(
-                        formData
-                    );
-
-                console.log(
-                    response.data
+                await createPelatihan(
+                    formData
                 );
 
                 await fetchPelatihans();
@@ -105,10 +94,12 @@ export default function Pelatihan() {
 
             } catch (error) {
 
-                console.log(error);
+                console.log(
+                    error.response?.data
+                );
 
                 alert(
-                    "Gagal menambahkan pelatihan"
+                    JSON.stringify(Error.response?.data)
                 );
 
             }
@@ -123,14 +114,9 @@ export default function Pelatihan() {
 
             try {
 
-                const response =
-                    await updatePelatihan(
-                        editData.id,
-                        formData
-                    );
-
-                console.log(
-                    response.data
+                await updatePelatihan(
+                    editData.id,
+                    formData
                 );
 
                 await fetchPelatihans();
@@ -141,10 +127,12 @@ export default function Pelatihan() {
 
             } catch (error) {
 
-                console.log(error);
+                console.log(
+                    error.response?.data
+                );
 
                 alert(
-                    "Gagal update pelatihan"
+                    JSON.stringify(error.response?.data)
                 );
 
             }
@@ -159,13 +147,8 @@ export default function Pelatihan() {
 
             try {
 
-                const response =
-                    await deletePelatihan(
-                        selectedPelatihan.id
-                    );
-
-                console.log(
-                    response.data
+                await deletePelatihan(
+                    selectedPelatihan.id
                 );
 
                 await fetchPelatihans();

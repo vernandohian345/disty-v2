@@ -51,7 +51,22 @@ class PelatihanApiController extends Controller
 
         $data = $request->all();
 
-        $data['slug'] = Str::slug($request->nama_pelatihan);
+        $slug = Str::slug(
+            $request->nama_pelatihan
+            );
+
+        $count = 
+            Pelatihan::where(
+                'slug',
+                'like',
+                '{$slug}%' // Cek slug yang mirip
+            )->count();
+
+        $data['slug'] =
+            $count
+            ? "{$slug}-" . ($count + 1)// Tambahkan angka jika slug sudah ada
+            : $slug;
+
 
         $data['harga'] =
             $request->kategori === 'gratis'
@@ -96,6 +111,7 @@ class PelatihanApiController extends Controller
             'kategori'       => 'required|string',
             'link_grup'      => 'required|string',
             'durasi'         => 'required|string|max:100',
+            'tanggal_pelatihan' => 'required|date',
             'harga'          => $request->kategori === 'berbayar'
                                     ? 'required|numeric|min:1'
                                     : 'nullable',
@@ -105,7 +121,33 @@ class PelatihanApiController extends Controller
 
         $data = $request->all();
 
-        $data['slug'] = Str::slug($request->nama_pelatihan);
+        $slug = Str::slug(
+            $request->nama_pelatihan
+            );
+
+        $count = 
+            Pelatihan::where(
+                'slug',
+                'like',
+                '{$slug}%' // Cek slug yang mirip
+            )->count();
+
+        $count = 
+            Pelatihan::where(
+                'slug',
+                'like',
+                '{$slug}%' // Cek slug yang mirip
+            )
+            ->where(
+                'id',
+                '!=', 
+                $pelatihan->id) // Kecualikan pelatihan yang sedang diupdate
+            ->count();
+
+        $data['slug'] =
+            $count
+            ? "{$slug}-" . ($count + 1)// Tambahkan angka jika slug sudah ada
+            : $slug;
 
         $data['harga'] =
             $request->kategori === 'gratis'
