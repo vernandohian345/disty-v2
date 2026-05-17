@@ -159,7 +159,7 @@ export default function Navbar() {
               </NavLink>
 
               <NavLink
-                to="/tentang kami"
+                to="/about"
                 className={({ isActive }) =>
                   `relative px-4 py-2 text-sm font-medium transition-all duration-300 ${
                     isActive

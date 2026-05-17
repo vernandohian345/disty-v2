@@ -6,6 +6,7 @@ import Blog from "./pages/frontend/Blog";
 import BlogDetail from "./pages/frontend/BlogDetail";
 import Home from "./pages/frontend/Home";
 import Notifications from "./pages/frontend/Notifications";
+import About from "./pages/frontend/About";
 
 import Dashboard from "./pages/admin/Dashboard";
 import Pelatihan from "./pages/admin/Pelatihan";
@@ -58,6 +59,9 @@ export default function App() {
 
         {/* BLOG */}
         <Route path="/blog" element={<Blog />} />
+
+        {/* ABOUT */}
+        <Route path="/about" element={<About />} />
 
         {/* BLOG DETAIL */}
         <Route path="/blog/:slug" element={<BlogDetail />} />
