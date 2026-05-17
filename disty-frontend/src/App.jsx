@@ -1,12 +1,14 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import Login from "./pages/Login";
-import Blog from "./pages/Blog";
-import BlogDetail from "./pages/BlogDetail";
+import Login from "./pages/auth/Login";
 
-import Dashboard from "./pages/Admin/Dashboard";
+import Blog from "./pages/frontend/Blog";
+import BlogDetail from "./pages/frontend/BlogDetail";
+import Home from "./pages/frontend/Home";
+import Notifications from "./pages/frontend/Notifications";
+
+import Dashboard from "./pages/admin/Dashboard";
 import Pelatihan from "./pages/admin/Pelatihan";
-import Notifications from "./pages/Notifications";
 
 import HeroSection from "./components/frontend/home/HeroSection";
 import Navbar from "./components/frontend/Navbar";
@@ -17,7 +19,9 @@ import BlogSection from "./components/frontend/home/BlogSection";
 import FAQSection from "./components/frontend/home/FaqSection";
 import Footer from "./components/frontend/Footer";
 
-import RouteAdmin from "./components/AdminRoute";
+import ScrollToTop from "./components/shared/ScrollToTop";
+
+import RouteAdmin from "./routes/AdminRoute";
 
 function HomePage() {
   return (
@@ -44,6 +48,7 @@ function HomePage() {
 export default function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Routes>
         {/* HOME */}
         <Route path="/" element={<HomePage />} />

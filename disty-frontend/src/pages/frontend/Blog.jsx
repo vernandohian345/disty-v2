@@ -1,15 +1,25 @@
-import { useState } from "react";
-import Navbar from "../components/frontend/Navbar";
-import Footer from "../components/frontend/Footer";
+import { useEffect, useState } from "react";
+import Navbar from "../../components/frontend/Navbar";
+import Footer from "../../components/frontend/Footer";
 
-import BlogHero from "../components/frontend/blog.page/BlogHero";
-import BlogFilter from "../components/frontend/blog.page/BlogFilter";
-import BlogList from "../components/frontend/blog.page/BlogList";
+import BlogHero from "../../components/frontend/blog/BlogHero";
+import BlogFilter from "../../components/frontend/blog/BlogFilter";
+import BlogList from "../../components/frontend/blog/BlogList";
 
 export default function Blog() {
   const [activeCategory, setActiveCategory] = useState("Semua");
   const [sortType, setSortType] = useState("Terbaru");
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1200);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <>
@@ -24,6 +34,8 @@ export default function Blog() {
             <BlogFilter
               activeCategory={activeCategory}
               setActiveCategory={setActiveCategory}
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
             />
 
             {/* RIGHT */}
@@ -33,6 +45,8 @@ export default function Blog() {
               setSortType={setSortType}
               currentPage={currentPage}
               setCurrentPage={setCurrentPage}
+              searchQuery={searchQuery}
+              loading={loading}
             />
           </div>
         </div>

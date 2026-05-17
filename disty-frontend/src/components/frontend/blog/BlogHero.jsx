@@ -58,19 +58,12 @@ export default function BlogHero() {
                 </p>
 
                 {/* CTA */}
-                <div className="mt-4 flex flex-col sm:flex-row gap-4">
+                <div className="mt-6">
                   <a
                     href="#blog-content"
-                    className="bg-white text-orange-500 px-5 py-3 rounded-xl font-semibold hover:scale-105 transition-all duration-300"
+                    className="inline-flex items-center justify-center bg-white text-orange-500 px-6 py-3.5 rounded-2xl font-semibold shadow-[0_10px_30px_rgba(255,255,255,0.15)] hover:-translate-y-1 hover:scale-105 hover:shadow-[0_20px_40px_rgba(255,255,255,0.25)] transition-all duration-300"
                   >
                     Jelajahi Artikel
-                  </a>
-
-                  <a
-                    href="#blog-categories"
-                    className="bg-white/10 backdrop-blur-xl border border-white/20 text-white px-5 py-3 rounded-xl font-semibold hover:bg-white/20 transition-all duration-300"
-                  >
-                    Trending Topics
                   </a>
                 </div>
               </div>

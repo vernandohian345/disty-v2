@@ -26,7 +26,12 @@ const categories = [
   "Startup",
 ];
 
-export default function BlogFilter({ activeCategory, setActiveCategory }) {
+export default function BlogFilter({
+  activeCategory,
+  setActiveCategory,
+  searchQuery,
+  setSearchQuery,
+}) {
   return (
     <aside className="bg-white rounded-[32px] border border-slate-200 p-6 sticky top-28">
       {/* Search */}
@@ -43,6 +48,8 @@ export default function BlogFilter({ activeCategory, setActiveCategory }) {
 
           <input
             type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Cari artikel..."
             className="w-full bg-[#f8fafc] border border-slate-200 rounded-2xl pl-11 pr-4 py-3 focus:outline-none focus:ring-4 focus:ring-orange-100 transition-all"
           />
