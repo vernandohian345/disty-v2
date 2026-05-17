@@ -21,6 +21,7 @@ class Pelatihan extends Model
         'materi',
         'kategori',
         'link_grup',
+        'tanggal_pelatihan',
         'sampul',
     ];
 

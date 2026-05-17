@@ -95,6 +95,7 @@ class SertifikasiApiController extends Controller
             'kategori'         => 'required|string',
             'link_grup'        => 'required|string',
             'durasi'           => 'required|string|max:100',
+            'tanggal_sertifikasi' => 'required|date',
             'harga'            => $request->kategori === 'berbayar'
                                         ? 'required|numeric|min:1'
                                         : 'nullable',
