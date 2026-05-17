@@ -3,12 +3,28 @@ import axios from "axios";
 const API_URL =
     "http://127.0.0.1:8000/api/pelatihan";
 
+// ==========================
+// TOKEN
+// ==========================
 const getToken = () => {
     return localStorage.getItem("token");
 };
 
 // ==========================
-// GET ALL
+// HEADER
+// ==========================
+const authHeader = () => {
+    return {
+        Authorization:
+            `Bearer ${getToken()}`,
+
+        Accept:
+            "application/json",
+    };
+};
+
+// ==========================
+// GET ALL PELATIHAN
 // ==========================
 export const getPelatihans =
     async () => {
@@ -16,32 +32,39 @@ export const getPelatihans =
         return await axios.get(
             API_URL,
             {
-                headers: {
-                    Authorization:
-                        `Bearer ${getToken()}`,
-                    Accept:
-                        "application/json",
-                },
+                headers: authHeader(),
             }
         );
 
     };
 
 // ==========================
-// CREATE
+// GET DETAIL
+// ==========================
+export const getPelatihan =
+    async (id) => {
+
+        return await axios.get(
+            `${API_URL}/${id}`,
+            {
+                headers: authHeader(),
+            }
+        );
+
+    };
+
+// ==========================
+// CREATE PELATIHAN
 // ==========================
 export const createPelatihan =
-    async (data) => {
+    async (formData) => {
 
         return await axios.post(
             API_URL,
-            data,
+            formData,
             {
                 headers: {
-                    Authorization:
-                        `Bearer ${getToken()}`,
-                    Accept:
-                        "application/json",
+                    ...authHeader(),
 
                     "Content-Type":
                         "multipart/form-data",
@@ -52,25 +75,17 @@ export const createPelatihan =
     };
 
 // ==========================
-// UPDATE
+// UPDATE PELATIHAN
 // ==========================
 export const updatePelatihan =
-    async (id, data) => {
-
-        data.append(
-            "_method",
-            "PUT"
-        );
+    async (id, formData) => {
 
         return await axios.post(
-            `${API_URL}/${id}`,
-            data,
+            `${API_URL}/update/${id}`,
+            formData,
             {
                 headers: {
-                    Authorization:
-                        `Bearer ${getToken()}`,
-                    Accept:
-                        "application/json",
+                    ...authHeader(),
 
                     "Content-Type":
                         "multipart/form-data",
@@ -81,7 +96,7 @@ export const updatePelatihan =
     };
 
 // ==========================
-// DELETE
+// DELETE PELATIHAN
 // ==========================
 export const deletePelatihan =
     async (id) => {
@@ -89,12 +104,7 @@ export const deletePelatihan =
         return await axios.delete(
             `${API_URL}/${id}`,
             {
-                headers: {
-                    Authorization:
-                        `Bearer ${getToken()}`,
-                    Accept:
-                        "application/json",
-                },
+                headers: authHeader(),
             }
         );
 

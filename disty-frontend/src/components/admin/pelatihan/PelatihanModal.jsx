@@ -1,5 +1,3 @@
-// src/components/admin/pelatihan/PelatihanModal.jsx
-
 import { useEffect, useState } from "react";
 
 export default function PelatihanModal({
@@ -9,17 +7,19 @@ export default function PelatihanModal({
     editData,
 }) {
 
-    const [form, setForm] = useState({
-        nama_pelatihan: "",
-        deskripsi: "",
-        materi: "",
-        kategori: "gratis",
-        link_grup: "",
-        durasi: "",
-        harga: 0,
-        bahasa: "",
-        sampul: null,
-    });
+    const [form, setForm] =
+        useState({
+            nama_pelatihan: "",
+            deskripsi: "",
+            materi: "",
+            kategori: "gratis",
+            link_grup: "",
+            durasi: "",
+            harga: 0,
+            bahasa: "",
+            tanggal_pelatihan: "",
+            sampul: null,
+        });
 
     useEffect(() => {
 
@@ -50,6 +50,9 @@ export default function PelatihanModal({
                 bahasa:
                     editData.bahasa || "",
 
+                tanggal_pelatihan:
+                    editData.tanggal_pelatihan || "",
+
                 sampul: null,
             });
 
@@ -64,93 +67,112 @@ export default function PelatihanModal({
                 durasi: "",
                 harga: 0,
                 bahasa: "",
+                tanggal_pelatihan: "",
                 sampul: null,
             });
+
         }
 
     }, [editData]);
 
     const handleChange = (e) => {
 
-        const { name, value, files } = e.target;
+        const {
+            name,
+            value,
+            files,
+        } = e.target;
 
         setForm({
             ...form,
+
             [name]:
-                files && files.length > 0
+                files &&
+                files.length > 0
                     ? files[0]
                     : value,
-                });
+        });
+
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmit =
+        async (e) => {
 
-    e.preventDefault();
+            e.preventDefault();
 
-    try {
+            try {
 
-        const formData =
-            new FormData();
+                const formData =
+                    new FormData();
 
-        formData.append(
-            "nama_pelatihan",
-            form.nama_pelatihan
-        );
+                formData.append(
+                    "nama_pelatihan",
+                    form.nama_pelatihan
+                );
 
-        formData.append(
-            "deskripsi",
-            form.deskripsi
-        );
+                formData.append(
+                    "deskripsi",
+                    form.deskripsi
+                );
 
-        formData.append(
-            "materi",
-            form.materi
-        );
+                formData.append(
+                    "materi",
+                    form.materi || ""
+                );
 
-        formData.append(
-            "kategori",
-            form.kategori
-        );
+                formData.append(
+                    "kategori",
+                    form.kategori
+                );
 
-        formData.append(
-            "link_grup",
-            form.link_grup
-        );
+                formData.append(
+                    "link_grup",
+                    form.link_grup
+                );
 
-        formData.append(
-            "durasi",
-            form.durasi
-        );
+                formData.append(
+                    "durasi",
+                    form.durasi
+                );
 
-        formData.append(
-            "harga",
-            form.harga
-        );
+                formData.append(
+                    "harga",
+                    form.harga
+                );
 
-        formData.append(
-            "bahasa",
-            form.bahasa
-        );
+                formData.append(
+                    "bahasa",
+                    form.bahasa
+                );
 
-        // FILE
-        if (form.sampul instanceof File) {
+                formData.append(
+                    "tanggal_pelatihan",
+                    form.tanggal_pelatihan
+                );
 
-            formData.append(
-                "sampul",
-                form.sampul
-            );
+                // FILE
+                if (
+                    form.sampul instanceof File
+                ) {
 
-        }
+                    formData.append(
+                        "sampul",
+                        form.sampul
+                    );
 
-        await onSubmit(formData);
+                }
 
-    } catch (error) {
+                await onSubmit(
+                    formData
+                );
 
-        console.log(error);
+            } catch (error) {
 
-    }
+                console.log(error);
 
-};
+            }
+
+        };
 
     if (!isOpen) return null;
 
@@ -158,14 +180,12 @@ export default function PelatihanModal({
 
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-5">
 
-            <div className="w-full max-w-5xl bg-white rounded-[35px] shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-300">
+            <div className="w-full max-w-5xl bg-white rounded-[35px] shadow-2xl overflow-hidden">
 
                 {/* HEADER */}
-                <div className="bg-gradient-to-r from-orange-500 to-orange-400 p-8 text-white relative">
+                <div className="bg-gradient-to-r from-orange-500 to-orange-400 p-8 text-white">
 
-                    <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full blur-3xl"></div>
-
-                    <div className="flex items-start justify-between relative z-10">
+                    <div className="flex items-start justify-between">
 
                         <div>
 
@@ -189,10 +209,10 @@ export default function PelatihanModal({
 
                         <button
                             onClick={onClose}
-                            className="w-12 h-12 rounded-2xl bg-white/20 hover:bg-white/30 transition-all duration-300"
+                            className="w-12 h-12 rounded-2xl bg-white/20 hover:bg-white/30"
                         >
 
-                            <i className="fas fa-times text-xl"></i>
+                            ✕
 
                         </button>
 
@@ -222,8 +242,7 @@ export default function PelatihanModal({
                                 name="nama_pelatihan"
                                 value={form.nama_pelatihan}
                                 onChange={handleChange}
-                                className="w-full p-4 rounded-2xl border border-slate-200 focus:outline-none focus:ring-4 focus:ring-orange-200 focus:border-orange-500 transition"
-                                placeholder="Masukkan nama pelatihan"
+                                className="w-full p-4 rounded-2xl border border-slate-200"
                                 required
                             />
 
@@ -243,8 +262,7 @@ export default function PelatihanModal({
                                 name="bahasa"
                                 value={form.bahasa}
                                 onChange={handleChange}
-                                className="w-full p-4 rounded-2xl border border-slate-200 focus:outline-none focus:ring-4 focus:ring-orange-200"
-                                placeholder="Contoh: Indonesia"
+                                className="w-full p-4 rounded-2xl border border-slate-200"
                                 required
                             />
 
@@ -264,8 +282,7 @@ export default function PelatihanModal({
                                 name="durasi"
                                 value={form.durasi}
                                 onChange={handleChange}
-                                className="w-full p-4 rounded-2xl border border-slate-200 focus:outline-none focus:ring-4 focus:ring-orange-200"
-                                placeholder="Contoh: 2 Jam"
+                                className="w-full p-4 rounded-2xl border border-slate-200"
                                 required
                             />
 
@@ -284,15 +301,19 @@ export default function PelatihanModal({
                                 name="kategori"
                                 value={form.kategori}
                                 onChange={handleChange}
-                                className="w-full p-4 rounded-2xl border border-slate-200 focus:outline-none focus:ring-4 focus:ring-orange-200"
+                                className="w-full p-4 rounded-2xl border border-slate-200"
                             >
 
                                 <option value="gratis">
+
                                     Gratis
+
                                 </option>
 
                                 <option value="berbayar">
+
                                     Berbayar
+
                                 </option>
 
                             </select>
@@ -316,8 +337,27 @@ export default function PelatihanModal({
                                 disabled={
                                     form.kategori === "gratis"
                                 }
-                                className="w-full p-4 rounded-2xl border border-slate-200 focus:outline-none focus:ring-4 focus:ring-orange-200 disabled:bg-slate-100"
-                                placeholder="0"
+                                className="w-full p-4 rounded-2xl border border-slate-200 disabled:bg-slate-100"
+                            />
+
+                        </div>
+
+                        {/* TANGGAL */}
+                        <div className="md:col-span-2">
+
+                            <label className="block text-sm font-bold text-slate-700 mb-2">
+
+                                Tanggal Pelatihan
+
+                            </label>
+
+                            <input
+                                type="date"
+                                name="tanggal_pelatihan"
+                                value={form.tanggal_pelatihan || " "}
+                                onChange={handleChange}
+                                className="w-full p-4 rounded-2xl border border-slate-200"
+                                required
                             />
 
                         </div>
@@ -336,8 +376,7 @@ export default function PelatihanModal({
                                 name="link_grup"
                                 value={form.link_grup}
                                 onChange={handleChange}
-                                className="w-full p-4 rounded-2xl border border-slate-200 focus:outline-none focus:ring-4 focus:ring-orange-200"
-                                placeholder="https://..."
+                                className="w-full p-4 rounded-2xl border border-slate-200"
                                 required
                             />
 
@@ -357,8 +396,7 @@ export default function PelatihanModal({
                                 name="deskripsi"
                                 value={form.deskripsi}
                                 onChange={handleChange}
-                                className="w-full p-4 rounded-2xl border border-slate-200 focus:outline-none focus:ring-4 focus:ring-orange-200"
-                                placeholder="Deskripsi pelatihan..."
+                                className="w-full p-4 rounded-2xl border border-slate-200"
                                 required
                             />
 
@@ -378,8 +416,7 @@ export default function PelatihanModal({
                                 name="materi"
                                 value={form.materi}
                                 onChange={handleChange}
-                                className="w-full p-4 rounded-2xl border border-slate-200 focus:outline-none focus:ring-4 focus:ring-orange-200"
-                                placeholder="Materi pelatihan..."
+                                className="w-full p-4 rounded-2xl border border-slate-200"
                             />
 
                         </div>
@@ -415,29 +452,32 @@ export default function PelatihanModal({
 
                                 <input
                                     type="file"
-                                    accept="image/png, image/jpeg, image/jpg"
                                     name="sampul"
+                                    accept="image/png,image/jpeg,image/jpg"
                                     onChange={handleChange}
                                     className="hidden"
                                 />
 
-                                {
+                            </label>
+
+                            {/* PREVIEW */}
+                            {
                                 form.sampul && (
+
                                     <img
                                         src={URL.createObjectURL(form.sampul)}
                                         alt=""
                                         className="
                                             mt-4
-                                            w-52
+                                            w-full
                                             h-52
                                             object-cover
                                             rounded-3xl
                                         "
                                     />
+
                                 )
                             }
-
-                            </label>
 
                         </div>
 
