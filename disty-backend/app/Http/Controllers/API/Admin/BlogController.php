@@ -46,7 +46,7 @@ class BlogController extends Controller
             'kategori'  => 'nullable|string|max:100',
             'penulis'   => 'nullable|string|max:100',
             'status'    => 'required|in:draft,published',
-            'sampul'    => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'sampul'    => 'nullable|image|mimes:jpg,jpeg,png|max:5120',
         ]);
 
         $data = $request->all();
@@ -88,7 +88,7 @@ class BlogController extends Controller
             'kategori'  => 'nullable|string|max:100',
             'penulis'   => 'nullable|string|max:100',
             'status'    => 'required|in:draft,published',
-            'sampul'    => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'sampul'    => 'nullable|image|mimes:jpg,jpeg,png|max:5120',
         ]);
 
         $data = $request->all();

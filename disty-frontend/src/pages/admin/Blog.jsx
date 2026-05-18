@@ -435,14 +435,24 @@ export default function Blog() {
                                     <label className="block text-sm font-bold text-slate-700 mb-2">
                                         Kategori
                                     </label>
-                                    <input
-                                        type="text"
+                                   <select
                                         value={form.kategori}
                                         onChange={(e) => setForm({ ...form, kategori: e.target.value })}
                                         className="w-full px-4 py-3 rounded-2xl border border-slate-200 focus:outline-none focus:ring-4 focus:ring-orange-200"
-                                        placeholder="Contoh: Tips, Teknologi"
-                                    />
-                                </div>
+                                    >
+                                        <option value="">-- Pilih Kategori --</option>
+                                        <option value="Teknologi">Teknologi</option>
+                                        <option value="Karir">Karir</option>
+                                        <option value="Digital Marketing">Digital Marketing</option>
+                                        <option value="UI/UX">UI/UX</option>
+                                        <option value="Artificial Intelligence">Artificial Intelligence</option>
+                                        <option value="Web Development">Web Development</option>
+                                        <option value="Mobile App">Mobile App</option>
+                                        <option value="Data Science">Data Science</option>
+                                        <option value="Cyber Security">Cyber Security</option>
+                                        <option value="Startup">Startup</option>
+                                    </select>
+                                                                    </div>
 
                                 <div>
                                     <label className="block text-sm font-bold text-slate-700 mb-2">
