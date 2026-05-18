@@ -59,6 +59,9 @@ class AuthApiController extends Controller
 
             'password' =>
                 'required|min:6|confirmed',
+        ],[
+            'email.regex' =>
+                'Email Harus menggunakan @gmail.com',
         ]);
 
         // random avatar color
