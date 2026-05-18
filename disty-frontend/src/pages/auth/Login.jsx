@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { login, register } from "../../services/authService";
 import Dashboard from "../Admin/Dashboard";
+import logo from "../../assets/images/logo.png";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -103,51 +104,31 @@ export default function Login() {
         </div>
 
         {/* RIGHT */}
-        <div className="col-lg-6 d-flex align-items-center justify-content-center bg-light">
-          <div className="w-100" style={{ maxWidth: "450px" }}>
+        <div className="col-lg-6 d-flex align-items-center justify-content-center bg-light mt-2">
+          <div 
+              className="w-100" 
+              style={{ maxWidth: "450px" }}>
+
             {/* HEADER */}
-            <div className="text-center mb-5">
+            <div className="
+            text-center 
+            d-flex
+            flex-column
+            align-items-center
+            justify-content-center
+            mx-auto"
+            >
               <div
-                className="mx-auto mb-4 d-flex align-items-center justify-content-center"
                 style={{
-                  width: "60px",
-                  height: "60px",
-                  background: "#3b82f6",
-                  borderRadius: "12px",
+                  width: "200px",
+                  height: "150px",
                 }}
               >
-                <div
-                  style={{
-                    width: "28px",
-                    height: "28px",
-                    background: "#fff",
-                    borderRadius: "6px",
-                    position: "relative",
-                  }}
-                >
-                  <div
-                    style={{
-                      position: "absolute",
-                      bottom: "0",
-                      left: "50%",
-                      transform: "translateX(-50%)",
-                      width: "10px",
-                      height: "14px",
-                      background: "#f97316",
-                      borderRadius: "0 0 4px 4px",
-                    }}
-                  ></div>
-                </div>
+                <img src={logo} alt="Logo" className="img-fluid mb-9" />
               </div>
 
-              <h2 className="fw-bold mb-2">
-                {isLogin ? "Welcome Back" : "Join Us Today"}
-              </h2>
-
-              <p className="text-muted">
-                {isLogin
-                  ? "Welcome back to Disty Akademi"
-                  : "Create your Disty account"}
+              <p className="text-muted mb-4 text-center">
+                Selamat datang di Disty Akademi, silakan {isLogin ? "login" : "daftar"} untuk melanjutkan
               </p>
             </div>
 

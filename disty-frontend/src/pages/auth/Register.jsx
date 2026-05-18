@@ -2,9 +2,9 @@ import { useState } from "react";
 
 import { Link, useNavigate } from "react-router-dom";
 
-import { register } from "../services/authService";
+import { register } from "../../services/authService";
 
-import logo from "../assets/images/logo.png";
+import logo from "../../assets/images/logo.png";
 
 export default function Register() {
 
@@ -140,9 +140,7 @@ export default function Register() {
                             />
 
                             <h2 className="fw-bold">
-
                                 Create Account
-
                             </h2>
 
                             <p className="text-center text-nowrap">
