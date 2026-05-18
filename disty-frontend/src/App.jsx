@@ -7,6 +7,7 @@ import {
 import Login from "./pages/Login";
 import Dashboard from "./pages/Admin/Dashboard";
 import Pelatihan from "./pages/admin/Pelatihan";
+import Sertifikasi from "./pages/admin/Sertifikasi";
 
 import HeroSection from "./components/frontend/home/HeroSection";
 import Navbar from "./components/frontend/Navbar";
@@ -82,6 +83,16 @@ export default function App() {
                     element={
                         <RouteAdmin>
                             <Pelatihan />
+                        </RouteAdmin>
+                    }
+                />
+
+                {/* Sertifikasi */}
+                <Route
+                    path="/admin/sertifikasi"
+                    element={
+                        <RouteAdmin>
+                            <Sertifikasi />
                         </RouteAdmin>
                     }
                 />
