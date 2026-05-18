@@ -237,7 +237,7 @@ export default function Navbar() {
                   {/* SIGNUP */}
                   <button
                     onClick={() =>
-                      navigate("/login")
+                      navigate("/register")
                     }
                     className="
                       bg-orange-500

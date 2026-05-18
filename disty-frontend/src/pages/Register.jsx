@@ -2,11 +2,11 @@ import { useState } from "react";
 
 import { Link, useNavigate } from "react-router-dom";
 
-import { login } from "../services/authService";
+import { register } from "../services/authService";
 
 import logo from "../assets/images/logo.png";
 
-export default function Login() {
+export default function Register() {
 
     const navigate = useNavigate();
 
@@ -15,8 +15,10 @@ export default function Login() {
 
     const [formData, setFormData] =
         useState({
+            name: "",
             email: "",
             password: "",
+            password_confirmation: "",
         });
 
     const handleInputChange = (e) => {
@@ -36,45 +38,17 @@ export default function Login() {
 
             try {
 
-                const response =
-                    await login({
-                        email:
-                            formData.email,
-
-                        password:
-                            formData.password,
-                    });
-
-                localStorage.setItem(
-                    "token",
-                    response.data.token
-                );
-
-                localStorage.setItem(
-                    "user",
-                    JSON.stringify(
-                        response.data.user
-                    )
+                await register(
+                    formData
                 );
 
                 alert(
-                    "Login berhasil"
+                    "Register berhasil"
                 );
 
-                // ROLE ADMIN
-                if (
-                    response.data.user.role ===
-                    "admin"
-                ) {
-
-                    navigate(
-                        "/dashboard"
-                    );
-
-                } else {
-
-                    navigate("/");
-                }
+                navigate(
+                    "/login"
+                );
 
             } catch (error) {
 
@@ -114,7 +88,7 @@ export default function Login() {
                             }}
                         >
 
-                            SELAMAT DATANG DI DISTY AKADEMI
+                            BERGABUNG DENGAN DISTY AKADEMI
 
                         </h1>
 
@@ -125,7 +99,7 @@ export default function Login() {
                             }}
                         >
 
-                            Tingkatkan skillmu dan dapatkan sertifikat resmi
+                            Tingkatkan skillmu dan raih sertifikasi resmi
 
                         </h6>
 
@@ -134,7 +108,7 @@ export default function Login() {
                 </div>
 
                 {/* RIGHT */}
-                <div className="col-lg-6 d-flex align-items-center justify-content-center bg-light">
+                <div className="col-lg-6 d-flex align-items-center justify-content-center bg-light mt-2">
 
                     <div
                         className="w-100"
@@ -145,35 +119,62 @@ export default function Login() {
 
                         {/* HEADER */}
                         <div className="
-                                text-center mb-5
-                                d-flex flex-column align-items-center
-                                justify-content-center
-                                mx-auto 
-                                "
-                            style={{ 
-                                width:"200px",
-                                height : "150px"
-                             }}
+                        text-center 
+                        mb-5
+                        d-flex
+                        flex-column
+                        align-items-center
+                        justify-content-center
+                        mx-auto"
+                        
+                        style={{ 
+                            width: "200px",
+                            height : "150px"
+                         }}
                         >
 
                             <img
                                 src={logo}
                                 alt="Logo"
-                                className="mb-4 img-fluid"
+                                className="mb-4"
                             />
 
-                            <h2 className="fw-bold text-center mb-1">
-                                Login to Your Account
+                            <h2 className="fw-bold">
+
+                                Create Account
+
                             </h2>
 
-                            <p className="light text-center text-nowrap">
-                                Selamat datang di Disty Akademis
+                            <p className="text-center text-nowrap">
+
+                                Join Disty Akademi today
+
                             </p>
 
                         </div>
 
                         {/* FORM */}
                         <form onSubmit={handleSubmit}>
+
+                            {/* NAME */}
+                            <div className="mb-3">
+
+                                <label className="form-label">
+
+                                    Nama
+
+                                </label>
+
+                                <input
+                                    type="text"
+                                    name="name"
+                                    className="form-control"
+                                    value={formData.name}
+                                    onChange={handleInputChange}
+                                    required
+                                />
+
+                            </div>
 
                             {/* EMAIL */}
                             <div className="mb-3">
@@ -243,32 +244,23 @@ export default function Login() {
 
                             </div>
 
-                            {/* REMEMBER */}
-                            <div className="d-flex justify-content-between mb-4">
+                            {/* CONFIRM */}
+                            <div className="mb-4">
 
-                                <div className="form-check">
+                                <label className="form-label">
 
-                                    <input
-                                        className="form-check-input"
-                                        type="checkbox"
-                                    />
+                                    Konfirmasi Password
 
-                                    <label className="form-check-label">
+                                </label>
 
-                                        Remember me
-
-                                    </label>
-
-                                </div>
-
-                                <Link
-                                    to="#"
-                                    className="text-decoration-none"
-                                >
-
-                                    Forgot password?
-
-                                </Link>
+                                <input
+                                    type="password"
+                                    name="password_confirmation"
+                                    className="form-control"
+                                    value={formData.password_confirmation}
+                                    onChange={handleInputChange}
+                                    required
+                                />
 
                             </div>
 
@@ -278,7 +270,7 @@ export default function Login() {
                                 className="btn btn-warning w-100 py-3 fw-semibold"
                             >
 
-                                Sign In
+                                Create Account
 
                             </button>
 
@@ -289,16 +281,16 @@ export default function Login() {
 
                             <span className="text-muted">
 
-                                Don't have an account?
+                                Already have account?
 
                             </span>
 
                             <Link
-                                to="/register"
+                                to="/login"
                                 className="btn btn-link text-decoration-none fw-semibold"
                             >
 
-                                Sign Up
+                                Login
 
                             </Link>
 

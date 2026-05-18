@@ -5,6 +5,7 @@ import {
 } from "react-router-dom";
 
 import Login from "./pages/Login";
+import Register from "./pages/Register";
 import Dashboard from "./pages/Admin/Dashboard";
 import Pelatihan from "./pages/admin/Pelatihan";
 import Sertifikasi from "./pages/admin/Sertifikasi";
@@ -62,6 +63,11 @@ export default function App() {
                 <Route
                     path="/login"
                     element={<Login />}
+                />
+                {/* REGISTER */}
+                <Route
+                    path="/register"
+                    element={<Register />}
                 />
                 {/* DASHBOARD */}
                 <Route
