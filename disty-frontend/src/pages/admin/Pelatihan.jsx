@@ -235,8 +235,8 @@ export default function Pelatihan() {
 
                     }}
                     className="
-                        px-6
-                        py-4
+                        px-4
+                        py-3
                         rounded-2xl
                         bg-orange-500
                         hover:bg-orange-600
