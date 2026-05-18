@@ -12,6 +12,7 @@ import Notifications from "./pages/frontend/Notifications";
 import Dashboard from "./pages/admin/Dashboard";
 import Pelatihan from "./pages/admin/Pelatihan";
 import Sertifikasi from "./pages/admin/Sertifikasi";
+import Pembayaran from "./pages/admin/Pembayaran";
 
 import RouteAdmin from "./routes/AdminRoute";
 
@@ -66,6 +67,16 @@ export default function App() {
           element={
             <RouteAdmin>
               <Sertifikasi />
+            </RouteAdmin>
+          }
+        />
+
+        {/* PEMBAYARAN */}
+        <Route
+          path="/admin/pembayaran"
+          element={
+            <RouteAdmin>
+              <Pembayaran />
             </RouteAdmin>
           }
         />
