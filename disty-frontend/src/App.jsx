@@ -92,13 +92,14 @@ export default function App() {
 
                 {/* BLOG */}
                 <Route
-                    path="/admin/blog"
-                    element={
-                        <RouteAdmin>
-                            <Blog />
-                        </RouteAdmin>
-                    }
+                  path="/admin/blog"
+                  element={
+                      <RouteAdmin>
+                          <Blog />
+                      </RouteAdmin>
+                  }
                 />
+
 
             </Routes>
 
