@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import ReactQuill from "react-quill-new";
 
 export default function PelatihanModal({
     isOpen,
@@ -403,6 +404,7 @@ export default function PelatihanModal({
                         </div>
 
                         {/* MATERI */}
+                       {/* MATERI */}
                         <div className="md:col-span-2">
 
                             <label className="block text-sm font-bold text-slate-700 mb-2">
@@ -411,13 +413,37 @@ export default function PelatihanModal({
 
                             </label>
 
-                            <textarea
-                                rows="4"
-                                name="materi"
-                                value={form.materi}
-                                onChange={handleChange}
-                                className="w-full p-4 rounded-2xl border border-slate-200"
-                            />
+                            <div className="bg-white rounded-2xl overflow-hidden border border-slate-200">
+
+                                <ReactQuill
+                                    theme="snow"
+                                    value={form.materi}
+                                    onChange={(value) =>
+                                        setForm({
+                                            ...form,
+                                            materi: value,
+                                        })
+                                    }
+                                    modules={{
+                                        toolbar: [
+                                            [{ header: [1, 2, 3, false] }],
+
+                                            ["bold", "italic", "underline"],
+
+                                            [
+                                                { list: "ordered" },
+                                                { list: "bullet" },
+                                            ],
+
+                                            ["link", "image", "video"],
+
+                                            ["clean"],
+                                        ],
+                                    }}
+                                    className="h-72 mb-12"
+                                />
+
+                            </div>
 
                         </div>
 

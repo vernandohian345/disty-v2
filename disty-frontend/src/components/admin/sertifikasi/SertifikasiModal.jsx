@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import ReactQuill from "react-quill-new";
 
 export default function SertifikasiModal({
     isOpen,
@@ -7,20 +8,25 @@ export default function SertifikasiModal({
     editData,
 }) {
 
-    const [form, setForm] =
-        useState({
-            nama_sertifikasi: "",
-            deskripsi: "",
-            materi: "",
-            kategori: "gratis",
-            link_grup: "",
-            durasi: "",
-            harga: 0,
-            bahasa: "",
-            tanggal_sertifikasi: "",
-            sampul: null,
-        });
+    const initialForm = {
+        nama_sertifikasi: "",
+        deskripsi: "",
+        materi: "",
+        kategori: "gratis",
+        link_grup: "",
+        durasi: "",
+        harga: 0,
+        bahasa: "",
+        tanggal_sertifikasi: "",
+        sampul: null,
+    };
 
+    const [form, setForm] =
+        useState(initialForm);
+
+    // =========================
+    // SET EDIT DATA
+    // =========================
     useEffect(() => {
 
         if (editData) {
@@ -56,10 +62,17 @@ export default function SertifikasiModal({
                 sampul: null,
             });
 
+        } else {
+
+            setForm(initialForm);
+
         }
 
     }, [editData]);
 
+    // =========================
+    // HANDLE CHANGE
+    // =========================
     const handleChange = (e) => {
 
         const {
@@ -68,59 +81,96 @@ export default function SertifikasiModal({
             files,
         } = e.target;
 
-        setForm({
-            ...form,
+        setForm((prev) => ({
+            ...prev,
 
             [name]:
-                files &&
-                files.length > 0
+                files && files.length > 0
                     ? files[0]
                     : value,
-        });
+        }));
 
     };
 
+    // =========================
+    // SUBMIT
+    // =========================
     const handleSubmit =
         async (e) => {
 
             e.preventDefault();
 
-            const formData =
-                new FormData();
+            try {
 
-            Object.keys(form).forEach(
-                (key) => {
+                const formData =
+                    new FormData();
 
-                    if (
-                        key === "sampul"
-                    ) {
+                formData.append(
+                    "nama_sertifikasi",
+                    form.nama_sertifikasi
+                );
 
-                        if (
-                            form.sampul instanceof File
-                        ) {
+                formData.append(
+                    "deskripsi",
+                    form.deskripsi
+                );
 
-                            formData.append(
-                                "sampul",
-                                form.sampul
-                            );
+                formData.append(
+                    "materi",
+                    form.materi || ""
+                );
 
-                        }
+                formData.append(
+                    "kategori",
+                    form.kategori
+                );
 
-                    } else {
+                formData.append(
+                    "link_grup",
+                    form.link_grup
+                );
 
-                        formData.append(
-                            key,
-                            form[key]
-                        );
+                formData.append(
+                    "durasi",
+                    form.durasi
+                );
 
-                    }
+                formData.append(
+                    "harga",
+                    form.kategori === "gratis"
+                        ? 0
+                        : form.harga
+                );
+
+                formData.append(
+                    "bahasa",
+                    form.bahasa
+                );
+
+                formData.append(
+                    "tanggal_sertifikasi",
+                    form.tanggal_sertifikasi
+                );
+
+                // FILE
+                if (
+                    form.sampul instanceof File
+                ) {
+
+                    formData.append(
+                        "sampul",
+                        form.sampul
+                    );
 
                 }
-            );
 
-            await onSubmit(
-                formData
-            );
+                await onSubmit(formData);
+
+            } catch (error) {
+
+                console.log(error);
+
+            }
 
         };
 
@@ -151,7 +201,7 @@ export default function SertifikasiModal({
 
                             <p className="mt-2 text-orange-100">
 
-                                Kelola data sertifikasi
+                                Kelola data sertifikasi dengan mudah
 
                             </p>
 
@@ -159,7 +209,14 @@ export default function SertifikasiModal({
 
                         <button
                             onClick={onClose}
-                            className="w-12 h-12 rounded-2xl bg-white/20 hover:bg-white/30"
+                            className="
+                                w-12
+                                h-12
+                                rounded-2xl
+                                bg-white/20
+                                hover:bg-white/30
+                                transition
+                            "
                         >
 
                             ✕
@@ -173,120 +230,349 @@ export default function SertifikasiModal({
                 {/* BODY */}
                 <form
                     onSubmit={handleSubmit}
-                    className="p-8 space-y-6 max-h-[80vh] overflow-y-auto"
+                    className="
+                        p-8
+                        space-y-6
+                        max-h-[80vh]
+                        overflow-y-auto
+                    "
                 >
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-                        <input
-                            type="text"
-                            name="nama_sertifikasi"
-                            value={form.nama_sertifikasi}
-                            onChange={handleChange}
-                            placeholder="Nama Sertifikasi"
-                            className="w-full p-4 rounded-2xl border border-slate-200"
-                            required
-                        />
+                        {/* NAMA */}
+                        <div className="md:col-span-2">
 
-                        <input
-                            type="text"
-                            name="bahasa"
-                            value={form.bahasa}
-                            onChange={handleChange}
-                            placeholder="Bahasa"
-                            className="w-full p-4 rounded-2xl border border-slate-200"
-                            required
-                        />
+                            <label className="block text-sm font-bold text-slate-700 mb-2">
 
-                        <input
-                            type="text"
-                            name="durasi"
-                            value={form.durasi}
-                            onChange={handleChange}
-                            placeholder="Durasi"
-                            className="w-full p-4 rounded-2xl border border-slate-200"
-                            required
-                        />
+                                Nama Sertifikasi
 
-                        <input
-                            type="date"
-                            name="tanggal_sertifikasi"
-                            value={form.tanggal_sertifikasi}
-                            onChange={handleChange}
-                            className="w-full p-4 rounded-2xl border border-slate-200"
-                            required
-                        />
+                            </label>
 
-                        <select
-                            name="kategori"
-                            value={form.kategori}
-                            onChange={handleChange}
-                            className="w-full p-4 rounded-2xl border border-slate-200"
-                        >
+                            <input
+                                type="text"
+                                name="nama_sertifikasi"
+                                value={form.nama_sertifikasi}
+                                onChange={handleChange}
+                                className="
+                                    w-full
+                                    p-4
+                                    rounded-2xl
+                                    border
+                                    border-slate-200
+                                "
+                                required
+                            />
 
-                            <option value="gratis">
+                        </div>
 
-                                Gratis
+                        {/* BAHASA */}
+                        <div>
 
-                            </option>
+                            <label className="block text-sm font-bold text-slate-700 mb-2">
 
-                            <option value="berbayar">
+                                Bahasa
 
-                                Berbayar
+                            </label>
 
-                            </option>
+                            <input
+                                type="text"
+                                name="bahasa"
+                                value={form.bahasa}
+                                onChange={handleChange}
+                                className="
+                                    w-full
+                                    p-4
+                                    rounded-2xl
+                                    border
+                                    border-slate-200
+                                "
+                                required
+                            />
 
-                        </select>
+                        </div>
 
-                        <input
-                            type="number"
-                            name="harga"
-                            value={form.harga}
-                            onChange={handleChange}
-                            disabled={
-                                form.kategori === "gratis"
-                            }
-                            placeholder="Harga"
-                            className="w-full p-4 rounded-2xl border border-slate-200"
-                        />
+                        {/* DURASI */}
+                        <div>
 
-                        <input
-                            type="text"
-                            name="link_grup"
-                            value={form.link_grup}
-                            onChange={handleChange}
-                            placeholder="Link Grup"
-                            className="w-full p-4 rounded-2xl border border-slate-200 md:col-span-2"
-                        />
+                            <label className="block text-sm font-bold text-slate-700 mb-2">
 
-                        <textarea
-                            rows="4"
-                            name="deskripsi"
-                            value={form.deskripsi}
-                            onChange={handleChange}
-                            placeholder="Deskripsi"
-                            className="w-full p-4 rounded-2xl border border-slate-200 md:col-span-2"
-                        />
+                                Durasi
 
-                        <textarea
-                            rows="4"
-                            name="materi"
-                            value={form.materi}
-                            onChange={handleChange}
-                            placeholder="Materi"
-                            className="w-full p-4 rounded-2xl border border-slate-200 md:col-span-2"
-                        />
+                            </label>
+
+                            <input
+                                type="text"
+                                name="durasi"
+                                value={form.durasi}
+                                onChange={handleChange}
+                                className="
+                                    w-full
+                                    p-4
+                                    rounded-2xl
+                                    border
+                                    border-slate-200
+                                "
+                                required
+                            />
+
+                        </div>
+
+                        {/* KATEGORI */}
+                        <div>
+
+                            <label className="block text-sm font-bold text-slate-700 mb-2">
+
+                                Kategori
+
+                            </label>
+
+                            <select
+                                name="kategori"
+                                value={form.kategori}
+                                onChange={handleChange}
+                                className="
+                                    w-full
+                                    p-4
+                                    rounded-2xl
+                                    border
+                                    border-slate-200
+                                "
+                            >
+
+                                <option value="gratis">
+
+                                    Gratis
+
+                                </option>
+
+                                <option value="berbayar">
+
+                                    Berbayar
+
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                        {/* HARGA */}
+                        <div>
+
+                            <label className="block text-sm font-bold text-slate-700 mb-2">
+
+                                Harga
+
+                            </label>
+
+                            <input
+                                type="number"
+                                name="harga"
+                                value={form.harga}
+                                onChange={handleChange}
+                                disabled={
+                                    form.kategori === "gratis"
+                                }
+                                className="
+                                    w-full
+                                    p-4
+                                    rounded-2xl
+                                    border
+                                    border-slate-200
+                                    disabled:bg-slate-100
+                                "
+                            />
+
+                        </div>
+
+                        {/* TANGGAL */}
+                        <div className="md:col-span-2">
+
+                            <label className="block text-sm font-bold text-slate-700 mb-2">
+
+                                Tanggal Sertifikasi
+
+                            </label>
+
+                            <input
+                                type="date"
+                                name="tanggal_sertifikasi"
+                                value={
+                                    form.tanggal_sertifikasi || ""
+                                }
+                                onChange={handleChange}
+                                className="
+                                    w-full
+                                    p-4
+                                    rounded-2xl
+                                    border
+                                    border-slate-200
+                                "
+                                required
+                            />
+
+                        </div>
+
+                        {/* LINK */}
+                        <div className="md:col-span-2">
+
+                            <label className="block text-sm font-bold text-slate-700 mb-2">
+
+                                Link Grup
+
+                            </label>
+
+                            <input
+                                type="text"
+                                name="link_grup"
+                                value={form.link_grup}
+                                onChange={handleChange}
+                                className="
+                                    w-full
+                                    p-4
+                                    rounded-2xl
+                                    border
+                                    border-slate-200
+                                "
+                                required
+                            />
+
+                        </div>
+
+                        {/* DESKRIPSI */}
+                        <div className="md:col-span-2">
+
+                            <label className="block text-sm font-bold text-slate-700 mb-2">
+
+                                Deskripsi
+
+                            </label>
+
+                            <textarea
+                                rows="4"
+                                name="deskripsi"
+                                value={form.deskripsi}
+                                onChange={handleChange}
+                                className="
+                                    w-full
+                                    p-4
+                                    rounded-2xl
+                                    border
+                                    border-slate-200
+                                "
+                                required
+                            />
+
+                        </div>
+
+                        {/* MATERI */}
+                        <div className="md:col-span-2">
+
+                            <label className="block text-sm font-bold text-slate-700 mb-2">
+
+                                Materi
+
+                            </label>
+
+                            <div className="
+                                bg-white
+                                rounded-2xl
+                                overflow-hidden
+                                border
+                                border-slate-200
+                            ">
+
+                                <ReactQuill
+                                    theme="snow"
+                                    value={form.materi}
+                                    onChange={(value) =>
+                                        setForm((prev) => ({
+                                            ...prev,
+                                            materi: value,
+                                        }))
+                                    }
+                                    modules={{
+                                        toolbar: [
+                                            [
+                                                {
+                                                    header: [
+                                                        1,
+                                                        2,
+                                                        3,
+                                                        false,
+                                                    ],
+                                                },
+                                            ],
+
+                                            [
+                                                "bold",
+                                                "italic",
+                                                "underline",
+                                            ],
+
+                                            [
+                                                {
+                                                    list: "ordered",
+                                                },
+                                                {
+                                                    list: "bullet",
+                                                },
+                                            ],
+
+                                            [
+                                                "link",
+                                                "image",
+                                                "video",
+                                            ],
+
+                                            ["clean"],
+                                        ],
+                                    }}
+                                    className="h-72 mb-12"
+                                />
+
+                            </div>
+
+                        </div>
 
                         {/* FILE */}
                         <div className="md:col-span-2">
 
-                            <label className="flex items-center justify-center w-full h-44 border-2 border-dashed border-orange-300 rounded-3xl cursor-pointer hover:bg-orange-50 transition">
+                            <label className="block text-sm font-bold text-slate-700 mb-2">
+
+                                Sampul Sertifikasi
+
+                            </label>
+
+                            <label className="
+                                flex
+                                items-center
+                                justify-center
+                                w-full
+                                h-44
+                                border-2
+                                border-dashed
+                                border-orange-300
+                                rounded-3xl
+                                cursor-pointer
+                                hover:bg-orange-50
+                                transition
+                            ">
 
                                 <div className="text-center">
 
-                                    <i className="fas fa-cloud-upload-alt text-5xl text-orange-400 mb-3"></i>
+                                    <i className="
+                                        fas
+                                        fa-cloud-upload-alt
+                                        text-5xl
+                                        text-orange-400
+                                        mb-3
+                                    "></i>
 
-                                    <p className="font-semibold text-slate-700">
+                                    <p className="
+                                        font-semibold
+                                        text-slate-700
+                                    ">
 
                                         Upload Gambar
 
@@ -304,16 +590,37 @@ export default function SertifikasiModal({
 
                             </label>
 
+                            {/* PREVIEW */}
                             {
-                                form.sampul && (
+                                form.sampul instanceof File ? (
 
                                     <img
                                         src={URL.createObjectURL(form.sampul)}
                                         alt=""
-                                        className="mt-4 w-full h-52 object-cover rounded-3xl"
+                                        className="
+                                            mt-4
+                                            w-full
+                                            h-52
+                                            object-cover
+                                            rounded-3xl
+                                        "
                                     />
 
-                                )
+                                ) : editData?.sampul ? (
+
+                                    <img
+                                        src={`http://127.0.0.1:8000/uploads/sertifikasi/${editData.sampul}`}
+                                        alt=""
+                                        className="
+                                            mt-4
+                                            w-full
+                                            h-52
+                                            object-cover
+                                            rounded-3xl
+                                        "
+                                    />
+
+                                ) : null
                             }
 
                         </div>
@@ -321,12 +628,25 @@ export default function SertifikasiModal({
                     </div>
 
                     {/* FOOTER */}
-                    <div className="flex justify-end gap-4 pt-5">
+                    <div className="
+                        flex
+                        justify-end
+                        gap-4
+                        pt-5
+                    ">
 
                         <button
                             type="button"
                             onClick={onClose}
-                            className="px-6 py-4 rounded-2xl bg-slate-200 hover:bg-slate-300 font-bold transition"
+                            className="
+                                px-6
+                                py-4
+                                rounded-2xl
+                                bg-slate-200
+                                hover:bg-slate-300
+                                font-bold
+                                transition
+                            "
                         >
 
                             Batal
@@ -335,7 +655,18 @@ export default function SertifikasiModal({
 
                         <button
                             type="submit"
-                            className="px-8 py-4 rounded-2xl bg-orange-500 hover:bg-orange-600 text-white font-bold shadow-lg shadow-orange-200 transition"
+                            className="
+                                px-8
+                                py-4
+                                rounded-2xl
+                                bg-orange-500
+                                hover:bg-orange-600
+                                text-white
+                                font-bold
+                                shadow-lg
+                                shadow-orange-200
+                                transition
+                            "
                         >
 
                             {
