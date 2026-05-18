@@ -29,7 +29,7 @@ export default function AboutHero() {
             />
 
             {/* Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-br from-[#1f140f]/90 via-[#1f140f]/65 to-black/40 to-transparent"></div>
+            <div className="absolute inset-0 bg-gradient-to-br from-[#1f140f]/90 via-[#1f140f]/65 to-black/40"></div>
           </div>
 
           {/* Orange Glow */}

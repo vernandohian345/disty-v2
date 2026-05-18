@@ -46,7 +46,7 @@ export default function VisionMission() {
               Menjadi Lembaga pelatihan nasional yang terbaik, terkemuka dan
               terpercaya dalam memberikan menyelenggarakan pendidikan dan
               pelatihan berbasis kompetensi sesuai dengan Standar Kompetensi
-              Kerja Nasional Indonesia (SKKNI)..
+              Kerja Nasional Indonesia (SKKNI).
             </h3>
           </motion.div>
 
