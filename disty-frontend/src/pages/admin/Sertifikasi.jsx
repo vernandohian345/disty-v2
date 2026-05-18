@@ -207,7 +207,13 @@ export default function Sertifikasi() {
                         setOpenModal(true);
 
                     }}
-                    className="px-6 py-4 rounded-2xl bg-orange-500 hover:bg-orange-600 text-white font-bold shadow-lg shadow-orange-200 transition"
+                    className="
+                    px-6 py-4 
+                    rounded-2xl 
+                    bg-orange-500 
+                    hover:bg-orange-600 
+                    text-white font-bold shadow-lg 
+                    shadow-orange-200 transition"
                 >
 
                     + Tambah Sertifikasi
