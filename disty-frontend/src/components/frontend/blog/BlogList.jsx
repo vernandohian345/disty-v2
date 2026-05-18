@@ -95,10 +95,6 @@ export default function BlogList({
     <div>
       {/* Top */}
       <div className="flex items-center justify-between mb-8">
-        <h2 className="text-2xl font-black text-slate-900">
-          Menampilkan 10 artikel
-        </h2>
-
         {/* Sort */}
         <div className="relative">
           <button
