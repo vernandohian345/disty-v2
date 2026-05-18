@@ -139,6 +139,8 @@ Route::middleware('auth:sanctum')
     // =====================================================
 
     // DASHBOARD
+    Route::middleware(['auth'])->group(function () {
+
     Route::get('/dashboard',
         [DashboardApiController::class, 'index']);
 
@@ -273,4 +275,5 @@ Route::middleware('auth:sanctum')
         [SertifikatSertifikasiApiController::class,
         'deleteBnsp']
     );
+    });
 });
