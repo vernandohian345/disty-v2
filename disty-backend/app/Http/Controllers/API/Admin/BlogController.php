@@ -25,11 +25,17 @@ class BlogController extends Controller
     {
         $blog = Blog::findOrFail($id);
 
+        // Increment views setiap kali dibuka
+    $blog->increment('views');
+
         return response()->json([
             'status' => 'success',
             'data'   => $blog
         ]);
     }
+
+    
+
 
     // ✅ POST tambah blog baru
     public function store(Request $request)
