@@ -39,3 +39,7 @@ html {
 .animate-float {
   animation: float 4s ease-in-out infinite;
 }
+
+html {
+  scroll-behavior: smooth;
+}

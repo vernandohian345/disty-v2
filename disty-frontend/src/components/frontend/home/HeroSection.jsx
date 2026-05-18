@@ -7,6 +7,14 @@ export default function HeroSection() {
   return (
     <section className="relative min-h-screen overflow-hidden bg-white">
       <div className="max-w-[1800px] mx-auto px-4 lg:px-6 pt-6 lg:pt-6">
+        {/* Floating Logo */}
+        <div className="absolute top-8 left-14 z-30">
+          <img
+            src="/src/assets/images/logo-putih.png"
+            alt="Disty Akademi"
+            className="w-[140px] object-contain drop-shadow-xl"
+          />
+        </div>
         {/* Hero Container */}
         <div className="relative overflow-hidden bg-[#ffe3ca] min-h-[calc(100vh-90px)] rounded-[32px]">
           {/* Background Glow */}

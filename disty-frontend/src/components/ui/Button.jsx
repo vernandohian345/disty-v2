@@ -15,6 +15,8 @@ export default function Button({
 
     outline:
       "border border-white/20 text-white hover:border-primary hover:text-primary hover:bg-white/10",
+
+    soft: "bg-white border border-orange-100 text-orange-500 shadow-[0_10px_30px_rgba(249,115,22,0.08)] hover:shadow-[0_20px_40px_rgba(249,115,22,0.15)] hover:-translate-y-1",
   };
 
   return (
