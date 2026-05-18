@@ -35,7 +35,15 @@ export default function Register() {
         async (e) => {
 
             e.preventDefault();
-
+            // validasi Email
+            if (
+                !formData.email.endsWith("@gmail.com")
+            ){
+                alert(
+                    "Email harus menggunakan @gmail.com"
+                );
+                return;
+            }
             try {
 
                 await register(
