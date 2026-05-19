@@ -62,7 +62,7 @@ export default function BlogList({
         {[...Array(6)].map((_, index) => (
           <div
             key={index}
-            className="bg-white rounded-2xl border border-slate-200 overflow-hidden p-4 animate-pulse"
+            className="bg-[#fffaf5] rounded-2xl border border-slate-200 overflow-hidden p-4 animate-pulse"
           >
             <div className="grid lg:grid-cols-[180px_1fr] gap-4">
               {/* Image */}

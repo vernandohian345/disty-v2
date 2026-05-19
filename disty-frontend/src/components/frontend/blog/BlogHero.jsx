@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export default function BlogHero() {
   return (
-    <section className="relative min-h-screen overflow-hidden bg-[#fdfaf7]">
+    <section className="relative min-h-screen overflow-hidden bg-[#fffaf5]">
       <div className="max-w-[1800px] mx-auto px-4 lg:px-6 pt-6">
         {/* Floating Logo */}
         <div className="absolute top-8 left-14 z-30">
