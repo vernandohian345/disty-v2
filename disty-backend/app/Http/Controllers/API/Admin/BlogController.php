@@ -16,7 +16,7 @@ class BlogController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'data'   => $blogs
+            'data' => $blogs
         ]);
     }
 
@@ -26,27 +26,96 @@ class BlogController extends Controller
         $blog = Blog::findOrFail($id);
 
         // Increment views setiap kali dibuka
-    $blog->increment('views');
+        $blog->increment('views');
 
         return response()->json([
             'status' => 'success',
-            'data'   => $blog
+            'data' => $blog
         ]);
     }
 
-    
+    // ✅ GET semua blog published (frontend)
+    public function publicBlogs()
+    {
+        $blogs = Blog::where('status', 'published')
+            ->latest()
+            ->paginate(10);
+
+
+        $blogs->getCollection()->transform(function ($blog) {
+
+            $blog->title = $blog->judul;
+
+            $blog->content = $blog->konten;
+
+            $blog->excerpt = $blog->description;
+
+            $blog->category = $blog->kategori;
+
+            $blog->author = $blog->penulis;
+
+            $blog->image =
+                $blog->sampul
+                ? asset('uploads/blog/' . $blog->sampul)
+                : null;
+
+            $blog->createdAt = $blog->created_at;
+
+            return $blog;
+        });
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $blogs
+        ]);
+    }
+
+    // ✅ GET detail blog published by slug
+    public function publicShow(string $slug)
+    {
+        $blog = Blog::where('slug', $slug)
+            ->where('status', 'published')
+            ->firstOrFail();
+
+        $blog->increment('views');
+
+        $blog->title = $blog->judul;
+
+        $blog->content = $blog->konten;
+
+        $blog->excerpt = $blog->description;
+
+        $blog->category = $blog->kategori;
+
+        $blog->author = $blog->penulis;
+
+        $blog->image =
+            $blog->sampul
+            ? asset('uploads/blog/' . $blog->sampul)
+            : null;
+
+        $blog->createdAt = $blog->created_at;
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $blog
+        ]);
+    }
+
+
 
 
     // ✅ POST tambah blog baru
     public function store(Request $request)
     {
         $request->validate([
-            'judul'     => 'required|string|max:255',
-            'konten'    => 'required|string',
-            'kategori'  => 'nullable|string|max:100',
-            'penulis'   => 'nullable|string|max:100',
-            'status'    => 'required|in:draft,published',
-            'sampul'    => 'nullable|image|mimes:jpg,jpeg,png|max:5120',
+            'judul' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'konten' => 'required|string',
+            'kategori' => 'nullable|string|max:100',
+            'penulis' => 'nullable|string|max:100',
+            'status' => 'required|in:draft,published',
+            'sampul' => 'nullable|image|mimes:jpg,jpeg,png|max:5120',
         ]);
 
         $data = $request->all();
@@ -57,7 +126,7 @@ class BlogController extends Controller
         // Upload sampul jika ada
         if ($request->hasFile('sampul')) {
 
-            $file     = $request->file('sampul');
+            $file = $request->file('sampul');
             $filename = time() . '_' . $file->getClientOriginalName();
 
             $file->move(
@@ -71,9 +140,9 @@ class BlogController extends Controller
         $blog = Blog::create($data);
 
         return response()->json([
-            'status'  => 'success',
+            'status' => 'success',
             'message' => 'Blog berhasil ditambahkan',
-            'data'    => $blog
+            'data' => $blog
         ], 201);
     }
 
@@ -83,12 +152,13 @@ class BlogController extends Controller
         $blog = Blog::findOrFail($id);
 
         $request->validate([
-            'judul'     => 'required|string|max:255',
-            'konten'    => 'required|string',
-            'kategori'  => 'nullable|string|max:100',
-            'penulis'   => 'nullable|string|max:100',
-            'status'    => 'required|in:draft,published',
-            'sampul'    => 'nullable|image|mimes:jpg,jpeg,png|max:5120',
+            'judul' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'konten' => 'required|string',
+            'kategori' => 'nullable|string|max:100',
+            'penulis' => 'nullable|string|max:100',
+            'status' => 'required|in:draft,published',
+            'sampul' => 'nullable|image|mimes:jpg,jpeg,png|max:5120',
         ]);
 
         $data = $request->all();
@@ -107,7 +177,7 @@ class BlogController extends Controller
                 unlink(public_path('uploads/blog/' . $blog->sampul));
             }
 
-            $file     = $request->file('sampul');
+            $file = $request->file('sampul');
             $filename = time() . '_' . $file->getClientOriginalName();
 
             $file->move(
@@ -125,9 +195,9 @@ class BlogController extends Controller
         $blog->update($data);
 
         return response()->json([
-            'status'  => 'success',
+            'status' => 'success',
             'message' => 'Blog berhasil diupdate',
-            'data'    => $blog
+            'data' => $blog
         ]);
     }
 
@@ -147,7 +217,7 @@ class BlogController extends Controller
         $blog->delete();
 
         return response()->json([
-            'status'  => 'success',
+            'status' => 'success',
             'message' => 'Blog berhasil dihapus'
         ]);
     }
