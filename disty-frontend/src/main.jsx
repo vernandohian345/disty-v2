@@ -12,6 +12,7 @@ import "@fontsource/inter";
 
 import "./index.css";
 import "./assets/admin.css";
+import "./styles/kalender.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
