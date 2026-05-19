@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import 'react-quill-new/dist/quill.snow.css';
+import "react-quill-new/dist/quill.snow.css";
 
 import App from "./App";
 
@@ -10,9 +10,10 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 
 import "@fontsource/inter";
 
+
 import "./index.css";
 import "./assets/admin.css";
-
+import "./styles/kalender.css";
 ReactDOM.createRoot(document.getElementById("root")).render(
     <React.StrictMode>
         <App />
