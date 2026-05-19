@@ -1,22 +1,23 @@
 import { Eye } from "lucide-react";
 import { Link } from "react-router-dom";
 
-if (!relatedArticles.length) {
-  return (
-    <div className="bg-white rounded-3xl p-8 text-center border border-slate-200">
-      <div className="text-4xl mb-4">📚</div>
-
-      <h3 className="text-lg font-bold text-slate-800">
-        Belum Ada Artikel Terkait
-      </h3>
-
-      <p className="text-sm text-slate-500 mt-2">
-        Artikel dengan kategori serupa belum tersedia.
-      </p>
-    </div>
-  );
-}
 export default function RelatedArticles({ relatedArticles }) {
+  if (!relatedArticles.length) {
+    return (
+      <div className="bg-white rounded-3xl p-8 text-center border border-slate-200">
+        <div className="text-4xl mb-4">📚</div>
+
+        <h3 className="text-lg font-bold text-slate-800">
+          Belum Ada Artikel Terkait
+        </h3>
+
+        <p className="text-sm text-slate-500 mt-2">
+          Artikel dengan kategori serupa belum tersedia.
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className="mt-24">
       <div className="flex items-center justify-between mb-10">
