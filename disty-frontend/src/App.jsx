@@ -12,11 +12,8 @@ import Notifications from "./pages/frontend/Notifications";
 import Dashboard from "./pages/admin/Dashboard";
 import Pelatihan from "./pages/admin/Pelatihan";
 import Sertifikasi from "./pages/admin/Sertifikasi";
-<<<<<<< HEAD
 import Pembayaran from "./pages/admin/Pembayaran";
-=======
 import AdminBlog from "./pages/admin/Blog";
->>>>>>> 3026bae3db6daa41500443d4c9f26642de0da7a8
 
 import RouteAdmin from "./routes/AdminRoute";
 import ScrollToTop from "./components/shared/ScrollToTop";
@@ -68,7 +65,6 @@ export default function App() {
           }
         />
 
-<<<<<<< HEAD
         {/* PEMBAYARAN */}
         <Route
           path="/admin/pembayaran"
@@ -78,7 +74,6 @@ export default function App() {
             </RouteAdmin>
           }
         />
-=======
         {/* BLOG ADMIN */}
         <Route
           path="/admin/blog"
@@ -89,7 +84,6 @@ export default function App() {
           }
         />
 
->>>>>>> 3026bae3db6daa41500443d4c9f26642de0da7a8
       </Routes>
     </BrowserRouter>
   );
