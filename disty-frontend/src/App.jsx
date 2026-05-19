@@ -12,30 +12,29 @@ import Notifications from "./pages/frontend/Notifications";
 import Dashboard from "./pages/admin/Dashboard";
 import Pelatihan from "./pages/admin/Pelatihan";
 import Sertifikasi from "./pages/admin/Sertifikasi";
+<<<<<<< HEAD
 import Pembayaran from "./pages/admin/Pembayaran";
+=======
+import AdminBlog from "./pages/admin/Blog";
+>>>>>>> 3026bae3db6daa41500443d4c9f26642de0da7a8
 
 import RouteAdmin from "./routes/AdminRoute";
-
 import ScrollToTop from "./components/shared/ScrollToTop";
 
 export default function App() {
   return (
     <BrowserRouter>
       <ScrollToTop />
-
       <Routes>
+
         {/* FRONTEND */}
         <Route path="/" element={<Home />} />
-
         <Route path="/about" element={<About />} />
-
         <Route path="/blog" element={<Blog />} />
-
         <Route path="/blog/:slug" element={<BlogDetail />} />
 
         {/* AUTH */}
         <Route path="/login" element={<Login />} />
-
         <Route path="/register" element={<Register />} />
 
         {/* NOTIFICATIONS */}
@@ -51,7 +50,6 @@ export default function App() {
           }
         />
 
-        {/* PELATIHAN */}
         <Route
           path="/admin/pelatihan"
           element={
@@ -61,7 +59,6 @@ export default function App() {
           }
         />
 
-        {/* SERTIFIKASI */}
         <Route
           path="/admin/sertifikasi"
           element={
@@ -71,6 +68,7 @@ export default function App() {
           }
         />
 
+<<<<<<< HEAD
         {/* PEMBAYARAN */}
         <Route
           path="/admin/pembayaran"
@@ -80,6 +78,18 @@ export default function App() {
             </RouteAdmin>
           }
         />
+=======
+        {/* BLOG ADMIN */}
+        <Route
+          path="/admin/blog"
+          element={
+            <RouteAdmin>
+              <AdminBlog />
+            </RouteAdmin>
+          }
+        />
+
+>>>>>>> 3026bae3db6daa41500443d4c9f26642de0da7a8
       </Routes>
     </BrowserRouter>
   );
