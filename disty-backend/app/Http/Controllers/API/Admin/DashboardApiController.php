@@ -8,6 +8,7 @@ use App\Models\Sertifikasi;
 use App\Models\TransaksiPelatihan;
 use App\Models\TransaksiSertifikasi;
 use App\Models\User;
+use App\Models\Blog;
 use Carbon\Carbon;
 
 class DashboardApiController extends Controller
@@ -19,6 +20,8 @@ class DashboardApiController extends Controller
             'total_pelatihan' => Pelatihan::count(),
 
             'total_sertifikasi' => Sertifikasi::count(),
+
+            'total_blog' => Blog::count(),
 
             'total_peserta_pelatihan' =>
                 TransaksiPelatihan::where('status', 'approved')->count(),
@@ -87,6 +90,8 @@ class DashboardApiController extends Controller
             'recentPembayaran' => $recentPembayaran,
 
             'recentSertifikat' => $recentSertifikat,
+
+             'scheduleEvents' => $this->getScheduleEvents(),
         ]);
     }
 
@@ -164,5 +169,44 @@ class DashboardApiController extends Controller
             ->sortByDesc('updated_at')
             ->take(5)
             ->values();
+    }
+
+    private function getScheduleEvents()
+    {
+        $events = [];
+
+        // pelatihan
+        $pelatihans = Pelatihan::all();
+
+        foreach ($pelatihans as $pelatihan) {
+
+            $events[] = [
+                'title' =>  $pelatihan->nama_pelatihan,
+
+                'start' => $pelatihan->tanggal_pelatihan,
+
+                'backgroundColor' => '#f97316',
+
+                'borderColor' => '#f97316',
+            ];
+        }
+
+        // sertifikasi
+        $sertifikasis = Sertifikasi::all();
+
+        foreach ($sertifikasis as $sertifikasi) {
+
+            $events[] = [
+                'title' =>  $sertifikasi->nama_sertifikasi,
+
+                'start' => $sertifikasi->tanggal_sertifikasi,
+
+                'backgroundColor' => '#2563eb',
+
+                'borderColor' => '#2563eb',
+            ];
+        }
+
+        return $events;
     }
 }
