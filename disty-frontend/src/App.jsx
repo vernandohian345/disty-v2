@@ -14,6 +14,7 @@ import Pelatihan from "./pages/admin/Pelatihan";
 import Sertifikasi from "./pages/admin/Sertifikasi";
 import Pembayaran from "./pages/admin/Pembayaran";
 import AdminBlog from "./pages/admin/Blog";
+import SertifikatPelatihan from "./pages/admin/SertifikatPelatihan";
 
 import RouteAdmin from "./routes/AdminRoute";
 import ScrollToTop from "./components/shared/ScrollToTop";
@@ -82,6 +83,12 @@ export default function App() {
               <AdminBlog />
             </RouteAdmin>
           }
+        />
+
+        {/* SERTIFIKAT PELATIHAN */}
+        <Route
+          path="/admin/sertifikat-pelatihan"
+          element={<SertifikatPelatihan />}
         />
 
       </Routes>

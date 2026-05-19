@@ -141,7 +141,6 @@ Route::middleware('auth:sanctum')
     // =====================================================
 
     // DASHBOARD
-    Route::middleware(['auth'])->group(function () {
 
     Route::get('/dashboard',
         [DashboardApiController::class, 'index']);
@@ -235,6 +234,11 @@ Route::middleware('auth:sanctum')
     Route::get('/sertifikat-pelatihan',
         [SertifikatPelatihanApiController::class, 'index']);
 
+    Route::post('/sertifikat-pelatihan/complete/{id}',
+    [SertifikatPelatihanApiController::class,
+    'markCompleted']
+);
+
     Route::post(
         '/sertifikat-pelatihan/generate/{id}',
         [SertifikatPelatihanApiController::class,
@@ -294,5 +298,4 @@ Route::middleware('auth:sanctum')
         [SertifikatSertifikasiApiController::class,
         'deleteBnsp']
     );
-    });
 });

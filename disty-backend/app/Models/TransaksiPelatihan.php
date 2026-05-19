@@ -18,9 +18,11 @@ class TransaksiPelatihan extends Model
         'email',
         'nomor_hp',
         'metode_pembayaran',
-        'sertifikat',
+        'sertifikat_pelatihan',
         'bukti',
         'status',
+        'is_completed',
+        'completed_at',
     ];
 
     public function pelatihan()
