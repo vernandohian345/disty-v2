@@ -3,6 +3,9 @@ import axios from "axios";
 const API_URL =
     "http://127.0.0.1:8000/api/blog";
 
+const PUBLIC_API_URL =
+    "http://127.0.0.1:8000/api/blogs";
+
 // ==========================
 // TOKEN
 // ==========================
@@ -103,6 +106,30 @@ export const deleteBlog =
             {
                 headers: authHeader(),
             }
+        );
+
+    };
+
+// ==========================
+// PUBLIC BLOGS
+// ==========================
+export const getPublicBlogs =
+    async () => {
+
+        return await axios.get(
+            PUBLIC_API_URL
+        );
+
+    };
+
+// ==========================
+// PUBLIC BLOG DETAIL
+// ==========================
+export const getPublicBlog =
+    async (slug) => {
+
+        return await axios.get(
+            `${PUBLIC_API_URL}/${slug}`
         );
 
     };

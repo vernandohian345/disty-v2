@@ -1,6 +1,21 @@
 import { Eye } from "lucide-react";
 import { Link } from "react-router-dom";
 
+if (!relatedArticles.length) {
+  return (
+    <div className="bg-white rounded-3xl p-8 text-center border border-slate-200">
+      <div className="text-4xl mb-4">📚</div>
+
+      <h3 className="text-lg font-bold text-slate-800">
+        Belum Ada Artikel Terkait
+      </h3>
+
+      <p className="text-sm text-slate-500 mt-2">
+        Artikel dengan kategori serupa belum tersedia.
+      </p>
+    </div>
+  );
+}
 export default function RelatedArticles({ relatedArticles }) {
   return (
     <div className="mt-24">
@@ -14,45 +29,60 @@ export default function RelatedArticles({ relatedArticles }) {
         </div>
       </div>
 
-      <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
+      <div className="space-y-4">
         {relatedArticles.map((article) => (
-          <Link key={article.id} to={`/blog/${article.slug}`} className="group">
-            <article className="bg-white border border-slate-200 rounded-[32px] overflow-hidden hover:-translate-y-2 hover:shadow-[0_20px_60px_rgba(0,0,0,0.08)] transition-all duration-500">
-              {/* Image */}
-              <div className="overflow-hidden">
-                <img
-                  src={article.image}
-                  alt={article.title}
-                  className="w-full h-[240px] object-cover group-hover:scale-110 transition-all duration-700"
-                />
-              </div>
+          <Link
+            key={article.id}
+            to={`/blog/${article.slug}`}
+            className="
+        group flex gap-4
+        p-3 rounded-2xl
+        hover:bg-white
+        transition-all duration-300
+      "
+          >
+            {/* Image */}
+            <div className="shrink-0 overflow-hidden rounded-2xl">
+              <img
+                src={article.image}
+                alt={article.title}
+                className="
+            w-24 h-24 object-cover
+            group-hover:scale-105
+            transition duration-300
+          "
+                loading="lazy"
+                onError={(e) => {
+                  e.target.src =
+                    "https://placehold.co/600x400/f8fafc/94a3b8?text=Article";
+                }}
+              />
+            </div>
 
-              {/* Content */}
-              <div className="p-7">
-                {/* Top */}
-                <div className="flex items-center justify-between mb-4">
-                  <span className="bg-orange-100 text-orange-500 px-4 py-2 rounded-full text-xs font-bold">
-                    {article.category}
-                  </span>
+            {/* Content */}
+            <div className="min-w-0 flex-1">
+              {/* Category */}
+              <p className="text-xs font-semibold text-orange-500 mb-2">
+                {article.category}
+              </p>
 
-                  <div className="flex items-center gap-1 text-slate-400 text-sm">
-                    <Eye size={15} />
+              {/* Title */}
+              <h4
+                className="
+            text-sm font-bold text-slate-800
+            leading-snug line-clamp-2
+            group-hover:text-orange-500
+            transition
+          "
+              >
+                {article.title}
+              </h4>
 
-                    <span>{article.views}</span>
-                  </div>
-                </div>
-
-                {/* Title */}
-                <h3 className="text-xl font-black text-slate-900 leading-snug group-hover:text-orange-500 transition-all duration-300 line-clamp-2">
-                  {article.title}
-                </h3>
-
-                {/* Desc */}
-                <p className="mt-4 text-slate-500 leading-relaxed line-clamp-3">
-                  {article.description}
-                </p>
-              </div>
-            </article>
+              {/* Date */}
+              <p className="text-xs text-slate-400 mt-3">
+                {new Date(article.createdAt).toLocaleDateString("id-ID")}
+              </p>
+            </div>
           </Link>
         ))}
       </div>

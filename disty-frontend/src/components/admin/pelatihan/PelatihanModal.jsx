@@ -1,189 +1,116 @@
 import { useEffect, useState } from "react";
-import ReactQuill from "react-quill-new";
 
 export default function PelatihanModal({
-    isOpen,
-    onClose,
-    onSubmit,
-    editData,
+  isOpen,
+  onClose,
+  onSubmit,
+  editData,
 }) {
+  // =========================
+  // INITIAL FORM
+  // =========================
+  const initialForm = {
+    nama_pelatihan: "",
+    deskripsi: "",
+    materi: "",
+    kategori: "gratis",
+    link_grup: "",
+    durasi: "",
+    harga: 0,
+    bahasa: "",
+    tanggal_pelatihan: "",
+    sampul: null,
+  };
 
-    // =========================
-    // INITIAL FORM
-    // =========================
-    const initialForm = {
-        nama_pelatihan: "",
-        deskripsi: "",
-        materi: "",
-        kategori: "gratis",
-        link_grup: "",
-        durasi: "",
-        harga: 0,
-        bahasa: "",
-        tanggal_pelatihan: "",
+  const [form, setForm] = useState(initialForm);
+
+  // =========================
+  // SET EDIT DATA
+  // =========================
+  useEffect(() => {
+    if (editData) {
+      setForm({
+        nama_pelatihan: editData.nama_pelatihan || "",
+
+        deskripsi: editData.deskripsi || "",
+
+        materi: editData.materi || "",
+
+        kategori: editData.kategori || "gratis",
+
+        link_grup: editData.link_grup || "",
+
+        durasi: editData.durasi || "",
+
+        harga: editData.harga || 0,
+
+        bahasa: editData.bahasa || "",
+
+        tanggal_pelatihan: editData.tanggal_pelatihan || "",
+
         sampul: null,
-    };
+      });
+    } else {
+      setForm(initialForm);
+    }
+  }, [editData, isOpen]);
 
-    const [form, setForm] =
-        useState(initialForm);
+  // =========================
+  // HANDLE CHANGE
+  // =========================
+  const handleChange = (e) => {
+    const { name, value, files } = e.target;
 
-    // =========================
-    // SET EDIT DATA
-    // =========================
-    useEffect(() => {
+    setForm((prev) => ({
+      ...prev,
 
-        if (editData) {
+      [name]: files && files.length > 0 ? files[0] : value,
+    }));
+  };
 
-            setForm({
-                nama_pelatihan:
-                    editData.nama_pelatihan || "",
+  // =========================
+  // SUBMIT
+  // =========================
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-                deskripsi:
-                    editData.deskripsi || "",
+    try {
+      const formData = new FormData();
 
-                materi:
-                    editData.materi || "",
+      formData.append("nama_pelatihan", form.nama_pelatihan);
 
-                kategori:
-                    editData.kategori || "gratis",
+      formData.append("deskripsi", form.deskripsi);
 
-                link_grup:
-                    editData.link_grup || "",
+      formData.append("materi", form.materi || "");
 
-                durasi:
-                    editData.durasi || "",
+      formData.append("kategori", form.kategori);
 
-                harga:
-                    editData.harga || 0,
+      formData.append("link_grup", form.link_grup);
 
-                bahasa:
-                    editData.bahasa || "",
+      formData.append("durasi", form.durasi);
 
-                tanggal_pelatihan:
-                    editData.tanggal_pelatihan || "",
+      formData.append("harga", form.kategori === "gratis" ? 0 : form.harga);
 
-                sampul: null,
-            });
+      formData.append("bahasa", form.bahasa);
 
-        } else {
+      formData.append("tanggal_pelatihan", form.tanggal_pelatihan);
 
-            setForm(initialForm);
+      // FILE
+      if (form.sampul instanceof File) {
+        formData.append("sampul", form.sampul);
+      }
 
-        }
+      await onSubmit(formData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-    }, [editData, isOpen]);
+  if (!isOpen) return null;
 
-    // =========================
-    // HANDLE CHANGE
-    // =========================
-    const handleChange = (e) => {
-
-        const {
-            name,
-            value,
-            files,
-        } = e.target;
-
-        setForm((prev) => ({
-            ...prev,
-
-            [name]:
-                files && files.length > 0
-                    ? files[0]
-                    : value,
-        }));
-
-    };
-
-    // =========================
-    // SUBMIT
-    // =========================
-    const handleSubmit =
-        async (e) => {
-
-            e.preventDefault();
-
-            try {
-
-                const formData =
-                    new FormData();
-
-                formData.append(
-                    "nama_pelatihan",
-                    form.nama_pelatihan
-                );
-
-                formData.append(
-                    "deskripsi",
-                    form.deskripsi
-                );
-
-                formData.append(
-                    "materi",
-                    form.materi || ""
-                );
-
-                formData.append(
-                    "kategori",
-                    form.kategori
-                );
-
-                formData.append(
-                    "link_grup",
-                    form.link_grup
-                );
-
-                formData.append(
-                    "durasi",
-                    form.durasi
-                );
-
-                formData.append(
-                    "harga",
-                    form.kategori === "gratis"
-                        ? 0
-                        : form.harga
-                );
-
-                formData.append(
-                    "bahasa",
-                    form.bahasa
-                );
-
-                formData.append(
-                    "tanggal_pelatihan",
-                    form.tanggal_pelatihan
-                );
-
-                // FILE
-                if (
-                    form.sampul instanceof File
-                ) {
-
-                    formData.append(
-                        "sampul",
-                        form.sampul
-                    );
-
-                }
-
-                await onSubmit(
-                    formData
-                );
-
-            } catch (error) {
-
-                console.log(error);
-
-            }
-
-        };
-
-    if (!isOpen) return null;
-
-    return (
-
-        <div className="
+  return (
+    <div
+      className="
             fixed
             inset-0
             z-50
@@ -193,61 +120,58 @@ export default function PelatihanModal({
             bg-black/50
             backdrop-blur-sm
             p-5
-        ">
-
-            <div className="
+        "
+    >
+      <div
+        className="
                 w-full
                 max-w-5xl
                 bg-white
                 rounded-[35px]
                 shadow-2xl
                 overflow-hidden
-            ">
-
-                {/* HEADER */}
-                <div className="
+            "
+      >
+        {/* HEADER */}
+        <div
+          className="
                     bg-gradient-to-r
                     from-orange-500
                     to-orange-400
                     p-8
                     text-white
-                ">
-
-                    <div className="
+                "
+        >
+          <div
+            className="
                         flex
                         items-start
                         justify-between
-                    ">
-
-                        <div>
-
-                            <h2 className="
+                    "
+          >
+            <div>
+              <h2
+                className="
                                 text-4xl
                                 font-black
-                            ">
+                            "
+              >
+                {editData ? "Edit Pelatihan" : "Tambah Pelatihan"}
+              </h2>
 
-                                {
-                                    editData
-                                        ? "Edit Pelatihan"
-                                        : "Tambah Pelatihan"
-                                }
-
-                            </h2>
-
-                            <p className="
+              <p
+                className="
                                 mt-2
                                 text-orange-100
-                            ">
+                            "
+              >
+                Kelola data pelatihan dengan mudah
+              </p>
+            </div>
 
-                                Kelola data pelatihan dengan mudah
-
-                            </p>
-
-                        </div>
-
-                        <button
-                            onClick={onClose}
-                            className="
+            <button
+              onClick={onClose}
+              className="
                                 w-12
                                 h-12
                                 rounded-2xl
@@ -255,198 +179,173 @@ export default function PelatihanModal({
                                 hover:bg-white/30
                                 transition
                             "
-                        >
+            >
+              ✕
+            </button>
+          </div>
+        </div>
 
-                            ✕
-
-                        </button>
-
-                    </div>
-
-                </div>
-
-                {/* BODY */}
-                <form
-                    onSubmit={handleSubmit}
-                    className="
+        {/* BODY */}
+        <form
+          onSubmit={handleSubmit}
+          className="
                         p-8
                         space-y-6
                         max-h-[80vh]
                         overflow-y-auto
                     "
-                >
-
-                    <div className="
+        >
+          <div
+            className="
                         grid
                         grid-cols-1
                         md:grid-cols-2
                         gap-6
-                    ">
-
-                        {/* NAMA */}
-                        <div className="md:col-span-2">
-
-                            <label className="
+                    "
+          >
+            {/* NAMA */}
+            <div className="md:col-span-2">
+              <label
+                className="
                                 block
                                 text-sm
                                 font-bold
                                 text-slate-700
                                 mb-2
-                            ">
+                            "
+              >
+                Nama Pelatihan
+              </label>
 
-                                Nama Pelatihan
-
-                            </label>
-
-                            <input
-                                type="text"
-                                name="nama_pelatihan"
-                                value={form.nama_pelatihan}
-                                onChange={handleChange}
-                                className="
+              <input
+                type="text"
+                name="nama_pelatihan"
+                value={form.nama_pelatihan}
+                onChange={handleChange}
+                className="
                                     w-full
                                     p-4
                                     rounded-2xl
                                     border
                                     border-slate-200
                                 "
-                                required
-                            />
+                required
+              />
+            </div>
 
-                        </div>
-
-                        {/* BAHASA */}
-                        <div>
-
-                            <label className="
+            {/* BAHASA */}
+            <div>
+              <label
+                className="
                                 block
                                 text-sm
                                 font-bold
                                 text-slate-700
                                 mb-2
-                            ">
+                            "
+              >
+                Bahasa
+              </label>
 
-                                Bahasa
-
-                            </label>
-
-                            <input
-                                type="text"
-                                name="bahasa"
-                                value={form.bahasa}
-                                onChange={handleChange}
-                                className="
+              <input
+                type="text"
+                name="bahasa"
+                value={form.bahasa}
+                onChange={handleChange}
+                className="
                                     w-full
                                     p-4
                                     rounded-2xl
                                     border
                                     border-slate-200
                                 "
-                                required
-                            />
+                required
+              />
+            </div>
 
-                        </div>
-
-                        {/* DURASI */}
-                        <div>
-
-                            <label className="
+            {/* DURASI */}
+            <div>
+              <label
+                className="
                                 block
                                 text-sm
                                 font-bold
                                 text-slate-700
                                 mb-2
-                            ">
+                            "
+              >
+                Durasi
+              </label>
 
-                                Durasi
-
-                            </label>
-
-                            <input
-                                type="text"
-                                name="durasi"
-                                value={form.durasi}
-                                onChange={handleChange}
-                                className="
+              <input
+                type="text"
+                name="durasi"
+                value={form.durasi}
+                onChange={handleChange}
+                className="
                                     w-full
                                     p-4
                                     rounded-2xl
                                     border
                                     border-slate-200
                                 "
-                                required
-                            />
+                required
+              />
+            </div>
 
-                        </div>
-
-                        {/* KATEGORI */}
-                        <div>
-
-                            <label className="
+            {/* KATEGORI */}
+            <div>
+              <label
+                className="
                                 block
                                 text-sm
                                 font-bold
                                 text-slate-700
                                 mb-2
-                            ">
+                            "
+              >
+                Kategori
+              </label>
 
-                                Kategori
-
-                            </label>
-
-                            <select
-                                name="kategori"
-                                value={form.kategori}
-                                onChange={handleChange}
-                                className="
+              <select
+                name="kategori"
+                value={form.kategori}
+                onChange={handleChange}
+                className="
                                     w-full
                                     p-4
                                     rounded-2xl
                                     border
                                     border-slate-200
                                 "
-                            >
+              >
+                <option value="gratis">Gratis</option>
 
-                                <option value="gratis">
+                <option value="berbayar">Berbayar</option>
+              </select>
+            </div>
 
-                                    Gratis
-
-                                </option>
-
-                                <option value="berbayar">
-
-                                    Berbayar
-
-                                </option>
-
-                            </select>
-
-                        </div>
-
-                        {/* HARGA */}
-                        <div>
-
-                            <label className="
+            {/* HARGA */}
+            <div>
+              <label
+                className="
                                 block
                                 text-sm
                                 font-bold
                                 text-slate-700
                                 mb-2
-                            ">
+                            "
+              >
+                Harga
+              </label>
 
-                                Harga
-
-                            </label>
-
-                            <input
-                                type="number"
-                                name="harga"
-                                value={form.harga}
-                                onChange={handleChange}
-                                disabled={
-                                    form.kategori === "gratis"
-                                }
-                                className="
+              <input
+                type="number"
+                name="harga"
+                value={form.harga}
+                onChange={handleChange}
+                disabled={form.kategori === "gratis"}
+                className="
                                     w-full
                                     p-4
                                     rounded-2xl
@@ -454,203 +353,179 @@ export default function PelatihanModal({
                                     border-slate-200
                                     disabled:bg-slate-100
                                 "
-                            />
+              />
+            </div>
 
-                        </div>
-
-                        {/* TANGGAL */}
-                        <div className="md:col-span-2">
-
-                            <label className="
+            {/* TANGGAL */}
+            <div className="md:col-span-2">
+              <label
+                className="
                                 block
                                 text-sm
                                 font-bold
                                 text-slate-700
                                 mb-2
-                            ">
+                            "
+              >
+                Tanggal Pelatihan
+              </label>
 
-                                Tanggal Pelatihan
-
-                            </label>
-
-                            <input
-                                type="date"
-                                name="tanggal_pelatihan"
-                                value={
-                                    form.tanggal_pelatihan || ""
-                                }
-                                onChange={handleChange}
-                                className="
+              <input
+                type="date"
+                name="tanggal_pelatihan"
+                value={form.tanggal_pelatihan || ""}
+                onChange={handleChange}
+                className="
                                     w-full
                                     p-4
                                     rounded-2xl
                                     border
                                     border-slate-200
                                 "
-                                required
-                            />
+                required
+              />
+            </div>
 
-                        </div>
-
-                        {/* LINK */}
-                        <div className="md:col-span-2">
-
-                            <label className="
+            {/* LINK */}
+            <div className="md:col-span-2">
+              <label
+                className="
                                 block
                                 text-sm
                                 font-bold
                                 text-slate-700
                                 mb-2
-                            ">
+                            "
+              >
+                Link Grup
+              </label>
 
-                                Link Grup
-
-                            </label>
-
-                            <input
-                                type="text"
-                                name="link_grup"
-                                value={form.link_grup}
-                                onChange={handleChange}
-                                className="
+              <input
+                type="text"
+                name="link_grup"
+                value={form.link_grup}
+                onChange={handleChange}
+                className="
                                     w-full
                                     p-4
                                     rounded-2xl
                                     border
                                     border-slate-200
                                 "
-                                required
-                            />
+                required
+              />
+            </div>
 
-                        </div>
-
-                        {/* DESKRIPSI */}
-                        <div className="md:col-span-2">
-
-                            <label className="
+            {/* DESKRIPSI */}
+            <div className="md:col-span-2">
+              <label
+                className="
                                 block
                                 text-sm
                                 font-bold
                                 text-slate-700
                                 mb-2
-                            ">
+                            "
+              >
+                Deskripsi
+              </label>
 
-                                Deskripsi
-
-                            </label>
-
-                            <textarea
-                                rows="4"
-                                name="deskripsi"
-                                value={form.deskripsi}
-                                onChange={handleChange}
-                                className="
+              <textarea
+                rows="4"
+                name="deskripsi"
+                value={form.deskripsi}
+                onChange={handleChange}
+                className="
                                     w-full
                                     p-4
                                     rounded-2xl
                                     border
                                     border-slate-200
                                 "
-                                required
-                            />
+                required
+              />
+            </div>
 
-                        </div>
-
-                        {/* MATERI */}
-                        <div className="md:col-span-2">
-
-                            <label className="
+            {/* MATERI */}
+            <div className="md:col-span-2">
+              <label
+                className="
                                 block
                                 text-sm
                                 font-bold
                                 text-slate-700
                                 mb-2
-                            ">
+                            "
+              >
+                Materi
+              </label>
 
-                                Materi
-
-                            </label>
-
-                            <div className="
+              <div
+                className="
                                 bg-white
                                 rounded-2xl
                                 overflow-hidden
                                 border
                                 border-slate-200
-                            ">
+                            "
+              >
+                <ReactQuill
+                  theme="snow"
+                  value={form.materi}
+                  onChange={(value) =>
+                    setForm((prev) => ({
+                      ...prev,
+                      materi: value,
+                    }))
+                  }
+                  modules={{
+                    toolbar: [
+                      [
+                        {
+                          header: [1, 2, 3, false],
+                        },
+                      ],
 
-                                <ReactQuill
-                                    theme="snow"
-                                    value={form.materi}
-                                    onChange={(value) =>
-                                        setForm((prev) => ({
-                                            ...prev,
-                                            materi: value,
-                                        }))
-                                    }
-                                    modules={{
-                                        toolbar: [
-                                            [
-                                                {
-                                                    header: [
-                                                        1,
-                                                        2,
-                                                        3,
-                                                        false,
-                                                    ],
-                                                },
-                                            ],
+                      ["bold", "italic", "underline"],
 
-                                            [
-                                                "bold",
-                                                "italic",
-                                                "underline",
-                                            ],
+                      [
+                        {
+                          list: "ordered",
+                        },
+                        {
+                          list: "bullet",
+                        },
+                      ],
 
-                                            [
-                                                {
-                                                    list: "ordered",
-                                                },
-                                                {
-                                                    list: "bullet",
-                                                },
-                                            ],
+                      ["link", "image", "video"],
 
-                                            [
-                                                "link",
-                                                "image",
-                                                "video",
-                                            ],
-
-                                            ["clean"],
-                                        ],
-                                    }}
-                                    className="
+                      ["clean"],
+                    ],
+                  }}
+                  className="
                                         h-72
                                         mb-12
                                     "
-                                />
+                />
+              </div>
+            </div>
 
-                            </div>
-
-                        </div>
-
-                        {/* FILE */}
-                        <div className="md:col-span-2">
-
-                            <label className="
+            {/* FILE */}
+            <div className="md:col-span-2">
+              <label
+                className="
                                 block
                                 text-sm
                                 font-bold
                                 text-slate-700
                                 mb-2
-                            ">
+                            "
+              >
+                Sampul Pelatihan
+              </label>
 
-                                Sampul Pelatihan
-
-                            </label>
-
-                            <label className="
+              <label
+                className="
                                 flex
                                 items-center
                                 justify-center
@@ -663,98 +538,90 @@ export default function PelatihanModal({
                                 cursor-pointer
                                 hover:bg-orange-50
                                 transition
-                            ">
-
-                                <div className="text-center">
-
-                                    <i className="
+                            "
+              >
+                <div className="text-center">
+                  <i
+                    className="
                                         fas
                                         fa-cloud-upload-alt
                                         text-5xl
                                         text-orange-400
                                         mb-3
-                                    "></i>
+                                    "
+                  ></i>
 
-                                    <p className="
+                  <p
+                    className="
                                         font-semibold
                                         text-slate-700
-                                    ">
+                                    "
+                  >
+                    Upload Gambar
+                  </p>
 
-                                        Upload Gambar
-
-                                    </p>
-
-                                    <p className="
+                  <p
+                    className="
                                         text-sm
                                         text-slate-400
                                         mt-1
-                                    ">
+                                    "
+                  >
+                    JPG, PNG max 2MB
+                  </p>
+                </div>
 
-                                        JPG, PNG max 2MB
+                <input
+                  type="file"
+                  name="sampul"
+                  accept="image/png,image/jpeg,image/jpg"
+                  onChange={handleChange}
+                  className="hidden"
+                />
+              </label>
 
-                                    </p>
-
-                                </div>
-
-                                <input
-                                    type="file"
-                                    name="sampul"
-                                    accept="image/png,image/jpeg,image/jpg"
-                                    onChange={handleChange}
-                                    className="hidden"
-                                />
-
-                            </label>
-
-                            {/* PREVIEW */}
-                            {
-                                form.sampul instanceof File ? (
-
-                                    <img
-                                        src={URL.createObjectURL(form.sampul)}
-                                        alt=""
-                                        className="
+              {/* PREVIEW */}
+              {form.sampul instanceof File ? (
+                <img
+                  src={URL.createObjectURL(form.sampul)}
+                  alt=""
+                  className="
                                             mt-4
                                             w-full
                                             h-52
                                             object-cover
                                             rounded-3xl
                                         "
-                                    />
-
-                                ) : editData?.sampul ? (
-
-                                    <img
-                                        src={`http://127.0.0.1:8000/uploads/pelatihan/${editData.sampul}`}
-                                        alt=""
-                                        className="
+                />
+              ) : editData?.sampul ? (
+                <img
+                  src={`http://127.0.0.1:8000/uploads/pelatihan/${editData.sampul}`}
+                  alt=""
+                  className="
                                             mt-4
                                             w-full
                                             h-52
                                             object-cover
                                             rounded-3xl
                                         "
-                                    />
+                />
+              ) : null}
+            </div>
+          </div>
 
-                                ) : null
-                            }
-
-                        </div>
-
-                    </div>
-
-                    {/* FOOTER */}
-                    <div className="
+          {/* FOOTER */}
+          <div
+            className="
                         flex
                         justify-end
                         gap-4
                         pt-5
-                    ">
-
-                        <button
-                            type="button"
-                            onClick={onClose}
-                            className="
+                    "
+          >
+            <button
+              type="button"
+              onClick={onClose}
+              className="
                                 px-6
                                 py-4
                                 rounded-2xl
@@ -763,15 +630,13 @@ export default function PelatihanModal({
                                 font-bold
                                 transition
                             "
-                        >
+            >
+              Batal
+            </button>
 
-                            Batal
-
-                        </button>
-
-                        <button
-                            type="submit"
-                            className="
+            <button
+              type="submit"
+              className="
                                 px-8
                                 py-4
                                 rounded-2xl
@@ -783,22 +648,12 @@ export default function PelatihanModal({
                                 shadow-orange-200
                                 transition
                             "
-                        >
-
-                            {
-                                editData
-                                    ? "Update Pelatihan"
-                                    : "Simpan Pelatihan"
-                            }
-
-                        </button>
-
-                    </div>
-
-                </form>
-
-            </div>
-
-        </div>
-    );
+            >
+              {editData ? "Update Pelatihan" : "Simpan Pelatihan"}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
 }

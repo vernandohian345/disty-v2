@@ -1,10 +1,48 @@
 import Button from "../../ui/Button";
 import Reveal from "../../ui/Reveal";
-import blogs from "../../../data/blogs";
+
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { getPublicBlogs } from "../../../services/blogService";
 
 export default function BlogSection() {
+  const [blogs, setBlogs] = useState([]);
+  const [loading, setLoading] = useState(true);
   const latestBlogs = blogs.slice(0, 3);
+
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        const response = await getPublicBlogs();
+
+        setBlogs(response.data.data.data);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBlogs();
+  }, []);
+
+  if (loading) {
+    return (
+      <section className="py-24">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid md:grid-cols-3 gap-8">
+            {[1, 2, 3].map((item) => (
+              <div
+                key={item}
+                className="h-[420px] rounded-[32px] bg-slate-100 animate-pulse"
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="py-24 bg-white relative overflow-hidden">
       <div className="absolute top-0 left-0 w-80 h-80 bg-purpleAccent/10 rounded-full blur-3xl"></div>
@@ -57,7 +95,11 @@ export default function BlogSection() {
                       </span>
 
                       <span className="text-sm text-slate-500">
-                        {blog.date}
+                        {new Date(blog.createdAt).toLocaleDateString("id-ID", {
+                          day: "numeric",
+                          month: "short",
+                          year: "numeric",
+                        })}
                       </span>
                     </div>
 
@@ -68,8 +110,7 @@ export default function BlogSection() {
 
                     {/* Description */}
                     <p className="mt-4 text-slate-600 leading-relaxed">
-                      Pelajari insight terbaru seputar dunia digital, teknologi,
-                      dan pengembangan karir profesional.
+                      {blog.description?.slice(0, 100)}...
                     </p>
                   </div>
                 </div>

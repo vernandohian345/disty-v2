@@ -11,7 +11,11 @@ export default function BlogCard({ article }) {
             <img
               src={article.image}
               alt={article.title}
+              loading="lazy"
               className="w-full h-[170px] object-cover"
+              onError={(e) => {
+                e.target.src = "https://placehold.co/600x400?text=Blog";
+              }}
             />
 
             <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-xl px-3 py-1 rounded-full text-[11px] font-semibold">
@@ -24,7 +28,13 @@ export default function BlogCard({ article }) {
             <div>
               {/* Meta */}
               <div className="flex items-center gap-2 text-[11px] text-slate-400 mb-1">
-                <span>{article.date}</span>
+                <span>
+                  {new Date(article.createdAt).toLocaleDateString("id-ID", {
+                    day: "numeric",
+                    month: "short",
+                    year: "numeric",
+                  })}
+                </span>
 
                 <span>•</span>
 
@@ -38,7 +48,7 @@ export default function BlogCard({ article }) {
 
               {/* Description */}
               <p className="mt-1 text-sm text-slate-500 line-clamp-2 leading-normal">
-                {article.description}
+                {article.excerpt}
               </p>
             </div>
 

@@ -1,3 +1,4 @@
+import { getPublicBlogs } from "../../services/blogService";
 import { useEffect, useState } from "react";
 import Navbar from "../../components/frontend/Navbar";
 import Footer from "../../components/frontend/Footer";
@@ -12,13 +13,22 @@ export default function Blog() {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
+  const [blogs, setBlogs] = useState([]);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 1200);
+    const fetchBlogs = async () => {
+      try {
+        const response = await getPublicBlogs();
 
-    return () => clearTimeout(timer);
+        setBlogs(response.data.data.data);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBlogs();
   }, []);
 
   return (
@@ -40,6 +50,7 @@ export default function Blog() {
 
             {/* RIGHT */}
             <BlogList
+              blogs={blogs}
               activeCategory={activeCategory}
               sortType={sortType}
               setSortType={setSortType}

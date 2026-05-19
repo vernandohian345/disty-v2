@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ChevronDown, ArrowDownUp, Eye } from "lucide-react";
 import { Link } from "react-router-dom";
-import blogs from "../../../data/blogs";
 import BlogCard from "./BlogCard";
 
 export default function BlogList({
+  blogs,
   activeCategory,
   sortType,
   setSortType,
@@ -15,29 +15,23 @@ export default function BlogList({
 }) {
   const articlesPerPage = 10;
   const [openSort, setOpenSort] = useState(false);
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [activeCategory, searchQuery]);
   const filteredArticles = [...blogs]
     .filter((blog) => {
       const matchesCategory =
         activeCategory === "Semua" ? true : blog.category === activeCategory;
 
       const matchesSearch =
-        blog.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        blog.category.toLowerCase().includes(searchQuery.toLowerCase());
-
+        blog.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        blog.category?.toLowerCase().includes(searchQuery.toLowerCase());
       return matchesCategory && matchesSearch;
     })
 
     .sort((a, b) => {
       if (sortType === "Terpopuler") {
-        const convertViews = (views) => {
-          if (views.includes("K")) {
-            return parseFloat(views) * 1000;
-          }
-
-          return parseFloat(views);
-        };
-
-        return convertViews(b.views) - convertViews(a.views);
+        return b.views - a.views;
       }
 
       if (sortType === "A-Z") {
