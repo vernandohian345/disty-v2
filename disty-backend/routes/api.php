@@ -18,8 +18,10 @@ use App\Http\Controllers\API\Admin\DashboardApiController;
 use App\Http\Controllers\API\Admin\PelatihanApiController;
 use App\Http\Controllers\API\Admin\PembayaranApiController;
 use App\Http\Controllers\API\Admin\SertifikasiApiController;
+use App\Http\Controllers\API\Admin\BlogController;
 use App\Http\Controllers\API\Admin\SertifikatPelatihanApiController;
 use App\Http\Controllers\API\Admin\SertifikatSertifikasiApiController;
+
 
 
 
@@ -209,6 +211,23 @@ Route::middleware('auth:sanctum')
 
     Route::delete('/sertifikasi/{id}',
         [SertifikasiApiController::class, 'destroy']);
+
+    // ================= BLOG =================
+
+    Route::get('/blog',
+        [BlogController::class, 'index']);
+
+    Route::get('/blog/{id}',
+        [BlogController::class, 'show']);
+
+    Route::post('/blog',
+        [BlogController::class, 'store']);
+
+    Route::post('/blog/update/{id}',
+        [BlogController::class, 'update']);
+
+    Route::delete('/blog/{id}',
+        [BlogController::class, 'destroy']);
 
 
     // ================= SERTIFIKAT PELATIHAN =================
