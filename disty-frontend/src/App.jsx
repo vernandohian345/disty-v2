@@ -13,8 +13,10 @@ import Program from "./pages/frontend/Program";
 import Dashboard from "./pages/admin/Dashboard";
 import IndexPelatihan from "./pages/admin/Pelatihan/Index";
 import CreatePelatihan from "./pages/admin/Pelatihan/Create";
+import IndexSertifikasi from "./pages/admin/Sertifikasi/Index";
+import CreateSertifikasi from "./pages/admin/Sertifikasi/Create";
 // import Pelatihan from "./pages/admin/Pelatihan";
-import Sertifikasi from "./pages/admin/Sertifikasi";
+// import Sertifikasi from "./pages/admin/Sertifikasi";
 import Pembayaran from "./pages/admin/Pembayaran";
 import AdminBlog from "./pages/admin/Blog";
 
@@ -70,23 +72,32 @@ export default function App() {
           }
         />
 
-        {/* <Route
-          path="/admin/pelatihan"
-          element={
-            <RouteAdmin>
-              <Pelatihan />
-            </RouteAdmin>
-          }
-        /> */}
-
-        <Route
+       <Route
           path="/admin/sertifikasi"
           element={
             <RouteAdmin>
-              <Sertifikasi />
+          <IndexSertifikasi />
             </RouteAdmin>
           }
         />
+
+       <Route
+          path="/admin/sertifikasi/create"
+          element={
+            <RouteAdmin>
+              <CreateSertifikasi />
+            </RouteAdmin>
+          }
+        />
+
+          {/* <Route
+            path="/admin/sertifikasi"
+            element={
+              <RouteAdmin>
+                <Sertifikasi />
+              </RouteAdmin>
+            }
+        /> */}
 
         {/* PEMBAYARAN */}
         <Route
