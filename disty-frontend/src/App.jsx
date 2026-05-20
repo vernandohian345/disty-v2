@@ -15,10 +15,11 @@ import IndexPelatihan from "./pages/admin/Pelatihan/Index";
 import CreatePelatihan from "./pages/admin/Pelatihan/Create";
 import IndexSertifikasi from "./pages/admin/Sertifikasi/Index";
 import CreateSertifikasi from "./pages/admin/Sertifikasi/Create";
-// import Pelatihan from "./pages/admin/Pelatihan";
-// import Sertifikasi from "./pages/admin/Sertifikasi";
+
 import Pembayaran from "./pages/admin/Pembayaran";
 import AdminBlog from "./pages/admin/Blog";
+import IndexUser from "./pages/admin/User/Index";
+import CreateUser from "./pages/admin/User/Create";
 
 import RouteAdmin from "./routes/AdminRoute";
 import ScrollToTop from "./components/shared/ScrollToTop";
@@ -116,6 +117,25 @@ export default function App() {
               <AdminBlog />
             </RouteAdmin>
           }
+        />
+
+        {/* USER ADMIN */}
+          <Route
+            path="/admin/users"
+            element={
+                <RouteAdmin>
+                    <IndexUser />
+                </RouteAdmin>
+            } 
+        />
+
+        <Route
+            path="/admin/users/create"
+            element={
+                <RouteAdmin>
+                    <CreateUser />
+                </RouteAdmin>
+            }
         />
 
       </Routes>

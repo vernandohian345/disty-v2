@@ -21,6 +21,7 @@ use App\Http\Controllers\API\Admin\SertifikasiApiController;
 use App\Http\Controllers\API\Admin\BlogController;
 use App\Http\Controllers\API\Admin\SertifikatPelatihanApiController;
 use App\Http\Controllers\API\Admin\SertifikatSertifikasiApiController;
+use App\Http\Controllers\API\Admin\UserApiController;
 
 
 
@@ -403,5 +404,29 @@ Route::middleware('auth:sanctum')
                     'deleteBnsp'
                 ]
             );
+
+            // ================= USER MANAGEMENT =================
+            Route::middleware(['auth:sanctum'])->group(function () {
+            Route::get(
+                '/users',
+                [UserApiController::class, 'index']
+            );
+
+            Route::post(
+                '/users',
+                [UserApiController::class, 'store']
+            );
+
+            Route::put(
+                '/users/{id}',
+                [UserApiController::class, 'update']
+            );
+
+            Route::delete(
+                '/users/{id}',
+                [UserApiController::class, 'destroy']
+            );
+
+        });
         });
     });

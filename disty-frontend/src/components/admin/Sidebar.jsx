@@ -128,6 +128,18 @@ export default function Sidebar({ closeSidebar }) {
 
                 </Link>
 
+                <Link
+                    to="/admin/users"
+                    onClick={closeSidebar}
+                    className={`flex items-center gap-3 px-4 py-3 rounded-xl transition ${isActive("/admin/users")}`}
+                >
+
+                    <i className="fas fa-users"></i>
+
+                    <span>Manajemen User</span>
+
+                </Link>
+
             </nav>
 
             {/* LOGOUT */}
