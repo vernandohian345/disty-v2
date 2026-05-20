@@ -12,117 +12,73 @@ import {
 } from "../../../services/userService";
 
 export default function IndexUser() {
-
     const navigate = useNavigate();
-
     const [users, setUsers] =
         useState([]);
-
     const [loading, setLoading] =
         useState(true);
-
     const [search, setSearch] =
         useState("");
-
     const [openModal, setOpenModal] =
         useState(false);
-
     const [editData, setEditData] =
         useState(null);
-
     const [deleteModal, setDeleteModal] =
         useState(false);
-
     const [selectedUser, setSelectedUser] =
         useState(null);
-
     useEffect(() => {
-
         fetchUsers();
-
     }, []);
-
     const fetchUsers =
         async () => {
 
             try {
-
                 setLoading(true);
-
                 const response =
                     await getUsers();
-
                 setUsers(
                     response.data.data
                 );
-
             } catch (error) {
-
                 console.log(error);
-
             } finally {
-
                 setLoading(false);
-
             }
-
         };
 
     const handleSubmit =
         async (formData) => {
-
             try {
-
                 if (editData) {
-
                     await updateUser(
                         editData.id,
                         formData
                     );
-
                 } else {
-
                     await createUser(
                         formData
                     );
-
                 }
-
                 await fetchUsers();
-
                 setOpenModal(false);
-
                 setEditData(null);
-
             } catch (error) {
-
                 console.log(error);
-
             }
-
         };
-
     const handleDelete =
     async () => {
-
         try {
-
             await deleteUser(
                 selectedUser.id
             );
-
             await fetchUsers();
-
             setDeleteModal(false);
-
             setSelectedUser(null);
-
         } catch (error) {
-
             console.log(error);
-
         }
-
     };
 
     const filteredUsers =
@@ -137,7 +93,6 @@ export default function IndexUser() {
     return (
 
         <AdminLayout>
-
             {/* HEADER */}
             <div className="
                 flex
@@ -145,28 +100,20 @@ export default function IndexUser() {
                 justify-between
                 mb-8
             ">
-
                 <div>
-
                     <h1 className="
                         text-4xl
                         font-black
                         text-slate-800
                     ">
-
                         Kelola User
-
                     </h1>
-
                     <p className="
                         text-slate-500
                         mt-2
                     ">
-
                         Manage seluruh akun admin dan user
-
                     </p>
-
                 </div>
 
                 <button
@@ -234,16 +181,12 @@ export default function IndexUser() {
                         relative
                         z-10
                     ">
-
                         <div>
-
                             <p className="
                                 text-slate-500
                                 font-medium
                             ">
-
                                 Total User
-
                             </p>
 
                             <h2 className="
@@ -252,23 +195,17 @@ export default function IndexUser() {
                                 text-slate-800
                                 mt-4
                             ">
-
                                 {users.length}
 
                             </h2>
-
                             <p className="
                                 text-sm
                                 text-slate-400
                                 mt-3
                             ">
-
                                 Semua akun dashboard
-
                             </p>
-
                         </div>
-
                         <div className="
                             w-16
                             h-16
@@ -280,16 +217,12 @@ export default function IndexUser() {
                             text-orange-500
                             text-2xl
                         ">
-
                             <i className="
                                 fas
                                 fa-users
                             "></i>
-
                         </div>
-
                     </div>
-
                 </div>
 
                 {/* ADMIN */}
@@ -321,25 +254,19 @@ export default function IndexUser() {
                         relative
                         z-10
                     ">
-
                         <div>
-
                             <p className="
                                 text-slate-500
                                 font-medium
                             ">
-
                                 Total Admin
-
                             </p>
-
                             <h2 className="
                                 text-5xl
                                 font-black
                                 text-slate-800
                                 mt-4
                             ">
-
                                 {
                                     users.filter(
                                         (item) =>
@@ -349,17 +276,13 @@ export default function IndexUser() {
                                 }
 
                             </h2>
-
                             <p className="
                                 text-sm
                                 text-slate-400
                                 mt-3
                             ">
-
                                 Administrator dashboard
-
                             </p>
-
                         </div>
 
                         <div className="
@@ -373,16 +296,13 @@ export default function IndexUser() {
                             text-orange-500
                             text-2xl
                         ">
-
                             <i className="
                                 fas
                                 fa-user-shield
                             "></i>
 
                         </div>
-
                     </div>
-
                 </div>
 
                 {/* USER */}
@@ -414,25 +334,19 @@ export default function IndexUser() {
                         relative
                         z-10
                     ">
-
                         <div>
-
                             <p className="
                                 text-slate-500
                                 font-medium
                             ">
-
                                 Total User Biasa
-
                             </p>
-
                             <h2 className="
                                 text-5xl
                                 font-black
                                 text-slate-800
                                 mt-4
                             ">
-
                                 {
                                     users.filter(
                                         (item) =>
@@ -442,17 +356,13 @@ export default function IndexUser() {
                                 }
 
                             </h2>
-
                             <p className="
                                 text-sm
                                 text-slate-400
                                 mt-3
                             ">
-
                                 User biasa dashboard
-
                             </p>
-
                         </div>
 
                         <div className="
@@ -466,18 +376,13 @@ export default function IndexUser() {
                             text-blue-500
                             text-2xl
                         ">
-
                             <i className="
                                 fas
                                 fa-user
                             "></i>
-
                         </div>
-
                     </div>
-
                 </div>
-
             </div>
 
             {/* SEARCH */}
@@ -489,7 +394,6 @@ export default function IndexUser() {
                 border
                 border-slate-100
             ">
-
                 <div className="relative">
 
                     <i className="
@@ -525,9 +429,7 @@ export default function IndexUser() {
                             focus:border-orange-400
                         "
                     />
-
                 </div>
-
             </div>
 
             {/* TABLE */}
