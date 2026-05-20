@@ -1,659 +1,351 @@
-import { useEffect, useState } from "react";
+import {
+    AnimatePresence,
+    motion,
+} from "framer-motion";
+
+import PelatihanForm from "./PelatihanForm";
 
 export default function PelatihanModal({
-  isOpen,
-  onClose,
-  onSubmit,
-  editData,
+    isOpen,
+    onClose,
+    onSubmit,
+    editData,
 }) {
-  // =========================
-  // INITIAL FORM
-  // =========================
-  const initialForm = {
-    nama_pelatihan: "",
-    deskripsi: "",
-    materi: "",
-    kategori: "gratis",
-    link_grup: "",
-    durasi: "",
-    harga: 0,
-    bahasa: "",
-    tanggal_pelatihan: "",
-    sampul: null,
-  };
 
-  const [form, setForm] = useState(initialForm);
+    return (
 
-  // =========================
-  // SET EDIT DATA
-  // =========================
-  useEffect(() => {
-    if (editData) {
-      setForm({
-        nama_pelatihan: editData.nama_pelatihan || "",
+        <AnimatePresence>
 
-        deskripsi: editData.deskripsi || "",
+            {isOpen && (
 
-        materi: editData.materi || "",
-
-        kategori: editData.kategori || "gratis",
-
-        link_grup: editData.link_grup || "",
-
-        durasi: editData.durasi || "",
-
-        harga: editData.harga || 0,
-
-        bahasa: editData.bahasa || "",
-
-        tanggal_pelatihan: editData.tanggal_pelatihan || "",
-
-        sampul: null,
-      });
-    } else {
-      setForm(initialForm);
-    }
-  }, [editData, isOpen]);
-
-  // =========================
-  // HANDLE CHANGE
-  // =========================
-  const handleChange = (e) => {
-    const { name, value, files } = e.target;
-
-    setForm((prev) => ({
-      ...prev,
-
-      [name]: files && files.length > 0 ? files[0] : value,
-    }));
-  };
-
-  // =========================
-  // SUBMIT
-  // =========================
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    try {
-      const formData = new FormData();
-
-      formData.append("nama_pelatihan", form.nama_pelatihan);
-
-      formData.append("deskripsi", form.deskripsi);
-
-      formData.append("materi", form.materi || "");
-
-      formData.append("kategori", form.kategori);
-
-      formData.append("link_grup", form.link_grup);
-
-      formData.append("durasi", form.durasi);
-
-      formData.append("harga", form.kategori === "gratis" ? 0 : form.harga);
-
-      formData.append("bahasa", form.bahasa);
-
-      formData.append("tanggal_pelatihan", form.tanggal_pelatihan);
-
-      // FILE
-      if (form.sampul instanceof File) {
-        formData.append("sampul", form.sampul);
-      }
-
-      await onSubmit(formData);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  if (!isOpen) return null;
-
-  return (
-    <div
-      className="
-            fixed
-            inset-0
-            z-50
-            flex
-            items-center
-            justify-center
-            bg-black/50
-            backdrop-blur-sm
-            p-5
-        "
-    >
-      <div
-        className="
-                w-full
-                max-w-5xl
-                bg-white
-                rounded-[35px]
-                shadow-2xl
-                overflow-hidden
-            "
-      >
-        {/* HEADER */}
-        <div
-          className="
-                    bg-gradient-to-r
-                    from-orange-500
-                    to-orange-400
-                    p-8
-                    text-white
-                "
-        >
-          <div
-            className="
+                <motion.div
+                    initial={{
+                        opacity: 0,
+                    }}
+                    animate={{
+                        opacity: 1,
+                    }}
+                    exit={{
+                        opacity: 0,
+                    }}
+                    className="
+                        fixed
+                        inset-0
+                        z-50
+                        bg-black/60
+                        backdrop-blur-sm
                         flex
-                        items-start
-                        justify-between
-                    "
-          >
-            <div>
-              <h2
-                className="
-                                text-4xl
-                                font-black
-                            "
-              >
-                {editData ? "Edit Pelatihan" : "Tambah Pelatihan"}
-              </h2>
-
-              <p
-                className="
-                                mt-2
-                                text-orange-100
-                            "
-              >
-                Kelola data pelatihan dengan mudah
-              </p>
-            </div>
-
-            <button
-              onClick={onClose}
-              className="
-                                w-12
-                                h-12
-                                rounded-2xl
-                                bg-white/20
-                                hover:bg-white/30
-                                transition
-                            "
-            >
-              ✕
-            </button>
-          </div>
-        </div>
-
-        {/* BODY */}
-        <form
-          onSubmit={handleSubmit}
-          className="
-                        p-8
-                        space-y-6
-                        max-h-[80vh]
+                        items-center
+                        justify-center
+                        p-4
                         overflow-y-auto
                     "
-        >
-          <div
-            className="
-                        grid
-                        grid-cols-1
-                        md:grid-cols-2
-                        gap-6
-                    "
-          >
-            {/* NAMA */}
-            <div className="md:col-span-2">
-              <label
-                className="
-                                block
-                                text-sm
-                                font-bold
-                                text-slate-700
-                                mb-2
-                            "
-              >
-                Nama Pelatihan
-              </label>
+                >
 
-              <input
-                type="text"
-                name="nama_pelatihan"
-                value={form.nama_pelatihan}
-                onChange={handleChange}
-                className="
-                                    w-full
-                                    p-4
-                                    rounded-2xl
-                                    border
-                                    border-slate-200
-                                "
-                required
-              />
-            </div>
+                    {/* BACKDROP */}
+                    <div
+                        onClick={onClose}
+                        className="
+                            absolute
+                            inset-0
+                        "
+                    ></div>
 
-            {/* BAHASA */}
-            <div>
-              <label
-                className="
-                                block
-                                text-sm
-                                font-bold
-                                text-slate-700
-                                mb-2
-                            "
-              >
-                Bahasa
-              </label>
+                    {/* MODAL */}
+                    <motion.div
+                        initial={{
+                            opacity: 0,
+                            y: 40,
+                            scale: 0.95,
+                        }}
+                        animate={{
+                            opacity: 1,
+                            y: 0,
+                            scale: 1,
+                        }}
+                        exit={{
+                            opacity: 0,
+                            y: 40,
+                            scale: 0.95,
+                        }}
+                        transition={{
+                            duration: 0.25,
+                        }}
+                        className="
+                            relative
+                            w-full
+                            max-w-6xl
+                            rounded-[35px]
+                            overflow-hidden
+                            bg-white
+                            shadow-2xl
+                            border
+                            border-slate-100
+                        "
+                    >
 
-              <input
-                type="text"
-                name="bahasa"
-                value={form.bahasa}
-                onChange={handleChange}
-                className="
-                                    w-full
-                                    p-4
-                                    rounded-2xl
-                                    border
-                                    border-slate-200
-                                "
-                required
-              />
-            </div>
+                        {/* TOP GLOW */}
+                        <div className="
+                            absolute
+                            top-0
+                            left-0
+                            right-0
+                            h-2
+                            bg-gradient-to-r
+                            from-orange-500
+                            via-orange-400
+                            to-yellow-400
+                        "></div>
 
-            {/* DURASI */}
-            <div>
-              <label
-                className="
-                                block
-                                text-sm
-                                font-bold
-                                text-slate-700
-                                mb-2
-                            "
-              >
-                Durasi
-              </label>
+                        {/* HEADER */}
+                        <div className="
+                            relative
+                            px-8
+                            py-7
+                            border-b
+                            border-slate-100
+                            bg-white
+                        ">
 
-              <input
-                type="text"
-                name="durasi"
-                value={form.durasi}
-                onChange={handleChange}
-                className="
-                                    w-full
-                                    p-4
-                                    rounded-2xl
-                                    border
-                                    border-slate-200
-                                "
-                required
-              />
-            </div>
-
-            {/* KATEGORI */}
-            <div>
-              <label
-                className="
-                                block
-                                text-sm
-                                font-bold
-                                text-slate-700
-                                mb-2
-                            "
-              >
-                Kategori
-              </label>
-
-              <select
-                name="kategori"
-                value={form.kategori}
-                onChange={handleChange}
-                className="
-                                    w-full
-                                    p-4
-                                    rounded-2xl
-                                    border
-                                    border-slate-200
-                                "
-              >
-                <option value="gratis">Gratis</option>
-
-                <option value="berbayar">Berbayar</option>
-              </select>
-            </div>
-
-            {/* HARGA */}
-            <div>
-              <label
-                className="
-                                block
-                                text-sm
-                                font-bold
-                                text-slate-700
-                                mb-2
-                            "
-              >
-                Harga
-              </label>
-
-              <input
-                type="number"
-                name="harga"
-                value={form.harga}
-                onChange={handleChange}
-                disabled={form.kategori === "gratis"}
-                className="
-                                    w-full
-                                    p-4
-                                    rounded-2xl
-                                    border
-                                    border-slate-200
-                                    disabled:bg-slate-100
-                                "
-              />
-            </div>
-
-            {/* TANGGAL */}
-            <div className="md:col-span-2">
-              <label
-                className="
-                                block
-                                text-sm
-                                font-bold
-                                text-slate-700
-                                mb-2
-                            "
-              >
-                Tanggal Pelatihan
-              </label>
-
-              <input
-                type="date"
-                name="tanggal_pelatihan"
-                value={form.tanggal_pelatihan || ""}
-                onChange={handleChange}
-                className="
-                                    w-full
-                                    p-4
-                                    rounded-2xl
-                                    border
-                                    border-slate-200
-                                "
-                required
-              />
-            </div>
-
-            {/* LINK */}
-            <div className="md:col-span-2">
-              <label
-                className="
-                                block
-                                text-sm
-                                font-bold
-                                text-slate-700
-                                mb-2
-                            "
-              >
-                Link Grup
-              </label>
-
-              <input
-                type="text"
-                name="link_grup"
-                value={form.link_grup}
-                onChange={handleChange}
-                className="
-                                    w-full
-                                    p-4
-                                    rounded-2xl
-                                    border
-                                    border-slate-200
-                                "
-                required
-              />
-            </div>
-
-            {/* DESKRIPSI */}
-            <div className="md:col-span-2">
-              <label
-                className="
-                                block
-                                text-sm
-                                font-bold
-                                text-slate-700
-                                mb-2
-                            "
-              >
-                Deskripsi
-              </label>
-
-              <textarea
-                rows="4"
-                name="deskripsi"
-                value={form.deskripsi}
-                onChange={handleChange}
-                className="
-                                    w-full
-                                    p-4
-                                    rounded-2xl
-                                    border
-                                    border-slate-200
-                                "
-                required
-              />
-            </div>
-
-            {/* MATERI */}
-            <div className="md:col-span-2">
-              <label
-                className="
-                                block
-                                text-sm
-                                font-bold
-                                text-slate-700
-                                mb-2
-                            "
-              >
-                Materi
-              </label>
-
-              <div
-                className="
-                                bg-white
-                                rounded-2xl
-                                overflow-hidden
-                                border
-                                border-slate-200
-                            "
-              >
-                <ReactQuill
-                  theme="snow"
-                  value={form.materi}
-                  onChange={(value) =>
-                    setForm((prev) => ({
-                      ...prev,
-                      materi: value,
-                    }))
-                  }
-                  modules={{
-                    toolbar: [
-                      [
-                        {
-                          header: [1, 2, 3, false],
-                        },
-                      ],
-
-                      ["bold", "italic", "underline"],
-
-                      [
-                        {
-                          list: "ordered",
-                        },
-                        {
-                          list: "bullet",
-                        },
-                      ],
-
-                      ["link", "image", "video"],
-
-                      ["clean"],
-                    ],
-                  }}
-                  className="
-                                        h-72
-                                        mb-12
-                                    "
-                />
-              </div>
-            </div>
-
-            {/* FILE */}
-            <div className="md:col-span-2">
-              <label
-                className="
-                                block
-                                text-sm
-                                font-bold
-                                text-slate-700
-                                mb-2
-                            "
-              >
-                Sampul Pelatihan
-              </label>
-
-              <label
-                className="
+                            <div className="
                                 flex
-                                items-center
-                                justify-center
-                                w-full
-                                h-44
-                                border-2
-                                border-dashed
-                                border-orange-300
-                                rounded-3xl
-                                cursor-pointer
-                                hover:bg-orange-50
-                                transition
-                            "
-              >
-                <div className="text-center">
-                  <i
-                    className="
-                                        fas
-                                        fa-cloud-upload-alt
-                                        text-5xl
-                                        text-orange-400
-                                        mb-3
-                                    "
-                  ></i>
+                                flex-col
+                                lg:flex-row
+                                lg:items-center
+                                lg:justify-between
+                                gap-5
+                            ">
 
-                  <p
-                    className="
-                                        font-semibold
-                                        text-slate-700
-                                    "
-                  >
-                    Upload Gambar
-                  </p>
+                                {/* LEFT */}
+                                <div className="
+                                    flex
+                                    items-center
+                                    gap-5
+                                ">
 
-                  <p
-                    className="
-                                        text-sm
-                                        text-slate-400
-                                        mt-1
-                                    "
-                  >
-                    JPG, PNG max 2MB
-                  </p>
-                </div>
+                                    {/* ICON */}
+                                    <div className="
+                                        w-16
+                                        h-16
+                                        rounded-3xl
+                                        bg-orange-100
+                                        flex
+                                        items-center
+                                        justify-center
+                                        text-orange-500
+                                        text-3xl
+                                        shadow-sm
+                                    ">
 
-                <input
-                  type="file"
-                  name="sampul"
-                  accept="image/png,image/jpeg,image/jpg"
-                  onChange={handleChange}
-                  className="hidden"
-                />
-              </label>
+                                        <i className="
+                                            fas
+                                            fa-book-open
+                                        "></i>
 
-              {/* PREVIEW */}
-              {form.sampul instanceof File ? (
-                <img
-                  src={URL.createObjectURL(form.sampul)}
-                  alt=""
-                  className="
-                                            mt-4
-                                            w-full
-                                            h-52
-                                            object-cover
-                                            rounded-3xl
+                                    </div>
+
+                                    {/* TITLE */}
+                                    <div>
+
+                                        <h2 className="
+                                            text-4xl
+                                            font-black
+                                            text-slate-800
+                                        ">
+
+                                            Edit Pelatihan
+
+                                        </h2>
+
+                                        <p className="
+                                            text-slate-500
+                                            mt-2
+                                        ">
+
+                                            Update data pelatihan dengan mudah
+
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+                                {/* RIGHT */}
+                                <div className="
+                                    flex
+                                    items-center
+                                    gap-3
+                                ">
+
+                                    {/* STATUS */}
+                                    <div className="
+                                        hidden
+                                        md:flex
+                                        items-center
+                                        gap-3
+                                        px-5
+                                        py-3
+                                        rounded-2xl
+                                        bg-orange-100
+                                        text-orange-600
+                                        font-bold
+                                    ">
+
+                                        <div className="
+                                            w-3
+                                            h-3
+                                            rounded-full
+                                            bg-orange-500
+                                            animate-pulse
+                                        "></div>
+
+                                        Sedang Mengedit
+
+                                    </div>
+
+                                    {/* CLOSE */}
+                                    <button
+                                        onClick={onClose}
+                                        className="
+                                            w-14
+                                            h-14
+                                            rounded-2xl
+                                            bg-slate-100
+                                            hover:bg-red-500
+                                            hover:text-white
+                                            transition
+                                            text-slate-600
+                                            text-xl
+                                            shadow-sm
                                         "
-                />
-              ) : editData?.sampul ? (
-                <img
-                  src={`http://127.0.0.1:8000/uploads/pelatihan/${editData.sampul}`}
-                  alt=""
-                  className="
-                                            mt-4
-                                            w-full
-                                            h-52
-                                            object-cover
-                                            rounded-3xl
-                                        "
-                />
-              ) : null}
-            </div>
-          </div>
+                                    >
 
-          {/* FOOTER */}
-          <div
-            className="
-                        flex
-                        justify-end
-                        gap-4
-                        pt-5
-                    "
-          >
-            <button
-              type="button"
-              onClick={onClose}
-              className="
-                                px-6
-                                py-4
-                                rounded-2xl
-                                bg-slate-200
-                                hover:bg-slate-300
-                                font-bold
-                                transition
-                            "
-            >
-              Batal
-            </button>
+                                        <i className="
+                                            fas
+                                            fa-times
+                                        "></i>
 
-            <button
-              type="submit"
-              className="
-                                px-8
-                                py-4
-                                rounded-2xl
-                                bg-orange-500
-                                hover:bg-orange-600
-                                text-white
-                                font-bold
-                                shadow-lg
-                                shadow-orange-200
-                                transition
-                            "
-            >
-              {editData ? "Update Pelatihan" : "Simpan Pelatihan"}
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  );
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        {/* BODY */}
+                        <div className="
+                            max-h-[85vh]
+                            overflow-y-auto
+                            bg-slate-50
+                        ">
+
+                            <div className="
+                                p-7
+                            ">
+
+                                {/* INFO CARD */}
+                                <div className="
+                                    bg-gradient-to-r
+                                    from-orange-500
+                                    to-orange-400
+                                    rounded-[30px]
+                                    p-6
+                                    text-white
+                                    mb-7
+                                    relative
+                                    overflow-hidden
+                                ">
+
+                                    {/* BG */}
+                                    <div className="
+                                        absolute
+                                        -right-10
+                                        -top-10
+                                        w-40
+                                        h-40
+                                        rounded-full
+                                        bg-white/10
+                                    "></div>
+
+                                    <div className="
+                                        relative
+                                        z-10
+                                        flex
+                                        flex-col
+                                        md:flex-row
+                                        md:items-center
+                                        md:justify-between
+                                        gap-5
+                                    ">
+
+                                        <div>
+
+                                            <h3 className="
+                                                text-2xl
+                                                font-black
+                                            ">
+
+                                                {
+                                                    editData?.nama_pelatihan
+                                                }
+
+                                            </h3>
+
+                                            <p className="
+                                                text-orange-100
+                                                mt-2
+                                            ">
+
+                                                Pastikan data yang diperbarui sudah benar sebelum disimpan.
+
+                                            </p>
+
+                                        </div>
+
+                                        <div className="
+                                            flex
+                                            items-center
+                                            gap-3
+                                            px-5
+                                            py-3
+                                            rounded-2xl
+                                            bg-white/20
+                                            backdrop-blur-sm
+                                            font-bold
+                                            w-fit
+                                        ">
+
+                                            <i className="
+                                                fas
+                                                fa-pen
+                                            "></i>
+
+                                            Mode Edit
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                {/* FORM */}
+                                <PelatihanForm
+                                    onSubmit={onSubmit}
+                                    editData={editData}
+                                />
+
+                            </div>
+
+                        </div>
+
+                    </motion.div>
+
+                </motion.div>
+
+            )}
+
+        </AnimatePresence>
+
+    );
 }

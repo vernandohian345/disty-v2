@@ -245,7 +245,7 @@ export default function StatisticsChart({
                         </div>
                     </div>
 
-                    <div className="w-fullh-[420px]">
+                    <div className="w-full h-[420px] min-h-[420px]">
                         <ResponsiveContainer
                             width="100%"
                             height="100%"

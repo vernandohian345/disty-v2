@@ -11,7 +11,9 @@ import Notifications from "./pages/frontend/Notifications";
 import Program from "./pages/frontend/Program";
 
 import Dashboard from "./pages/admin/Dashboard";
-import Pelatihan from "./pages/admin/Pelatihan";
+import IndexPelatihan from "./pages/admin/Pelatihan/Index";
+import CreatePelatihan from "./pages/admin/Pelatihan/Create";
+// import Pelatihan from "./pages/admin/Pelatihan";
 import Sertifikasi from "./pages/admin/Sertifikasi";
 import Pembayaran from "./pages/admin/Pembayaran";
 import AdminBlog from "./pages/admin/Blog";
@@ -54,10 +56,28 @@ export default function App() {
           path="/admin/pelatihan"
           element={
             <RouteAdmin>
-              <Pelatihan />
+          <IndexPelatihan />
             </RouteAdmin>
           }
         />
+
+      <Route
+          path="/admin/pelatihan/create"
+          element={
+            <RouteAdmin>
+              <CreatePelatihan />
+            </RouteAdmin>
+          }
+        />
+
+        {/* <Route
+          path="/admin/pelatihan"
+          element={
+            <RouteAdmin>
+              <Pelatihan />
+            </RouteAdmin>
+          }
+        /> */}
 
         <Route
           path="/admin/sertifikasi"
