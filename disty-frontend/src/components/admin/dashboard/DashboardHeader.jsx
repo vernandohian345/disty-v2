@@ -10,7 +10,7 @@ export default function DashboardHeader() {
                 Dashboard Admin
             </h1>
 
-            <p className="
+ <p className="
                 text-slate-500
                 mt-2
                 text-wrap
