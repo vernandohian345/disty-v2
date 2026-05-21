@@ -14,10 +14,13 @@ import BootcampDetail from "./pages/frontend/BootcampDetail";
 import Dashboard from "./pages/admin/Dashboard";
 import IndexPelatihan from "./pages/admin/Pelatihan/Index";
 import CreatePelatihan from "./pages/admin/Pelatihan/Create";
-// import Pelatihan from "./pages/admin/Pelatihan";
-import Sertifikasi from "./pages/admin/Sertifikasi";
+import IndexSertifikasi from "./pages/admin/Sertifikasi/Index";
+import CreateSertifikasi from "./pages/admin/Sertifikasi/Create";
+
 import Pembayaran from "./pages/admin/Pembayaran";
 import AdminBlog from "./pages/admin/Blog";
+import IndexUser from "./pages/admin/User/Index";
+import CreateUser from "./pages/admin/User/Create";
 
 import RouteAdmin from "./routes/AdminRoute";
 import ScrollToTop from "./components/shared/ScrollToTop";
@@ -70,23 +73,32 @@ export default function App() {
           }
         />
 
-        {/* <Route
-          path="/admin/pelatihan"
-          element={
-            <RouteAdmin>
-              <Pelatihan />
-            </RouteAdmin>
-          }
-        /> */}
-
         <Route
           path="/admin/sertifikasi"
           element={
             <RouteAdmin>
-              <Sertifikasi />
+              <IndexSertifikasi />
             </RouteAdmin>
           }
         />
+
+        <Route
+          path="/admin/sertifikasi/create"
+          element={
+            <RouteAdmin>
+              <CreateSertifikasi />
+            </RouteAdmin>
+          }
+        />
+
+        {/* <Route
+            path="/admin/sertifikasi"
+            element={
+              <RouteAdmin>
+                <Sertifikasi />
+              </RouteAdmin>
+            }
+        /> */}
 
         {/* PEMBAYARAN */}
         <Route
@@ -103,6 +115,25 @@ export default function App() {
           element={
             <RouteAdmin>
               <AdminBlog />
+            </RouteAdmin>
+          }
+        />
+
+        {/* USER ADMIN */}
+        <Route
+          path="/admin/users"
+          element={
+            <RouteAdmin>
+              <IndexUser />
+            </RouteAdmin>
+          }
+        />
+
+        <Route
+          path="/admin/users/create"
+          element={
+            <RouteAdmin>
+              <CreateUser />
             </RouteAdmin>
           }
         />

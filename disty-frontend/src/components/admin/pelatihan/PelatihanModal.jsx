@@ -280,29 +280,21 @@ export default function PelatihanModal({
                                     ">
 
                                         <div>
-
                                             <h3 className="
                                                 text-2xl
                                                 font-black
                                             ">
-
                                                 {
                                                     editData?.nama_pelatihan
                                                 }
-
                                             </h3>
-
                                             <p className="
                                                 text-orange-100
                                                 mt-2
                                             ">
-
                                                 Pastikan data yang diperbarui sudah benar sebelum disimpan.
-
                                             </p>
-
                                         </div>
-
                                         <div className="
                                             flex
                                             items-center
@@ -315,37 +307,24 @@ export default function PelatihanModal({
                                             font-bold
                                             w-fit
                                         ">
-
                                             <i className="
                                                 fas
                                                 fa-pen
                                             "></i>
-
                                             Mode Edit
-
                                         </div>
-
                                     </div>
-
                                 </div>
-
                                 {/* FORM */}
                                 <PelatihanForm
                                     onSubmit={onSubmit}
                                     editData={editData}
                                 />
-
                             </div>
-
                         </div>
-
                     </motion.div>
-
                 </motion.div>
-
             )}
-
         </AnimatePresence>
-
     );
 }
