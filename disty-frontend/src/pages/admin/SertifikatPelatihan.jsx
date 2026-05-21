@@ -7,6 +7,7 @@ import {
     markCompleted,
     generateSertifikat,
     downloadSertifikat,
+    previewSertifikat,
 } from "../../services/sertifikatPelatihanService";
 
 export default function SertifikatPelatihan() {
@@ -16,6 +17,15 @@ export default function SertifikatPelatihan() {
 
     const [peserta, setPeserta] =
         useState([]);
+
+    const [stats, setStats] =
+    useState({});
+
+    const [filterStatus, setFilterStatus] =
+        useState("all");
+
+    const [search, setSearch] =
+        useState("");
 
     // =========================
     // FETCH DATA
@@ -34,6 +44,10 @@ export default function SertifikatPelatihan() {
             
             setPeserta(
                 response.data.data.data
+            );
+
+            setStats(
+                response.data.stats
             );
 
         } catch (error) {
@@ -152,6 +166,92 @@ export default function SertifikatPelatihan() {
 
         };
 
+    // =========================
+    // PREVIEW
+    // =========================
+    const handlePreview =
+        async (id) => {
+
+            try {
+
+                const response =
+                    await previewSertifikat(id);
+
+                const file =
+                    new Blob(
+                        [response.data],
+                        {
+                            type: "application/pdf",
+                        }
+                    );
+
+                const fileURL =
+                    URL.createObjectURL(file);
+
+                window.open(
+                    fileURL,
+                    "_blank"
+                );
+
+            } catch (error) {
+
+                console.log(error);
+
+                alert(
+                    "Gagal preview sertifikat"
+                );
+
+            }
+
+        };
+
+    const filteredPeserta =
+    peserta.filter((item) => {
+
+        // FILTER STATUS
+        if (
+            filterStatus === "approved" &&
+            item.status !== "approved"
+        ) {
+            return false;
+        }
+
+        if (
+            filterStatus === "pending" &&
+            item.status !== "pending"
+        ) {
+            return false;
+        }
+
+        if (
+            filterStatus === "completed" &&
+            !item.is_completed
+        ) {
+            return false;
+        }
+
+        if (
+            filterStatus === "not_completed" &&
+            item.is_completed
+        ) {
+            return false;
+        }
+
+        // SEARCH NAMA
+        if (
+            !item.nama
+                ?.toLowerCase()
+                .includes(
+                    search.toLowerCase()
+                )
+        ) {
+            return false;
+        }
+
+        return true;
+
+    });
+
     return (
 
         <AdminLayout>
@@ -247,6 +347,154 @@ export default function SertifikatPelatihan() {
                 </div>
 
             </div>
+            
+            {/* FILTER */}
+            <div className="
+                flex
+                flex-col
+                md:flex-row
+                gap-4
+                mb-6
+            ">
+
+                {/* SEARCH */}
+                <input
+                    type="text"
+                    placeholder="Cari peserta..."
+                    value={search}
+                    onChange={(e) =>
+                        setSearch(e.target.value)
+                    }
+                    className="
+                        bg-white
+                        border
+                        rounded-2xl
+                        px-5
+                        py-3
+                        w-full
+                        md:w-80
+                        outline-none
+                    "
+                />
+
+                {/* FILTER STATUS */}
+                <select
+                    value={filterStatus}
+                    onChange={(e) =>
+                        setFilterStatus(e.target.value)
+                    }
+                    className="
+                        bg-white
+                        border
+                        rounded-2xl
+                        px-5
+                        py-3
+                        outline-none
+                    "
+                >
+
+                    <option value="all">
+                        Semua
+                    </option>
+
+                    <option value="approved">
+                        Approved
+                    </option>
+
+                    <option value="pending">
+                        Pending
+                    </option>
+
+                    <option value="completed">
+                        Sudah Selesai
+                    </option>
+
+                    <option value="not_completed">
+                        Belum Selesai
+                    </option>
+
+                </select>
+
+            </div>
+
+            {/* STATS */}
+            <div className="
+                grid
+                grid-cols-1
+                md:grid-cols-3
+                gap-5
+                mb-8
+            ">
+
+                {/* TOTAL */}
+                <div className="
+                    bg-white
+                    rounded-3xl
+                    p-6
+                    shadow-sm
+                ">
+
+                    <p className="text-slate-500">
+                        Total Peserta
+                    </p>
+
+                    <h2 className="
+                        text-4xl
+                        font-black
+                        mt-2
+                    ">
+                        {stats.total_peserta || 0}
+                    </h2>
+
+                </div>
+
+                {/* BELUM SERTIFIKAT */}
+                <div className="
+                    bg-white
+                    rounded-3xl
+                    p-6
+                    shadow-sm
+                ">
+
+                    <p className="text-slate-500">
+                        Belum Sertifikat
+                    </p>
+
+                    <h2 className="
+                        text-4xl
+                        font-black
+                        mt-2
+                        text-orange-500
+                    ">
+                        {stats.belum_sertifikat || 0}
+                    </h2>
+
+                </div>
+
+                {/* SUDAH SERTIFIKAT */}
+                <div className="
+                    bg-white
+                    rounded-3xl
+                    p-6
+                    shadow-sm
+                ">
+
+                    <p className="text-slate-500">
+                        Sudah Sertifikat
+                    </p>
+
+                    <h2 className="
+                        text-4xl
+                        font-black
+                        mt-2
+                        text-green-500
+                    ">
+                        {stats.sudah_sertifikat || 0}
+                    </h2>
+
+                </div>
+
+            </div>
 
             {/* TABLE */}
             <div className="
@@ -317,7 +565,7 @@ export default function SertifikatPelatihan() {
 
                                     </tr>
 
-                                ) : peserta.length === 0 ? (
+                                ) : filteredPeserta.length === 0 ? (
 
                                     <tr>
 
@@ -337,7 +585,7 @@ export default function SertifikatPelatihan() {
 
                                 ) : (
 
-                                    peserta.map((item) => (
+                                    filteredPeserta.map((item) => (
 
                                         <tr
                                             key={item.id}
@@ -495,6 +743,7 @@ export default function SertifikatPelatihan() {
 
                                                     {
                                                         item.sertifikat_pelatihan && (
+                                                            <>
 
                                                             <button
                                                                 onClick={() =>
@@ -515,6 +764,25 @@ export default function SertifikatPelatihan() {
                                                                 Download
 
                                                             </button>
+
+                                                            <button
+                                                                onClick={() =>
+                                                                    handlePreview(item.id)
+                                                                }
+                                                                className="
+                                                                    px-4
+                                                                    py-2
+                                                                    rounded-xl
+                                                                    bg-slate-700
+                                                                    text-white
+                                                                    font-bold
+                                                                "
+                                                            >
+
+                                                                Preview
+
+                                                            </button>
+                                                            </>
 
                                                         )
                                                     }

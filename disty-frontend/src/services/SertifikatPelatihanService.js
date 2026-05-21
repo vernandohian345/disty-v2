@@ -73,3 +73,18 @@ export const downloadSertifikat = async (id) => {
     );
 
 };
+
+// =========================
+// PREVIEW
+// =========================
+export const previewSertifikat = async (id) => {
+
+    return await axios.get(
+        `${API_URL}/sertifikat-pelatihan/preview/${id}`,
+        {
+            ...authHeader(),
+            responseType: "blob",
+        }
+    );
+
+};

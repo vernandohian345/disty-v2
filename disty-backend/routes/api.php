@@ -263,6 +263,12 @@ Route::middleware('auth:sanctum')
         'download']
     );
 
+    Route::get(
+        '/sertifikat-pelatihan/preview/{id}',
+        [SertifikatPelatihanApiController::class,
+        'preview']
+    );
+
 
     // ================= SERTIFIKAT SERTIFIKASI =================
 

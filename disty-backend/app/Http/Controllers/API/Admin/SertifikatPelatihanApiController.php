@@ -281,6 +281,48 @@ class SertifikatPelatihanApiController extends Controller
         return $this->generate($id);
     }
 
+    public function preview($id)
+    {
+        $peserta =
+            TransaksiPelatihan::find($id);
+
+        if (!$peserta) {
+
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Peserta tidak ditemukan'
+            ], 404);
+
+        }
+
+        if (!$peserta->sertifikat_pelatihan) {
+
+            return response()->json([
+                'status' => 'error',
+                'message' =>
+                    'Sertifikat belum tersedia'
+            ], 404);
+
+        }
+
+        $path = public_path(
+            'uploads/sertifikat_pelatihan/' .
+            $peserta->sertifikat_pelatihan
+        );
+
+        if (!file_exists($path)) {
+
+            return response()->json([
+                'status' => 'error',
+                'message' =>
+                    'File sertifikat tidak ditemukan'
+            ], 404);
+
+        }
+
+        return response()->file($path);
+    }
+
     // ✅ DOWNLOAD
     public function download(int $id)
     {
@@ -313,6 +355,8 @@ class SertifikatPelatihanApiController extends Controller
 
         return response()->download($path);
     }
+
+
 
     private function generateCertificateHtml(
     $nama,
