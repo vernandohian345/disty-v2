@@ -55,9 +55,25 @@ export default function ProgramHero() {
 
               {/* Buttons */}
               <div className="mt-10 flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-                <button className="bg-orange-500 hover:bg-orange-400 text-white px-8 py-4 rounded-2xl font-semibold transition-all duration-300 shadow-lg shadow-orange-500/20">
+                <a
+                  href="#program"
+                  className="
+    inline-flex
+    items-center
+    justify-center
+    h-14
+    px-8
+    rounded-2xl
+    bg-orange-500
+    hover:bg-orange-400
+    text-white
+    font-semibold
+    transition-all
+    duration-300
+  "
+                >
                   Lihat Program
-                </button>
+                </a>
               </div>
             </motion.div>
           </div>

@@ -1,19 +1,48 @@
+import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-
-import bootcamps from "../../../data/bootcamps";
 
 export default function BootcampDetailContent() {
   const { slug } = useParams();
+  useEffect(() => {
+    fetchBootcamp();
+  }, [slug]);
 
-  const bootcamp = bootcamps.find((item) => item.slug === slug);
+  const [bootcamp, setBootcamp] = useState(null);
+  const [relatedBootcamps, setRelatedBootcamps] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchBootcamp = async () => {
+    try {
+      setLoading(true);
+
+      const response = await fetch(
+        `http://127.0.0.1:8000/api/frontend/pelatihan/${slug}`,
+      );
+
+      const result = await response.json();
+
+      setBootcamp(result.pelatihan);
+      setRelatedBootcamps(result.rekomendasi || []);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <section className="py-32 text-center">
+        <h2 className="text-2xl font-bold text-orange-500">
+          Memuat Detail Pelatihan...
+        </h2>
+      </section>
+    );
+  }
 
   if (!bootcamp) {
     return null;
   }
-
-  const relatedBootcamps = bootcamps
-    .filter((item) => item.slug !== slug)
-    .slice(0, 3);
 
   return (
     <section className="relative overflow-hidden bg-[#fffaf5] py-24">
@@ -38,66 +67,112 @@ export default function BootcampDetailContent() {
               </h2>
 
               <p className="mt-8 text-[#6b625d] leading-relaxed text-lg">
-                {bootcamp.description}
+                {bootcamp.deskripsi}
               </p>
             </div>
 
-            {/* Benefits */}
-            <div className="mt-20">
-              <p className="text-orange-500 font-semibold uppercase tracking-wide">
-                Benefit Pelatihan
-              </p>
+            {/* WHAT YOU GET */}
+            <div className="mt-16">
+              <h3 className="text-3xl font-black text-[#2B1D16]">
+                Yang Akan Kamu Dapatkan
+              </h3>
 
-              <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-                {bootcamp.benefits.map((benefit, index) => (
+              <div className="mt-8 grid sm:grid-cols-2 gap-5">
+                {bootcamp.benefits?.map((item, index) => (
                   <div
                     key={index}
-                    className="bg-white border border-orange-100 rounded-[28px] p-6 shadow-sm"
+                    className="
+                      flex
+                      items-start
+                      gap-4
+                      rounded-3xl
+                      border border-orange-100
+                      bg-orange-50/40
+                      p-5
+                    "
                   >
-                    <div className="w-12 h-12 rounded-2xl bg-orange-100 flex items-center justify-center">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="w-6 h-6 text-orange-500"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
+                    {/* ICON */}
+                    <div
+                      className="
+                      flex
+                      items-center
+                      justify-center
+                      w-11
+                      h-11
+                      rounded-2xl
+                      bg-orange-500
+                      text-white
+                      text-lg
+                      flex-shrink-0
+                    "
+                    >
+                      ✓
                     </div>
 
-                    <h3 className="mt-5 text-xl font-bold text-[#2B1D16]">
-                      {benefit}
-                    </h3>
+                    <p className="text-[#2B1D16] font-medium leading-relaxed">
+                      {item}
+                    </p>
                   </div>
                 ))}
               </div>
             </div>
 
             {/* Materials */}
+            {/* CURRICULUM */}
             <div className="mt-20">
-              <p className="text-orange-500 font-semibold uppercase tracking-wide">
-                Materi Pembelajaran
-              </p>
+              <h3 className="text-3xl font-black text-[#2B1D16]">
+                Materi yang Akan Dipelajari
+              </h3>
 
-              <div className="mt-8 space-y-5">
-                {bootcamp.materials.map((material, index) => (
+              <div className="mt-10 space-y-5">
+                {bootcamp.materi?.map((material, index) => (
                   <div
                     key={index}
-                    className="flex items-center gap-4 bg-white border border-orange-100 rounded-[24px] px-6 py-5"
+                    className="
+                      group
+                      flex
+                      items-center
+                      gap-6
+                      rounded-[28px]
+                      border border-orange-100
+                      bg-white
+                      p-6
+                      hover:border-orange-300
+                      hover:shadow-lg
+                      transition-all
+                      duration-300
+                    "
                   >
-                    <div className="w-10 h-10 rounded-xl bg-orange-500 text-white flex items-center justify-center font-bold">
-                      {index + 1}
+                    {/* NUMBER */}
+                    <div
+                      className="
+                        flex
+                        items-center
+                        justify-center
+                        min-w-[70px]
+                        h-[70px]
+                        rounded-3xl
+                        bg-orange-500
+                        text-white
+                        text-2xl
+                        font-black
+                        shadow-lg
+                      "
+                    >
+                      {String(index + 1).padStart(2, "0")}
                     </div>
 
-                    <h3 className="text-lg font-semibold text-[#2B1D16]">
-                      {material}
-                    </h3>
+                    {/* CONTENT */}
+                    <div>
+                      <h4 className="text-xl font-bold text-[#2B1D16]">
+                        {material}
+                      </h4>
+
+                      <p className="mt-2 text-[#6b625d] leading-relaxed">
+                        Pelajari materi secara bertahap melalui video
+                        pembelajaran, latihan praktik, dan studi kasus modern.
+                      </p>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -118,7 +193,7 @@ export default function BootcampDetailContent() {
                   <p className="text-[#6b625d]">Durasi</p>
 
                   <h3 className="font-bold text-[#2B1D16]">
-                    {bootcamp.duration}
+                    {bootcamp.durasi}
                   </h3>
                 </div>
 
@@ -134,7 +209,9 @@ export default function BootcampDetailContent() {
                   <p className="text-[#6b625d]">Harga</p>
 
                   <h3 className="font-bold text-orange-500">
-                    {bootcamp.price}
+                    {Number(bootcamp.harga) === 0
+                      ? "Gratis"
+                      : `Rp${Number(bootcamp.harga).toLocaleString("id-ID")}`}
                   </h3>
                 </div>
               </div>
@@ -143,14 +220,113 @@ export default function BootcampDetailContent() {
               <div className="w-full h-px bg-orange-100 my-8"></div>
 
               {/* Button */}
-              <button className="w-full bg-orange-500 hover:bg-orange-400 text-white py-4 rounded-2xl font-semibold transition-all duration-300 shadow-lg shadow-orange-500/20">
+              <Link
+                to={`/checkout/${bootcamp.slug}`}
+                className="
+    w-full
+    bg-orange-500
+    hover:bg-orange-400
+    text-white
+    py-4
+    rounded-2xl
+    font-semibold
+    transition-all
+    duration-300
+    shadow-lg
+    shadow-orange-500/20
+    flex
+    items-center
+    justify-center
+  "
+              >
                 Daftar Sekarang
-              </button>
+              </Link>
 
-              <button className="w-full mt-4 bg-[#2B1D16] hover:bg-black text-white py-4 rounded-2xl font-semibold transition-all duration-300">
+              <a
+                href="https://wa.me/6281234567890?text=Halo%20Disty%20Academy,%20saya%20ingin%20bertanya%20tentang%20pelatihan."
+                target="_blank"
+                rel="noopener noreferrer"
+                c
+                className="
+    w-full
+    mt-4
+    bg-[#2B1D16]
+    hover:bg-black
+    text-white
+    py-4
+    rounded-2xl
+    font-semibold
+    transition-all
+    duration-300
+
+    flex
+    items-center
+    justify-center"
+              >
                 Hubungi Kami
-              </button>
+              </a>
             </div>
+          </div>
+        </div>
+
+        {/* FAQ */}
+        <div className="mt-24">
+          <div className="max-w-4xl">
+            <p className="text-orange-500 font-semibold uppercase tracking-wide">
+              FAQ
+            </p>
+
+            <h2 className="mt-4 text-4xl font-black text-[#2B1D16] leading-tight">
+              Pertanyaan yang
+              <span className="block text-orange-500">Sering Ditanyakan</span>
+            </h2>
+          </div>
+
+          <div className="mt-12 space-y-5">
+            {[
+              {
+                question: "Apakah pelatihan dapat diakses selamanya?",
+                answer:
+                  "Ya, seluruh materi pelatihan dapat diakses kapan saja setelah peserta berhasil mendaftar.",
+              },
+              {
+                question: "Apakah peserta mendapatkan sertifikat?",
+                answer:
+                  "Peserta akan mendapatkan sertifikat penyelesaian setelah menyelesaikan seluruh materi dan tugas pelatihan.",
+              },
+              {
+                question: "Bagaimana sistem pembelajarannya?",
+                answer:
+                  "Pembelajaran dilakukan secara online melalui video, PDF materi, dan latihan praktik yang dapat diakses fleksibel.",
+              },
+              {
+                question: "Apakah terdapat tugas praktik?",
+                answer:
+                  "Ya, setiap pelatihan memiliki tugas dan latihan praktik untuk membantu peserta memahami materi secara lebih mendalam.",
+              },
+            ].map((faq, index) => (
+              <div
+                key={index}
+                className="
+          rounded-[28px]
+          border border-orange-100
+          bg-white
+          p-7
+          hover:border-orange-300
+          hover:shadow-lg
+          transition-all
+          duration-300
+        "
+              >
+                <h3 className="text-xl font-bold text-[#2B1D16]">
+                  {faq.question}
+                </h3>
+
+                <p className="mt-4 text-[#6b625d] leading-relaxed">
+                  {faq.answer}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
 
@@ -179,7 +355,7 @@ export default function BootcampDetailContent() {
                 {/* Thumbnail */}
                 <div className="relative h-[220px] overflow-hidden">
                   <img
-                    src={item.thumbnail}
+                    src={item.thumbnail_url}
                     alt={item.title}
                     className="w-full h-full object-cover group-hover:scale-110 transition duration-700"
                   />
@@ -194,7 +370,7 @@ export default function BootcampDetailContent() {
                   </h3>
 
                   <p className="mt-4 text-[#6b625d] leading-relaxed">
-                    {item.shortDescription}
+                    {item.short_description}
                   </p>
 
                   <Link

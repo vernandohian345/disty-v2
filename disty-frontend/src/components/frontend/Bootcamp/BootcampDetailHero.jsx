@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 
 import bootcamps from "../../../data/bootcamps";
 
@@ -93,13 +93,50 @@ export default function BootcampDetailHero() {
 
               {/* CTA */}
               <div className="mt-12 flex flex-col sm:flex-row gap-4">
-                <button className="bg-orange-500 hover:bg-orange-400 text-white px-8 py-4 rounded-2xl font-semibold transition-all duration-300 shadow-lg shadow-orange-500/20">
+                <Link
+                  to={`/checkout/${bootcamp.slug}`}
+                  className="
+    w-full
+    bg-orange-500
+    hover:bg-orange-400
+    text-white
+    py-4
+    rounded-2xl
+    font-semibold
+    transition-all
+    duration-300
+    shadow-lg
+    shadow-orange-500/20
+    flex
+    items-center
+    justify-center
+  "
+                >
                   Daftar Sekarang
-                </button>
+                </Link>
+                <a
+                  href="https://wa.me/6281234567890?text=Halo%20Disty%20Academy,%20saya%20ingin%20bertanya%20tentang%20pelatihan."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  c
+                  className="
+    w-full
+    mt-4
+    bg-[#2B1D16]
+    hover:bg-black
+    text-white
+    py-4
+    rounded-2xl
+    font-semibold
+    transition-all
+    duration-300
 
-                <button className="bg-white/10 hover:bg-white/15 border border-white/10 backdrop-blur-xl text-white px-8 py-4 rounded-2xl font-semibold transition-all duration-300">
+    flex
+    items-center
+    justify-center"
+                >
                   Hubungi Kami
-                </button>
+                </a>
               </div>
             </div>
           </div>

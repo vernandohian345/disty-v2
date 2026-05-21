@@ -10,6 +10,8 @@ import About from "./pages/frontend/About";
 import Notifications from "./pages/frontend/Notifications";
 import Bootcamp from "./pages/frontend/Bootcamp";
 import BootcampDetail from "./pages/frontend/BootcampDetail";
+import Checkout from "./pages/frontend/Checkout";
+import Success from "./pages/frontend/Success";
 
 import Dashboard from "./pages/admin/Dashboard";
 import IndexPelatihan from "./pages/admin/Pelatihan/Index";
@@ -37,6 +39,8 @@ export default function App() {
         <Route path="/blog/:slug" element={<BlogDetail />} />
         <Route path="/pelatihan" element={<Bootcamp />} />
         <Route path="/pelatihan/:slug" element={<BootcampDetail />} />
+        <Route path="/checkout/:slug" element={<Checkout />} />
+        <Route path="/success" element={<Success />} />
 
         {/* AUTH */}
         <Route path="/login" element={<Login />} />
