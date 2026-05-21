@@ -7,7 +7,7 @@ export default function ProgramHero() {
     <section className="relative overflow-hidden bg-[#fffaf5]">
       <div className="max-w-[1800px] mx-auto px-4 lg:px-6 py-6">
         {/* Hero Container */}
-        <div className="relative overflow-hidden rounded-[32px] min-h-[calc(100vh-90px)] bg-[#1f140f]">
+        <div className="relative overflow-hidden rounded-[32px] min-h-[600px] lg:min-h-[700px] bg-[#1f140f]">
           {/* Background Image */}
           <div className="absolute inset-0">
             <img
@@ -31,7 +31,7 @@ export default function ProgramHero() {
           </div>
 
           {/* Content */}
-          <div className="relative z-10 flex items-center min-h-[calc(100vh-90px)] px-6 py-24 sm:px-10 lg:px-16">
+          <div className="relative z-10 flex items-center lg:items-end min-h-[calc(100vh-90px)] px-6 py-24 sm:px-10 lg:px-16">
             <motion.div
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
@@ -39,7 +39,7 @@ export default function ProgramHero() {
               className="max-w-4xl"
             >
               {/* Heading */}
-              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black leading-[1.02] text-white">
+              <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black leading-[1.02] text-white">
                 Jelajahi Program
                 <span className="block text-orange-400">Untuk Masa Depan</span>
                 Digitalmu
@@ -54,39 +54,10 @@ export default function ProgramHero() {
               </p>
 
               {/* Buttons */}
-              <div className="mt-10 flex flex-col sm:flex-row gap-4">
+              <div className="mt-10 flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
                 <button className="bg-orange-500 hover:bg-orange-400 text-white px-8 py-4 rounded-2xl font-semibold transition-all duration-300 shadow-lg shadow-orange-500/20">
                   Lihat Program
                 </button>
-
-                <button className="bg-white/10 hover:bg-white/15 border border-white/10 backdrop-blur-xl text-white px-8 py-4 rounded-2xl font-semibold transition-all duration-300">
-                  Hubungi Kami
-                </button>
-              </div>
-
-              {/* Bottom Info */}
-              <div className="mt-16 flex flex-wrap items-center gap-8">
-                <div>
-                  <h3 className="text-3xl font-black text-orange-400">50+</h3>
-
-                  <p className="mt-1 text-white/60 text-sm">Program Digital</p>
-                </div>
-
-                <div className="w-px h-12 bg-white/10"></div>
-
-                <div>
-                  <h3 className="text-3xl font-black text-orange-400">500+</h3>
-
-                  <p className="mt-1 text-white/60 text-sm">Peserta Aktif</p>
-                </div>
-
-                <div className="w-px h-12 bg-white/10"></div>
-
-                <div>
-                  <h3 className="text-3xl font-black text-orange-400">100%</h3>
-
-                  <p className="mt-1 text-white/60 text-sm">Sertifikat Resmi</p>
-                </div>
               </div>
             </motion.div>
           </div>

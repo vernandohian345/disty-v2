@@ -13,8 +13,6 @@ import {
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
-  const [activeMenu, setActiveMenu] = useState("Beranda");
-
   const [user, setUser] = useState(null);
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -87,12 +85,12 @@ export default function Navbar() {
             className="
               hidden md:flex
               items-center
+              mx-auto
               bg-white/85
               border border-white/20
               rounded-[18px]
-              px-2 py-1.5
+              px-2 py-1
               shadow-lg shadow-black/5
-              ml-auto
               backdrop-blur-xl
             "
           >
@@ -119,7 +117,7 @@ export default function Navbar() {
               </NavLink>
 
               <NavLink
-                to="/program"
+                to="/pelatihan"
                 className={({ isActive }) =>
                   `relative px-4 py-2 text-sm font-medium transition-all duration-300 ${
                     isActive
@@ -130,7 +128,27 @@ export default function Navbar() {
               >
                 {({ isActive }) => (
                   <>
-                    Program
+                    Pelatihan
+                    {isActive && (
+                      <span className="absolute left-1/2 -translate-x-1/2 bottom-0 w-8 h-[3px] bg-orange-400 rounded-full"></span>
+                    )}
+                  </>
+                )}
+              </NavLink>
+
+              <NavLink
+                to="/sertifikasi"
+                className={({ isActive }) =>
+                  `relative px-4 py-2 text-sm font-medium transition-all duration-300 ${
+                    isActive
+                      ? "text-orange-400"
+                      : "text-black/80 hover:text-orange-300"
+                  }`
+                }
+              >
+                {({ isActive }) => (
+                  <>
+                    Sertifikasi
                     {isActive && (
                       <span className="absolute left-1/2 -translate-x-1/2 bottom-0 w-8 h-[3px] bg-orange-400 rounded-full"></span>
                     )}
@@ -222,7 +240,7 @@ export default function Navbar() {
                   className="
                     flex
                     items-center
-                    gap-4
+                    gap-2
                     relative
                   "
                   ref={dropdownRef}
@@ -232,7 +250,7 @@ export default function Navbar() {
                     onClick={() => navigate("/notifications")}
                     className="
                       relative
-                      w-11 h-11
+                      w-10 h-10
                       rounded-full
                       bg-slate-100
                       hover:bg-slate-200
@@ -279,15 +297,15 @@ export default function Navbar() {
                       gap-3
                       hover:bg-slate-100
                       rounded-2xl
-                      px-3
-                      py-2
+                      px-2
+                      py-1.5
                       transition
                     "
                   >
                     {/* AVATAR */}
                     <div
                       className="
-                        w-11 h-11
+                        w-10 h-10
                         rounded-full
                         bg-orange-100
                         flex
@@ -299,7 +317,7 @@ export default function Navbar() {
                         className="
                           text-orange-500
                         "
-                        size={28}
+                        size={22}
                       />
                     </div>
 
@@ -317,7 +335,7 @@ export default function Navbar() {
 
                       <p
                         className="
-                          text-xs
+                          text-[11px]
                           text-slate-500
                           capitalize
                         "
@@ -481,10 +499,10 @@ export default function Navbar() {
                 md:hidden
                 w-12 h-12
                 rounded-2xl
-                bg-white/15
+                bg-white/80
                 border
                 border-white/10
-                text-white
+                text-[#2B1D16]
                 flex
                 items-center
                 justify-center
@@ -524,6 +542,71 @@ export default function Navbar() {
           `}
         >
           {/* TOP */}
+
+          <nav className="mt-12 flex flex-col gap-5">
+            <NavLink
+              to="/"
+              onClick={() => setIsOpen(false)}
+              className="text-white text-lg font-medium"
+            >
+              Beranda
+            </NavLink>
+
+            <NavLink
+              to="/pelatihan"
+              onClick={() => setIsOpen(false)}
+              className="text-white text-lg font-medium"
+            >
+              Pelatihan
+            </NavLink>
+
+            <NavLink
+              to="/sertifikasi"
+              onClick={() => setIsOpen(false)}
+              className="text-white text-lg font-medium"
+            >
+              Sertifikasi
+            </NavLink>
+
+            <NavLink
+              to="/blog"
+              onClick={() => setIsOpen(false)}
+              className="text-white text-lg font-medium"
+            >
+              Blog
+            </NavLink>
+
+            <NavLink
+              to="/about"
+              onClick={() => setIsOpen(false)}
+              className="text-white text-lg font-medium"
+            >
+              Tentang Kami
+            </NavLink>
+          </nav>
+
+          <div className="mt-10 flex flex-col gap-4">
+            <button
+              onClick={() => {
+                navigate("/login");
+                setIsOpen(false);
+              }}
+              className="w-full h-12 rounded-2xl border border-white/10 text-white font-semibold"
+            >
+              Login
+            </button>
+
+            <button
+              onClick={() => {
+                navigate("/register");
+                setIsOpen(false);
+              }}
+              className="w-full h-12 rounded-2xl bg-orange-500 text-white font-semibold"
+            >
+              Sign Up
+            </button>
+          </div>
+
           <div className="flex items-center justify-between">
             <h2
               className="

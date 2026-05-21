@@ -8,7 +8,8 @@ import Blog from "./pages/frontend/Blog";
 import BlogDetail from "./pages/frontend/BlogDetail";
 import About from "./pages/frontend/About";
 import Notifications from "./pages/frontend/Notifications";
-import Program from "./pages/frontend/Program";
+import Bootcamp from "./pages/frontend/Bootcamp";
+import BootcampDetail from "./pages/frontend/BootcampDetail";
 
 import Dashboard from "./pages/admin/Dashboard";
 import IndexPelatihan from "./pages/admin/Pelatihan/Index";
@@ -26,14 +27,13 @@ export default function App() {
     <BrowserRouter>
       <ScrollToTop />
       <Routes>
-
         {/* FRONTEND */}
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/:slug" element={<BlogDetail />} />
-
-        <Route path="/program" element={<Program />} />
+        <Route path="/pelatihan" element={<Bootcamp />} />
+        <Route path="/pelatihan/:slug" element={<BootcampDetail />} />
 
         {/* AUTH */}
         <Route path="/login" element={<Login />} />
@@ -56,12 +56,12 @@ export default function App() {
           path="/admin/pelatihan"
           element={
             <RouteAdmin>
-          <IndexPelatihan />
+              <IndexPelatihan />
             </RouteAdmin>
           }
         />
 
-      <Route
+        <Route
           path="/admin/pelatihan/create"
           element={
             <RouteAdmin>
@@ -106,7 +106,6 @@ export default function App() {
             </RouteAdmin>
           }
         />
-
       </Routes>
     </BrowserRouter>
   );
