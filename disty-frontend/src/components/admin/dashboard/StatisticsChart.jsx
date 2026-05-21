@@ -248,7 +248,7 @@ export default function StatisticsChart({
                     <div className="w-full h-[420px] min-h-[420px]">
                         <ResponsiveContainer
                             width="100%"
-                            height="100%"
+                            height={420}
                         >
                             <AreaChart
                                 data={chartData}
