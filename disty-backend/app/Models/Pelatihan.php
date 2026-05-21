@@ -11,27 +11,43 @@ class Pelatihan extends Model
 
     protected $table = 'pelatihans';
     protected $fillable = [
-        'nama_pelatihan',
+        'title',
         'slug',
-        'tanggal_pelatihan',
+        'short_description',
+        'deskripsi',
+        'thumbnail',
         'harga',
         'durasi',
         'bahasa',
-        'deskripsi',
-        'materi',
+        'level',
         'kategori',
-        'link_grup',
+        'status',
+        'materi',
+        'benefits',
         'tanggal_pelatihan',
-        'sampul',
+        'link_grup',
     ];
+
+    protected $appends = [
+        'thumbnail_url',
+    ];
+
+    protected $casts = [
+        'materi' => 'array',
+        'benefits' => 'array',
+    ];
+
+    public function getThumbnailUrlAttribute()
+    {
+        return $this->thumbnail
+            ? asset('uploads/pelatihan/' . $this->thumbnail)
+            : null;
+    }
 
     public function transaksi()
     {
         return $this->hasMany(TransaksiPelatihan::class, 'pelatihan_id');
     }
 
-    public function transaksiPelatihan()
-    {
-        return $this->hasMany(TransaksiPelatihan::class);
-    }
+
 }
