@@ -38,6 +38,7 @@ export default function BootcampSection() {
 
   return (
     <section className="relative overflow-hidden bg-[#fffaf5] py-10">
+      <h1>TEST BOOTCAMP</h1>
       {/* Glow */}
       <div className="absolute top-0 left-0 w-[400px] h-[400px] bg-orange-300/20 blur-3xl rounded-full"></div>
 
@@ -46,7 +47,7 @@ export default function BootcampSection() {
           {/* LEFT */}
           <div className="max-w-2xl">
             <h2 className="text-4xl lg:text-6xl font-black leading-[1.05] text-[#2B1D16]">
-              Temukan Pelatihan
+              Temukan Pelatihan test
               <span className="block text-orange-500">
                 Sesuai Minat dan Skillmu
               </span>
