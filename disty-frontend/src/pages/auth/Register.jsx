@@ -16,6 +16,7 @@ export default function Register() {
     const [formData, setFormData] =
         useState({
             name: "",
+            username: "",
             email: "",
             password: "",
             password_confirmation: "",
@@ -176,6 +177,22 @@ export default function Register() {
                                     name="name"
                                     className="form-control"
                                     value={formData.name}
+                                    onChange={handleInputChange}
+                                    required
+                                />
+
+                            </div>
+
+                            <div className="mb-3">
+                                <label className="form-label">
+                                    Username
+                                </label>
+
+                                <input
+                                    type="text"
+                                    name="username"
+                                    className="form-control"
+                                    value={formData.username}
                                     onChange={handleInputChange}
                                     required
                                 />
