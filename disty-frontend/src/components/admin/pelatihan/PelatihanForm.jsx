@@ -3,96 +3,86 @@ import { useState } from "react";
 import RichTextEditor from "../../shared/RichTextEditor";
 import { useNavigate } from "react-router-dom";
 
-export default function PelatihanForm({
-    onSubmit,
-    editData = null,
-}) {
+export default function PelatihanForm({ onSubmit, editData = null }) {
+  const navigate = useNavigate();
 
-    const navigate = useNavigate();
+  const [form, setForm] = useState({
+    title: editData?.title || "",
 
-    const [form, setForm] = useState({
-        title:
-            editData?.title || "",
+    short_description: editData?.short_description || "",
 
-        deskripsi:
-            editData?.deskripsi || "",
+    deskripsi: editData?.deskripsi || "",
 
-        materi:
-            editData?.materi || "",
+    materi: editData?.materi || "",
 
-        kategori:
-            editData?.kategori || "gratis",
+    kategori: editData?.kategori || "gratis",
 
-        link_grup:
-            editData?.link_grup || "",
+    level: editData?.level || "Beginner",
 
-        durasi:
-            editData?.durasi || "",
+    status: editData?.status || "published",
 
-        harga:
-            editData?.harga || 0,
+    link_grup: editData?.link_grup || "",
 
-        bahasa:
-            editData?.bahasa || "",
+    durasi: editData?.durasi || "",
 
-        tanggal_pelatihan:
-            editData?.tanggal_pelatihan || "",
+    harga: editData?.harga || 0,
 
-        thumbnail: null,
-    });
+    bahasa: editData?.bahasa || "",
 
-    const handleChange = (e) => {
+    tanggal_pelatihan: editData?.tanggal_pelatihan || "",
 
-        const {
-            name,
-            value,
-            files,
-        } = e.target;
+    thumbnail: null,
+  });
 
-        setForm((prev) => ({
-            ...prev,
-            [name]:
-                files && files.length > 0
-                    ? files[0]
-                    : value,
-        }));
+  const handleChange = (e) => {
+    const { name, value, files } = e.target;
 
-    };
+    setForm((prev) => ({
+      ...prev,
+      [name]: files && files.length > 0 ? files[0] : value,
+    }));
+  };
 
-    const handleSubmit =
-        async (e) => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-            e.preventDefault();
+    const formData = new FormData();
 
-            const formData =
-                new FormData();
+    formData.append("title", form.title);
 
-            Object.keys(form).forEach(
-                (key) => {
+    formData.append("short_description", form.short_description);
 
-                    if (
-                        form[key] !== null
-                    ) {
+    formData.append("deskripsi", form.deskripsi);
 
-                        formData.append(
-                            key,
-                            form[key]
-                        );
+    formData.append("materi", form.materi);
 
-                    }
+    formData.append("kategori", form.kategori);
 
-                }
-            );
+    formData.append("level", form.level);
 
-            await onSubmit(formData);
+    formData.append("status", form.status);
 
-        };
+    formData.append("link_grup", form.link_grup);
 
-    return (
+    formData.append("durasi", form.durasi);
 
-        <form
-            onSubmit={handleSubmit}
-            className="
+    formData.append("harga", form.harga);
+
+    formData.append("bahasa", form.bahasa);
+
+    formData.append("tanggal_pelatihan", form.tanggal_pelatihan);
+
+    if (form.thumbnail) {
+      formData.append("thumbnail", form.thumbnail);
+    }
+
+    await onSubmit(formData);
+  };
+
+  return (
+    <form
+      onSubmit={handleSubmit}
+      className="
                 bg-white
                 rounded-[35px]
                 shadow-sm
@@ -100,9 +90,10 @@ export default function PelatihanForm({
                 border-slate-100
                 overflow-hidden
             "
-        >
-            {/* TOP NAVIGATION */}
-            <div className="
+    >
+      {/* TOP NAVIGATION */}
+      <div
+        className="
                 flex
                 flex-col
                 md:flex-row
@@ -113,21 +104,22 @@ export default function PelatihanForm({
                 bg-slate-50
                 border-b
                 border-slate-100
-            ">
-
-                {/* LEFT */}
-                <div className="
+            "
+      >
+        {/* LEFT */}
+        <div
+          className="
                     flex
                     flex-wrap
                     items-center
                     gap-3
-                ">
-
-                    {/* BACK */}
-                    <button
-                        type="button"
-                        onClick={() => navigate(-1)}
-                        className="
+                "
+        >
+          {/* BACK */}
+          <button
+            type="button"
+            onClick={() => navigate(-1)}
+            className="
                             flex
                             items-center
                             gap-2
@@ -143,24 +135,21 @@ export default function PelatihanForm({
                             text-slate-700
                             shadow-sm
                         "
-                    >
-
-                        <i className="
+          >
+            <i
+              className="
                             fas
                             fa-arrow-left
-                        "></i>
+                        "
+            ></i>
+            Kembali
+          </button>
 
-                        Kembali
-
-                    </button>
-
-                    {/* HOME */}
-                    <button
-                        type="button"
-                        onClick={() =>
-                            navigate("/dashboard")
-                        }
-                        className="
+          {/* HOME */}
+          <button
+            type="button"
+            onClick={() => navigate("/dashboard")}
+            className="
                             flex
                             items-center
                             gap-2
@@ -175,21 +164,20 @@ export default function PelatihanForm({
                             shadow-lg
                             shadow-blue-200
                         "
-                    >
-
-                        <i className="
+          >
+            <i
+              className="
                             fas
                             fa-home
-                        "></i>
+                        "
+            ></i>
+            Beranda
+          </button>
+        </div>
 
-                        Beranda
-
-                    </button>
-
-                </div>
-
-                {/* STATUS */}
-                <div className="
+        {/* STATUS */}
+        <div
+          className="
                     flex
                     items-center
                     gap-3
@@ -200,97 +188,88 @@ export default function PelatihanForm({
                     text-orange-600
                     font-bold
                     w-fit
-                ">
-
-                    <div className="
+                "
+        >
+          <div
+            className="
                         w-3
                         h-3
                         rounded-full
                         bg-orange-500
                         animate-pulse
-                    "></div>
+                    "
+          ></div>
 
-                    {
-                        editData
-                            ? "Mode Edit Pelatihan"
-                            : "Mode Tambah Pelatihan"
-                    }
+          {editData ? "Mode Edit Pelatihan" : "Mode Tambah Pelatihan"}
+        </div>
+      </div>
 
-                </div>
-
-            </div>
-        
-            {/* HEADER */}
-            <div className="
+      {/* HEADER */}
+      <div
+        className="
                 bg-gradient-to-r
                 from-orange-500
                 to-orange-400
                 p-8
                 text-white
-            ">
-
-                <h2 className="
+            "
+      >
+        <h2
+          className="
                     text-4xl
                     font-black
-                ">
+                "
+        >
+          {editData ? "Edit Pelatihan" : "Tambah Pelatihan"}
+        </h2>
 
-                    {
-                        editData
-                            ? "Edit Pelatihan"
-                            : "Tambah Pelatihan"
-                    }
-
-                </h2>
-
-                <p className="
+        <p
+          className="
                     text-orange-100
                     mt-2
-                ">
+                "
+        >
+          Kelola data pelatihan dengan mudah
+        </p>
+      </div>
 
-                    Kelola data pelatihan dengan mudah
-
-                </p>
-
-            </div>
-
-            {/* BODY */}
-            <div className="
+      {/* BODY */}
+      <div
+        className="
                 p-8
                 space-y-8
-            ">
-
-                {/* GRID */}
-                <div className="
+            "
+      >
+        {/* GRID */}
+        <div
+          className="
                     grid
                     grid-cols-1
                     md:grid-cols-2
                     gap-6
-                ">
-
-                    {/* NAMA */}
-                    <div className="md:col-span-2">
-
-                        <label className="
+                "
+        >
+          {/* NAMA */}
+          <div className="md:col-span-2">
+            <label
+              className="
                             block
                             text-sm
                             font-bold
                             text-slate-700
                             mb-2
-                        ">
+                        "
+            >
+              Nama Pelatihan
+            </label>
 
-                            Nama Pelatihan
-
-                        </label>
-
-                        <input
-                            type="text"
-                            name="title"
-                            value={
-                                form.title
-                            }
-                            onChange={handleChange}
-                            placeholder="Masukkan nama pelatihan"
-                            className="
+            <input
+              type="text"
+              name="title"
+              value={form.title}
+              onChange={handleChange}
+              placeholder="Masukkan nama pelatihan"
+              className="
                                 w-full
                                 p-4
                                 rounded-2xl
@@ -300,33 +279,31 @@ export default function PelatihanForm({
                                 focus:ring-4
                                 focus:ring-orange-200
                             "
-                            required
-                        />
+              required
+            />
+          </div>
 
-                    </div>
-
-                    {/* BAHASA */}
-                    <div>
-
-                        <label className="
+          {/* BAHASA */}
+          <div>
+            <label
+              className="
                             block
                             text-sm
                             font-bold
                             text-slate-700
                             mb-2
-                        ">
+                        "
+            >
+              Bahasa
+            </label>
 
-                            Bahasa
-
-                        </label>
-
-                        <input
-                            type="text"
-                            name="bahasa"
-                            value={form.bahasa}
-                            onChange={handleChange}
-                            placeholder="Contoh: Indonesia"
-                            className="
+            <input
+              type="text"
+              name="bahasa"
+              value={form.bahasa}
+              onChange={handleChange}
+              placeholder="Contoh: Indonesia"
+              className="
                                 w-full
                                 p-4
                                 rounded-2xl
@@ -336,33 +313,31 @@ export default function PelatihanForm({
                                 focus:ring-4
                                 focus:ring-orange-200
                             "
-                            required
-                        />
+              required
+            />
+          </div>
 
-                    </div>
-
-                    {/* DURASI */}
-                    <div>
-
-                        <label className="
+          {/* DURASI */}
+          <div>
+            <label
+              className="
                             block
                             text-sm
                             font-bold
                             text-slate-700
                             mb-2
-                        ">
+                        "
+            >
+              Durasi
+            </label>
 
-                            Durasi
-
-                        </label>
-
-                        <input
-                            type="text"
-                            name="durasi"
-                            value={form.durasi}
-                            onChange={handleChange}
-                            placeholder="Contoh: 2 Jam"
-                            className="
+            <input
+              type="text"
+              name="durasi"
+              value={form.durasi}
+              onChange={handleChange}
+              placeholder="Contoh: 2 Jam"
+              className="
                                 w-full
                                 p-4
                                 rounded-2xl
@@ -372,32 +347,30 @@ export default function PelatihanForm({
                                 focus:ring-4
                                 focus:ring-orange-200
                             "
-                            required
-                        />
+              required
+            />
+          </div>
 
-                    </div>
-
-                    {/* KATEGORI */}
-                    <div>
-                        <label className="
+          {/* KATEGORI */}
+          <div>
+            <label
+              className="
                             block
                             text-sm
                             font-bold
                             text-slate-700
                             mb-2
-                        ">
+                        "
+            >
+              Kategori
+            </label>
 
-                            Kategori
-
-                        </label>
-
-                        <div className="relative">
-
-                            <select
-                                name="kategori"
-                                value={form.kategori}
-                                onChange={handleChange}
-                                className="
+            <div className="relative">
+              <select
+                name="kategori"
+                value={form.kategori}
+                onChange={handleChange}
+                className="
                                     w-full
                                     appearance-none
                                     p-4
@@ -412,65 +385,55 @@ export default function PelatihanForm({
                                     focus:ring-orange-200
                                     cursor-pointer
                                 "
-                            >
+              >
+                <option value="gratis">Gratis</option>
 
-                                <option value="gratis">
-                                    Gratis
-                                </option>
+                <option value="berbayar">Berbayar</option>
+              </select>
 
-                                <option value="berbayar">
-                                    Berbayar
-                                </option>
-
-                            </select>
-
-                            {/* ICON */}
-                            <div className="
+              {/* ICON */}
+              <div
+                className="
                                 absolute
                                 right-5
                                 top-1/2
                                 -translate-y-1/2
                                 pointer-events-none
                                 text-slate-400
-                            ">
-
-                                <i className="
+                            "
+              >
+                <i
+                  className="
                                     fas
                                     fa-chevron-down
-                                "></i>
+                                "
+                ></i>
+              </div>
+            </div>
+          </div>
 
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                    {/* HARGA */}
-                    <div>
-
-                        <label className="
+          {/* HARGA */}
+          <div>
+            <label
+              className="
                             block
                             text-sm
                             font-bold
                             text-slate-700
                             mb-2
-                        ">
+                        "
+            >
+              Harga
+            </label>
 
-                            Harga
-
-                        </label>
-
-                        <input
-                            type="number"
-                            name="harga"
-                            value={form.harga}
-                            onChange={handleChange}
-                            disabled={
-                                form.kategori ===
-                                "gratis"
-                            }
-                            placeholder="Masukkan harga"
-                            className="
+            <input
+              type="number"
+              name="harga"
+              value={form.harga}
+              onChange={handleChange}
+              disabled={form.kategori === "gratis"}
+              placeholder="Masukkan harga"
+              className="
                                 w-full
                                 p-4
                                 rounded-2xl
@@ -481,33 +444,29 @@ export default function PelatihanForm({
                                 focus:ring-4
                                 focus:ring-orange-200
                             "
-                        />
+            />
+          </div>
 
-                    </div>
-
-                    {/* TANGGAL */}
-                    <div className="md:col-span-2">
-
-                        <label className="
+          {/* TANGGAL */}
+          <div className="md:col-span-2">
+            <label
+              className="
                             block
                             text-sm
                             font-bold
                             text-slate-700
                             mb-2
-                        ">
+                        "
+            >
+              Tanggal Pelatihan
+            </label>
 
-                            Tanggal Pelatihan
-
-                        </label>
-
-                        <input
-                            type="date"
-                            name="tanggal_pelatihan"
-                            value={
-                                form.tanggal_pelatihan
-                            }
-                            onChange={handleChange}
-                            className="
+            <input
+              type="date"
+              name="tanggal_pelatihan"
+              value={form.tanggal_pelatihan}
+              onChange={handleChange}
+              className="
                                 w-full
                                 p-4
                                 rounded-2xl
@@ -517,33 +476,31 @@ export default function PelatihanForm({
                                 focus:ring-4
                                 focus:ring-orange-200
                             "
-                            required
-                        />
+              required
+            />
+          </div>
 
-                    </div>
-
-                    {/* LINK */}
-                    <div className="md:col-span-2">
-
-                        <label className="
+          {/* LINK */}
+          <div className="md:col-span-2">
+            <label
+              className="
                             block
                             text-sm
                             font-bold
                             text-slate-700
                             mb-2
-                        ">
+                        "
+            >
+              Link Grup
+            </label>
 
-                            Link Grup
-
-                        </label>
-
-                        <input
-                            type="text"
-                            name="link_grup"
-                            value={form.link_grup}
-                            onChange={handleChange}
-                            placeholder="Masukkan link grup"
-                            className="
+            <input
+              type="text"
+              name="link_grup"
+              value={form.link_grup}
+              onChange={handleChange}
+              placeholder="Masukkan link grup"
+              className="
                                 w-full
                                 p-4
                                 rounded-2xl
@@ -553,33 +510,65 @@ export default function PelatihanForm({
                                 focus:ring-4
                                 focus:ring-orange-200
                             "
-                            required
-                        />
+              required
+            />
+          </div>
 
-                    </div>
+          {/* SHORT DESCRIPTION */}
+          <div className="md:col-span-2">
+            <label
+              className="
+        block
+        text-sm
+        font-bold
+        text-slate-700
+        mb-2
+    "
+            >
+              Short Description
+            </label>
 
-                    {/* DESKRIPSI */}
-                    <div className="md:col-span-2">
+            <textarea
+              rows="3"
+              name="short_description"
+              value={form.short_description}
+              onChange={handleChange}
+              placeholder="Deskripsi singkat pelatihan"
+              className="
+            w-full
+            p-4
+            rounded-2xl
+            border
+            border-slate-200
+            focus:outline-none
+            focus:ring-4
+            focus:ring-orange-200
+        "
+              required
+            />
+          </div>
 
-                        <label className="
+          {/* DESKRIPSI */}
+          <div className="md:col-span-2">
+            <label
+              className="
                             block
                             text-sm
                             font-bold
                             text-slate-700
                             mb-2
-                        ">
+                        "
+            >
+              Deskripsi
+            </label>
 
-                            Deskripsi
-
-                        </label>
-
-                        <textarea
-                            rows="5"
-                            name="deskripsi"
-                            value={form.deskripsi}
-                            onChange={handleChange}
-                            placeholder="Masukkan deskripsi pelatihan"
-                            className="
+            <textarea
+              rows="5"
+              name="deskripsi"
+              value={form.deskripsi}
+              onChange={handleChange}
+              placeholder="Masukkan deskripsi pelatihan"
+              className="
                                 w-full
                                 p-4
                                 rounded-2xl
@@ -589,64 +578,60 @@ export default function PelatihanForm({
                                 focus:ring-4
                                 focus:ring-orange-200
                             "
-                            required
-                        />
+              required
+            />
+          </div>
 
-                    </div>
-
-                    {/* MATERI */}
-                    <div className="md:col-span-2">
-
-                        <label className="
+          {/* MATERI */}
+          <div className="md:col-span-2">
+            <label
+              className="
                             block
                             text-sm
                             font-bold
                             text-slate-700
                             mb-2
-                        ">
+                        "
+            >
+              Materi
+            </label>
 
-                            Materi
-
-                        </label>
-
-                        <div className="
+            <div
+              className="
                             border
                             border-slate-200
                             rounded-2xl
                             overflow-hidden
-                        ">
+                        "
+            >
+              <RichTextEditor
+                value={form.materi}
+                onChange={(value) =>
+                  setForm((prev) => ({
+                    ...prev,
+                    materi: value,
+                  }))
+                }
+              />
+            </div>
+          </div>
 
-                            <RichTextEditor
-                                content={form.materi}
-                                onChange={(value) =>
-                                    setForm((prev) => ({
-                                        ...prev,
-                                        materi: value,
-                                    }))
-                                }
-                            />
-
-                        </div>
-
-                    </div>
-
-                    {/* SAMPUL */}
-                    <div className="md:col-span-2">
-
-                        <label className="
+          {/* THUMBNAIL */}
+          <div className="md:col-span-2">
+            <label
+              className="
                             block
                             text-sm
                             font-bold
                             text-slate-700
                             mb-2
-                        ">
+                        "
+            >
+              Thumbnail Pelatihan
+            </label>
 
-                            Sampul Pelatihan
-
-                        </label>
-
-                        <label
-                            className="
+            <label
+              className="
                                 flex
                                 items-center
                                 justify-center
@@ -662,16 +647,12 @@ export default function PelatihanForm({
                                 overflow-hidden
                                 relative
                             "
-                        >
-
-                            {
-                                form.thumbnail
-                                    ? (
-
-                                        <img
-                                            src={URL.createObjectURL(form.thumbnail)}
-                                            alt=""
-                                            className="
+            >
+              {form.thumbnail ? (
+                <img
+                  src={URL.createObjectURL(form.thumbnail)}
+                  alt=""
+                  className="
                                                 absolute
                                                 inset-0
                                                 w-full
@@ -679,14 +660,12 @@ export default function PelatihanForm({
                                                 object-contain
                                                 bg-white
                                             "
-                                        />
-
-                                    ) : editData?.thumbnail ? (
-
-                                        <img
-                                            src={`http://127.0.0.1:8000/uploads/pelatihan/${editData.thumbnail}`}
-                                            alt=""
-                                            className="
+                />
+              ) : editData?.thumbnail ? (
+                <img
+                  src={`http://127.0.0.1:8000/uploads/pelatihan/${editData.thumbnail}`}
+                  alt=""
+                  className="
                                                 absolute
                                                 inset-0
                                                 w-full
@@ -694,16 +673,16 @@ export default function PelatihanForm({
                                                 object-contain
                                                 bg-white
                                             "
-                                        />
-
-                                    ) : (
-
-                                        <div className="
+                />
+              ) : (
+                <div
+                  className="
                                             text-center
                                             z-10
-                                        ">
-
-                                            <div className="
+                                        "
+                >
+                  <div
+                    className="
                                                 w-20
                                                 h-20
                                                 rounded-full
@@ -713,63 +692,58 @@ export default function PelatihanForm({
                                                 justify-center
                                                 mx-auto
                                                 mb-4
-                                            ">
-
-                                                <i className="
+                                            "
+                  >
+                    <i
+                      className="
                                                     fas
                                                     fa-cloud-upload-alt
                                                     text-3xl
                                                     text-orange-500
-                                                "></i>
+                                                "
+                    ></i>
+                  </div>
 
-                                            </div>
-
-                                            <p className="
+                  <p
+                    className="
                                                 font-bold
                                                 text-slate-700
-                                            ">
+                                            "
+                  >
+                    Upload Gambar
+                  </p>
 
-                                                Upload Gambar
-
-                                            </p>
-
-                                            <p className="
+                  <p
+                    className="
                                                 text-sm
                                                 text-slate-400
                                                 mt-2
-                                            ">
+                                            "
+                  >
+                    JPG, PNG maksimal 2MB
+                  </p>
+                </div>
+              )}
 
-                                                JPG, PNG maksimal 2MB
-
-                                            </p>
-
-                                        </div>
-
-                                    )
-                            }
-
-                            <input
-                                type="file"
-                                name="thumbnail"
-                                accept="
+              <input
+                type="file"
+                name="thumbnail"
+                accept="
                                     image/png,
                                     image/jpeg,
                                     image/jpg
                                 "
-                                onChange={handleChange}
-                                className="hidden"
-                            />
+                onChange={handleChange}
+                className="hidden"
+              />
+            </label>
+          </div>
+        </div>
+      </div>
 
-                        </label>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            {/* FOOTER */}
-            <div className="
+      {/* FOOTER */}
+      <div
+        className="
                 p-8
                 border-t
                 border-slate-100
@@ -777,11 +751,11 @@ export default function PelatihanForm({
                 items-center
                 justify-end
                 gap-4
-            ">
-
-                <button
-                    type="button"
-                    className="
+            "
+      >
+        <button
+          type="button"
+          className="
                         px-6
                         py-4
                         rounded-2xl
@@ -790,15 +764,13 @@ export default function PelatihanForm({
                         font-bold
                         transition
                     "
-                >
+        >
+          Batal
+        </button>
 
-                    Batal
-
-                </button>
-
-                <button
-                    type="submit"
-                    className="
+        <button
+          type="submit"
+          className="
                         px-8
                         py-4
                         rounded-2xl
@@ -810,19 +782,10 @@ export default function PelatihanForm({
                         shadow-orange-200
                         transition
                     "
-                >
-
-                    {
-                        editData
-                            ? "Update Pelatihan"
-                            : "Simpan Pelatihan"
-                    }
-
-                </button>
-
-            </div>
-
-        </form>
-
-    );
+        >
+          {editData ? "Update Pelatihan" : "Simpan Pelatihan"}
+        </button>
+      </div>
+    </form>
+  );
 }

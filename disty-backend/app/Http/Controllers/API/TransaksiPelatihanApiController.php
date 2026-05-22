@@ -37,7 +37,7 @@ class TransaksiPelatihanApiController extends Controller
                 'required',
 
             'paymentMethod' =>
-                'nullable'
+                'nullable|in:transfer,ewallet',
         ]);
 
         $pelatihan =
@@ -50,6 +50,31 @@ class TransaksiPelatihanApiController extends Controller
             $pelatihan->kategori === 'gratis'
             ? 'gratis'
             : $request->paymentMethod;
+
+        $kode = 'DSTY-' . now()->format('Ymd') . '-' . rand(100, 999);
+
+        $existing = TransaksiPelatihan::where(
+            'user_id',
+            Auth::id()
+        )
+            ->where(
+                'pelatihan_id',
+                $pelatihan->id
+            )
+            ->whereIn('status', [
+                'pending',
+                'paid',
+                'completed'
+            ])
+            ->first();
+
+        if ($existing) {
+
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Anda sudah terdaftar pada pelatihan ini'
+            ], 400);
+        }
 
         // create transaksi
         $transaksi =
@@ -73,7 +98,16 @@ class TransaksiPelatihanApiController extends Controller
                 'metode_pembayaran' =>
                     $metode,
 
-                'status' => 'pending',
+                'kode_transaksi' =>
+                    $kode,
+
+                'total_harga' =>
+                    $pelatihan->harga,
+
+                'status' =>
+                    $pelatihan->kategori === 'gratis'
+                    ? 'completed'
+                    : 'pending',
             ]);
 
         // notif
@@ -90,7 +124,7 @@ class TransaksiPelatihanApiController extends Controller
                     'Pendaftaran Berhasil! 🎉',
 
                 'message' =>
-                    "Anda berhasil mendaftar pelatihan \"{$pelatihan->nama_pelatihan}\".",
+                    "Anda berhasil mendaftar pelatihan \"{$pelatihan->title}\".",
 
                 'icon' =>
                     'fas fa-check-circle',
@@ -133,7 +167,7 @@ class TransaksiPelatihanApiController extends Controller
                 'Pendaftaran Berhasil! ✅',
 
             'message' =>
-                "Anda berhasil mendaftar pelatihan \"{$pelatihan->nama_pelatihan}\".",
+                "Anda berhasil mendaftar pelatihan \"{$pelatihan->title}\".",
 
             'icon' =>
                 'fas fa-info-circle',
