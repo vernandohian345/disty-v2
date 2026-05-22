@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Pelatihan;
+use App\Http\Resources\PelatihanResource;
 use Illuminate\Http\Request;
 
 class FrontendPelatihanApiController extends Controller
@@ -11,7 +12,22 @@ class FrontendPelatihanApiController extends Controller
     // ✅ LIST PELATIHAN
     public function index(Request $request)
     {
-        $query = Pelatihan::query();
+        $query = Pelatihan::select([
+            'id',
+            'title',
+            'slug',
+            'short_description',
+            'thumbnail',
+            'harga',
+            'durasi',
+            'bahasa',
+            'level',
+            'kategori',
+            'status',
+            'created_at',
+        ]);
+
+        $query->where('status', 'published');
 
         // search
         if ($request->filled('q')) {
@@ -21,28 +37,31 @@ class FrontendPelatihanApiController extends Controller
                 $request->q
             );
 
-            $query->where(function ($q)
-            use ($keywords) {
+            $query->where(function ($q) use ($keywords) {
 
                 foreach ($keywords as $word) {
 
                     $q->orWhere(
-                        'nama_pelatihan',
+                        'title',
                         'like',
                         '%' . $word . '%'
                     )
 
-                    ->orWhere(
-                        'deskripsi',
-                        'like',
-                        '%' . $word . '%'
-                    )
+                        ->orWhere(
+                            'deskripsi',
+                            'like',
+                            '%' . $word . '%'
+                        )
 
-                    ->orWhere(
-                        'materi',
-                        'like',
-                        '%' . $word . '%'
-                    );
+                        ->orWhereJsonContains(
+                            'materi',
+                            $word
+                        )
+
+                        ->orWhereJsonContains(
+                            'benefits',
+                            $word
+                        );
                 }
             });
         }
@@ -62,7 +81,7 @@ class FrontendPelatihanApiController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'data' => $pelatihans
+            'data' => PelatihanResource::collection($pelatihans)
         ]);
     }
 
@@ -76,14 +95,17 @@ class FrontendPelatihanApiController extends Controller
 
         // rekomendasi
         $rekomendasi = Pelatihan::where(
-                'id',
-                '!=',
-                $pelatihan->id
-            )
+            'id',
+            '!=',
+            $pelatihan->id
+        )
             ->where(
                 'kategori',
                 $pelatihan->kategori
             )
+
+            ->where('status', 'published')
+
             ->inRandomOrder()
             ->take(4)
             ->get();
@@ -91,9 +113,9 @@ class FrontendPelatihanApiController extends Controller
         return response()->json([
             'status' => 'success',
 
-            'pelatihan' => $pelatihan,
+            'pelatihan' => new PelatihanResource($pelatihan),
 
-            'rekomendasi' => $rekomendasi
+            'rekomendasi' => PelatihanResource::collection($rekomendasi)
         ]);
     }
 }

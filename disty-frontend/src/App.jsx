@@ -8,7 +8,10 @@ import Blog from "./pages/frontend/Blog";
 import BlogDetail from "./pages/frontend/BlogDetail";
 import About from "./pages/frontend/About";
 import Notifications from "./pages/frontend/Notifications";
-import Program from "./pages/frontend/Program";
+import Bootcamp from "./pages/frontend/Bootcamp";
+import BootcampDetail from "./pages/frontend/BootcampDetail";
+import Checkout from "./pages/frontend/Checkout";
+import Success from "./pages/frontend/Success";
 
 import Dashboard from "./pages/admin/Dashboard";
 import IndexPelatihan from "./pages/admin/Pelatihan/Index";
@@ -29,14 +32,15 @@ export default function App() {
     <BrowserRouter>
       <ScrollToTop />
       <Routes>
-
         {/* FRONTEND */}
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/:slug" element={<BlogDetail />} />
-
-        <Route path="/program" element={<Program />} />
+        <Route path="/pelatihan" element={<Bootcamp />} />
+        <Route path="/pelatihan/:slug" element={<BootcampDetail />} />
+        <Route path="/checkout/:slug" element={<Checkout />} />
+        <Route path="/success" element={<Success />} />
 
         {/* AUTH */}
         <Route path="/login" element={<Login />} />
@@ -59,12 +63,12 @@ export default function App() {
           path="/admin/pelatihan"
           element={
             <RouteAdmin>
-          <IndexPelatihan />
+              <IndexPelatihan />
             </RouteAdmin>
           }
         />
 
-      <Route
+        <Route
           path="/admin/pelatihan/create"
           element={
             <RouteAdmin>
@@ -73,16 +77,16 @@ export default function App() {
           }
         />
 
-       <Route
+        <Route
           path="/admin/sertifikasi"
           element={
             <RouteAdmin>
-          <IndexSertifikasi />
+              <IndexSertifikasi />
             </RouteAdmin>
           }
         />
 
-       <Route
+        <Route
           path="/admin/sertifikasi/create"
           element={
             <RouteAdmin>
@@ -91,7 +95,7 @@ export default function App() {
           }
         />
 
-          {/* <Route
+        {/* <Route
             path="/admin/sertifikasi"
             element={
               <RouteAdmin>
@@ -120,24 +124,23 @@ export default function App() {
         />
 
         {/* USER ADMIN */}
-          <Route
-            path="/admin/users"
-            element={
-                <RouteAdmin>
-                    <IndexUser />
-                </RouteAdmin>
-            } 
+        <Route
+          path="/admin/users"
+          element={
+            <RouteAdmin>
+              <IndexUser />
+            </RouteAdmin>
+          }
         />
 
         <Route
-            path="/admin/users/create"
-            element={
-                <RouteAdmin>
-                    <CreateUser />
-                </RouteAdmin>
-            }
+          path="/admin/users/create"
+          element={
+            <RouteAdmin>
+              <CreateUser />
+            </RouteAdmin>
+          }
         />
-
       </Routes>
     </BrowserRouter>
   );

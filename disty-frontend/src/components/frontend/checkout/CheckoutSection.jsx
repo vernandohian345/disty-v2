@@ -1,0 +1,238 @@
+import { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+
+export default function CheckoutSection() {
+  const [bootcamp, setBootcamp] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchBootcamp();
+  }, [slug]);
+  const { slug } = useParams();
+  const navigate = useNavigate();
+
+  const fetchBootcamp = async () => {
+    try {
+      setLoading(true);
+
+      const response = await fetch(
+        `http://127.0.0.1:8000/api/frontend/pelatihan/${slug}`,
+      );
+
+      const result = await response.json();
+
+      setBootcamp(result.pelatihan);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <section className="py-32 text-center">
+        <h2 className="text-2xl font-bold text-orange-500">
+          Memuat Checkout...
+        </h2>
+      </section>
+    );
+  }
+
+  if (!bootcamp) {
+    return null;
+  }
+
+  return (
+    <section className="relative overflow-hidden bg-[#fffaf5] py-24">
+      {/* Glow */}
+      <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-orange-300/20 blur-3xl rounded-full"></div>
+
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-start">
+          {/* LEFT */}
+          <div>
+            {/* Thumbnail */}
+            <div className="overflow-hidden rounded-[36px]">
+              <img
+                src={bootcamp.thumbnail_url}
+                alt={bootcamp.title}
+                className="w-full h-[380px] object-cover"
+              />
+            </div>
+
+            {/* Content */}
+            <div className="mt-8">
+              <p className="text-orange-500 font-semibold uppercase tracking-wide">
+                Checkout Pelatihan
+              </p>
+
+              <h1 className="mt-4 text-4xl font-black text-[#2B1D16] leading-tight">
+                {bootcamp.title}
+              </h1>
+
+              <p className="mt-6 text-[#6b625d] leading-relaxed text-lg">
+                bootcamp.short_description
+              </p>
+
+              {/* Benefit */}
+              <div className="mt-8 space-y-4">
+                {bootcamp.benefits?.map((item, index) => (
+                  <div key={index} className="flex items-center gap-4">
+                    <div className="w-10 h-10 rounded-2xl bg-orange-500 text-white flex items-center justify-center font-bold">
+                      ✓
+                    </div>
+
+                    <p className="text-[#2B1D16] font-medium">{item}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* RIGHT */}
+          <div className="bg-white border border-orange-100 rounded-[36px] p-8 shadow-sm">
+            <p className="text-orange-500 font-semibold uppercase tracking-wide">
+              Form Pendaftaran
+            </p>
+
+            <h2 className="mt-4 text-3xl font-black text-[#2B1D16]">
+              Lengkapi Data Diri
+            </h2>
+
+            {/* FORM */}
+            <div className="mt-10 space-y-6">
+              {/* Nama */}
+              <div>
+                <label className="block mb-3 font-semibold text-[#2B1D16]">
+                  Nama Lengkap
+                </label>
+
+                <input
+                  type="text"
+                  placeholder="Masukkan nama lengkap"
+                  className="
+                    w-full
+                    h-14
+                    rounded-2xl
+                    border border-orange-100
+                    px-5
+                    outline-none
+                    focus:border-orange-300
+                  "
+                />
+              </div>
+
+              {/* Email */}
+              <div>
+                <label className="block mb-3 font-semibold text-[#2B1D16]">
+                  Email
+                </label>
+
+                <input
+                  type="email"
+                  placeholder="Masukkan email"
+                  className="
+                    w-full
+                    h-14
+                    rounded-2xl
+                    border border-orange-100
+                    px-5
+                    outline-none
+                    focus:border-orange-300
+                  "
+                />
+              </div>
+
+              {/* WhatsApp */}
+              <div>
+                <label className="block mb-3 font-semibold text-[#2B1D16]">
+                  Nomor WhatsApp
+                </label>
+
+                <input
+                  type="text"
+                  placeholder="Masukkan nomor WhatsApp"
+                  className="
+                    w-full
+                    h-14
+                    rounded-2xl
+                    border border-orange-100
+                    px-5
+                    outline-none
+                    focus:border-orange-300
+                  "
+                />
+              </div>
+              {/* SUMMARY */}
+              <div className="rounded-[28px] bg-orange-50 border border-orange-100 p-6">
+                <p className="text-[#2B1D16] font-bold text-lg">
+                  Ringkasan Pesanan
+                </p>
+
+                <div className="mt-6 space-y-4">
+                  <div className="flex items-center justify-between">
+                    <p className="text-[#6b625d]">Pelatihan</p>
+
+                    <h3 className="font-semibold text-[#2B1D16]">
+                      {bootcamp.title}
+                    </h3>
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <p className="text-[#6b625d]">Durasi</p>
+
+                    <h3 className="font-semibold text-[#2B1D16]">
+                      {bootcamp.durasi}
+                    </h3>
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <p className="text-[#6b625d]">Level</p>
+
+                    <h3 className="font-semibold text-[#2B1D16]">
+                      {bootcamp.level}
+                    </h3>
+                  </div>
+                </div>
+
+                {/* Divider */}
+                <div className="w-full h-px bg-orange-100 my-6"></div>
+
+                {/* Total */}
+                <div className="flex items-center justify-between">
+                  <p className="text-lg font-bold text-[#2B1D16]">Total</p>
+
+                  <h3 className="text-2xl font-black text-orange-500">
+                    Number(bootcamp.harga) === 0 ? "Gratis" : `Rp$
+                    {Number(bootcamp.harga).toLocaleString("id-ID")}`
+                  </h3>
+                </div>
+              </div>
+
+              {/* Button */}
+              <button
+                onClick={() => navigate("/success")}
+                className="
+                  w-full
+                  h-14
+                  rounded-2xl
+                  bg-orange-500
+                  hover:bg-orange-400
+                  text-white
+                  font-semibold
+                  transition-all
+                  duration-300
+                  shadow-lg
+                  shadow-orange-500/20
+                "
+              >
+                Lanjut Pembayaran
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}

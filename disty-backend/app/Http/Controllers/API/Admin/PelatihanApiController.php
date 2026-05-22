@@ -35,31 +35,35 @@ class PelatihanApiController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama_pelatihan'   => 'required|string|max:255',
-            'deskripsi'        => 'required|string',
-            'bahasa'           => 'required|string',
-            'materi'           => 'required|string',
-            'kategori'         => 'required|string',
-            'link_grup'        => 'required|string',
-            'tanggal_pelatihan'=> 'required|date',
-            'harga'            => $request->kategori === 'berbayar'
-                                    ? 'required|numeric|min:1'
-                                    : 'nullable',
-            'sampul'           => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            'durasi'           => 'required|string|max:100',
+            'title' => 'required|string|max:255',
+            'deskripsi' => 'required|string',
+            'bahasa' => 'required|string',
+            'short_description' => 'nullable|string',
+            'level' => 'required|string',
+            'status' => 'required|string',
+            'benefits' => 'nullable|array',
+            'materi' => 'nullable|array',
+            'kategori' => 'required|string',
+            'link_grup' => 'required|string',
+            'tanggal_pelatihan' => 'required|date',
+            'harga' => $request->kategori === 'berbayar'
+                ? 'required|numeric|min:1'
+                : 'nullable',
+            'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'durasi' => 'required|string|max:100',
         ]);
 
         $data = $request->all();
 
         $slug = Str::slug(
-            $request->nama_pelatihan
-            );
+            $request->title
+        );
 
-        $count = 
+        $count =
             Pelatihan::where(
                 'slug',
                 'like',
-                '{$slug}%' // Cek slug yang mirip
+                "{$slug}%"// Cek slug yang mirip
             )->count();
 
         $data['slug'] =
@@ -74,9 +78,9 @@ class PelatihanApiController extends Controller
             : $request->harga;
 
         // upload gambar
-        if ($request->hasFile('sampul')) {
+        if ($request->hasFile('thumbnail')) {
 
-            $file = $request->file('sampul');
+            $file = $request->file('thumbnail');
 
             $filename =
                 time() . '_' . $file->getClientOriginalName();
@@ -86,7 +90,7 @@ class PelatihanApiController extends Controller
                 $filename
             );
 
-            $data['sampul'] = $filename;
+            $data['thumbnail'] = $filename;
         }
 
         $pelatihan = \App\Models\Pelatihan::create($data);
@@ -105,44 +109,49 @@ class PelatihanApiController extends Controller
         $pelatihan = \App\Models\Pelatihan::findOrFail($id);
 
         $request->validate([
-            'nama_pelatihan' => 'required|string|max:255',
-            'deskripsi'      => 'required',
-            'materi'         => 'nullable|string',
-            'kategori'       => 'required|string',
-            'link_grup'      => 'required|string',
-            'durasi'         => 'required|string|max:100',
+            'title' => 'required|string|max:255',
+            'deskripsi' => 'required',
+            'short_description' => 'nullable|string',
+            'level' => 'required|string',
+            'status' => 'required|string',
+            'benefits' => 'nullable|array',
+            'materi' => 'nullable|array',
+            'kategori' => 'required|string',
+            'link_grup' => 'required|string',
+            'durasi' => 'required|string|max:100',
             'tanggal_pelatihan' => 'required|date',
-            'harga'          => $request->kategori === 'berbayar'
-                                    ? 'required|numeric|min:1'
-                                    : 'nullable',
-            'bahasa'         => 'required|string',
-            'sampul'         => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'harga' => $request->kategori === 'berbayar'
+                ? 'required|numeric|min:1'
+                : 'nullable',
+            'bahasa' => 'required|string',
+            'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
         $data = $request->all();
 
         $slug = Str::slug(
-            $request->nama_pelatihan
-            );
+            $request->title
+        );
 
-        $count = 
+        $count =
             Pelatihan::where(
                 'slug',
                 'like',
-                '{$slug}%' // Cek slug yang mirip
+                "{$slug}%" // Cek slug yang mirip
             )->count();
 
-        $count = 
+        $count =
             Pelatihan::where(
                 'slug',
                 'like',
-                '{$slug}%' // Cek slug yang mirip
+                "{$slug}%" // Cek slug yang mirip
             )
-            ->where(
-                'id',
-                '!=', 
-                $pelatihan->id) // Kecualikan pelatihan yang sedang diupdate
-            ->count();
+                ->where(
+                    'id',
+                    '!=',
+                    $pelatihan->id
+                ) // Kecualikan pelatihan yang sedang diupdate
+                ->count();
 
         $data['slug'] =
             $count
@@ -155,25 +164,25 @@ class PelatihanApiController extends Controller
             : $request->harga;
 
         // upload gambar baru
-        if ($request->hasFile('sampul')) {
+        if ($request->hasFile('thumbnail')) {
 
             // hapus lama
             if (
-                $pelatihan->sampul &&
+                $pelatihan->thumbnail &&
                 file_exists(
                     public_path(
-                        'uploads/pelatihan/' . $pelatihan->sampul
+                        'uploads/pelatihan/' . $pelatihan->thumbnail
                     )
                 )
             ) {
                 unlink(
                     public_path(
-                        'uploads/pelatihan/' . $pelatihan->sampul
+                        'uploads/pelatihan/' . $pelatihan->thumbnail
                     )
                 );
             }
 
-            $file = $request->file('sampul');
+            $file = $request->file('thumbnail');
 
             $filename =
                 time() . '_' . $file->getClientOriginalName();
@@ -183,11 +192,11 @@ class PelatihanApiController extends Controller
                 $filename
             );
 
-            $data['sampul'] = $filename;
+            $data['thumbnail'] = $filename;
 
         } else {
 
-            unset($data['sampul']);
+            unset($data['thumbnail']);
         }
 
         $pelatihan->update($data);
@@ -206,16 +215,16 @@ class PelatihanApiController extends Controller
 
         // hapus gambar
         if (
-            $pelatihan->sampul &&
+            $pelatihan->thumbnail &&
             file_exists(
                 public_path(
-                    'uploads/pelatihan/' . $pelatihan->sampul
+                    'uploads/pelatihan/' . $pelatihan->thumbnail
                 )
             )
         ) {
             unlink(
                 public_path(
-                    'uploads/pelatihan/' . $pelatihan->sampul
+                    'uploads/pelatihan/' . $pelatihan->thumbnail
                 )
             );
         }

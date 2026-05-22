@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import {
   FaFacebook,
   FaInstagram,
@@ -11,11 +12,24 @@ import {
 } from "react-icons/fa";
 
 export default function Footer() {
+  const navigate = useNavigate();
   return (
     <footer className="relative overflow-hidden bg-gradient-to-b from-[#111827] via-[#0F172A] to-black text-white pt-24 pb-10">
       {/* Orange Glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-orange-500/10 blur-[140px] rounded-full"></div>
+
       <div className="relative z-10 max-w-[1700px] mx-auto px-6 lg:px-8">
+        {/* CTA SECTION */}
+        <div className="relative mb-16">
+          <div className="relative z-10 text-center">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black leading-tight text-white">
+              Bangun Skill Masa Depan
+              <span className="block text-orange-400">
+                Bersama Disty Academy
+              </span>
+            </h2>
+          </div>
+        </div>
         {/* Top */}
         <div className="grid lg:grid-cols-4 gap-14">
           {/* Brand */}
