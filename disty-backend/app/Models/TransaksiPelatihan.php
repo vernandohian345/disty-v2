@@ -14,12 +14,12 @@ class TransaksiPelatihan extends Model
     protected $fillable = [
         'user_id',
         'pelatihan_id',
+        'kode_transaksi',
         'nama',
         'email',
         'nomor_hp',
+        'total_harga',
         'metode_pembayaran',
-        'sertifikat',
-        'bukti',
         'status',
     ];
 
