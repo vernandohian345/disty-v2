@@ -8,6 +8,7 @@ import {
     generateSertifikat,
     downloadSertifikat,
     previewSertifikat,
+    regenerateSertifikat,
 } from "../../services/sertifikatPelatihanService";
 
 export default function SertifikatPelatihan() {
@@ -102,6 +103,13 @@ export default function SertifikatPelatihan() {
     const handleGenerate =
         async (id) => {
 
+            const confirmGenerate =
+                window.confirm(
+                    "Generate sertifikat peserta ini?"
+                );
+
+            if (!confirmGenerate) return;
+
             try {
 
                 await generateSertifikat(id);
@@ -165,6 +173,36 @@ export default function SertifikatPelatihan() {
             }
 
         };
+
+    // =========================
+    // REGENERATE
+    // =========================
+    const handleRegenerate = async (id) => {
+
+        const confirmRegenerate =
+            window.confirm(
+                "Regenerate sertifikat?"
+            );
+
+        if (!confirmRegenerate) return;
+
+        try {
+
+            await regenerateSertifikat(id);
+
+            alert("Sertifikat berhasil di-regenerate");
+
+            fetchData();
+
+        } catch (error) {
+
+            console.log(error);
+
+            alert("Gagal regenerate sertifikat");
+
+        }
+
+    };
 
     // =========================
     // PREVIEW
@@ -633,20 +671,24 @@ export default function SertifikatPelatihan() {
                                             {/* STATUS */}
                                             <td className="p-5">
 
-                                                <span className="
-                                                    px-4
-                                                    py-2
-                                                    rounded-full
-                                                    bg-green-100
-                                                    text-green-700
-                                                    text-sm
-                                                    font-bold
-                                                ">
+                                                <span
+                                                    className={`
+                                                        px-4
+                                                        py-2
+                                                        rounded-full
+                                                        text-sm
+                                                        font-bold
+                                                        ${
+                                                            item.status === "approved"
+                                                                ? "bg-green-100 text-green-700"
+                                                                : "bg-yellow-100 text-yellow-700"
+                                                        }
+                                                    `}
+                                                >
 
                                                     {item.status}
 
                                                 </span>
-
                                             </td>
 
                                             {/* COMPLETION */}
@@ -671,25 +713,19 @@ export default function SertifikatPelatihan() {
 
                                                     ) : (
 
-                                                        <button
-                                                            onClick={() =>
-                                                                handleCompleted(
-                                                                    item.id
-                                                                )
-                                                            }
-                                                            className="
-                                                                px-4
-                                                                py-2
-                                                                rounded-xl
-                                                                bg-orange-500
-                                                                text-white
-                                                                font-bold
-                                                            "
-                                                        >
+                                                        <span className="
+                                                            px-4
+                                                            py-2
+                                                            rounded-full
+                                                            bg-yellow-100
+                                                            text-yellow-700
+                                                            text-sm
+                                                            font-bold
+                                                        ">
 
-                                                            Tandai Selesai
+                                                            Belum Selesai
 
-                                                        </button>
+                                                        </span>
 
                                                     )
                                                 }
@@ -710,19 +746,47 @@ export default function SertifikatPelatihan() {
                                             {/* ACTION */}
                                             <td className="p-5 pr-10">
 
-                                                <div className="
-                                                    flex
-                                                    gap-3
-                                                ">
+                                                <div
+                                                    className="
+                                                        flex
+                                                        flex-wrap
+                                                        gap-3
+                                                    "
+                                                >
 
+                                                    {/* BELUM SELESAI */}
                                                     {
+                                                        !item.is_completed && (
+
+                                                            <button
+                                                                onClick={() =>
+                                                                    handleCompleted(item.id)
+                                                                }
+                                                                className="
+                                                                    px-4
+                                                                    py-2
+                                                                    rounded-xl
+                                                                    bg-orange-500
+                                                                    text-white
+                                                                    font-bold
+                                                                "
+                                                            >
+
+                                                                Tandai Selesai
+
+                                                            </button>
+
+                                                        )
+                                                    }
+
+                                                    {/* SUDAH SELESAI TAPI BELUM ADA SERTIFIKAT */}
+                                                    {
+                                                        item.is_completed &&
                                                         !item.sertifikat_pelatihan && (
 
                                                             <button
                                                                 onClick={() =>
-                                                                    handleGenerate(
-                                                                        item.id
-                                                                    )
+                                                                    handleGenerate(item.id)
                                                                 }
                                                                 className="
                                                                     px-4
@@ -741,47 +805,69 @@ export default function SertifikatPelatihan() {
                                                         )
                                                     }
 
+                                                    {/* SUDAH ADA SERTIFIKAT */}
                                                     {
                                                         item.sertifikat_pelatihan && (
+
                                                             <>
 
-                                                            <button
-                                                                onClick={() =>
-                                                                    handleDownload(
-                                                                        item.id
-                                                                    )
-                                                                }
-                                                                className="
-                                                                    px-4
-                                                                    py-2
-                                                                    rounded-xl
-                                                                    bg-blue-500
-                                                                    text-white
-                                                                    font-bold
-                                                                "
-                                                            >
+                                                                {/* PREVIEW */}
+                                                                <button
+                                                                    onClick={() =>
+                                                                        handlePreview(item.id)
+                                                                    }
+                                                                    className="
+                                                                        px-4
+                                                                        py-2
+                                                                        rounded-xl
+                                                                        bg-purple-500
+                                                                        text-white
+                                                                        font-bold
+                                                                    "
+                                                                >
 
-                                                                Download
+                                                                    Preview
 
-                                                            </button>
+                                                                </button>
 
-                                                            <button
-                                                                onClick={() =>
-                                                                    handlePreview(item.id)
-                                                                }
-                                                                className="
-                                                                    px-4
-                                                                    py-2
-                                                                    rounded-xl
-                                                                    bg-slate-700
-                                                                    text-white
-                                                                    font-bold
-                                                                "
-                                                            >
+                                                                {/* DOWNLOAD */}
+                                                                <button
+                                                                    onClick={() =>
+                                                                        handleDownload(item.id)
+                                                                    }
+                                                                    className="
+                                                                        px-4
+                                                                        py-2
+                                                                        rounded-xl
+                                                                        bg-blue-500
+                                                                        text-white
+                                                                        font-bold
+                                                                    "
+                                                                >
 
-                                                                Preview
+                                                                    Download
 
-                                                            </button>
+                                                                </button>
+
+                                                                {/* REGENERATE */}
+                                                                <button
+                                                                    onClick={() =>
+                                                                        handleRegenerate(item.id)
+                                                                    }
+                                                                    className="
+                                                                        px-4
+                                                                        py-2
+                                                                        rounded-xl
+                                                                        bg-orange-500
+                                                                        text-white
+                                                                        font-bold
+                                                                    "
+                                                                >
+
+                                                                    Regenerate
+
+                                                                </button>
+
                                                             </>
 
                                                         )

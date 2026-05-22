@@ -88,3 +88,16 @@ export const previewSertifikat = async (id) => {
     );
 
 };
+
+// =========================
+// REGENERATE
+// =========================
+export const regenerateSertifikat = async (id) => {
+
+    return await axios.post(
+        `${API_URL}/sertifikat-pelatihan/regenerate/${id}`,
+        {},
+        authHeader()
+    );
+
+};

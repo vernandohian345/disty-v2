@@ -73,7 +73,10 @@ class TransaksiPelatihanApiController extends Controller
                 'metode_pembayaran' =>
                     $metode,
 
-                'status' => 'pending',
+                'status' =>
+                $pelatihan->kategori === 'gratis'
+                ? 'approved'
+                : 'pending',
             ]);
 
         // notif

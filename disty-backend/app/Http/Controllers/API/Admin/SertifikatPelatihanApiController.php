@@ -23,6 +23,26 @@ class SertifikatPelatihanApiController extends Controller
         ])
         ->where('status', 'approved');
 
+        // filter pelatihan
+        if ($pelatihan_id) {
+
+            $query->where(
+                'pelatihan_id',
+                $pelatihan_id
+            );
+
+        }
+
+        // filter completed
+        if ($request->filled('completed')) {
+
+            $query->where(
+                'is_completed',
+                $request->completed
+            );
+
+        }
+
         if ($pelatihan_id) {
             $query->where('pelatihan_id', $pelatihan_id);
         }
@@ -100,6 +120,14 @@ class SertifikatPelatihanApiController extends Controller
     {
         $transaksi = TransaksiPelatihan::with('pelatihan')
             ->findOrFail($id);
+
+        if ($transaksi->sertifikat_pelatihan) {
+
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Sertifikat sudah dibuat'
+            ], 400);
+        }
 
         if ($transaksi->status !== 'approved' ||
         !$transaksi->is_completed) {
@@ -243,6 +271,17 @@ class SertifikatPelatihanApiController extends Controller
                     $filename;
 
                 $transaksi->save();
+
+                Notification::create([
+                    'user_id' => $transaksi->user_id,
+                    'type' => 'sertifikat_ready',
+                    'title' => 'Sertifikat tersedia',
+                    'message' => 'Sertifikat pelatihan sudah tersedia',
+                    'icon' => 'certificate',
+                    'color' => 'success',
+                    'url' => '/profil',
+                    'is_read' => false
+                ]);
 
                 $generated++;
 
