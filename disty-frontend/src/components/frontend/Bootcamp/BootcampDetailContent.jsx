@@ -125,56 +125,17 @@ export default function BootcampDetailContent() {
               </h3>
 
               <div className="mt-10 space-y-5">
-                {bootcamp.materi?.map((material, index) => (
-                  <div
-                    key={index}
-                    className="
-                      group
-                      flex
-                      items-center
-                      gap-6
-                      rounded-[28px]
-                      border border-orange-100
-                      bg-white
-                      p-6
-                      hover:border-orange-300
-                      hover:shadow-lg
-                      transition-all
-                      duration-300
-                    "
-                  >
-                    {/* NUMBER */}
-                    <div
-                      className="
-                        flex
-                        items-center
-                        justify-center
-                        min-w-[70px]
-                        h-[70px]
-                        rounded-3xl
-                        bg-orange-500
-                        text-white
-                        text-2xl
-                        font-black
-                        shadow-lg
-                      "
-                    >
-                      {String(index + 1).padStart(2, "0")}
-                    </div>
-
-                    {/* CONTENT */}
-                    <div>
-                      <h4 className="text-xl font-bold text-[#2B1D16]">
-                        {material}
-                      </h4>
-
-                      <p className="mt-2 text-[#6b625d] leading-relaxed">
-                        Pelajari materi secara bertahap melalui video
-                        pembelajaran, latihan praktik, dan studi kasus modern.
-                      </p>
-                    </div>
-                  </div>
-                ))}
+                <div
+                  className="
+                    prose
+                    prose-orange
+                    max-w-none
+                    text-[#2B1D16]
+                  "
+                  dangerouslySetInnerHTML={{
+                    __html: bootcamp.materi,
+                  }}
+                />
               </div>
             </div>
           </div>
@@ -246,7 +207,6 @@ export default function BootcampDetailContent() {
                 href="https://wa.me/6281234567890?text=Halo%20Disty%20Academy,%20saya%20ingin%20bertanya%20tentang%20pelatihan."
                 target="_blank"
                 rel="noopener noreferrer"
-                c
                 className="
     w-full
     mt-4

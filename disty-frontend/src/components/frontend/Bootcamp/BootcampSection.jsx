@@ -44,7 +44,7 @@ export default function BootcampSection() {
 
       const result = await response.json();
 
-      setBootcamps(result.data.data || []);
+      setBootcamps(result.data || []);
     } catch (error) {
       console.log(error);
     } finally {

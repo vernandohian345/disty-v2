@@ -56,7 +56,11 @@ export default function Login() {
 
         alert("Login berhasil");
 
-        navigate("/Dashboard");
+        if (response.data.user.role === "admin") {
+          navigate("/dashboard");
+        } else {
+          navigate("/");
+        }
       } else {
         await register(formData);
 
@@ -105,12 +109,10 @@ export default function Login() {
 
         {/* RIGHT */}
         <div className="col-lg-6 d-flex align-items-center justify-content-center bg-light mt-2">
-          <div 
-              className="w-100" 
-              style={{ maxWidth: "450px" }}>
-
+          <div className="w-100" style={{ maxWidth: "450px" }}>
             {/* HEADER */}
-            <div className="
+            <div
+              className="
             text-center 
             d-flex
             flex-column
@@ -128,7 +130,8 @@ export default function Login() {
               </div>
 
               <p className="text-muted mb-4 text-center">
-                Selamat datang di Disty Akademi, silakan {isLogin ? "login" : "daftar"} untuk melanjutkan
+                Selamat datang di Disty Akademi, silakan{" "}
+                {isLogin ? "login" : "daftar"} untuk melanjutkan
               </p>
             </div>
 

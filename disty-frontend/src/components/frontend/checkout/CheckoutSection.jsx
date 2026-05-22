@@ -2,14 +2,76 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 export default function CheckoutSection() {
+  const { slug } = useParams();
+  const navigate = useNavigate();
   const [bootcamp, setBootcamp] = useState(null);
+
+  const [formData, setFormData] = useState({
+    nama: "",
+    email: "",
+    nomor_hp: "",
+  });
+
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchBootcamp();
   }, [slug]);
-  const { slug } = useParams();
-  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleCheckout = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        alert("Silakan login terlebih dahulu");
+        navigate("/login");
+        return;
+      }
+
+      const response = await fetch(
+        "http://127.0.0.1:8000/api/transaksi/pelatihan",
+        {
+          method: "POST",
+
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+
+          body: JSON.stringify({
+            pelatihan_id: bootcamp.id,
+            nama: formData.nama,
+            email: formData.email,
+            nomor_hp: formData.nomor_hp,
+          }),
+        },
+      );
+
+      const result = await response.json();
+
+      if (result.status === "success") {
+        if (result.kategori === "gratis" && result.link_grup) {
+          window.open(result.link_grup, "_blank");
+
+          navigate("/success");
+        } else {
+          navigate("/success");
+        }
+      } else {
+        alert(result.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const fetchBootcamp = async () => {
     try {
@@ -72,7 +134,7 @@ export default function CheckoutSection() {
               </h1>
 
               <p className="mt-6 text-[#6b625d] leading-relaxed text-lg">
-                bootcamp.short_description
+                {bootcamp.short_description}
               </p>
 
               {/* Benefit */}
@@ -110,6 +172,9 @@ export default function CheckoutSection() {
 
                 <input
                   type="text"
+                  name="nama"
+                  value={formData.nama}
+                  onChange={handleChange}
                   placeholder="Masukkan nama lengkap"
                   className="
                     w-full
@@ -131,6 +196,9 @@ export default function CheckoutSection() {
 
                 <input
                   type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
                   placeholder="Masukkan email"
                   className="
                     w-full
@@ -144,15 +212,18 @@ export default function CheckoutSection() {
                 />
               </div>
 
-              {/* WhatsApp */}
+              {/* Nomor HP */}
               <div>
                 <label className="block mb-3 font-semibold text-[#2B1D16]">
-                  Nomor WhatsApp
+                  Nomor HP
                 </label>
 
                 <input
                   type="text"
-                  placeholder="Masukkan nomor WhatsApp"
+                  name="nomor_hp"
+                  value={formData.nomor_hp}
+                  onChange={handleChange}
+                  placeholder="Masukkan n\Nomor HP"
                   className="
                     w-full
                     h-14
@@ -204,15 +275,16 @@ export default function CheckoutSection() {
                   <p className="text-lg font-bold text-[#2B1D16]">Total</p>
 
                   <h3 className="text-2xl font-black text-orange-500">
-                    Number(bootcamp.harga) === 0 ? "Gratis" : `Rp$
-                    {Number(bootcamp.harga).toLocaleString("id-ID")}`
+                    {Number(bootcamp.harga) === 0
+                      ? "Gratis"
+                      : `Rp${Number(bootcamp.harga).toLocaleString("id-ID")}`}
                   </h3>
                 </div>
               </div>
 
               {/* Button */}
               <button
-                onClick={() => navigate("/success")}
+                onClick={handleCheckout}
                 className="
                   w-full
                   h-14
@@ -227,7 +299,9 @@ export default function CheckoutSection() {
                   shadow-orange-500/20
                 "
               >
-                Lanjut Pembayaran
+                {Number(bootcamp.harga) === 0
+                  ? "Daftar Sekarang"
+                  : "Lanjut Pembayaran"}
               </button>
             </div>
           </div>

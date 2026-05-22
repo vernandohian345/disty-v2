@@ -1,34 +1,27 @@
-import {
-    AnimatePresence,
-    motion,
-} from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 
 import PelatihanForm from "./PelatihanForm";
 
 export default function PelatihanModal({
-    isOpen,
-    onClose,
-    onSubmit,
-    editData,
+  isOpen,
+  onClose,
+  onSubmit,
+  editData,
 }) {
-
-    return (
-
-        <AnimatePresence>
-
-            {isOpen && (
-
-                <motion.div
-                    initial={{
-                        opacity: 0,
-                    }}
-                    animate={{
-                        opacity: 1,
-                    }}
-                    exit={{
-                        opacity: 0,
-                    }}
-                    className="
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
+          initial={{
+            opacity: 0,
+          }}
+          animate={{
+            opacity: 1,
+          }}
+          exit={{
+            opacity: 0,
+          }}
+          className="
                         fixed
                         inset-0
                         z-50
@@ -40,38 +33,37 @@ export default function PelatihanModal({
                         p-4
                         overflow-y-auto
                     "
-                >
-
-                    {/* BACKDROP */}
-                    <div
-                        onClick={onClose}
-                        className="
+        >
+          {/* BACKDROP */}
+          <div
+            onClick={onClose}
+            className="
                             absolute
                             inset-0
                         "
-                    ></div>
+          ></div>
 
-                    {/* MODAL */}
-                    <motion.div
-                        initial={{
-                            opacity: 0,
-                            y: 40,
-                            scale: 0.95,
-                        }}
-                        animate={{
-                            opacity: 1,
-                            y: 0,
-                            scale: 1,
-                        }}
-                        exit={{
-                            opacity: 0,
-                            y: 40,
-                            scale: 0.95,
-                        }}
-                        transition={{
-                            duration: 0.25,
-                        }}
-                        className="
+          {/* MODAL */}
+          <motion.div
+            initial={{
+              opacity: 0,
+              y: 40,
+              scale: 0.95,
+            }}
+            animate={{
+              opacity: 1,
+              y: 0,
+              scale: 1,
+            }}
+            exit={{
+              opacity: 0,
+              y: 40,
+              scale: 0.95,
+            }}
+            transition={{
+              duration: 0.25,
+            }}
+            className="
                             relative
                             w-full
                             max-w-6xl
@@ -82,10 +74,10 @@ export default function PelatihanModal({
                             border
                             border-slate-100
                         "
-                    >
-
-                        {/* TOP GLOW */}
-                        <div className="
+          >
+            {/* TOP GLOW */}
+            <div
+              className="
                             absolute
                             top-0
                             left-0
@@ -95,36 +87,41 @@ export default function PelatihanModal({
                             from-orange-500
                             via-orange-400
                             to-yellow-400
-                        "></div>
+                        "
+            ></div>
 
-                        {/* HEADER */}
-                        <div className="
+            {/* HEADER */}
+            <div
+              className="
                             relative
                             px-8
                             py-7
                             border-b
                             border-slate-100
                             bg-white
-                        ">
-
-                            <div className="
+                        "
+            >
+              <div
+                className="
                                 flex
                                 flex-col
                                 lg:flex-row
                                 lg:items-center
                                 lg:justify-between
                                 gap-5
-                            ">
-
-                                {/* LEFT */}
-                                <div className="
+                            "
+              >
+                {/* LEFT */}
+                <div
+                  className="
                                     flex
                                     items-center
                                     gap-5
-                                ">
-
-                                    {/* ICON */}
-                                    <div className="
+                                "
+                >
+                  {/* ICON */}
+                  <div
+                    className="
                                         w-16
                                         h-16
                                         rounded-3xl
@@ -135,50 +132,50 @@ export default function PelatihanModal({
                                         text-orange-500
                                         text-3xl
                                         shadow-sm
-                                    ">
-
-                                        <i className="
+                                    "
+                  >
+                    <i
+                      className="
                                             fas
                                             fa-book-open
-                                        "></i>
+                                        "
+                    ></i>
+                  </div>
 
-                                    </div>
-
-                                    {/* TITLE */}
-                                    <div>
-
-                                        <h2 className="
+                  {/* TITLE */}
+                  <div>
+                    <h2
+                      className="
                                             text-4xl
                                             font-black
                                             text-slate-800
-                                        ">
+                                        "
+                    >
+                      Edit Pelatihan
+                    </h2>
 
-                                            Edit Pelatihan
-
-                                        </h2>
-
-                                        <p className="
+                    <p
+                      className="
                                             text-slate-500
                                             mt-2
-                                        ">
+                                        "
+                    >
+                      Update data pelatihan dengan mudah
+                    </p>
+                  </div>
+                </div>
 
-                                            Update data pelatihan dengan mudah
-
-                                        </p>
-
-                                    </div>
-
-                                </div>
-
-                                {/* RIGHT */}
-                                <div className="
+                {/* RIGHT */}
+                <div
+                  className="
                                     flex
                                     items-center
                                     gap-3
-                                ">
-
-                                    {/* STATUS */}
-                                    <div className="
+                                "
+                >
+                  {/* STATUS */}
+                  <div
+                    className="
                                         hidden
                                         md:flex
                                         items-center
@@ -189,24 +186,24 @@ export default function PelatihanModal({
                                         bg-orange-100
                                         text-orange-600
                                         font-bold
-                                    ">
-
-                                        <div className="
+                                    "
+                  >
+                    <div
+                      className="
                                             w-3
                                             h-3
                                             rounded-full
                                             bg-orange-500
                                             animate-pulse
-                                        "></div>
+                                        "
+                    ></div>
+                    Sedang Mengedit
+                  </div>
 
-                                        Sedang Mengedit
-
-                                    </div>
-
-                                    {/* CLOSE */}
-                                    <button
-                                        onClick={onClose}
-                                        className="
+                  {/* CLOSE */}
+                  <button
+                    onClick={onClose}
+                    className="
                                             w-14
                                             h-14
                                             rounded-2xl
@@ -218,34 +215,34 @@ export default function PelatihanModal({
                                             text-xl
                                             shadow-sm
                                         "
-                                    >
-
-                                        <i className="
+                  >
+                    <i
+                      className="
                                             fas
                                             fa-times
-                                        "></i>
+                                        "
+                    ></i>
+                  </button>
+                </div>
+              </div>
+            </div>
 
-                                    </button>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                        {/* BODY */}
-                        <div className="
+            {/* BODY */}
+            <div
+              className="
                             max-h-[85vh]
                             overflow-y-auto
                             bg-slate-50
-                        ">
-
-                            <div className="
+                        "
+            >
+              <div
+                className="
                                 p-7
-                            ">
-
-                                {/* INFO CARD */}
-                                <div className="
+                            "
+              >
+                {/* INFO CARD */}
+                <div
+                  className="
                                     bg-gradient-to-r
                                     from-orange-500
                                     to-orange-400
@@ -255,10 +252,11 @@ export default function PelatihanModal({
                                     mb-7
                                     relative
                                     overflow-hidden
-                                ">
-
-                                    {/* BG */}
-                                    <div className="
+                                "
+                >
+                  {/* BG */}
+                  <div
+                    className="
                                         absolute
                                         -right-10
                                         -top-10
@@ -266,9 +264,11 @@ export default function PelatihanModal({
                                         h-40
                                         rounded-full
                                         bg-white/10
-                                    "></div>
+                                    "
+                  ></div>
 
-                                    <div className="
+                  <div
+                    className="
                                         relative
                                         z-10
                                         flex
@@ -277,25 +277,29 @@ export default function PelatihanModal({
                                         md:items-center
                                         md:justify-between
                                         gap-5
-                                    ">
-
-                                        <div>
-                                            <h3 className="
+                                    "
+                  >
+                    <div>
+                      <h3
+                        className="
                                                 text-2xl
                                                 font-black
-                                            ">
-                                                {
-                                                    editData?.nama_pelatihan
-                                                }
-                                            </h3>
-                                            <p className="
+                                            "
+                      >
+                        {editData?.title}
+                      </h3>
+                      <p
+                        className="
                                                 text-orange-100
                                                 mt-2
-                                            ">
-                                                Pastikan data yang diperbarui sudah benar sebelum disimpan.
-                                            </p>
-                                        </div>
-                                        <div className="
+                                            "
+                      >
+                        Pastikan data yang diperbarui sudah benar sebelum
+                        disimpan.
+                      </p>
+                    </div>
+                    <div
+                      className="
                                             flex
                                             items-center
                                             gap-3
@@ -306,25 +310,25 @@ export default function PelatihanModal({
                                             backdrop-blur-sm
                                             font-bold
                                             w-fit
-                                        ">
-                                            <i className="
+                                        "
+                    >
+                      <i
+                        className="
                                                 fas
                                                 fa-pen
-                                            "></i>
-                                            Mode Edit
-                                        </div>
-                                    </div>
-                                </div>
-                                {/* FORM */}
-                                <PelatihanForm
-                                    onSubmit={onSubmit}
-                                    editData={editData}
-                                />
-                            </div>
-                        </div>
-                    </motion.div>
-                </motion.div>
-            )}
-        </AnimatePresence>
-    );
+                                            "
+                      ></i>
+                      Mode Edit
+                    </div>
+                  </div>
+                </div>
+                {/* FORM */}
+                <PelatihanForm onSubmit={onSubmit} editData={editData} />
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
 }

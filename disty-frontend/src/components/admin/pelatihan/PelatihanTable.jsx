@@ -1,16 +1,14 @@
 export default function PelatihanTable({
-    data,
-    loading,
-    onView,
-    onEdit,
-    onDelete,
+  data,
+  loading,
+  onView,
+  onEdit,
+  onDelete,
 }) {
-
-    if (loading) {
-
-        return (
-
-            <div className="
+  if (loading) {
+    return (
+      <div
+        className="
                 bg-white
                 rounded-[32px]
                 p-14
@@ -18,9 +16,10 @@ export default function PelatihanTable({
                 shadow-sm
                 border
                 border-slate-100
-            ">
-
-                <div className="
+            "
+      >
+        <div
+          className="
                     animate-spin
                     w-14
                     h-14
@@ -30,36 +29,35 @@ export default function PelatihanTable({
                     rounded-full
                     mx-auto
                     mb-5
-                "></div>
+                "
+        ></div>
 
-                <p className="
+        <p
+          className="
                     text-slate-500
                     font-medium
-                ">
+                "
+        >
+          Memuat data pelatihan...
+        </p>
+      </div>
+    );
+  }
 
-                    Memuat data pelatihan...
-
-                </p>
-
-            </div>
-
-        );
-
-    }
-
-    return (
-
-        <div className="
+  return (
+    <div
+      className="
             bg-white
             rounded-[32px]
             border
             border-slate-100
             shadow-sm
             overflow-hidden
-        ">
-
-            {/* HEADER */}
-            <div className="
+        "
+    >
+      {/* HEADER */}
+      <div
+        className="
                 flex
                 flex-col
                 md:flex-row
@@ -69,33 +67,32 @@ export default function PelatihanTable({
                 p-7
                 border-b
                 border-slate-100
-            ">
-
-                <div>
-
-                    <h2 className="
+            "
+      >
+        <div>
+          <h2
+            className="
                         text-3xl
                         font-black
                         text-slate-800
-                    ">
+                    "
+          >
+            Data Pelatihan
+          </h2>
 
-                        Data Pelatihan
-
-                    </h2>
-
-                    <p className="
+          <p
+            className="
                         text-slate-500
                         mt-2
-                    ">
+                    "
+          >
+            Kelola seluruh data pelatihan dengan mudah
+          </p>
+        </div>
 
-                        Kelola seluruh data pelatihan dengan mudah
-
-                    </p>
-
-                </div>
-
-                {/* TOTAL */}
-                <div className="
+        {/* TOTAL */}
+        <div
+          className="
                     flex
                     items-center
                     gap-3
@@ -106,24 +103,24 @@ export default function PelatihanTable({
                     text-orange-600
                     font-bold
                     w-fit
-                ">
-
-                    <div className="
+                "
+        >
+          <div
+            className="
                         w-3
                         h-3
                         rounded-full
                         bg-orange-500
                         animate-pulse
-                    "></div>
+                    "
+          ></div>
+          Total: {data.length}
+        </div>
+      </div>
 
-                    Total: {data.length}
-
-                </div>
-
-            </div>
-
-            {/* TABLE HEADER */}
-            <div className="
+      {/* TABLE HEADER */}
+      <div
+        className="
                 hidden
                 lg:grid
                 grid-cols-12
@@ -136,43 +133,31 @@ export default function PelatihanTable({
                 text-sm
                 font-bold
                 text-slate-500
-            ">
+            "
+      >
+        <div className="col-span-1">No</div>
 
-                <div className="col-span-1">
-                    No
-                </div>
+        <div className="col-span-2">Thumbnail</div>
 
-                <div className="col-span-2">
-                    Sampul
-                </div>
+        <div className="col-span-3">Pelatihan</div>
 
-                <div className="col-span-3">
-                    Pelatihan
-                </div>
+        <div className="col-span-2">Kategori</div>
 
-                <div className="col-span-2">
-                    Kategori
-                </div>
+        <div className="col-span-2">Harga</div>
 
-                <div className="col-span-2">
-                    Harga
-                </div>
+        <div className="col-span-2 text-center">Aksi</div>
+      </div>
 
-                <div className="col-span-2 text-center">
-                    Aksi
-                </div>
-
-            </div>
-
-            {/* EMPTY */}
-            {data.length === 0 ? (
-
-                <div className="
+      {/* EMPTY */}
+      {data.length === 0 ? (
+        <div
+          className="
                     p-20
                     text-center
-                ">
-
-                    <div className="
+                "
+        >
+          <div
+            className="
                         w-28
                         h-28
                         rounded-full
@@ -182,45 +167,42 @@ export default function PelatihanTable({
                         justify-center
                         mx-auto
                         mb-6
-                    ">
-
-                        <i className="
+                    "
+          >
+            <i
+              className="
                             fas
                             fa-book-open
                             text-5xl
                             text-orange-500
-                        "></i>
+                        "
+            ></i>
+          </div>
 
-                    </div>
-
-                    <h3 className="
+          <h3
+            className="
                         text-3xl
                         font-black
                         text-slate-700
-                    ">
+                    "
+          >
+            Data Kosong
+          </h3>
 
-                        Data Kosong
-
-                    </h3>
-
-                    <p className="
+          <p
+            className="
                         text-slate-500
                         mt-3
-                    ">
-
-                        Belum ada data pelatihan tersedia
-
-                    </p>
-
-                </div>
-
-            ) : (
-
-                data.map((item, index) => (
-
-                    <div
-                        key={item.id}
-                        className="
+                    "
+          >
+            Belum ada data pelatihan tersedia
+          </p>
+        </div>
+      ) : (
+        data.map((item, index) => (
+          <div
+            key={item.id}
+            className="
                             grid
                             grid-cols-1
                             lg:grid-cols-12
@@ -232,32 +214,32 @@ export default function PelatihanTable({
                             transition
                             items-center
                         "
-                    >
-
-                        {/* NO */}
-                        <div className="
+          >
+            {/* NO */}
+            <div
+              className="
                             lg:col-span-1
                             text-slate-500
                             font-bold
-                        ">
+                        "
+            >
+              #{index + 1}
+            </div>
 
-                            #{index + 1}
-
-                        </div>
-
-                        {/* IMAGE */}
-                        <div className="
+            {/* IMAGE */}
+            <div
+              className="
                             lg:col-span-2
-                        ">
-
-                            <img
-                                src={
-                                    item.sampul
-                                        ? `http://127.0.0.1:8000/uploads/pelatihan/${item.sampul}`
-                                        : "https://placehold.co/600x400?text=No+Image"
-                                }
-                                alt=""
-                                className="
+                        "
+            >
+              <img
+                src={
+                  item.thumbnail
+                    ? `http://127.0.0.1:8000/uploads/pelatihan/${item.thumbnail}`
+                    : "https://placehold.co/600x400?text=No+Image"
+                }
+                alt=""
+                className="
                                     w-full
                                     lg:w-32
                                     h-24
@@ -267,75 +249,87 @@ export default function PelatihanTable({
                                     border
                                     border-slate-100
                                 "
-                            />
+              />
+            </div>
 
-                        </div>
-
-                        {/* NAMA */}
-                        <div className="
+            {/* NAMA */}
+            <div
+              className="
                             lg:col-span-3
-                        ">
-
-                            <h3 className="
+                        "
+            >
+              <h3
+                className="
                                 text-lg
                                 font-black
                                 text-slate-800
-                            ">
+                            "
+              >
+                {item.title}
+              </h3>
 
-                                {
-                                    item.nama_pelatihan
-                                }
-
-                            </h3>
-
-                            <div className="
+              <div
+                className="
                                 flex
                                 items-center
                                 gap-3
                                 mt-2
                                 flex-wrap
-                            ">
-
-                                <span className="
+                            "
+              >
+                <span
+                  className="
                                     text-sm
                                     text-slate-500
-                                ">
+                                "
+                >
+                  {item.bahasa}
+                </span>
 
-                                    {
-                                        item.bahasa
-                                    }
-
-                                </span>
-
-                                <span className="
+                <span
+                  className="
                                     w-1.5
                                     h-1.5
                                     rounded-full
                                     bg-slate-300
-                                "></span>
+                                "
+                ></span>
 
-                                <span className="
+                <span
+                  className="
                                     text-sm
                                     text-slate-500
-                                ">
+                                "
+                >
+                  {item.durasi}
+                </span>
+                <span
+                  className={`
+        text-xs
+        px-3
+        py-1
+        rounded-full
+        font-bold
+        ${
+          item.status === "published"
+            ? "bg-green-100 text-green-700"
+            : "bg-slate-200 text-slate-600"
+        }
+    `}
+                >
+                  {item.status}
+                </span>
+              </div>
+            </div>
 
-                                    {
-                                        item.durasi
-                                    }
-
-                                </span>
-
-                            </div>
-
-                        </div>
-
-                        {/* KATEGORI */}
-                        <div className="
+            {/* KATEGORI */}
+            <div
+              className="
                             lg:col-span-2
-                        ">
-
-                            <span
-                                className={`
+                        "
+            >
+              <span
+                className={`
                                     inline-flex
                                     items-center
                                     gap-2
@@ -345,72 +339,63 @@ export default function PelatihanTable({
                                     text-sm
                                     font-bold
                                     ${
-                                        item.kategori ===
-                                        "gratis"
-                                            ? "bg-green-100 text-green-700"
-                                            : "bg-orange-100 text-orange-700"
+                                      item.kategori === "gratis"
+                                        ? "bg-green-100 text-green-700"
+                                        : "bg-orange-100 text-orange-700"
                                     }
                                 `}
-                            >
-
-                                <div className={`
+              >
+                <div
+                  className={`
                                     w-2
                                     h-2
                                     rounded-full
                                     ${
-                                        item.kategori ===
-                                        "gratis"
-                                            ? "bg-green-500"
-                                            : "bg-orange-500"
+                                      item.kategori === "gratis"
+                                        ? "bg-green-500"
+                                        : "bg-orange-500"
                                     }
-                                `}></div>
+                                `}
+                ></div>
 
-                                {
-                                    item.kategori
-                                }
+                {item.kategori}
+              </span>
+            </div>
 
-                            </span>
-
-                        </div>
-
-                        {/* HARGA */}
-                        <div className="
+            {/* HARGA */}
+            <div
+              className="
                             lg:col-span-2
-                        ">
-
-                            <h4 className="
+                        "
+            >
+              <h4
+                className="
                                 text-lg
                                 font-black
                                 text-slate-700
-                            ">
+                            "
+              >
+                {Number(item.harga) === 0
+                  ? "Gratis"
+                  : `Rp${Number(item.harga).toLocaleString("id-ID")}`}
+              </h4>
+            </div>
 
-                                Rp{" "}
-                                {Number(
-                                    item.harga
-                                ).toLocaleString(
-                                    "id-ID"
-                                )}
-
-                            </h4>
-
-                        </div>
-
-                        {/* AKSI */}
-                        <div className="
+            {/* AKSI */}
+            <div
+              className="
                             lg:col-span-2
                             flex
                             items-center
                             lg:justify-center
                             gap-3
                             flex-wrap
-                        ">
-
-                            {/* VIEW */}
-                            <button
-                                onClick={() =>
-                                    onView(item)
-                                }
-                                className="
+                        "
+            >
+              {/* VIEW */}
+              <button
+                onClick={() => onView(item)}
+                className="
                                     flex
                                     items-center
                                     justify-center
@@ -424,21 +409,19 @@ export default function PelatihanTable({
                                     transition
                                     shadow-sm
                                 "
-                            >
-
-                                <i className="
+              >
+                <i
+                  className="
                                     fas
                                     fa-eye
-                                "></i>
+                                "
+                ></i>
+              </button>
 
-                            </button>
-
-                            {/* EDIT */}
-                            <button
-                                onClick={() =>
-                                    onEdit(item)
-                                }
-                                className="
+              {/* EDIT */}
+              <button
+                onClick={() => onEdit(item)}
+                className="
                                     flex
                                     items-center
                                     justify-center
@@ -452,21 +435,19 @@ export default function PelatihanTable({
                                     transition
                                     shadow-sm
                                 "
-                            >
-
-                                <i className="
+              >
+                <i
+                  className="
                                     fas
                                     fa-pen
-                                "></i>
+                                "
+                ></i>
+              </button>
 
-                            </button>
-
-                            {/* DELETE */}
-                            <button
-                                onClick={() =>
-                                    onDelete(item)
-                                }
-                                className="
+              {/* DELETE */}
+              <button
+                onClick={() => onDelete(item)}
+                className="
                                     flex
                                     items-center
                                     justify-center
@@ -480,24 +461,18 @@ export default function PelatihanTable({
                                     transition
                                     shadow-sm
                                 "
-                            >
-
-                                <i className="
+              >
+                <i
+                  className="
                                     fas
                                     fa-trash
-                                "></i>
-
-                            </button>
-
-                        </div>
-
-                    </div>
-
-                ))
-
-            )}
-
-        </div>
-
-    );
+                                "
+                ></i>
+              </button>
+            </div>
+          </div>
+        ))
+      )}
+    </div>
+  );
 }
