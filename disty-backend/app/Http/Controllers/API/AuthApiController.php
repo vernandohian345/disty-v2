@@ -28,11 +28,11 @@ class AuthApiController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' =>
-                    'Email atau password salah'
+                'Email atau password salah'
             ], 401);
         }
 
-       /** @var \App\Models\User $user */
+        /** @var \App\Models\User $user */
         $user = Auth::user();
 
         $token = $user->createToken(
@@ -52,16 +52,19 @@ class AuthApiController extends Controller
     {
         $request->validate([
             'name' =>
-                'required|string|max:255',
+            'required|string|max:255',
+
+            'username' =>
+            'required|string|max:255|unique:users,username',
 
             'email' =>
-                'required|email|unique:users,email',
+            'required|email|unique:users,email',
 
             'password' =>
-                'required|min:6|confirmed',
-        ],[
+            'required|min:6|confirmed',
+        ], [
             'email.regex' =>
-                'Email Harus menggunakan @gmail.com',
+            'Email Harus menggunakan @gmail.com',
         ]);
 
         // random avatar color
@@ -80,42 +83,45 @@ class AuthApiController extends Controller
 
         $user = User::create([
             'name' =>
-                $request->name,
+            $request->name,
+
+            'username' =>
+            $request->username,
 
             'email' =>
-                $request->email,
+            $request->email,
 
             'password' =>
-                Hash::make(
-                    $request->password
-                ),
+            Hash::make(
+                $request->password
+            ),
 
             'role' => 'user',
 
             'avatar_color' =>
-                $randomColor,
+            $randomColor,
         ]);
 
         return response()->json([
             'status' => 'success',
             'message' =>
-                'Registrasi berhasil',
+            'Registrasi berhasil',
             'user' => $user
         ]);
     }
 
     // ✅ LOGOUT
     public function logout(Request $request)
-{
-    $request->user()
-        ->currentAccessToken()
-        ->delete();
+    {
+        $request->user()
+            ->currentAccessToken()
+            ->delete();
 
-    return response()->json([
-        'status' => 'success',
-        'message' => 'Logout berhasil'
-    ]);
-}
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Logout berhasil'
+        ]);
+    }
 
     // ✅ GET USER LOGIN
     public function me()
