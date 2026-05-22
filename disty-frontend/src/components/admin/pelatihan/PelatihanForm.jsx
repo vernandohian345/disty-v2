@@ -11,8 +11,8 @@ export default function PelatihanForm({
     const navigate = useNavigate();
 
     const [form, setForm] = useState({
-        nama_pelatihan:
-            editData?.nama_pelatihan || "",
+        title:
+            editData?.title || "",
 
         deskripsi:
             editData?.deskripsi || "",
@@ -38,7 +38,7 @@ export default function PelatihanForm({
         tanggal_pelatihan:
             editData?.tanggal_pelatihan || "",
 
-        sampul: null,
+        thumbnail: null,
     });
 
     const handleChange = (e) => {
@@ -284,9 +284,9 @@ export default function PelatihanForm({
 
                         <input
                             type="text"
-                            name="nama_pelatihan"
+                            name="title"
                             value={
-                                form.nama_pelatihan
+                                form.title
                             }
                             onChange={handleChange}
                             placeholder="Masukkan nama pelatihan"
@@ -617,7 +617,7 @@ export default function PelatihanForm({
                         ">
 
                             <RichTextEditor
-                                value={form.materi}
+                                content={form.materi}
                                 onChange={(value) =>
                                     setForm((prev) => ({
                                         ...prev,
@@ -665,11 +665,11 @@ export default function PelatihanForm({
                         >
 
                             {
-                                form.sampul
+                                form.thumbnail
                                     ? (
 
                                         <img
-                                            src={URL.createObjectURL(form.sampul)}
+                                            src={URL.createObjectURL(form.thumbnail)}
                                             alt=""
                                             className="
                                                 absolute
@@ -681,10 +681,10 @@ export default function PelatihanForm({
                                             "
                                         />
 
-                                    ) : editData?.sampul ? (
+                                    ) : editData?.thumbnail ? (
 
                                         <img
-                                            src={`http://127.0.0.1:8000/uploads/pelatihan/${editData.sampul}`}
+                                            src={`http://127.0.0.1:8000/uploads/pelatihan/${editData.thumbnail}`}
                                             alt=""
                                             className="
                                                 absolute
@@ -750,7 +750,7 @@ export default function PelatihanForm({
 
                             <input
                                 type="file"
-                                name="sampul"
+                                name="thumbnail"
                                 accept="
                                     image/png,
                                     image/jpeg,

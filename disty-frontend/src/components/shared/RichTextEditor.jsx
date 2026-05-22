@@ -3,7 +3,7 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
 import Placeholder from "@tiptap/extension-placeholder";
-import { Underline } from "lucide-react";
+import Underline from "@tiptap/extension-underline";
 
 export default function RichTextEditor({
   content,
@@ -11,18 +11,20 @@ export default function RichTextEditor({
   placeholder = "Tulis sesuatu...",
 }) {
   const editor = useEditor({
-    extensions: [
-      StarterKit,
+        extensions: [
+        StarterKit.configure({
+            link: false,
+        }),
 
-      Underline,
+        Underline,
 
-      Link.configure({
-        openOnClick: false,
-      }),
+        Placeholder.configure({
+            placeholder,
+        }),
 
-      Placeholder.configure({
-        placeholder,
-      }),
+        Link.configure({
+            openOnClick: false,
+        }),
     ],
 
     content,

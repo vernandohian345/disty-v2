@@ -34,7 +34,7 @@ return new class extends Migration {
             $table->enum('status', ['draft', 'published'])
                 ->default('published');
 
-            $table->json('materi')->nullable();
+            $table->longText('materi')->nullable();
             $table->json('benefits')->nullable();
 
             $table->date('tanggal_pelatihan')->nullable();

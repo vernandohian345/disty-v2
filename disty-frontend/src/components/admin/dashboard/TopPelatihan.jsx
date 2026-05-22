@@ -218,7 +218,7 @@ export default function TopPelatihan({
                                             group-hover:text-orange-500
                                         ">
 
-                                            {item.nama_pelatihan}
+                                            {item.title}
 
                                         </h3>
 

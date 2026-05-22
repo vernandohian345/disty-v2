@@ -687,7 +687,7 @@ export default function IndexPelatihan() {
                 }}
                 onDelete={handleDelete}
                 title={
-                    selectedPelatihan?.nama_pelatihan
+                    selectedPelatihan?.title
                 }
             />
 
