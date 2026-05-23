@@ -12,12 +12,15 @@ import Bootcamp from "./pages/frontend/Bootcamp";
 import BootcampDetail from "./pages/frontend/BootcampDetail";
 import Checkout from "./pages/frontend/Checkout";
 import Success from "./pages/frontend/Success";
+import Payment from "./pages/frontend/Payment";
 
 import Dashboard from "./pages/admin/Dashboard";
 import IndexPelatihan from "./pages/admin/Pelatihan/Index";
 import CreatePelatihan from "./pages/admin/Pelatihan/Create";
 import IndexSertifikasi from "./pages/admin/Sertifikasi/Index";
 import CreateSertifikasi from "./pages/admin/Sertifikasi/Create";
+
+import IndexPembayaran from "./pages/admin/pembayaran/Index";
 
 import Pembayaran from "./pages/admin/Pembayaran";
 import AdminBlog from "./pages/admin/Blog";
@@ -41,6 +44,7 @@ export default function App() {
         <Route path="/pelatihan/:slug" element={<BootcampDetail />} />
         <Route path="/checkout/:slug" element={<Checkout />} />
         <Route path="/success" element={<Success />} />
+        <Route path="/payment" element={<Payment />} />
 
         {/* AUTH */}
         <Route path="/login" element={<Login />} />
@@ -113,6 +117,9 @@ export default function App() {
             </RouteAdmin>
           }
         />
+
+        <Route path="/admin/pembayaran" element={<IndexPembayaran />} />
+
         {/* BLOG ADMIN */}
         <Route
           path="/admin/blog"
