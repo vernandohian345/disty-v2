@@ -24,8 +24,12 @@ import IndexPembayaran from "./pages/admin/pembayaran/Index";
 
 import Pembayaran from "./pages/admin/Pembayaran";
 import AdminBlog from "./pages/admin/Blog";
+<<<<<<< HEAD
 import IndexUser from "./pages/admin/User/Index";
 import CreateUser from "./pages/admin/User/Create";
+=======
+import SertifikatPelatihan from "./pages/admin/SertifikatPelatihan";
+>>>>>>> feat/kelola-sertifikasi-pelatihan
 
 import RouteAdmin from "./routes/AdminRoute";
 import ScrollToTop from "./components/shared/ScrollToTop";
@@ -130,6 +134,7 @@ export default function App() {
           }
         />
 
+<<<<<<< HEAD
         {/* USER ADMIN */}
         <Route
           path="/admin/users"
@@ -148,6 +153,14 @@ export default function App() {
             </RouteAdmin>
           }
         />
+=======
+        {/* SERTIFIKAT PELATIHAN */}
+        <Route
+          path="/admin/sertifikat-pelatihan"
+          element={<SertifikatPelatihan />}
+        />
+
+>>>>>>> feat/kelola-sertifikasi-pelatihan
       </Routes>
     </BrowserRouter>
   );

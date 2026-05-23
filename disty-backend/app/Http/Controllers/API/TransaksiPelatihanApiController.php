@@ -166,6 +166,7 @@ class TransaksiPelatihanApiController extends Controller
                 'metode_pembayaran' =>
                     $metode,
 
+<<<<<<< HEAD
                 'kode_transaksi' =>
                     $kode,
 
@@ -176,6 +177,12 @@ class TransaksiPelatihanApiController extends Controller
                     $pelatihan->kategori === 'gratis'
                     ? 'completed'
                     : 'pending',
+=======
+                'status' =>
+                $pelatihan->kategori === 'gratis'
+                ? 'approved'
+                : 'pending',
+>>>>>>> feat/kelola-sertifikasi-pelatihan
             ]);
 
         // notif

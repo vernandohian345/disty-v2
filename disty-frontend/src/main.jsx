@@ -1,6 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+<<<<<<< HEAD
 import { HelmetProvider } from "react-helmet-async";
+=======
+
+>>>>>>> feat/kelola-sertifikasi-pelatihan
 
 import App from "./App";
 

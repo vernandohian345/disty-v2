@@ -1,9 +1,13 @@
+<<<<<<< HEAD
 import {
     AnimatePresence,
     motion,
 } from "framer-motion";
 
 import SertifikasiForm from "./SertifikasiForm";
+=======
+import { useEffect, useState } from "react";
+>>>>>>> feat/kelola-sertifikasi-pelatihan
 
 export default function SertifikasiModal({
     isOpen,

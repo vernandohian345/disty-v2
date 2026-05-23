@@ -1,6 +1,11 @@
+<<<<<<< HEAD
 import { AnimatePresence, motion } from "framer-motion";
 
 import PelatihanForm from "./PelatihanForm";
+=======
+import { useEffect, useState } from "react";
+
+>>>>>>> feat/kelola-sertifikasi-pelatihan
 
 export default function PelatihanModal({
   isOpen,
