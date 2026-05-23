@@ -21,7 +21,7 @@ class SertifikatPelatihanApiController extends Controller
             'user',
             'pelatihan'
         ])
-        ->where('status', 'approved');
+            ->where('status', 'completed');
 
         // filter pelatihan
         if ($pelatihan_id) {
@@ -30,7 +30,6 @@ class SertifikatPelatihanApiController extends Controller
                 'pelatihan_id',
                 $pelatihan_id
             );
-
         }
 
         // filter completed
@@ -40,7 +39,6 @@ class SertifikatPelatihanApiController extends Controller
                 'is_completed',
                 $request->completed
             );
-
         }
 
         if ($pelatihan_id) {
@@ -53,17 +51,17 @@ class SertifikatPelatihanApiController extends Controller
 
         $stats = [
             'total_peserta' =>
-                TransaksiPelatihan::where('status', 'approved')->count(),
+            TransaksiPelatihan::where('status', 'completed')->count(),
 
             'belum_sertifikat' =>
-                TransaksiPelatihan::where('status', 'approved')
-                    ->whereNull('sertifikat_pelatihan')
-                    ->count(),
+            TransaksiPelatihan::where('status', 'completed')
+                ->whereNull('sertifikat_pelatihan')
+                ->count(),
 
             'sudah_sertifikat' =>
-                TransaksiPelatihan::where('status', 'approved')
-                    ->whereNotNull('sertifikat_pelatihan')
-                    ->count(),
+            TransaksiPelatihan::where('status', 'completed')
+                ->whereNotNull('sertifikat_pelatihan')
+                ->count(),
         ];
 
         return response()->json([
@@ -84,7 +82,7 @@ class SertifikatPelatihanApiController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' =>
-                    'Peserta belum di-approve'
+                'Peserta belum di-approve'
             ], 400);
         }
 
@@ -101,7 +99,7 @@ class SertifikatPelatihanApiController extends Controller
             'type' => 'pelatihan_completed',
             'title' => 'Pelatihan selesai',
             'message' =>
-                'Pelatihan telah diselesaikan',
+            'Pelatihan telah diselesaikan',
             'icon' => 'circle-check',
             'color' => 'success',
             'url' => '/profil',
@@ -111,7 +109,7 @@ class SertifikatPelatihanApiController extends Controller
         return response()->json([
             'status' => 'success',
             'message' =>
-                'Peserta berhasil ditandai selesai'
+            'Peserta berhasil ditandai selesai'
         ]);
     }
 
@@ -129,13 +127,15 @@ class SertifikatPelatihanApiController extends Controller
             ], 400);
         }
 
-        if ($transaksi->status !== 'approved' ||
-        !$transaksi->is_completed) {
+        if (
+            $transaksi->status !== 'approved' ||
+            !$transaksi->is_completed
+        ) {
 
             return response()->json([
                 'status' => 'error',
                 'message' =>
-                    'Peserta belum approved'
+                'Peserta belum approved'
             ], 400);
         }
 
@@ -184,7 +184,7 @@ class SertifikatPelatihanApiController extends Controller
             'type' => 'sertifikat_ready',
             'title' => 'Sertifikat tersedia',
             'message' =>
-                'Sertifikat pelatihan sudah tersedia',
+            'Sertifikat pelatihan sudah tersedia',
             'icon' => 'certificate',
             'color' => 'success',
             'url' => '/profil',
@@ -194,7 +194,7 @@ class SertifikatPelatihanApiController extends Controller
         return response()->json([
             'status' => 'success',
             'message' =>
-                'Sertifikat berhasil di-generate',
+            'Sertifikat berhasil di-generate',
             'file' => $filename
         ]);
     }
@@ -206,20 +206,20 @@ class SertifikatPelatihanApiController extends Controller
             Pelatihan::findOrFail($pelatihan_id);
 
         $peserta = TransaksiPelatihan::where(
-        'pelatihan_id',
-        $pelatihan_id
+            'pelatihan_id',
+            $pelatihan_id
         )
-        ->where('status', 'approved')
-        ->where('is_completed', true)
-        ->whereNull('sertifikat_pelatihan')
-        ->get();
+            ->where('status', 'approved')
+            ->where('is_completed', true)
+            ->whereNull('sertifikat_pelatihan')
+            ->get();
 
         if ($peserta->isEmpty()) {
 
             return response()->json([
                 'status' => 'error',
                 'message' =>
-                    'Tidak ada peserta'
+                'Tidak ada peserta'
             ], 400);
         }
 
@@ -262,7 +262,7 @@ class SertifikatPelatihanApiController extends Controller
                 $path =
                     public_path(
                         'uploads/sertifikat_pelatihan/' .
-                        $filename
+                            $filename
                     );
 
                 $pdf->save($path);
@@ -284,7 +284,6 @@ class SertifikatPelatihanApiController extends Controller
                 ]);
 
                 $generated++;
-
             } catch (\Exception $e) {
 
                 Log::error($e->getMessage());
@@ -295,12 +294,12 @@ class SertifikatPelatihanApiController extends Controller
             'status' => 'success',
             'generated' => $generated,
             'message' =>
-                'Batch generate berhasil'
+            'Batch generate berhasil'
         ]);
     }
 
     // ✅ REGENERATE
-    public function regenerate(int$id)
+    public function regenerate(int $id)
     {
         $transaksi = TransaksiPelatihan::findOrFail($id);
 
@@ -309,7 +308,7 @@ class SertifikatPelatihanApiController extends Controller
             $oldPath =
                 public_path(
                     'uploads/sertifikat_pelatihan/' .
-                    $transaksi->sertifikat_pelatihan
+                        $transaksi->sertifikat_pelatihan
                 );
 
             if (file_exists($oldPath)) {
@@ -331,7 +330,6 @@ class SertifikatPelatihanApiController extends Controller
                 'status' => 'error',
                 'message' => 'Peserta tidak ditemukan'
             ], 404);
-
         }
 
         if (!$peserta->sertifikat_pelatihan) {
@@ -339,14 +337,13 @@ class SertifikatPelatihanApiController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' =>
-                    'Sertifikat belum tersedia'
+                'Sertifikat belum tersedia'
             ], 404);
-
         }
 
         $path = public_path(
             'uploads/sertifikat_pelatihan/' .
-            $peserta->sertifikat_pelatihan
+                $peserta->sertifikat_pelatihan
         );
 
         if (!file_exists($path)) {
@@ -354,9 +351,8 @@ class SertifikatPelatihanApiController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' =>
-                    'File sertifikat tidak ditemukan'
+                'File sertifikat tidak ditemukan'
             ], 404);
-
         }
 
         return response()->file($path);
@@ -373,14 +369,14 @@ class SertifikatPelatihanApiController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' =>
-                    'Sertifikat belum tersedia'
+                'Sertifikat belum tersedia'
             ], 404);
         }
 
         $path =
             public_path(
                 'uploads/sertifikat_pelatihan/' .
-                $transaksi->sertifikat_pelatihan
+                    $transaksi->sertifikat_pelatihan
             );
 
         if (!file_exists($path)) {
@@ -388,7 +384,7 @@ class SertifikatPelatihanApiController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' =>
-                    'File tidak ditemukan'
+                'File tidak ditemukan'
             ], 404);
         }
 
@@ -398,14 +394,14 @@ class SertifikatPelatihanApiController extends Controller
 
 
     private function generateCertificateHtml(
-    $nama,
-    $pelatihan,
-    $tanggal,
-    $nomor,
-    $durasi
-) {
+        $nama,
+        $pelatihan,
+        $tanggal,
+        $nomor,
+        $durasi
+    ) {
 
-    return "
+        return "
     <html>
     <head>
         <style>
@@ -489,6 +485,5 @@ class SertifikatPelatihanApiController extends Controller
     </body>
     </html>
     ";
-}
-
+    }
 }
