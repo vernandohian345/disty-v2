@@ -63,12 +63,12 @@ class PelatihanApiController extends Controller
             Pelatihan::where(
                 'slug',
                 'like',
-                "{$slug}%"// Cek slug yang mirip
+                "{$slug}%" // Cek slug yang mirip
             )->count();
 
         $data['slug'] =
             $count
-            ? "{$slug}-" . ($count + 1)// Tambahkan angka jika slug sudah ada
+            ? "{$slug}-" . ($count + 1) // Tambahkan angka jika slug sudah ada
             : $slug;
 
 
@@ -114,8 +114,8 @@ class PelatihanApiController extends Controller
             'short_description' => 'nullable|string',
             'level' => 'required|string',
             'status' => 'required|string',
-            'benefits' => 'nullable|array',
-            'materi' => 'required|string',
+            'benefits' => 'nullable|string',
+            'materi' => 'nullable|string',
             'kategori' => 'required|string',
             'link_grup' => 'required|string',
             'durasi' => 'required|string|max:100',
@@ -146,16 +146,16 @@ class PelatihanApiController extends Controller
                 'like',
                 "{$slug}%" // Cek slug yang mirip
             )
-                ->where(
-                    'id',
-                    '!=',
-                    $pelatihan->id
-                ) // Kecualikan pelatihan yang sedang diupdate
-                ->count();
+            ->where(
+                'id',
+                '!=',
+                $pelatihan->id
+            ) // Kecualikan pelatihan yang sedang diupdate
+            ->count();
 
         $data['slug'] =
             $count
-            ? "{$slug}-" . ($count + 1)// Tambahkan angka jika slug sudah ada
+            ? "{$slug}-" . ($count + 1) // Tambahkan angka jika slug sudah ada
             : $slug;
 
         $data['harga'] =
@@ -193,7 +193,6 @@ class PelatihanApiController extends Controller
             );
 
             $data['thumbnail'] = $filename;
-
         } else {
 
             unset($data['thumbnail']);
