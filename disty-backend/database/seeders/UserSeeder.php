@@ -18,7 +18,6 @@ class UserSeeder extends Seeder
         User::create([
             'username' => 'SuperAdmin',
             'name' => 'Super Admin',
-            'username' => 'admin',
             'email' => 'admin@example.com',
             'password' => Hash::make('min@5202'),
             'avatar_color' => '#946B3A',
@@ -28,7 +27,6 @@ class UserSeeder extends Seeder
         User::create([
             'username' => 'JohnDoe',
             'name' => 'John Doe',
-            'username' => 'johndoe',
             'email' => 'user@example.com',
             'password' => Hash::make('john@2025'),
             'avatar_color' => '#3A6B94',

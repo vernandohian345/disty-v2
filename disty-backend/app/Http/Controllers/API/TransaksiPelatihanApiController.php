@@ -35,8 +35,7 @@ class TransaksiPelatihanApiController extends Controller
     ) {
 
         $request->validate([
-            'bukti' =>
-                'required|image|mimes:jpg,jpeg,png|max:2048',
+            'bukti' => 'required|image'
         ]);
 
         $transaksi =
@@ -44,7 +43,8 @@ class TransaksiPelatihanApiController extends Controller
 
         if ($request->hasFile('bukti')) {
 
-            $file = $request->file('bukti');
+            $file =
+                $request->file('bukti');
 
             $filename =
                 time() . '_' .
@@ -55,29 +55,27 @@ class TransaksiPelatihanApiController extends Controller
                 $filename
             );
 
-            $transaksi->update([
-
-                'bukti' =>
-                    'uploads/bukti/' . $filename,
-
-                'status' =>
-                    'paid',
-
-                'paid_at' =>
-                    now(),
-
-            ]);
-
+            $transaksi->bukti =
+                'uploads/bukti/' . $filename;
         }
+
+        $transaksi->status =
+            'paid';
+
+        $transaksi->paid_at =
+            now();
+
+        $transaksi->save();
 
         return response()->json([
             'status' => 'success',
             'message' =>
-                'Bukti pembayaran berhasil upload',
-            'transaksi' =>
-                $transaksi
+                'Bukti pembayaran berhasil upload'
         ]);
+
     }
+
+
 
     // ✅ DAFTAR / TRANSAKSI PELATIHAN
     public function store(Request $request)
