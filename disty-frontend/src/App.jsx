@@ -15,8 +15,10 @@ import Success from "./pages/frontend/Success";
 import Payment from "./pages/frontend/Payment";
 
 import Dashboard from "./pages/admin/Dashboard";
+
 import IndexPelatihan from "./pages/admin/Pelatihan/Index";
 import CreatePelatihan from "./pages/admin/Pelatihan/Create";
+
 import IndexSertifikasi from "./pages/admin/Sertifikasi/Index";
 import CreateSertifikasi from "./pages/admin/Sertifikasi/Create";
 
@@ -24,8 +26,11 @@ import IndexPembayaran from "./pages/admin/pembayaran/Index";
 
 import Pembayaran from "./pages/admin/Pembayaran";
 import AdminBlog from "./pages/admin/Blog";
+
 import IndexUser from "./pages/admin/User/Index";
 import CreateUser from "./pages/admin/User/Create";
+
+import SertifikatPelatihan from "./pages/admin/SertifikatPelatihan";
 
 import RouteAdmin from "./routes/AdminRoute";
 import ScrollToTop from "./components/shared/ScrollToTop";
@@ -34,14 +39,18 @@ export default function App() {
   return (
     <BrowserRouter>
       <ScrollToTop />
+
       <Routes>
         {/* FRONTEND */}
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
+
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/:slug" element={<BlogDetail />} />
+
         <Route path="/pelatihan" element={<Bootcamp />} />
         <Route path="/pelatihan/:slug" element={<BootcampDetail />} />
+
         <Route path="/checkout/:slug" element={<Checkout />} />
         <Route path="/success" element={<Success />} />
         <Route path="/payment" element={<Payment />} />
@@ -53,7 +62,7 @@ export default function App() {
         {/* NOTIFICATIONS */}
         <Route path="/notifications" element={<Notifications />} />
 
-        {/* ADMIN */}
+        {/* ADMIN DASHBOARD */}
         <Route
           path="/dashboard"
           element={
@@ -63,6 +72,7 @@ export default function App() {
           }
         />
 
+        {/* ADMIN PELATIHAN */}
         <Route
           path="/admin/pelatihan"
           element={
@@ -81,6 +91,7 @@ export default function App() {
           }
         />
 
+        {/* ADMIN SERTIFIKASI */}
         <Route
           path="/admin/sertifikasi"
           element={
@@ -99,16 +110,7 @@ export default function App() {
           }
         />
 
-        {/* <Route
-            path="/admin/sertifikasi"
-            element={
-              <RouteAdmin>
-                <Sertifikasi />
-              </RouteAdmin>
-            }
-        /> */}
-
-        {/* PEMBAYARAN */}
+        {/* ADMIN PEMBAYARAN */}
         <Route
           path="/admin/pembayaran"
           element={
@@ -118,9 +120,16 @@ export default function App() {
           }
         />
 
-        <Route path="/admin/pembayaran" element={<IndexPembayaran />} />
+        <Route
+          path="/admin/pembayaran/index"
+          element={
+            <RouteAdmin>
+              <IndexPembayaran />
+            </RouteAdmin>
+          }
+        />
 
-        {/* BLOG ADMIN */}
+        {/* ADMIN BLOG */}
         <Route
           path="/admin/blog"
           element={
@@ -130,7 +139,7 @@ export default function App() {
           }
         />
 
-        {/* USER ADMIN */}
+        {/* ADMIN USER */}
         <Route
           path="/admin/users"
           element={
@@ -145,6 +154,16 @@ export default function App() {
           element={
             <RouteAdmin>
               <CreateUser />
+            </RouteAdmin>
+          }
+        />
+
+        {/* SERTIFIKAT PELATIHAN */}
+        <Route
+          path="/admin/sertifikat-pelatihan"
+          element={
+            <RouteAdmin>
+              <SertifikatPelatihan />
             </RouteAdmin>
           }
         />

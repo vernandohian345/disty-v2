@@ -23,6 +23,26 @@ class SertifikatPelatihanApiController extends Controller
         ])
         ->where('status', 'approved');
 
+        // filter pelatihan
+        if ($pelatihan_id) {
+
+            $query->where(
+                'pelatihan_id',
+                $pelatihan_id
+            );
+
+        }
+
+        // filter completed
+        if ($request->filled('completed')) {
+
+            $query->where(
+                'is_completed',
+                $request->completed
+            );
+
+        }
+
         if ($pelatihan_id) {
             $query->where('pelatihan_id', $pelatihan_id);
         }
@@ -53,13 +73,64 @@ class SertifikatPelatihanApiController extends Controller
         ]);
     }
 
+    // ✅ MARK COMPLETED
+    public function markCompleted(int $id)
+    {
+        $transaksi = TransaksiPelatihan::findOrFail($id);
+
+        // wajib approved dulu
+        if ($transaksi->status !== 'approved') {
+
+            return response()->json([
+                'status' => 'error',
+                'message' =>
+                    'Peserta belum di-approve'
+            ], 400);
+        }
+
+        // update completion
+        $transaksi->is_completed = true;
+
+        $transaksi->completed_at = now();
+
+        $transaksi->save();
+
+        // notification
+        Notification::create([
+            'user_id' => $transaksi->user_id,
+            'type' => 'pelatihan_completed',
+            'title' => 'Pelatihan selesai',
+            'message' =>
+                'Pelatihan telah diselesaikan',
+            'icon' => 'circle-check',
+            'color' => 'success',
+            'url' => '/profil',
+            'is_read' => false
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+            'message' =>
+                'Peserta berhasil ditandai selesai'
+        ]);
+    }
+
     // ✅ GENERATE 1 SERTIFIKAT
     public function generate(int $id)
     {
         $transaksi = TransaksiPelatihan::with('pelatihan')
             ->findOrFail($id);
 
-        if ($transaksi->status !== 'approved') {
+        if ($transaksi->sertifikat_pelatihan) {
+
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Sertifikat sudah dibuat'
+            ], 400);
+        }
+
+        if ($transaksi->status !== 'approved' ||
+        !$transaksi->is_completed) {
 
             return response()->json([
                 'status' => 'error',
@@ -76,25 +147,15 @@ class SertifikatPelatihanApiController extends Controller
             str_pad($transaksi->id, 5, '0', STR_PAD_LEFT);
 
         // generate pdf
-        $pdf = Pdf::loadView(
-            'admin.sertifikat-pelatihan.template',
-            [
-                'nama' =>
-                    $transaksi->nama,
-
-                'pelatihan' =>
-                    $transaksi->pelatihan->nama_pelatihan,
-
-                'tanggal' =>
-                    $transaksi->pelatihan->tanggal_pelatihan,
-
-                'nomor' =>
-                    $nomorSertifikat,
-
-                'durasi' =>
-                    $transaksi->pelatihan->durasi,
-            ]
+        $html = $this->generateCertificateHtml(
+            $transaksi->nama,
+            $transaksi->pelatihan->nama_pelatihan,
+            $transaksi->pelatihan->tanggal_pelatihan,
+            $nomorSertifikat,
+            $transaksi->pelatihan->durasi
         );
+
+        $pdf = Pdf::loadHTML($html);
 
         $pdf->setPaper('a4', 'landscape');
 
@@ -145,10 +206,11 @@ class SertifikatPelatihanApiController extends Controller
             Pelatihan::findOrFail($pelatihan_id);
 
         $peserta = TransaksiPelatihan::where(
-            'pelatihan_id',
-            $pelatihan_id
+        'pelatihan_id',
+        $pelatihan_id
         )
         ->where('status', 'approved')
+        ->where('is_completed', true)
         ->whereNull('sertifikat_pelatihan')
         ->get();
 
@@ -178,25 +240,15 @@ class SertifikatPelatihanApiController extends Controller
                         STR_PAD_LEFT
                     );
 
-                $pdf = Pdf::loadView(
-                    'admin.sertifikat-pelatihan.template',
-                    [
-                        'nama' =>
-                            $transaksi->nama,
-
-                        'pelatihan' =>
-                            $pelatihan->nama_pelatihan,
-
-                        'tanggal' =>
-                            $pelatihan->tanggal_pelatihan,
-
-                        'nomor' =>
-                            $nomorSertifikat,
-
-                        'durasi' =>
-                            $pelatihan->durasi,
-                    ]
+                $html = $this->generateCertificateHtml(
+                    $transaksi->nama,
+                    $pelatihan->nama_pelatihan,
+                    $pelatihan->tanggal_pelatihan,
+                    $nomorSertifikat,
+                    $pelatihan->durasi
                 );
+
+                $pdf = Pdf::loadHTML($html);
 
                 $pdf->setPaper('a4', 'landscape');
 
@@ -219,6 +271,17 @@ class SertifikatPelatihanApiController extends Controller
                     $filename;
 
                 $transaksi->save();
+
+                Notification::create([
+                    'user_id' => $transaksi->user_id,
+                    'type' => 'sertifikat_ready',
+                    'title' => 'Sertifikat tersedia',
+                    'message' => 'Sertifikat pelatihan sudah tersedia',
+                    'icon' => 'certificate',
+                    'color' => 'success',
+                    'url' => '/profil',
+                    'is_read' => false
+                ]);
 
                 $generated++;
 
@@ -257,6 +320,48 @@ class SertifikatPelatihanApiController extends Controller
         return $this->generate($id);
     }
 
+    public function preview($id)
+    {
+        $peserta =
+            TransaksiPelatihan::find($id);
+
+        if (!$peserta) {
+
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Peserta tidak ditemukan'
+            ], 404);
+
+        }
+
+        if (!$peserta->sertifikat_pelatihan) {
+
+            return response()->json([
+                'status' => 'error',
+                'message' =>
+                    'Sertifikat belum tersedia'
+            ], 404);
+
+        }
+
+        $path = public_path(
+            'uploads/sertifikat_pelatihan/' .
+            $peserta->sertifikat_pelatihan
+        );
+
+        if (!file_exists($path)) {
+
+            return response()->json([
+                'status' => 'error',
+                'message' =>
+                    'File sertifikat tidak ditemukan'
+            ], 404);
+
+        }
+
+        return response()->file($path);
+    }
+
     // ✅ DOWNLOAD
     public function download(int $id)
     {
@@ -289,4 +394,101 @@ class SertifikatPelatihanApiController extends Controller
 
         return response()->download($path);
     }
+
+
+
+    private function generateCertificateHtml(
+    $nama,
+    $pelatihan,
+    $tanggal,
+    $nomor,
+    $durasi
+) {
+
+    return "
+    <html>
+    <head>
+        <style>
+
+            body{
+                font-family: sans-serif;
+                text-align:center;
+                padding:40px;
+                border:10px solid #f97316;
+            }
+
+            .title{
+                font-size:40px;
+                font-weight:bold;
+                color:#f97316;
+                margin-top:40px;
+            }
+
+            .subtitle{
+                font-size:20px;
+                margin-top:20px;
+            }
+
+            .name{
+                font-size:36px;
+                font-weight:bold;
+                margin:30px 0;
+            }
+
+            .program{
+                font-size:24px;
+                color:#ea580c;
+                margin-top:20px;
+            }
+
+            .footer{
+                margin-top:60px;
+                font-size:16px;
+            }
+
+            .nomor{
+                margin-top:30px;
+                font-size:14px;
+                color:#666;
+            }
+
+        </style>
+    </head>
+
+    <body>
+
+        <div class='title'>
+            SERTIFIKAT PELATIHAN
+        </div>
+
+        <div class='subtitle'>
+            Diberikan kepada:
+        </div>
+
+        <div class='name'>
+            {$nama}
+        </div>
+
+        <div>
+            Telah menyelesaikan pelatihan
+        </div>
+
+        <div class='program'>
+            {$pelatihan}
+        </div>
+
+        <div class='footer'>
+            Tanggal Pelatihan: {$tanggal}<br>
+            Durasi: {$durasi}
+        </div>
+
+        <div class='nomor'>
+            Nomor Sertifikat: {$nomor}
+        </div>
+
+    </body>
+    </html>
+    ";
+}
+
 }
