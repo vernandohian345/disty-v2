@@ -4,6 +4,7 @@ import {
 } from "framer-motion";
 
 import SertifikasiForm from "./SertifikasiForm";
+import { useEffect, useState } from "react";
 
 export default function SertifikasiModal({
     isOpen,

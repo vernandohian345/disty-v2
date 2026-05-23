@@ -1,10 +1,37 @@
 // src/components/admin/Sidebar.jsx
 
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { logout } from "../../services/authService";
 
 export default function Sidebar({ closeSidebar }) {
 
     const location = useLocation();
+
+    const navigate = useNavigate();
+
+    const handleLogout = async () => {
+        try {
+
+            await logout();
+
+            // hapus local storage
+            localStorage.removeItem("token");
+            localStorage.removeItem("user");
+
+            // redirect login
+            navigate("/");
+
+        } catch (error) {
+
+            console.log(error);
+
+            // paksa logout walau API gagal
+            localStorage.removeItem("token");
+            localStorage.removeItem("user");
+
+            navigate("/");
+        }
+    };
 
     const isActive = (path) => {
         return location.pathname.includes(path)
@@ -142,10 +169,42 @@ export default function Sidebar({ closeSidebar }) {
 
             </nav>
 
+            {/* KEMBALI KE BERANDA */}
+            <div className="px-4 pb-2">
+
+                <Link
+                    to="/"
+                    onClick={closeSidebar}
+                    className="
+                        w-full
+                        flex
+                        items-center
+                        gap-3
+                        px-4
+                        py-3
+                        rounded-xl
+                        bg-green-500
+                        hover:bg-green-600
+                        transition
+                    "
+                >
+
+                    <i className="fas fa-arrow-left"></i>
+
+                    <span className="whitespace-nowrap">
+                        Kembali ke Beranda
+                    </span>
+
+                </Link>
+
+            </div>
+
+
             {/* LOGOUT */}
             <div className="p-4 border-t border-slate-800">
 
                 <button
+                    onClick={handleLogout}
                     className="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-red-500 hover:bg-red-600 transition"
                 >
 

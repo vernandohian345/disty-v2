@@ -12,7 +12,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('transaksi_pelatihan', function (Blueprint $table) {
-            $table->string('sertifikat_pelatihan')->nullable()->after('bukti');
+
+            // status selesai pelatihan
+            $table->boolean('is_completed')
+                ->default(false)
+                ->after('status');
+
+            // tanggal selesai
+            $table->timestamp('completed_at')
+                ->nullable()
+                ->after('is_completed');
+
         });
     }
 
@@ -22,7 +32,12 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('transaksi_pelatihan', function (Blueprint $table) {
-            $table->dropColumn('sertifikat_pelatihan');
+
+            $table->dropColumn([
+                'is_completed',
+                'completed_at'
+            ]);
+
         });
     }
 };

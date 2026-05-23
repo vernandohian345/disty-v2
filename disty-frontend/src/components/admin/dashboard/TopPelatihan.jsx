@@ -236,11 +236,7 @@ export default function TopPelatihan({
                                             />
 
                                             <span>
-
-                                                {
-                                                    item.transaksi_pelatihan_count
-                                                } peserta
-
+                                                {item.transaksi_count} peserta
                                             </span>
 
                                         </div>

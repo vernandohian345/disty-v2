@@ -6,7 +6,7 @@ export const getDashboard = async () => {
 
     const token = localStorage.getItem("token");
 
-    return await axios.get(
+    const response = await axios.get(
         `${API_URL}/dashboard`,
         {
             headers: {
@@ -15,4 +15,6 @@ export const getDashboard = async () => {
             },
         }
     );
+
+    return response.data;
 };

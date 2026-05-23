@@ -5,225 +5,142 @@ import AdminLayout from "../../layouts/AdminLayout";
 import PembayaranDetailModal from "../../components/admin/PembayaranDetailModal";
 
 import {
-    getPembayaran,
-    approvePembayaran,
-    rejectPembayaran,
+  getPembayaran,
+  approvePembayaran,
+  rejectPembayaran,
 } from "../../services/pembayaranService";
 
 export default function Pembayaran() {
+  // =========================
+  // STATES
+  // =========================
+  const [loading, setLoading] = useState(true);
 
-    // =========================
-    // STATES
-    // =========================
-    const [loading, setLoading] =
-        useState(true);
+  const [transaksi, setTransaksi] = useState([]);
 
-    const [transaksi, setTransaksi] =
-        useState([]);
+  const [stats, setStats] = useState({});
 
-    const [stats, setStats] =
-        useState({});
+  const [search, setSearch] = useState("");
 
-    const [search, setSearch] =
-        useState("");
+  const [type, setType] = useState("pelatihan");
 
-    const [type, setType] =
-        useState("pelatihan");
+  const [status, setStatus] = useState("all");
 
-    const [status, setStatus] =
-        useState("all");
+  const [selectedData, setSelectedData] = useState(null);
 
-    const [selectedData, setSelectedData] =
-        useState(null);
+  const [openModal, setOpenModal] = useState(false);
 
-    const [openModal, setOpenModal] =
-        useState(false);
+  const [openType, setOpenType] = useState(false);
 
-    const [openType, setOpenType] =
-    useState(false);
+  const [openStatus, setOpenStatus] = useState(false);
 
-    const [openStatus, setOpenStatus] =
-        useState(false);
+  // =========================
+  // FETCH DATA
+  // =========================
+  const fetchPembayaran = async () => {
+    try {
+      setLoading(true);
 
-    // =========================
-    // FETCH DATA
-    // =========================
-    const fetchPembayaran =
-        async () => {
+      const response = await getPembayaran(type, status);
 
-            try {
+      setTransaksi(response.data.data.data);
 
-                setLoading(true);
+      setStats(response.data.stats);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-                const response =
-                    await getPembayaran(
-                        type,
-                        status
-                    );
+  useEffect(() => {
+    fetchPembayaran();
+  }, [type, status]);
 
-                setTransaksi(
-                    response.data.data.data
-                );
+  // =========================
+  // FILTER SEARCH
+  // =========================
+  const filteredData = transaksi.filter((item) => {
+    const program = item.pelatihan?.title || item.sertifikasi?.nama_sertifikasi;
 
-                setStats(
-                    response.data.stats
-                );
+    return (
+      item.user?.name?.toLowerCase().includes(search.toLowerCase()) ||
+      program?.toLowerCase().includes(search.toLowerCase())
+    );
+  });
 
-            } catch (error) {
+  // =========================
+  // APPROVE
+  // =========================
+  const handleApprove = async (id) => {
+    try {
+      await approvePembayaran(type, id);
 
-                console.log(error);
+      fetchPembayaran();
 
-            } finally {
+      setOpenModal(false);
 
-                setLoading(false);
+      alert("Pembayaran berhasil disetujui");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-            }
+  // =========================
+  // REJECT
+  // =========================
+  const handleReject = async (id) => {
+    if (!confirm("Yakin ingin menolak pembayaran?")) return;
 
-        };
+    try {
+      await rejectPembayaran(type, id);
 
-    useEffect(() => {
+      fetchPembayaran();
 
-        fetchPembayaran();
+      setOpenModal(false);
 
-    }, [type, status]);
+      alert("Pembayaran berhasil ditolak");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-    // =========================
-    // FILTER SEARCH
-    // =========================
-    const filteredData =
-        transaksi.filter((item) => {
-
-            const program =
-                item.pelatihan
-                    ?.nama_pelatihan ||
-                item.sertifikasi
-                    ?.nama_sertifikasi;
-
-            return (
-                item.user?.name
-                    ?.toLowerCase()
-                    .includes(
-                        search.toLowerCase()
-                    ) ||
-
-                program
-                    ?.toLowerCase()
-                    .includes(
-                        search.toLowerCase()
-                    )
-            );
-
-        });
-
-    // =========================
-    // APPROVE
-    // =========================
-    const handleApprove =
-        async (id) => {
-
-            try {
-
-                await approvePembayaran(
-                    type,
-                    id
-                );
-
-                fetchPembayaran();
-
-                setOpenModal(false);
-
-                alert(
-                    "Pembayaran berhasil disetujui"
-                );
-
-            } catch (error) {
-
-                console.log(error);
-
-            }
-
-        };
-
-    // =========================
-    // REJECT
-    // =========================
-    const handleReject =
-        async (id) => {
-
-            if (
-                !confirm(
-                    "Yakin ingin menolak pembayaran?"
-                )
-            ) return;
-
-            try {
-
-                await rejectPembayaran(
-                    type,
-                    id
-                );
-
-                fetchPembayaran();
-
-                setOpenModal(false);
-
-                alert(
-                    "Pembayaran berhasil ditolak"
-                );
-
-            } catch (error) {
-
-                console.log(error);
-
-            }
-
-        };
-
-    // =========================
-    // STATUS BADGE
-    // =========================
-    const getStatusClass =
-        (status) => {
-
-            switch (status) {
-
-                case "pending":
-
-                    return `
+  // =========================
+  // STATUS BADGE
+  // =========================
+  const getStatusClass = (status) => {
+    switch (status) {
+      case "pending":
+        return `
                         bg-yellow-100
                         text-yellow-700
                     `;
 
-                case "paid":
-
-                    return `
+      case "paid":
+        return `
                         bg-blue-100
                         text-blue-700
                     `;
 
-                case "approved":
-
-                    return `
+      case "completed":
+        return `
                         bg-green-100
                         text-green-700
                     `;
 
-                default:
-
-                    return `
+      default:
+        return `
                         bg-slate-100
                         text-slate-700
                     `;
-            }
+    }
+  };
 
-        };
-
-    return (
-
-        <AdminLayout>
-
-            {/* HEADER */}
-            <div className="
+  return (
+    <AdminLayout>
+      {/* HEADER */}
+      <div
+        className="
                 flex
                 flex-col
                 lg:flex-row
@@ -231,48 +148,43 @@ export default function Pembayaran() {
                 lg:justify-between
                 gap-5
                 mb-8
-            ">
-
-                <div>
-
-                    <h1 className="
+            "
+      >
+        <div>
+          <h1
+            className="
                         text-4xl
                         font-black
                         text-slate-800
-                    ">
+                    "
+          >
+            Pembayaran Peserta
+          </h1>
 
-                        Pembayaran Peserta
-
-                    </h1>
-
-                    <p className="
+          <p
+            className="
                         text-slate-500
                         mt-2
-                    ">
+                    "
+          >
+            Kelola pembayaran pelatihan & sertifikasi peserta
+          </p>
+        </div>
 
-                        Kelola pembayaran pelatihan & sertifikasi peserta
-
-                    </p>
-
-                </div>
-
-                {/* SEARCH */}
-                <div className="
+        {/* SEARCH */}
+        <div
+          className="
                     w-full
                     lg:w-96
                     relative
-                ">
-
-                    <input
-                        type="text"
-                        placeholder="Cari peserta..."
-                        value={search}
-                        onChange={(e) =>
-                            setSearch(
-                                e.target.value
-                            )
-                        }
-                        className="
+                "
+        >
+          <input
+            type="text"
+            placeholder="Cari peserta..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="
                             w-full
                             pl-12
                             pr-4
@@ -284,9 +196,10 @@ export default function Pembayaran() {
                             shadow-sm
                             focus:outline-none
                         "
-                    />
+          />
 
-                    <i className="
+          <i
+            className="
                         fas
                         fa-search
                         absolute
@@ -294,59 +207,60 @@ export default function Pembayaran() {
                         top-1/2
                         -translate-y-1/2
                         text-slate-400
-                    "></i>
+                    "
+          ></i>
+        </div>
+      </div>
 
-                </div>
-
-            </div>
-
-            {/* STATS */}
-            <div className="
+      {/* STATS */}
+      <div
+        className="
                 grid
                 grid-cols-1
                 md:grid-cols-2
                 xl:grid-cols-4
                 gap-6
                 mb-8
-            ">
-
-                {/* TOTAL */}
-                <div className="
+            "
+      >
+        {/* TOTAL */}
+        <div
+          className="
                     bg-white
                     rounded-3xl
                     p-6
                     shadow-sm
-                ">
-
-                    <div className="
+                "
+        >
+          <div
+            className="
                         flex
                         items-center
                         justify-between
-                    ">
-
-                        <div>
-
-                            <p className="
+                    "
+          >
+            <div>
+              <p
+                className="
                                 text-slate-500
-                            ">
+                            "
+              >
+                Total
+              </p>
 
-                                Total
-
-                            </p>
-
-                            <h2 className="
+              <h2
+                className="
                                 text-4xl
                                 font-black
                                 mt-2
-                            ">
+                            "
+              >
+                {stats.total || 0}
+              </h2>
+            </div>
 
-                                {stats.total || 0}
-
-                            </h2>
-
-                        </div>
-
-                        <div className="
+            <div
+              className="
                             w-16
                             h-16
                             rounded-2xl
@@ -354,58 +268,58 @@ export default function Pembayaran() {
                             flex
                             items-center
                             justify-center
-                        ">
-
-                            <i className="
+                        "
+            >
+              <i
+                className="
                                 fas
                                 fa-wallet
                                 text-2xl
                                 text-orange-500
-                            "></i>
+                            "
+              ></i>
+            </div>
+          </div>
+        </div>
 
-                        </div>
-
-                    </div>
-
-                </div>
-
-                {/* PENDING */}
-                <div className="
+        {/* PENDING */}
+        <div
+          className="
                     bg-white
                     rounded-3xl
                     p-6
                     shadow-sm
-                ">
-
-                    <div className="
+                "
+        >
+          <div
+            className="
                         flex
                         items-center
                         justify-between
-                    ">
-
-                        <div>
-
-                            <p className="
+                    "
+          >
+            <div>
+              <p
+                className="
                                 text-slate-500
-                            ">
+                            "
+              >
+                Pending
+              </p>
 
-                                Pending
-
-                            </p>
-
-                            <h2 className="
+              <h2
+                className="
                                 text-4xl
                                 font-black
                                 mt-2
-                            ">
+                            "
+              >
+                {stats.pending || 0}
+              </h2>
+            </div>
 
-                                {stats.pending || 0}
-
-                            </h2>
-
-                        </div>
-
-                        <div className="
+            <div
+              className="
                             w-16
                             h-16
                             rounded-2xl
@@ -413,58 +327,58 @@ export default function Pembayaran() {
                             flex
                             items-center
                             justify-center
-                        ">
-
-                            <i className="
+                        "
+            >
+              <i
+                className="
                                 fas
                                 fa-clock
                                 text-2xl
                                 text-yellow-500
-                            "></i>
+                            "
+              ></i>
+            </div>
+          </div>
+        </div>
 
-                        </div>
-
-                    </div>
-
-                </div>
-
-                {/* PAID */}
-                <div className="
+        {/* PAID */}
+        <div
+          className="
                     bg-white
                     rounded-3xl
                     p-6
                     shadow-sm
-                ">
-
-                    <div className="
+                "
+        >
+          <div
+            className="
                         flex
                         items-center
                         justify-between
-                    ">
-
-                        <div>
-
-                            <p className="
+                    "
+          >
+            <div>
+              <p
+                className="
                                 text-slate-500
-                            ">
+                            "
+              >
+                Dibayar
+              </p>
 
-                                Dibayar
-
-                            </p>
-
-                            <h2 className="
+              <h2
+                className="
                                 text-4xl
                                 font-black
                                 mt-2
-                            ">
+                            "
+              >
+                {stats.paid || 0}
+              </h2>
+            </div>
 
-                                {stats.paid || 0}
-
-                            </h2>
-
-                        </div>
-
-                        <div className="
+            <div
+              className="
                             w-16
                             h-16
                             rounded-2xl
@@ -472,58 +386,58 @@ export default function Pembayaran() {
                             flex
                             items-center
                             justify-center
-                        ">
-
-                            <i className="
+                        "
+            >
+              <i
+                className="
                                 fas
                                 fa-money-check
                                 text-2xl
                                 text-blue-500
-                            "></i>
+                            "
+              ></i>
+            </div>
+          </div>
+        </div>
 
-                        </div>
-
-                    </div>
-
-                </div>
-
-                {/* APPROVED */}
-                <div className="
+        {/* APPROVED */}
+        <div
+          className="
                     bg-white
                     rounded-3xl
                     p-6
                     shadow-sm
-                ">
-
-                    <div className="
+                "
+        >
+          <div
+            className="
                         flex
                         items-center
                         justify-between
-                    ">
-
-                        <div>
-
-                            <p className="
+                    "
+          >
+            <div>
+              <p
+                className="
                                 text-slate-500
-                            ">
+                            "
+              >
+                Approved
+              </p>
 
-                                Approved
-
-                            </p>
-
-                            <h2 className="
+              <h2
+                className="
                                 text-4xl
                                 font-black
                                 mt-2
-                            ">
+                            "
+              >
+                {stats.completed || 0}
+              </h2>
+            </div>
 
-                                {stats.approved || 0}
-
-                            </h2>
-
-                        </div>
-
-                        <div className="
+            <div
+              className="
                             w-16
                             h-16
                             rounded-2xl
@@ -531,26 +445,25 @@ export default function Pembayaran() {
                             flex
                             items-center
                             justify-center
-                        ">
-
-                            <i className="
+                        "
+            >
+              <i
+                className="
                                 fas
                                 fa-circle-check
                                 text-2xl
                                 text-green-500
-                            "></i>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
+                            "
+              ></i>
             </div>
+          </div>
+        </div>
+      </div>
 
-            {/* FILTER */}
-            {/* FILTER */}
-<div className="
+      {/* FILTER */}
+      {/* FILTER */}
+      <div
+        className="
     bg-white
     rounded-[30px]
     p-6
@@ -560,32 +473,31 @@ export default function Pembayaran() {
     flex-col
     lg:flex-row
     gap-5
-">
-
-    {/* TYPE */}
-    <div className="
+"
+      >
+        {/* TYPE */}
+        <div
+          className="
         relative
         w-full
         lg:w-72
-    ">
-
-        <label className="
+    "
+        >
+          <label
+            className="
             block
             text-sm
             font-bold
             text-slate-600
             mb-2
-        ">
-
+        "
+          >
             Jenis Program
+          </label>
 
-        </label>
-
-        {/* BUTTON */}
-        <button
-            onClick={() =>
-                setOpenType(!openType)
-            }
+          {/* BUTTON */}
+          <button
+            onClick={() => setOpenType(!openType)}
             className="
                 w-full
                 bg-slate-50
@@ -601,32 +513,23 @@ export default function Pembayaran() {
                 hover:border-orange-400
                 transition
             "
-        >
+          >
+            <span className="capitalize">{type}</span>
 
-            <span className="capitalize">
-
-                {type}
-
-            </span>
-
-            <i className={`
+            <i
+              className={`
                 fas
                 fa-chevron-down
                 transition
-                ${
-                    openType
-                        ? "rotate-180"
-                        : ""
-                }
-            `}></i>
+                ${openType ? "rotate-180" : ""}
+            `}
+            ></i>
+          </button>
 
-        </button>
-
-        {/* DROPDOWN */}
-        {
-            openType && (
-
-                <div className="
+          {/* DROPDOWN */}
+          {openType && (
+            <div
+              className="
                     absolute
                     top-full
                     left-0
@@ -642,24 +545,17 @@ export default function Pembayaran() {
                     animate-in
                     fade-in
                     zoom-in-95
-                ">
+                "
+            >
+              {["pelatihan", "sertifikasi"].map((item) => (
+                <button
+                  key={item}
+                  onClick={() => {
+                    setType(item);
 
-                    {
-                        [
-                            "pelatihan",
-                            "sertifikasi",
-                        ].map((item) => (
-
-                            <button
-                                key={item}
-                                onClick={() => {
-
-                                    setType(item);
-
-                                    setOpenType(false);
-
-                                }}
-                                className={`
+                    setOpenType(false);
+                  }}
+                  className={`
                                     w-full
                                     px-5
                                     py-4
@@ -669,56 +565,47 @@ export default function Pembayaran() {
                                     capitalize
 
                                     ${
-                                        type === item
-                                            ? `
+                                      type === item
+                                        ? `
                                                 bg-orange-50
                                                 text-orange-600
                                             `
-                                            : `
+                                        : `
                                                 hover:bg-slate-50
                                             `
                                     }
                                 `}
-                            >
+                >
+                  {item}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
 
-                                {item}
-
-                            </button>
-
-                        ))
-                    }
-
-                </div>
-
-            )
-        }
-
-    </div>
-
-    {/* STATUS */}
-    <div className="
+        {/* STATUS */}
+        <div
+          className="
         relative
         w-full
         lg:w-72
-    ">
-
-        <label className="
+    "
+        >
+          <label
+            className="
             block
             text-sm
             font-bold
             text-slate-600
             mb-2
-        ">
-
+        "
+          >
             Status Pembayaran
+          </label>
 
-        </label>
-
-        {/* BUTTON */}
-        <button
-            onClick={() =>
-                setOpenStatus(!openStatus)
-            }
+          {/* BUTTON */}
+          <button
+            onClick={() => setOpenStatus(!openStatus)}
             className="
                 w-full
                 bg-slate-50
@@ -734,32 +621,23 @@ export default function Pembayaran() {
                 hover:border-orange-400
                 transition
             "
-        >
+          >
+            <span className="capitalize">{status}</span>
 
-            <span className="capitalize">
-
-                {status}
-
-            </span>
-
-            <i className={`
+            <i
+              className={`
                 fas
                 fa-chevron-down
                 transition
-                ${
-                    openStatus
-                        ? "rotate-180"
-                        : ""
-                }
-            `}></i>
+                ${openStatus ? "rotate-180" : ""}
+            `}
+            ></i>
+          </button>
 
-        </button>
-
-        {/* DROPDOWN */}
-        {
-            openStatus && (
-
-                <div className="
+          {/* DROPDOWN */}
+          {openStatus && (
+            <div
+              className="
                     absolute
                     top-full
                     left-0
@@ -772,26 +650,17 @@ export default function Pembayaran() {
                     border-slate-100
                     overflow-hidden
                     z-50
-                ">
+                "
+            >
+              {["all", "pending", "paid", "approved"].map((item) => (
+                <button
+                  key={item}
+                  onClick={() => {
+                    setStatus(item);
 
-                    {
-                        [
-                            "all",
-                            "pending",
-                            "paid",
-                            "approved",
-                        ].map((item) => (
-
-                            <button
-                                key={item}
-                                onClick={() => {
-
-                                    setStatus(item);
-
-                                    setOpenStatus(false);
-
-                                }}
-                                className={`
+                    setOpenStatus(false);
+                  }}
+                  className={`
                                     w-full
                                     px-5
                                     py-4
@@ -801,261 +670,213 @@ export default function Pembayaran() {
                                     capitalize
 
                                     ${
-                                        status === item
-                                            ? `
+                                      status === item
+                                        ? `
                                                 bg-orange-50
                                                 text-orange-600
                                             `
-                                            : `
+                                        : `
                                                 hover:bg-slate-50
                                             `
                                     }
                                 `}
-                            >
-                                {item}
-                            </button>
-                        ))
-                    }
-                </div>
+                >
+                  {item}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
 
-            )
-        }
-    </div>
-</div>
-
-            {/* TABLE */}
-            <div className="
+      {/* TABLE */}
+      <div
+        className="
                 bg-white
                 rounded-3xl
                 shadow-sm
                 overflow-hidden
-            ">
-
-                <div className="
+            "
+      >
+        <div
+          className="
                     overflow-x-auto
-                ">
-
-                    <table className="
+                "
+        >
+          <table
+            className="
                         w-full
-                    ">
-
-                        <thead className="
+                    "
+          >
+            <thead
+              className="
                             bg-slate-50
-                        ">
-
-                            <tr>
-
-                                <th className="
+                        "
+            >
+              <tr>
+                <th
+                  className="
                                     text-left
                                     p-5
                                     font-bold
                                     text-slate-600
-                                ">
+                                "
+                >
+                  Peserta
+                </th>
 
-                                    Peserta
-
-                                </th>
-
-                                <th className="
+                <th
+                  className="
                                     text-left
                                     p-5
                                     font-bold
                                     text-slate-600
-                                ">
+                                "
+                >
+                  Program
+                </th>
 
-                                    Program
-
-                                </th>
-
-                                <th className="
+                <th
+                  className="
                                     text-left
                                     p-5
                                     font-bold
                                     text-slate-600
-                                ">
+                                "
+                >
+                  Status
+                </th>
 
-                                    Status
-
-                                </th>
-
-                                <th className="
+                <th
+                  className="
                                     text-left
                                     p-5
                                     font-bold
                                     text-slate-600
-                                ">
+                                "
+                >
+                  Bukti
+                </th>
 
-                                    Bukti
-
-                                </th>
-
-                                <th className="
+                <th
+                  className="
                                     text-left
                                     p-5
                                     font-bold
                                     text-slate-600
-                                ">
+                                "
+                >
+                  Action
+                </th>
+              </tr>
+            </thead>
 
-                                    Action
-
-                                </th>
-
-                            </tr>
-
-                        </thead>
-
-                        <tbody>
-
-                            {
-                                loading ? (
-
-                                    <tr>
-
-                                        <td
-                                            colSpan="5"
-                                            className="
+            <tbody>
+              {loading ? (
+                <tr>
+                  <td
+                    colSpan="5"
+                    className="
                                                 text-center
                                                 p-10
                                             "
-                                        >
-
-                                            Loading...
-
-                                        </td>
-
-                                    </tr>
-
-                                ) : filteredData.length === 0 ? (
-
-                                    <tr>
-
-                                        <td
-                                            colSpan="5"
-                                            className="
+                  >
+                    Loading...
+                  </td>
+                </tr>
+              ) : filteredData.length === 0 ? (
+                <tr>
+                  <td
+                    colSpan="5"
+                    className="
                                                 text-center
                                                 p-10
                                             "
-                                        >
+                  >
+                    Tidak ada data
+                  </td>
+                </tr>
+              ) : (
+                filteredData.map((item) => {
+                  const program =
+                    item.pelatihan?.title || item.sertifikasi?.nama_sertifikasi;
 
-                                            Tidak ada data
-
-                                        </td>
-
-                                    </tr>
-
-                                ) : (
-
-                                    filteredData.map(
-                                        (item) => {
-
-                                            const program =
-                                                item.pelatihan
-                                                    ?.nama_pelatihan ||
-
-                                                item.sertifikasi
-                                                    ?.nama_sertifikasi;
-
-                                            return (
-
-                                                <tr
-                                                    key={item.id}
-                                                    className="
+                  return (
+                    <tr
+                      key={item.id}
+                      className="
                                                         border-t
                                                         border-slate-100
                                                     "
-                                                >
-
-                                                    {/* USER */}
-                                                    <td className="p-5">
-
-                                                        <div>
-
-                                                            <h5 className="
+                    >
+                      {/* USER */}
+                      <td className="p-5">
+                        <div>
+                          <h5
+                            className="
                                                                 font-bold
-                                                            ">
+                                                            "
+                          >
+                            {item.user?.name}
+                          </h5>
 
-                                                                {
-                                                                    item.user?.name
-                                                                }
-
-                                                            </h5>
-
-                                                            <p className="
+                          <p
+                            className="
                                                                 text-sm
                                                                 text-slate-500
-                                                            ">
+                                                            "
+                          >
+                            {item.user?.email}
+                          </p>
+                        </div>
+                      </td>
 
-                                                                {
-                                                                    item.user?.email
-                                                                }
+                      {/* PROGRAM */}
+                      <td className="p-5">{program}</td>
 
-                                                            </p>
-
-                                                        </div>
-
-                                                    </td>
-
-                                                    {/* PROGRAM */}
-                                                    <td className="p-5">
-
-                                                        {program}
-
-                                                    </td>
-
-                                                    {/* STATUS */}
-                                                    <td className="p-5">
-
-                                                        <span className={`
+                      {/* STATUS */}
+                      <td className="p-5">
+                        <span
+                          className={`
                                                             px-4
                                                             py-2
                                                             rounded-full
                                                             text-sm
                                                             font-bold
                                                             ${getStatusClass(item.status)}
-                                                        `}>
+                                                        `}
+                        >
+                          {item.status}
+                        </span>
+                      </td>
 
-                                                            {item.status}
-
-                                                        </span>
-
-                                                    </td>
-
-                                                    {/* BUKTI */}
-                                                    <td className="p-5">
-
-                                                        <img
-                                                            src={
-                                                                item.bukti
-                                                                    ? `http://127.0.0.1:8000/uploads/${
-                                                                          item.pelatihan
-                                                                              ? "bukti_pelatihan"
-                                                                              : "bukti_sertifikasi"
-                                                                      }/${item.bukti}`
-                                                                    : "https://placehold.co/100x70"
-                                                            }
-                                                            alt=""
-                                                            className="
+                      {/* BUKTI */}
+                      <td className="p-5">
+                        <img
+                          src={
+                            item.bukti
+                              ? `http://127.0.0.1:8000/uploads/${item.bukti}`
+                              : "https://placehold.co/100x70"
+                          }
+                          alt=""
+                          className="
                                                                 w-24
                                                                 h-16
                                                                 object-cover
                                                                 rounded-2xl
                                                             "
-                                                        />
+                        />
+                      </td>
 
-                                                    </td>
+                      {/* ACTION */}
+                      <td className="p-5">
+                        <button
+                          onClick={() => {
+                            setSelectedData(item);
 
-                                                    {/* ACTION */}
-                                                    <td className="p-5">
-
-                                                        <button
-                                                            onClick={() => {
-
-                                                                setSelectedData(item);
-
-                                                                setOpenModal(true);
-
-                                                            }}
-                                                            className="
+                            setOpenModal(true);
+                          }}
+                          className="
                                                                 px-5
                                                                 py-3
                                                                 rounded-2xl
@@ -1064,43 +885,27 @@ export default function Pembayaran() {
                                                                 text-white
                                                                 font-bold
                                                             "
-                                                        >
+                        >
+                          Detail
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
 
-                                                            Detail
-
-                                                        </button>
-
-                                                    </td>
-
-                                                </tr>
-
-                                            );
-
-                                        }
-                                    )
-
-                                )
-                            }
-
-                        </tbody>
-
-                    </table>
-
-                </div>
-
-            </div>
-
-            {/* MODAL */}
-            <PembayaranDetailModal
-                open={openModal}
-                onClose={() =>
-                    setOpenModal(false)
-                }
-                data={selectedData}
-                onApprove={handleApprove}
-                onReject={handleReject}
-            />
-
-        </AdminLayout>
-    );
+      {/* MODAL */}
+      <PembayaranDetailModal
+        open={openModal}
+        onClose={() => setOpenModal(false)}
+        data={selectedData}
+        onApprove={handleApprove}
+        onReject={handleReject}
+      />
+    </AdminLayout>
+  );
 }

@@ -10,6 +10,7 @@ export default function CheckoutSection() {
     nama: "",
     email: "",
     nomor_hp: "",
+    paymentMethod: "transfer",
   });
 
   const [loading, setLoading] = useState(true);
@@ -51,19 +52,35 @@ export default function CheckoutSection() {
             nama: formData.nama,
             email: formData.email,
             nomor_hp: formData.nomor_hp,
+            paymentMethod: formData.paymentMethod,
           }),
         },
       );
 
       const result = await response.json();
+      console.log(result);
+
+      if (!response.ok) {
+        alert(result.message);
+
+        return;
+      }
 
       if (result.status === "success") {
+        // GRATIS
         if (result.kategori === "gratis" && result.link_grup) {
           window.open(result.link_grup, "_blank");
 
           navigate("/success");
-        } else {
-          navigate("/success");
+        }
+
+        // BERBAYAR
+        else {
+          navigate("/payment", {
+            state: {
+              transaksi: result.transaksi,
+            },
+          });
         }
       } else {
         alert(result.message);
@@ -235,6 +252,43 @@ export default function CheckoutSection() {
                   "
                 />
               </div>
+
+              {/* Payment Method */}
+              {Number(bootcamp.harga) > 0 && (
+                <div>
+                  <label
+                    className="
+      block
+      mb-3
+      font-semibold
+      text-[#2B1D16]
+    "
+                  >
+                    Metode Pembayaran
+                  </label>
+
+                  <select
+                    name="paymentMethod"
+                    value={formData.paymentMethod}
+                    onChange={handleChange}
+                    className="
+        w-full
+        h-14
+        rounded-2xl
+        border
+        border-orange-100
+        px-5
+        outline-none
+        focus:border-orange-300
+      "
+                  >
+                    <option value="transfer">Transfer Bank</option>
+
+                    <option value="ewallet">E-Wallet</option>
+                  </select>
+                </div>
+              )}
+
               {/* SUMMARY */}
               <div className="rounded-[28px] bg-orange-50 border border-orange-100 p-6">
                 <p className="text-[#2B1D16] font-bold text-lg">

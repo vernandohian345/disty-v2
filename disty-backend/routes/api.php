@@ -23,410 +23,243 @@ use App\Http\Controllers\API\Admin\SertifikatPelatihanApiController;
 use App\Http\Controllers\API\Admin\SertifikatSertifikasiApiController;
 use App\Http\Controllers\API\Admin\UserApiController;
 
-
-
-
 // =====================================================
 // PUBLIC ROUTES
 // =====================================================
 
 // AUTH
-Route::post(
-    '/login',
-    [AuthApiController::class, 'login']
-);
-
-Route::post(
-    '/register',
-    [AuthApiController::class, 'register']
-);
-
+Route::post('/login', [AuthApiController::class, 'login']);
+Route::post('/register', [AuthApiController::class, 'register']);
 
 // FRONTEND PELATIHAN
-Route::get(
-    '/frontend/pelatihan',
-    [FrontendPelatihanApiController::class, 'index']
-);
-
-Route::get(
-    '/frontend/pelatihan/{slug}',
-    [FrontendPelatihanApiController::class, 'show']
-);
-
+Route::get('/frontend/pelatihan', [FrontendPelatihanApiController::class, 'index']);
+Route::get('/frontend/pelatihan/{slug}', [FrontendPelatihanApiController::class, 'show']);
 
 // FRONTEND SERTIFIKASI
-Route::get(
-    '/frontend/sertifikasi',
-    [FrontendSertifikasiApiController::class, 'index']
-);
+Route::get('/frontend/sertifikasi', [FrontendSertifikasiApiController::class, 'index']);
+Route::get('/frontend/sertifikasi/{slug}', [FrontendSertifikasiApiController::class, 'show']);
 
-Route::get(
-    '/frontend/sertifikasi/{slug}',
-    [FrontendSertifikasiApiController::class, 'show']
-);
+// BLOG
+Route::get('/blogs', [BlogController::class, 'publicBlogs']);
+Route::get('/blogs/{slug}', [BlogController::class, 'publicShow']);
 
-// FRONTEND BLOG
-Route::get(
-    '/blogs',
-    [BlogController::class, 'publicBlogs']
-);
-
-Route::get(
-    '/blogs/{slug}',
-    [BlogController::class, 'publicShow']
-);
 
 // =====================================================
-// PROTECTED ROUTES (SANCTUM)
+// PROTECTED ROUTES
 // =====================================================
 
-Route::middleware('auth:sanctum')
-    ->group(function () {
+Route::middleware('auth:sanctum')->group(function () {
 
-        // ================= AUTH =================
-    
-        Route::post(
-            '/logout',
-            [AuthApiController::class, 'logout']
-        );
+    // ================= AUTH =================
+    Route::post('/logout', [AuthApiController::class, 'logout']);
+    Route::get('/me', [AuthApiController::class, 'me']);
 
-        Route::get(
-            '/me',
-            [AuthApiController::class, 'me']
-        );
+    // ================= PROFILE =================
+    Route::get('/profile', [ProfileApiController::class, 'index']);
 
+    Route::post(
+        '/profile/upload-bukti-pelatihan',
+        [ProfileApiController::class, 'uploadBuktiPelatihan']
+    );
 
-        // ================= PROFILE =================
-    
-        Route::get(
-            '/profile',
-            [ProfileApiController::class, 'index']
-        );
+    Route::post(
+        '/profile/upload-bukti-sertifikasi',
+        [ProfileApiController::class, 'uploadBuktiSertifikasi']
+    );
 
-        Route::post(
-            '/profile/upload-bukti-pelatihan',
-            [
-                ProfileApiController::class,
-                'uploadBuktiPelatihan'
-            ]
-        );
+    // ================= NOTIFICATIONS =================
+    Route::get('/notifications', [NotificationApiController::class, 'index']);
 
-        Route::post(
-            '/profile/upload-bukti-sertifikasi',
-            [
-                ProfileApiController::class,
-                'uploadBuktiSertifikasi'
-            ]
-        );
+    Route::post(
+        '/notifications/read/{id}',
+        [NotificationApiController::class, 'markAsRead']
+    );
 
+    Route::post(
+        '/notifications/read-all',
+        [NotificationApiController::class, 'markAllAsRead']
+    );
 
-        // ================= NOTIFICATIONS =================
-    
-        Route::get(
-            '/notifications',
-            [NotificationApiController::class, 'index']
-        );
+    Route::delete(
+        '/notifications/{id}',
+        [NotificationApiController::class, 'destroy']
+    );
 
-        Route::post(
-            '/notifications/read/{id}',
-            [
-                NotificationApiController::class,
-                'markAsRead'
-            ]
-        );
+    Route::get(
+        '/notifications/unread-count',
+        [NotificationApiController::class, 'getUnreadCount']
+    );
 
-        Route::post(
-            '/notifications/read-all',
-            [
-                NotificationApiController::class,
-                'markAllAsRead'
-            ]
-        );
+    // ================= TRANSAKSI PELATIHAN =================
+    Route::post(
+        '/transaksi/pelatihan',
+        [TransaksiPelatihanApiController::class, 'store']
+    );
 
-        Route::delete(
-            '/notifications/{id}',
-            [
-                NotificationApiController::class,
-                'destroy'
-            ]
-        );
+    Route::post(
+        '/transaksi/pelatihan/upload-bukti/{id}',
+        [TransaksiPelatihanApiController::class, 'uploadBukti']
+    );
 
-        Route::get(
-            '/notifications/unread-count',
-            [
-                NotificationApiController::class,
-                'getUnreadCount'
-            ]
-        );
+    Route::get(
+        '/admin/transaksi/pelatihan',
+        [TransaksiPelatihanApiController::class, 'index']
+    );
 
+    // ================= TRANSAKSI SERTIFIKASI =================
+    Route::post(
+        '/transaksi/sertifikasi',
+        [TransaksiSertifikasiApiController::class, 'store']
+    );
 
-        // ================= TRANSAKSI PELATIHAN =================
-    
-        Route::post(
-            '/transaksi/pelatihan',
-            [
-                TransaksiPelatihanApiController::class,
-                'store'
-            ]
-        );
+    // =====================================================
+    // ADMIN
+    // =====================================================
 
+    // DASHBOARD
+    Route::get('/dashboard', [DashboardApiController::class, 'index']);
 
-        // ================= TRANSAKSI SERTIFIKASI =================
-    
-        Route::post(
-            '/transaksi/sertifikasi',
-            [
-                TransaksiSertifikasiApiController::class,
-                'store'
-            ]
-        );
+    // ================= PELATIHAN =================
+    Route::get('/pelatihan', [PelatihanApiController::class, 'index']);
+    Route::get('/pelatihan/{id}', [PelatihanApiController::class, 'show']);
 
+    Route::post('/pelatihan', [PelatihanApiController::class, 'store']);
 
-        // =====================================================
-        // ADMIN
-        // =====================================================
-    
-        // DASHBOARD
-        Route::middleware(['auth'])->group(function () {
+    Route::post(
+        '/pelatihan/update/{id}',
+        [PelatihanApiController::class, 'update']
+    );
 
-            Route::get(
-                '/dashboard',
-                [DashboardApiController::class, 'index']
-            );
+    Route::delete(
+        '/pelatihan/{id}',
+        [PelatihanApiController::class, 'destroy']
+    );
 
+    // ================= PEMBAYARAN =================
+    Route::get('/pembayaran', [PembayaranApiController::class, 'index']);
 
-            // ================= PELATIHAN =================
-    
-            Route::get(
-                '/pelatihan',
-                [PelatihanApiController::class, 'index']
-            );
+    Route::post(
+        '/pembayaran/pelatihan/{id}/approve',
+        [PembayaranApiController::class, 'approvePelatihan']
+    );
 
-            Route::get(
-                '/pelatihan/{id}',
-                [PelatihanApiController::class, 'show']
-            );
+    Route::post(
+        '/pembayaran/pelatihan/{id}/reject',
+        [PembayaranApiController::class, 'rejectPelatihan']
+    );
 
-            Route::post(
-                '/pelatihan',
-                [PelatihanApiController::class, 'store']
-            );
+    Route::post(
+        '/pembayaran/sertifikasi/{id}/approve',
+        [PembayaranApiController::class, 'approveSertifikasi']
+    );
 
-            Route::post(
-                '/pelatihan/update/{id}',
-                [PelatihanApiController::class, 'update']
-            );
+    Route::post(
+        '/pembayaran/sertifikasi/{id}/reject',
+        [PembayaranApiController::class, 'rejectSertifikasi']
+    );
 
-            Route::delete(
-                '/pelatihan/{id}',
-                [PelatihanApiController::class, 'destroy']
-            );
+    // ================= SERTIFIKASI =================
+    Route::get('/sertifikasi', [SertifikasiApiController::class, 'index']);
+    Route::get('/sertifikasi/{id}', [SertifikasiApiController::class, 'show']);
 
+    Route::post('/sertifikasi', [SertifikasiApiController::class, 'store']);
 
-            // ================= PEMBAYARAN =================
-    
-            Route::get(
-                '/pembayaran',
-                [PembayaranApiController::class, 'index']
-            );
+    Route::post(
+        '/sertifikasi/update/{id}',
+        [SertifikasiApiController::class, 'update']
+    );
 
-            Route::post(
-                '/pembayaran/pelatihan/{id}/approve',
-                [
-                    PembayaranApiController::class,
-                    'approvePelatihan'
-                ]
-            );
+    Route::delete(
+        '/sertifikasi/{id}',
+        [SertifikasiApiController::class, 'destroy']
+    );
 
-            Route::post(
-                '/pembayaran/pelatihan/{id}/reject',
-                [
-                    PembayaranApiController::class,
-                    'rejectPelatihan'
-                ]
-            );
+    // ================= BLOG =================
+    Route::get('/blog', [BlogController::class, 'index']);
+    Route::get('/blog/{id}', [BlogController::class, 'show']);
 
-            Route::post(
-                '/pembayaran/sertifikasi/{id}/approve',
-                [
-                    PembayaranApiController::class,
-                    'approveSertifikasi'
-                ]
-            );
+    Route::post('/blog', [BlogController::class, 'store']);
 
-            Route::post(
-                '/pembayaran/sertifikasi/{id}/reject',
-                [
-                    PembayaranApiController::class,
-                    'rejectSertifikasi'
-                ]
-            );
+    Route::post(
+        '/blog/update/{id}',
+        [BlogController::class, 'update']
+    );
 
+    Route::delete('/blog/{id}', [BlogController::class, 'destroy']);
 
-            // ================= SERTIFIKASI =================
-    
-            Route::get(
-                '/sertifikasi',
-                [SertifikasiApiController::class, 'index']
-            );
+    // ================= SERTIFIKAT PELATIHAN =================
+    Route::get(
+        '/sertifikat-pelatihan',
+        [SertifikatPelatihanApiController::class, 'index']
+    );
 
-            Route::get(
-                '/sertifikasi/{id}',
-                [SertifikasiApiController::class, 'show']
-            );
+    Route::post(
+        '/sertifikat-pelatihan/complete/{id}',
+        [SertifikatPelatihanApiController::class, 'markCompleted']
+    );
 
-            Route::post(
-                '/sertifikasi',
-                [SertifikasiApiController::class, 'store']
-            );
+    Route::post(
+        '/sertifikat-pelatihan/generate/{id}',
+        [SertifikatPelatihanApiController::class, 'generate']
+    );
 
-            Route::post(
-                '/sertifikasi/update/{id}',
-                [SertifikasiApiController::class, 'update']
-            );
+    Route::post(
+        '/sertifikat-pelatihan/generate-batch/{pelatihan_id}',
+        [SertifikatPelatihanApiController::class, 'generateBatch']
+    );
 
-            Route::delete(
-                '/sertifikasi/{id}',
-                [SertifikasiApiController::class, 'destroy']
-            );
+    Route::post(
+        '/sertifikat-pelatihan/regenerate/{id}',
+        [SertifikatPelatihanApiController::class, 'regenerate']
+    );
 
-            // ================= BLOG =================
-    
-            Route::get(
-                '/blog',
-                [BlogController::class, 'index']
-            );
+    Route::get(
+        '/sertifikat-pelatihan/download/{id}',
+        [SertifikatPelatihanApiController::class, 'download']
+    );
 
-            Route::get(
-                '/blog/{id}',
-                [BlogController::class, 'show']
-            );
+    Route::get(
+        '/sertifikat-pelatihan/preview/{id}',
+        [SertifikatPelatihanApiController::class, 'preview']
+    );
 
-            Route::post(
-                '/blog',
-                [BlogController::class, 'store']
-            );
+    // ================= SERTIFIKAT SERTIFIKASI =================
+    Route::get(
+        '/sertifikat-sertifikasi',
+        [SertifikatSertifikasiApiController::class, 'index']
+    );
 
-            Route::post(
-                '/blog/update/{id}',
-                [BlogController::class, 'update']
-            );
+    Route::post(
+        '/sertifikat-sertifikasi/generate/{id}',
+        [SertifikatSertifikasiApiController::class, 'generate']
+    );
 
-            Route::delete(
-                '/blog/{id}',
-                [BlogController::class, 'destroy']
-            );
+    Route::get(
+        '/sertifikat-sertifikasi/download/{id}',
+        [SertifikatSertifikasiApiController::class, 'download']
+    );
 
+    Route::post(
+        '/sertifikat-sertifikasi/upload-bnsp/{id}',
+        [SertifikatSertifikasiApiController::class, 'uploadBnsp']
+    );
 
-            // ================= SERTIFIKAT PELATIHAN =================
-    
-            Route::get(
-                '/sertifikat-pelatihan',
-                [SertifikatPelatihanApiController::class, 'index']
-            );
+    Route::get(
+        '/sertifikat-sertifikasi/download-bnsp/{id}',
+        [SertifikatSertifikasiApiController::class, 'downloadBnsp']
+    );
 
-            Route::post(
-                '/sertifikat-pelatihan/generate/{id}',
-                [
-                    SertifikatPelatihanApiController::class,
-                    'generate'
-                ]
-            );
+    Route::delete(
+        '/sertifikat-sertifikasi/delete-bnsp/{id}',
+        [SertifikatSertifikasiApiController::class, 'deleteBnsp']
+    );
 
-            Route::post(
-                '/sertifikat-pelatihan/generate-batch/{pelatihan_id}',
-                [
-                    SertifikatPelatihanApiController::class,
-                    'generateBatch'
-                ]
-            );
+    // ================= USER MANAGEMENT =================
+    Route::get('/users', [UserApiController::class, 'index']);
 
-            Route::post(
-                '/sertifikat-pelatihan/regenerate/{id}',
-                [
-                    SertifikatPelatihanApiController::class,
-                    'regenerate'
-                ]
-            );
+    Route::post('/users', [UserApiController::class, 'store']);
 
-            Route::get(
-                '/sertifikat-pelatihan/download/{id}',
-                [
-                    SertifikatPelatihanApiController::class,
-                    'download'
-                ]
-            );
+    Route::put('/users/{id}', [UserApiController::class, 'update']);
 
-
-            // ================= SERTIFIKAT SERTIFIKASI =================
-    
-            Route::get(
-                '/sertifikat-sertifikasi',
-                [SertifikatSertifikasiApiController::class, 'index']
-            );
-
-            Route::post(
-                '/sertifikat-sertifikasi/generate/{id}',
-                [
-                    SertifikatSertifikasiApiController::class,
-                    'generate'
-                ]
-            );
-
-            Route::get(
-                '/sertifikat-sertifikasi/download/{id}',
-                [
-                    SertifikatSertifikasiApiController::class,
-                    'download'
-                ]
-            );
-
-            Route::post(
-                '/sertifikat-sertifikasi/upload-bnsp/{id}',
-                [
-                    SertifikatSertifikasiApiController::class,
-                    'uploadBnsp'
-                ]
-            );
-
-            Route::get(
-                '/sertifikat-sertifikasi/download-bnsp/{id}',
-                [
-                    SertifikatSertifikasiApiController::class,
-                    'downloadBnsp'
-                ]
-            );
-
-            Route::delete(
-                '/sertifikat-sertifikasi/delete-bnsp/{id}',
-                [
-                    SertifikatSertifikasiApiController::class,
-                    'deleteBnsp'
-                ]
-            );
-
-            // ================= USER MANAGEMENT =================
-            Route::middleware(['auth:sanctum'])->group(function () {
-            Route::get(
-                '/users',
-                [UserApiController::class, 'index']
-            );
-
-            Route::post(
-                '/users',
-                [UserApiController::class, 'store']
-            );
-
-            Route::put(
-                '/users/{id}',
-                [UserApiController::class, 'update']
-            );
-
-            Route::delete(
-                '/users/{id}',
-                [UserApiController::class, 'destroy']
-            );
-
-        });
-        });
-    });
+    Route::delete('/users/{id}', [UserApiController::class, 'destroy']);
+});
