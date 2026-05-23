@@ -32,15 +32,6 @@ class SertifikatPelatihanApiController extends Controller
             );
         }
 
-        // filter completed
-        if ($request->filled('completed')) {
-
-            $query->where(
-                'is_completed',
-                $request->completed
-            );
-        }
-
         if ($pelatihan_id) {
             $query->where('pelatihan_id', $pelatihan_id);
         }
@@ -76,40 +67,20 @@ class SertifikatPelatihanApiController extends Controller
     {
         $transaksi = TransaksiPelatihan::findOrFail($id);
 
-        // wajib approved dulu
-        if ($transaksi->status !== 'approved') {
+        // hanya peserta paid yang boleh selesai
+        if ($transaksi->status !== 'paid') {
 
             return response()->json([
-                'status' => 'error',
-                'message' =>
-                'Peserta belum di-approve'
+                'message' => 'Peserta belum di-approve'
             ], 400);
         }
 
-        // update completion
-        $transaksi->is_completed = true;
-
-        $transaksi->completed_at = now();
+        $transaksi->status = 'completed';
 
         $transaksi->save();
 
-        // notification
-        Notification::create([
-            'user_id' => $transaksi->user_id,
-            'type' => 'pelatihan_completed',
-            'title' => 'Pelatihan selesai',
-            'message' =>
-            'Pelatihan telah diselesaikan',
-            'icon' => 'circle-check',
-            'color' => 'success',
-            'url' => '/profil',
-            'is_read' => false
-        ]);
-
         return response()->json([
-            'status' => 'success',
-            'message' =>
-            'Peserta berhasil ditandai selesai'
+            'message' => 'Peserta berhasil diselesaikan'
         ]);
     }
 
@@ -127,15 +98,12 @@ class SertifikatPelatihanApiController extends Controller
             ], 400);
         }
 
-        if (
-            $transaksi->status !== 'approved' ||
-            !$transaksi->is_completed
-        ) {
+        if ($transaksi->status !== 'completed') {
 
             return response()->json([
                 'status' => 'error',
                 'message' =>
-                'Peserta belum approved'
+                'Peserta belum menyelesaikan pelatihan'
             ], 400);
         }
 
@@ -209,7 +177,7 @@ class SertifikatPelatihanApiController extends Controller
             'pelatihan_id',
             $pelatihan_id
         )
-            ->where('status', 'approved')
+            ->where('status', 'comppleted')
             ->where('is_completed', true)
             ->whereNull('sertifikat_pelatihan')
             ->get();
@@ -319,7 +287,7 @@ class SertifikatPelatihanApiController extends Controller
         return $this->generate($id);
     }
 
-    public function preview($id)
+    public function preview(int $id)
     {
         $peserta =
             TransaksiPelatihan::find($id);
@@ -361,44 +329,39 @@ class SertifikatPelatihanApiController extends Controller
     // ✅ DOWNLOAD
     public function download(int $id)
     {
-        $transaksi =
-            TransaksiPelatihan::findOrFail($id);
+        $transaksi = TransaksiPelatihan::with([
+            'user',
+            'pelatihan'
+        ])->findOrFail($id);
 
         if (!$transaksi->sertifikat_pelatihan) {
 
             return response()->json([
                 'status' => 'error',
-                'message' =>
-                'Sertifikat belum tersedia'
-            ], 404);
+                'message' => 'Sertifikat belum tersedia'
+            ], 400);
         }
 
-        $path =
-            public_path(
-                'uploads/sertifikat_pelatihan/' .
-                    $transaksi->sertifikat_pelatihan
-            );
+        $pdf = Pdf::loadView(
+            'sertifikat.pelatihan',
+            [
+                'transaksi' => $transaksi
+            ]
+        )->setPaper('a4', 'landscape');
 
-        if (!file_exists($path)) {
-
-            return response()->json([
-                'status' => 'error',
-                'message' =>
-                'File tidak ditemukan'
-            ], 404);
-        }
-
-        return response()->download($path);
+        return $pdf->download(
+            'sertifikat-pelatihan.pdf'
+        );
     }
 
 
 
     private function generateCertificateHtml(
-        $nama,
-        $pelatihan,
-        $tanggal,
-        $nomor,
-        $durasi
+        string $nama,
+        string $pelatihan,
+        int $tanggal,
+        int $nomor,
+        string $durasi
     ) {
 
         return "

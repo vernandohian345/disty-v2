@@ -20,7 +20,7 @@ export default function SertifikatPelatihan() {
         useState([]);
 
     const [stats, setStats] =
-    useState({});
+        useState({});
 
     const [filterStatus, setFilterStatus] =
         useState("all");
@@ -39,10 +39,7 @@ export default function SertifikatPelatihan() {
 
             const response =
                 await getPesertaSertifikat();
-            
-            console.log(response.data);
 
-            
             setPeserta(
                 response.data.data.data
             );
@@ -243,52 +240,55 @@ export default function SertifikatPelatihan() {
 
         };
 
+    // =========================
+    // FILTER
+    // =========================
     const filteredPeserta =
-    peserta.filter((item) => {
+        peserta.filter((item) => {
 
-        // FILTER STATUS
-        if (
-            filterStatus === "approved" &&
-            item.status !== "approved"
-        ) {
-            return false;
-        }
+            // FILTER STATUS
+            if (
+                filterStatus === "paid" &&
+                item.status !== "paid"
+            ) {
+                return false;
+            }
 
-        if (
-            filterStatus === "pending" &&
-            item.status !== "pending"
-        ) {
-            return false;
-        }
+            if (
+                filterStatus === "pending" &&
+                item.status !== "pending"
+            ) {
+                return false;
+            }
 
-        if (
-            filterStatus === "completed" &&
-            !item.is_completed
-        ) {
-            return false;
-        }
+            if (
+                filterStatus === "completed" &&
+                item.status !== "completed"
+            ) {
+                return false;
+            }
 
-        if (
-            filterStatus === "not_completed" &&
-            item.is_completed
-        ) {
-            return false;
-        }
+            if (
+                filterStatus === "not_completed" &&
+                item.status === "completed"
+            ) {
+                return false;
+            }
 
-        // SEARCH NAMA
-        if (
-            !item.nama
-                ?.toLowerCase()
-                .includes(
-                    search.toLowerCase()
-                )
-        ) {
-            return false;
-        }
+            // SEARCH
+            if (
+                !item.nama
+                    ?.toLowerCase()
+                    .includes(
+                        search.toLowerCase()
+                    )
+            ) {
+                return false;
+            }
 
-        return true;
+            return true;
 
-    });
+        });
 
     return (
 
@@ -327,9 +327,12 @@ export default function SertifikatPelatihan() {
 
             </div>
 
+            {/* STATS */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
 
+                {/* TOTAL */}
                 <div className="bg-white rounded-2xl p-5 shadow-sm">
+
                     <h5 className="text-slate-500 text-sm">
                         Total Peserta
                     </h5>
@@ -337,55 +340,71 @@ export default function SertifikatPelatihan() {
                     <h2 className="text-3xl font-black mt-2">
                         {peserta.length}
                     </h2>
+
                 </div>
 
+                {/* PAID */}
                 <div className="bg-white rounded-2xl p-5 shadow-sm">
+
                     <h5 className="text-slate-500 text-sm">
-                        Approved
+                        Paid
                     </h5>
 
                     <h2 className="text-3xl font-black text-green-600 mt-2">
+
                         {
                             peserta.filter(
                                 (item) =>
-                                    item.status === "approved"
+                                    item.status === "paid"
                             ).length
                         }
+
                     </h2>
+
                 </div>
 
+                {/* BELUM SELESAI */}
                 <div className="bg-white rounded-2xl p-5 shadow-sm">
+
                     <h5 className="text-slate-500 text-sm">
                         Belum Selesai
                     </h5>
 
                     <h2 className="text-3xl font-black text-orange-500 mt-2">
+
                         {
                             peserta.filter(
                                 (item) =>
-                                    !item.is_completed
+                                    item.status !== "completed"
                             ).length
                         }
+
                     </h2>
+
                 </div>
 
+                {/* SUDAH SERTIFIKAT */}
                 <div className="bg-white rounded-2xl p-5 shadow-sm">
+
                     <h5 className="text-slate-500 text-sm">
                         Sudah Bersertifikat
                     </h5>
 
                     <h2 className="text-3xl font-black text-blue-600 mt-2">
+
                         {
                             peserta.filter(
                                 (item) =>
                                     item.sertifikat_pelatihan
                             ).length
                         }
+
                     </h2>
+
                 </div>
 
             </div>
-            
+
             {/* FILTER */}
             <div className="
                 flex
@@ -415,7 +434,7 @@ export default function SertifikatPelatihan() {
                     "
                 />
 
-                {/* FILTER STATUS */}
+                {/* FILTER */}
                 <select
                     value={filterStatus}
                     onChange={(e) =>
@@ -435,8 +454,8 @@ export default function SertifikatPelatihan() {
                         Semua
                     </option>
 
-                    <option value="approved">
-                        Approved
+                    <option value="paid">
+                        Paid
                     </option>
 
                     <option value="pending">
@@ -452,85 +471,6 @@ export default function SertifikatPelatihan() {
                     </option>
 
                 </select>
-
-            </div>
-
-            {/* STATS */}
-            <div className="
-                grid
-                grid-cols-1
-                md:grid-cols-3
-                gap-5
-                mb-8
-            ">
-
-                {/* TOTAL */}
-                <div className="
-                    bg-white
-                    rounded-3xl
-                    p-6
-                    shadow-sm
-                ">
-
-                    <p className="text-slate-500">
-                        Total Peserta
-                    </p>
-
-                    <h2 className="
-                        text-4xl
-                        font-black
-                        mt-2
-                    ">
-                        {stats.total_peserta || 0}
-                    </h2>
-
-                </div>
-
-                {/* BELUM SERTIFIKAT */}
-                <div className="
-                    bg-white
-                    rounded-3xl
-                    p-6
-                    shadow-sm
-                ">
-
-                    <p className="text-slate-500">
-                        Belum Sertifikat
-                    </p>
-
-                    <h2 className="
-                        text-4xl
-                        font-black
-                        mt-2
-                        text-orange-500
-                    ">
-                        {stats.belum_sertifikat || 0}
-                    </h2>
-
-                </div>
-
-                {/* SUDAH SERTIFIKAT */}
-                <div className="
-                    bg-white
-                    rounded-3xl
-                    p-6
-                    shadow-sm
-                ">
-
-                    <p className="text-slate-500">
-                        Sudah Sertifikat
-                    </p>
-
-                    <h2 className="
-                        text-4xl
-                        font-black
-                        mt-2
-                        text-green-500
-                    ">
-                        {stats.sudah_sertifikat || 0}
-                    </h2>
-
-                </div>
 
             </div>
 
@@ -640,18 +580,14 @@ export default function SertifikatPelatihan() {
                                                     <h5 className="
                                                         font-bold
                                                     ">
-
                                                         {item.nama}
-
                                                     </h5>
 
                                                     <p className="
                                                         text-sm
                                                         text-slate-500
                                                     ">
-
                                                         {item.email}
-
                                                     </p>
 
                                                 </div>
@@ -679,8 +615,10 @@ export default function SertifikatPelatihan() {
                                                         text-sm
                                                         font-bold
                                                         ${
-                                                            item.status === "approved"
+                                                            item.status === "paid"
                                                                 ? "bg-green-100 text-green-700"
+                                                                : item.status === "completed"
+                                                                ? "bg-blue-100 text-blue-700"
                                                                 : "bg-yellow-100 text-yellow-700"
                                                         }
                                                     `}
@@ -689,13 +627,14 @@ export default function SertifikatPelatihan() {
                                                     {item.status}
 
                                                 </span>
+
                                             </td>
 
                                             {/* COMPLETION */}
                                             <td className="p-5">
 
                                                 {
-                                                    item.is_completed ? (
+                                                    item.status === "completed" ? (
 
                                                         <span className="
                                                             px-4
@@ -754,9 +693,9 @@ export default function SertifikatPelatihan() {
                                                     "
                                                 >
 
-                                                    {/* BELUM SELESAI */}
+                                                    {/* TANDAI SELESAI */}
                                                     {
-                                                        !item.is_completed && (
+                                                        item.status === "paid" && (
 
                                                             <button
                                                                 onClick={() =>
@@ -779,9 +718,9 @@ export default function SertifikatPelatihan() {
                                                         )
                                                     }
 
-                                                    {/* SUDAH SELESAI TAPI BELUM ADA SERTIFIKAT */}
+                                                    {/* GENERATE */}
                                                     {
-                                                        item.is_completed &&
+                                                        item.status === "completed" &&
                                                         !item.sertifikat_pelatihan && (
 
                                                             <button
