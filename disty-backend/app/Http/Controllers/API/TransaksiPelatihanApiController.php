@@ -75,6 +75,20 @@ class TransaksiPelatihanApiController extends Controller
 
     }
 
+    public function myPelatihan()
+    {
+        $transaksi =
+            TransaksiPelatihan::with('pelatihan')
+                ->where('user_id', Auth::id())
+                ->latest()
+                ->get();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $transaksi
+        ]);
+    }
+
 
 
     // ✅ DAFTAR / TRANSAKSI PELATIHAN

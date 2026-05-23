@@ -181,6 +181,15 @@ Route::middleware('auth:sanctum')
             [TransaksiPelatihanApiController::class, 'index']
         );
 
+        Route::middleware('auth:sanctum')->group(function () {
+
+            Route::get(
+                '/my-pelatihan',
+                [TransaksiPelatihanApiController::class, 'myPelatihan']
+            );
+
+        });
+
 
         // ================= TRANSAKSI SERTIFIKASI =================
     

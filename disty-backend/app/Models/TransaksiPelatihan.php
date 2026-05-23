@@ -34,4 +34,6 @@ class TransaksiPelatihan extends Model
     }
 
 
+
+
 }
