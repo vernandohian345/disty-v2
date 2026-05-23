@@ -40,8 +40,8 @@ class PembayaranApiController extends Controller
                 'paid' =>
                     TransaksiPelatihan::where('status', 'paid')->count(),
 
-                'approved' =>
-                    TransaksiPelatihan::where('status', 'approved')->count(),
+                'completed' =>
+                    TransaksiPelatihan::where('status', 'completed')->count(),
             ];
 
         } else {
@@ -68,8 +68,8 @@ class PembayaranApiController extends Controller
                 'paid' =>
                     TransaksiSertifikasi::where('status', 'paid')->count(),
 
-                'approved' =>
-                    TransaksiSertifikasi::where('status', 'approved')->count(),
+                'completed' =>
+                    TransaksiSertifikasi::where('status', 'completed')->count(),
             ];
         }
 
@@ -87,12 +87,12 @@ class PembayaranApiController extends Controller
         $transaksi = TransaksiPelatihan::with('pelatihan')
             ->findOrFail($id);
 
-        $transaksi->status = 'approved';
+        $transaksi->status = 'completed';
         $transaksi->save();
 
         Notification::create([
             'user_id' => $transaksi->user_id,
-            'type' => 'pembayaran_approved',
+            'type' => 'pembayaran_completed',
             'title' => 'Pembayaran Disetujui',
             'message' =>
                 "Pembayaran pelatihan {$transaksi->pelatihan->nama_pelatihan} disetujui",
@@ -114,12 +114,12 @@ class PembayaranApiController extends Controller
         $transaksi = TransaksiSertifikasi::with('sertifikasi')
             ->findOrFail($id);
 
-        $transaksi->status = 'approved';
+        $transaksi->status = 'completed';
         $transaksi->save();
 
         Notification::create([
             'user_id' => $transaksi->user_id,
-            'type' => 'pembayaran_approved',
+            'type' => 'pembayaran_completed',
             'title' => 'Pembayaran Disetujui',
             'message' =>
                 "Pembayaran sertifikasi {$transaksi->sertifikasi->nama_sertifikasi} disetujui",

@@ -29,54 +29,41 @@ class TransaksiPelatihanApiController extends Controller
     }
 
 
-    public function uploadBukti(
-        Request $request,
-        $id
-    ) {
-
+    public function uploadBukti(Request $request, $id)
+    {
         $request->validate([
-            'bukti' =>
-            'required|image|mimes:jpg,jpeg,png|max:2048',
+            'bukti' => 'required|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        $transaksi =
-            TransaksiPelatihan::findOrFail($id);
+        $transaksi = TransaksiPelatihan::findOrFail($id);
 
         if ($request->hasFile('bukti')) {
 
             $file = $request->file('bukti');
 
-            $filename =
-                time() . '_' .
-                $file->getClientOriginalName();
+            $filename = time() . '_' . $file->getClientOriginalName();
 
             $file->move(
                 public_path('uploads/bukti'),
                 $filename
             );
 
-            $transaksi->update([
-
-                'bukti' =>
-                'uploads/bukti/' . $filename,
-
-                'status' =>
-                'paid',
-
-                'paid_at' =>
-                now(),
-
-            ]);
+            $transaksi->bukti = 'uploads/bukti/' . $filename;
         }
+
+        $transaksi->status = 'paid';
+        $transaksi->paid_at = now();
+
+        $transaksi->save();
 
         return response()->json([
             'status' => 'success',
-            'message' =>
-            'Bukti pembayaran berhasil upload',
-            'transaksi' =>
-            $transaksi
+            'message' => 'Bukti pembayaran berhasil upload',
+            'transaksi' => $transaksi,
         ]);
     }
+
+
 
     // ✅ DAFTAR / TRANSAKSI PELATIHAN
     public function store(Request $request)
