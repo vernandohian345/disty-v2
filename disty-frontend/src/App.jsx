@@ -12,11 +12,8 @@ import Bootcamp from "./pages/frontend/Bootcamp";
 import BootcampDetail from "./pages/frontend/BootcampDetail";
 import Checkout from "./pages/frontend/Checkout";
 import Success from "./pages/frontend/Success";
-<<<<<<< HEAD
 import ProfilePage from "./pages/profile";
-=======
 import Payment from "./pages/frontend/Payment";
->>>>>>> f08aed85432846d8d61e9489db3ab47ced7fc0f1
 
 import Dashboard from "./pages/admin/Dashboard";
 
@@ -58,11 +55,8 @@ export default function App() {
 
         <Route path="/checkout/:slug" element={<Checkout />} />
         <Route path="/success" element={<Success />} />
-<<<<<<< HEAD
         <Route path="/profile" element={<ProfilePage />} />
-=======
         <Route path="/payment" element={<Payment />} />
->>>>>>> f08aed85432846d8d61e9489db3ab47ced7fc0f1
 
         {/* AUTH */}
         <Route path="/login" element={<Login />} />
@@ -166,14 +160,6 @@ export default function App() {
             </RouteAdmin>
           }
         />
-<<<<<<< HEAD
-        {/* SERTIFIKAT PELATIHAN
-        <Route
-          path="/admin/sertifikat-pelatihan"
-          element={<SertifikatPelatihan />}
-        /> */}
-
-=======
 
         {/* SERTIFIKAT PELATIHAN */}
         <Route
@@ -184,7 +170,6 @@ export default function App() {
             </RouteAdmin>
           }
         />
->>>>>>> f08aed85432846d8d61e9489db3ab47ced7fc0f1
       </Routes>
     </BrowserRouter>
   );
