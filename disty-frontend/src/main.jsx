@@ -1,10 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-<<<<<<< HEAD
 import { HelmetProvider } from "react-helmet-async";
-=======
-
->>>>>>> feat/kelola-sertifikasi-pelatihan
 
 import App from "./App";
 
@@ -23,5 +19,5 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <HelmetProvider>
       <App />
     </HelmetProvider>
-  </React.StrictMode>,
+  </React.StrictMode>
 );
