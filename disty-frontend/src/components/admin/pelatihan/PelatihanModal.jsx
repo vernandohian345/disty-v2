@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import ReactQuill from "react-quill-new";
+
 
 export default function PelatihanModal({
     isOpen,
