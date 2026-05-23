@@ -8,6 +8,7 @@ import {
   FaUser,
   FaSignOutAlt,
   FaTachometerAlt,
+  FaBookOpen,
 } from "react-icons/fa";
 
 export default function Navbar() {
@@ -439,6 +440,26 @@ export default function Navbar() {
                           <span>Profil Saya</span>
                         </button>
 
+                        {/* MY PELATIHAN */}
+                        <button
+                          onClick={() => navigate("/my-pelatihan")}
+                          className="
+                            w-full
+                            flex
+                            items-center
+                            gap-3
+                            px-4
+                            py-3
+                            rounded-2xl
+                            hover:bg-slate-100
+                            transition
+                          "
+                        >
+                          <FaBookOpen />
+
+                          <span>Pelatihan Saya</span>
+                        </button>
+
                         {/* DASHBOARD */}
                         {user.role === "admin" && (
                           <button
@@ -586,25 +607,80 @@ export default function Navbar() {
           </nav>
 
           <div className="mt-10 flex flex-col gap-4">
-            <button
-              onClick={() => {
-                navigate("/login");
-                setIsOpen(false);
-              }}
-              className="w-full h-12 rounded-2xl border border-white/10 text-white font-semibold"
-            >
-              Login
-            </button>
+            {!user ? (
+              <>
+                <button
+                  onClick={() => {
+                    navigate("/login");
+                    setIsOpen(false);
+                  }}
+                  className="
+          w-full
+          h-12
+          rounded-2xl
+          border
+          border-white/10
+          text-white
+          font-semibold
+        "
+                >
+                  Login
+                </button>
 
-            <button
-              onClick={() => {
-                navigate("/register");
-                setIsOpen(false);
-              }}
-              className="w-full h-12 rounded-2xl bg-orange-500 text-white font-semibold"
-            >
-              Sign Up
-            </button>
+                <button
+                  onClick={() => {
+                    navigate("/register");
+                    setIsOpen(false);
+                  }}
+                  className="
+          w-full
+          h-12
+          rounded-2xl
+          bg-orange-500
+          text-white
+          font-semibold
+        "
+                >
+                  Sign Up
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  onClick={() => {
+                    navigate("/my-pelatihan");
+                    setIsOpen(false);
+                  }}
+                  className="
+          w-full
+          h-12
+          rounded-2xl
+          bg-white/10
+          text-white
+          font-semibold
+        "
+                >
+                  Pelatihan Saya
+                </button>
+
+                <button
+                  onClick={() => {
+                    handleLogout();
+                    setIsOpen(false);
+                  }}
+                  className="
+          w-full
+          h-12
+          rounded-2xl
+          bg-red-500
+          text-white
+          font-semibold
+        "
+                >
+                  Logout
+                </button>
+              </>
+            )}
           </div>
 
           <div className="flex items-center justify-between">

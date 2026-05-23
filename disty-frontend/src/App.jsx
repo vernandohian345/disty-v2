@@ -13,6 +13,7 @@ import BootcampDetail from "./pages/frontend/BootcampDetail";
 import Checkout from "./pages/frontend/Checkout";
 import Success from "./pages/frontend/Success";
 import Payment from "./pages/frontend/Payment";
+import MyPelatihan from "./pages/frontend/MyPelatihan";
 
 import Dashboard from "./pages/admin/Dashboard";
 import IndexPelatihan from "./pages/admin/Pelatihan/Index";
@@ -45,6 +46,7 @@ export default function App() {
         <Route path="/checkout/:slug" element={<Checkout />} />
         <Route path="/success" element={<Success />} />
         <Route path="/payment" element={<Payment />} />
+        <Route path="/my-pelatihan" element={<MyPelatihan />} />
 
         {/* AUTH */}
         <Route path="/login" element={<Login />} />
