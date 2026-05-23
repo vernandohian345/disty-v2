@@ -19,8 +19,8 @@ class TransaksiPelatihanApiController extends Controller
                 'user',
                 'pelatihan'
             ])
-                ->latest()
-                ->get();
+            ->latest()
+            ->get();
 
         return response()->json([
             'status' => 'success',
@@ -36,7 +36,7 @@ class TransaksiPelatihanApiController extends Controller
 
         $request->validate([
             'bukti' =>
-                'required|image|mimes:jpg,jpeg,png|max:2048',
+            'required|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
         $transaksi =
@@ -58,24 +58,23 @@ class TransaksiPelatihanApiController extends Controller
             $transaksi->update([
 
                 'bukti' =>
-                    'uploads/bukti/' . $filename,
+                'uploads/bukti/' . $filename,
 
                 'status' =>
-                    'paid',
+                'paid',
 
                 'paid_at' =>
-                    now(),
+                now(),
 
             ]);
-
         }
 
         return response()->json([
             'status' => 'success',
             'message' =>
-                'Bukti pembayaran berhasil upload',
+            'Bukti pembayaran berhasil upload',
             'transaksi' =>
-                $transaksi
+            $transaksi
         ]);
     }
 
@@ -93,19 +92,19 @@ class TransaksiPelatihanApiController extends Controller
 
         $request->validate([
             'pelatihan_id' =>
-                'required',
+            'required',
 
             'nama' =>
-                'required',
+            'required',
 
             'email' =>
-                'required|email',
+            'required|email',
 
             'nomor_hp' =>
-                'required',
+            'required',
 
             'paymentMethod' =>
-                'nullable|in:transfer,ewallet',
+            'nullable|in:transfer,ewallet',
         ]);
 
         $pelatihan =
@@ -149,40 +148,37 @@ class TransaksiPelatihanApiController extends Controller
             TransaksiPelatihan::create([
 
                 'user_id' =>
-                    Auth::id(),
+                Auth::id(),
 
                 'pelatihan_id' =>
-                    $request->pelatihan_id,
+                $request->pelatihan_id,
 
                 'nama' =>
-                    $request->nama,
+                $request->nama,
 
                 'email' =>
-                    $request->email,
+                $request->email,
 
                 'nomor_hp' =>
-                    $request->nomor_hp,
+                $request->nomor_hp,
 
                 'metode_pembayaran' =>
-                    $metode,
+                $metode,
 
-<<<<<<< HEAD
                 'kode_transaksi' =>
-                    $kode,
+                $kode,
 
                 'total_harga' =>
-                    $pelatihan->harga,
+                $pelatihan->harga,
 
                 'status' =>
-                    $pelatihan->kategori === 'gratis'
+                $pelatihan->kategori === 'gratis'
                     ? 'completed'
                     : 'pending',
-=======
                 'status' =>
                 $pelatihan->kategori === 'gratis'
-                ? 'approved'
-                : 'pending',
->>>>>>> feat/kelola-sertifikasi-pelatihan
+                    ? 'approved'
+                    : 'pending',
             ]);
 
         // notif
@@ -190,28 +186,28 @@ class TransaksiPelatihanApiController extends Controller
 
             Notification::create([
                 'user_id' =>
-                    Auth::id(),
+                Auth::id(),
 
                 'type' =>
-                    'daftar_gratis',
+                'daftar_gratis',
 
                 'title' =>
-                    'Pendaftaran Berhasil! 🎉',
+                'Pendaftaran Berhasil! 🎉',
 
                 'message' =>
-                    "Anda berhasil mendaftar pelatihan \"{$pelatihan->title}\".",
+                "Anda berhasil mendaftar pelatihan \"{$pelatihan->title}\".",
 
                 'icon' =>
-                    'fas fa-check-circle',
+                'fas fa-check-circle',
 
                 'color' =>
-                    'success',
+                'success',
 
                 'url' =>
-                    '/profil',
+                '/profil',
 
                 'is_read' =>
-                    false
+                false
             ]);
 
             return response()->json([
@@ -220,41 +216,41 @@ class TransaksiPelatihanApiController extends Controller
                 'kategori' => 'gratis',
 
                 'message' =>
-                    'Pendaftaran berhasil',
+                'Pendaftaran berhasil',
 
                 'link_grup' =>
-                    $pelatihan->link_grup,
+                $pelatihan->link_grup,
 
                 'transaksi' =>
-                    $transaksi
+                $transaksi
             ]);
         }
 
         // notif berbayar
         Notification::create([
             'user_id' =>
-                Auth::id(),
+            Auth::id(),
 
             'type' =>
-                'daftar_berbayar',
+            'daftar_berbayar',
 
             'title' =>
-                'Pendaftaran Berhasil! ✅',
+            'Pendaftaran Berhasil! ✅',
 
             'message' =>
-                "Anda berhasil mendaftar pelatihan \"{$pelatihan->title}\".",
+            "Anda berhasil mendaftar pelatihan \"{$pelatihan->title}\".",
 
             'icon' =>
-                'fas fa-info-circle',
+            'fas fa-info-circle',
 
             'color' =>
-                'warning',
+            'warning',
 
             'url' =>
-                '/profil',
+            '/profil',
 
             'is_read' =>
-                false
+            false
         ]);
 
         return response()->json([
@@ -263,10 +259,10 @@ class TransaksiPelatihanApiController extends Controller
             'kategori' => 'berbayar',
 
             'message' =>
-                'Pendaftaran berhasil',
+            'Pendaftaran berhasil',
 
             'transaksi' =>
-                $transaksi
+            $transaksi
         ]);
     }
 }

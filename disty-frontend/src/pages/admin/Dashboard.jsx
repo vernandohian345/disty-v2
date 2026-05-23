@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
+
 import AdminLayout from "../../layouts/AdminLayout";
+
 import { getDashboard } from "../../services/dashboardService";
 
 import DashboardHeader from "../../components/admin/dashboard/DashboardHeader";
@@ -11,23 +13,47 @@ import TopPelatihan from "../../components/admin/dashboard/TopPelatihan";
 import TopSertifikasi from "../../components/admin/dashboard/TopSertifikasi";
 
 export default function Dashboard() {
+
     const [data, setData] = useState(null);
+
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         fetchDashboard();
     }, []);
 
     const fetchDashboard = async () => {
+
         try {
+
+            setLoading(true);
+
             const response = await getDashboard();
-            setData(response.data);
+
+            console.log(response);
+
+            setData(response);
+
         } catch (error) {
+
             console.log(error);
+
+        } finally {
+
+            setLoading(false);
         }
     };
 
-    if (!data) {
+    if (loading) {
         return <LoadingDashboard />;
+    }
+
+    if (!data) {
+        return (
+            <div className="p-10">
+                Data dashboard tidak ditemukan
+            </div>
+        );
     }
 
     const chartData = data.chartData.labels.map((label, index) => ({
@@ -39,7 +65,7 @@ export default function Dashboard() {
     return (
         <AdminLayout>
             <div className="p-6 bg-slate-100 min-h-screen">
-                
+
                 <DashboardHeader />
 
                 <MainStats stats={data.stats} />
