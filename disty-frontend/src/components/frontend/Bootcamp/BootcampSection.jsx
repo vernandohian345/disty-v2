@@ -106,22 +106,22 @@ export default function BootcampSection() {
 
                 <button
                   className="
-        absolute
-        right-2
-        top-1/2
-        -translate-y-1/2
-        w-14
-        h-14
-        rounded-full
-        bg-orange-500
-        hover:bg-orange-600
-        flex
-        items-center
-        justify-center
-        text-white
-        transition-all
-        duration-300
-      "
+                    absolute
+                    right-2
+                    top-1/2
+                    -translate-y-1/2
+                    w-14
+                    h-14
+                    rounded-full
+                    bg-orange-500
+                    hover:bg-orange-600
+                    flex
+                    items-center
+                    justify-center
+                    text-white
+                    transition-all
+                    duration-300
+                  "
                 >
                   🔍
                 </button>

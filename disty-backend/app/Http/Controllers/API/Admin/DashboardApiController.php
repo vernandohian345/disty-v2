@@ -24,27 +24,27 @@ class DashboardApiController extends Controller
             'total_blog' => Blog::count(),
 
             'total_peserta_pelatihan' =>
-                TransaksiPelatihan::where('status', 'approved')->count(),
+            TransaksiPelatihan::where('status', 'approved')->count(),
 
             'total_peserta_sertifikasi' =>
-                TransaksiSertifikasi::where('status', 'approved')->count(),
+            TransaksiSertifikasi::where('status', 'approved')->count(),
 
             'pembayaran_pending' =>
-                TransaksiPelatihan::where('status', 'pending')->count()
+            TransaksiPelatihan::where('status', 'pending')->count()
                 +
                 TransaksiSertifikasi::where('status', 'pending')->count(),
 
             'sertifikat_belum_generate' =>
-                TransaksiPelatihan::where('status', 'approved')
-                    ->whereNull('sertifikat_pelatihan')
-                    ->count()
+            TransaksiPelatihan::where('status', 'approved')
+                ->whereNull('sertifikat_pelatihan')
+                ->count()
                 +
                 TransaksiSertifikasi::where('status', 'approved')
-                    ->whereNull('sertifikat_internal')
-                    ->count(),
+                ->whereNull('sertifikat_internal')
+                ->count(),
 
             'total_users' =>
-                User::where('role', 'user')->count(),
+            User::where('role', 'user')->count(),
         ];
 
         // chart
@@ -52,11 +52,11 @@ class DashboardApiController extends Controller
 
         // top pelatihan
         $topPelatihan = Pelatihan::withCount([
-            'transaksiPelatihan' => function ($query) {
+            'transaksi' => function ($query) {
                 $query->where('status', 'approved');
             }
         ])
-            ->orderBy('transaksi_pelatihan_count', 'desc')
+            ->orderBy('transaksi_count', 'desc')
             ->limit(5)
             ->get();
 
@@ -91,7 +91,7 @@ class DashboardApiController extends Controller
 
             'recentSertifikat' => $recentSertifikat,
 
-             'scheduleEvents' => $this->getScheduleEvents(),
+            'scheduleEvents' => $this->getScheduleEvents(),
         ]);
     }
 
@@ -181,7 +181,7 @@ class DashboardApiController extends Controller
         foreach ($pelatihans as $pelatihan) {
 
             $events[] = [
-                'title' =>  $pelatihan->nama_pelatihan,
+                'title' =>  $pelatihan->title,
 
                 'start' => $pelatihan->tanggal_pelatihan,
 

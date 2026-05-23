@@ -38,6 +38,7 @@ class AuthController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
+            'username' => 'required|string|max:255|unique:users,username',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6|confirmed',
         ]);
@@ -48,9 +49,10 @@ class AuthController extends Controller
 
         $user = User::create([
             'name' => $request->name,
+            'username' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => 'user', // Default role adalah 'user'
+            'role' => 'user',
             'avatar_color' => $randomColor,
         ]);
 
