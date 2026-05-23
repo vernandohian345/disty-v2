@@ -125,10 +125,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/pelatihan', [PelatihanApiController::class, 'store']);
 
-    Route::post(
-        '/pelatihan/update/{id}',
-        [PelatihanApiController::class, 'update']
-    );
+    Route::post('/pelatihan/update/{id}', [PelatihanApiController::class, 'update']);
+
+    Route::get('/my-pelatihan', [TransaksiPelatihanApiController::class, 'myPelatihan']);
 
     Route::delete(
         '/pelatihan/{id}',
