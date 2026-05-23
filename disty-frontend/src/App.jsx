@@ -12,6 +12,7 @@ import Bootcamp from "./pages/frontend/Bootcamp";
 import BootcampDetail from "./pages/frontend/BootcampDetail";
 import Checkout from "./pages/frontend/Checkout";
 import Success from "./pages/frontend/Success";
+import ProfilePage from "./pages/profile";
 
 import Dashboard from "./pages/admin/Dashboard";
 import IndexPelatihan from "./pages/admin/Pelatihan/Index";
@@ -23,6 +24,7 @@ import Pembayaran from "./pages/admin/Pembayaran";
 import AdminBlog from "./pages/admin/Blog";
 import IndexUser from "./pages/admin/User/Index";
 import CreateUser from "./pages/admin/User/Create";
+// import SertifikatPelatihan from "./pages/admin/SertifikatPelatihan";
 
 import RouteAdmin from "./routes/AdminRoute";
 import ScrollToTop from "./components/shared/ScrollToTop";
@@ -41,6 +43,7 @@ export default function App() {
         <Route path="/pelatihan/:slug" element={<BootcampDetail />} />
         <Route path="/checkout/:slug" element={<Checkout />} />
         <Route path="/success" element={<Success />} />
+        <Route path="/profile" element={<ProfilePage />} />
 
         {/* AUTH */}
         <Route path="/login" element={<Login />} />
@@ -141,6 +144,12 @@ export default function App() {
             </RouteAdmin>
           }
         />
+        {/* SERTIFIKAT PELATIHAN
+        <Route
+          path="/admin/sertifikat-pelatihan"
+          element={<SertifikatPelatihan />}
+        /> */}
+
       </Routes>
     </BrowserRouter>
   );
