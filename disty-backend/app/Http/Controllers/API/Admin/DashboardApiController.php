@@ -24,10 +24,10 @@ class DashboardApiController extends Controller
             'total_blog' => Blog::count(),
 
             'total_peserta_pelatihan' =>
-            TransaksiPelatihan::where('status', 'approved')->count(),
+            TransaksiPelatihan::where('status', 'completed')->count(),
 
             'total_peserta_sertifikasi' =>
-            TransaksiSertifikasi::where('status', 'approved')->count(),
+            TransaksiSertifikasi::where('status', 'completed')->count(),
 
             'pembayaran_pending' =>
             TransaksiPelatihan::where('status', 'pending')->count()
@@ -35,11 +35,11 @@ class DashboardApiController extends Controller
                 TransaksiSertifikasi::where('status', 'pending')->count(),
 
             'sertifikat_belum_generate' =>
-            TransaksiPelatihan::where('status', 'approved')
+            TransaksiPelatihan::where('status', 'completed')
                 ->whereNull('sertifikat_pelatihan')
                 ->count()
                 +
-                TransaksiSertifikasi::where('status', 'approved')
+                TransaksiSertifikasi::where('status', 'completed')
                 ->whereNull('sertifikat_internal')
                 ->count(),
 
@@ -53,7 +53,7 @@ class DashboardApiController extends Controller
         // top pelatihan
         $topPelatihan = Pelatihan::withCount([
             'transaksi' => function ($query) {
-                $query->where('status', 'approved');
+                $query->where('status', 'completed');
             }
         ])
             ->orderBy('transaksi_count', 'desc')
@@ -63,7 +63,7 @@ class DashboardApiController extends Controller
         // top sertifikasi
         $topSertifikasi = Sertifikasi::withCount([
             'transaksiSertifikasi' => function ($query) {
-                $query->where('status', 'approved');
+                $query->where('status', 'completed');
             }
         ])
             ->orderBy('transaksi_sertifikasi_count', 'desc')
@@ -109,14 +109,14 @@ class DashboardApiController extends Controller
 
             $pelatihanCount = TransaksiPelatihan::whereYear('created_at', $month->year)
                 ->whereMonth('created_at', $month->month)
-                ->where('status', 'approved')
+                ->where('status', 'completed')
                 ->count();
 
             $pelatihanData[] = $pelatihanCount;
 
             $sertifikasiCount = TransaksiSertifikasi::whereYear('created_at', $month->year)
                 ->whereMonth('created_at', $month->month)
-                ->where('status', 'approved')
+                ->where('status', 'completed')
                 ->count();
 
             $sertifikasiData[] = $sertifikasiCount;
@@ -151,14 +151,14 @@ class DashboardApiController extends Controller
     private function getRecentSertifikat()
     {
         $pelatihan = TransaksiPelatihan::with('pelatihan')
-            ->where('status', 'approved')
+            ->where('status', 'completed')
             ->whereNotNull('sertifikat_pelatihan')
             ->latest()
             ->limit(5)
             ->get();
 
         $sertifikasi = TransaksiSertifikasi::with('sertifikasi')
-            ->where('status', 'approved')
+            ->where('status', 'completed')
             ->whereNotNull('sertifikat_internal')
             ->latest()
             ->limit(5)

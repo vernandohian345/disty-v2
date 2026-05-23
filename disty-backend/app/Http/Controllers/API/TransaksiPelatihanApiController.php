@@ -29,7 +29,7 @@ class TransaksiPelatihanApiController extends Controller
     }
 
 
-    public function uploadBukti(Request $request, $id)
+    public function uploadBukti(Request $request, int $id)
     {
         $request->validate([
             'bukti' => 'required|image|mimes:jpg,jpeg,png|max:2048',
@@ -161,10 +161,6 @@ class TransaksiPelatihanApiController extends Controller
                 'status' =>
                 $pelatihan->kategori === 'gratis'
                     ? 'completed'
-                    : 'pending',
-                'status' =>
-                $pelatihan->kategori === 'gratis'
-                    ? 'approved'
                     : 'pending',
             ]);
 
