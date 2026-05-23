@@ -58,19 +58,19 @@ export default function ProgramHero() {
                 <a
                   href="#program"
                   className="
-    inline-flex
-    items-center
-    justify-center
-    h-14
-    px-8
-    rounded-2xl
-    bg-orange-500
-    hover:bg-orange-400
-    text-white
-    font-semibold
-    transition-all
-    duration-300
-  "
+                    inline-flex
+                    items-center
+                    justify-center
+                    h-14
+                    px-8
+                    rounded-2xl
+                    bg-orange-500
+                    hover:bg-orange-400
+                    text-white
+                    font-semibold
+                    transition-all
+                    duration-300
+                  "
                 >
                   Lihat Program
                 </a>

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 export default function PelatihanTable({
   data,
   loading,
@@ -9,14 +10,14 @@ export default function PelatihanTable({
     return (
       <div
         className="
-                bg-white
-                rounded-[32px]
-                p-14
-                text-center
-                shadow-sm
-                border
-                border-slate-100
-            "
+        bg-white
+          rounded-[32px]
+          p-14
+          text-center
+          shadow-sm
+          border
+        border-slate-100
+          "
       >
         <div
           className="
@@ -393,8 +394,8 @@ export default function PelatihanTable({
                         "
             >
               {/* VIEW */}
-              <button
-                onClick={() => onView(item)}
+              <Link
+                to={`/pelatihan/${item.slug}`}
                 className="
                                     flex
                                     items-center
@@ -416,7 +417,7 @@ export default function PelatihanTable({
                                     fa-eye
                                 "
                 ></i>
-              </button>
+              </Link>
 
               {/* EDIT */}
               <button

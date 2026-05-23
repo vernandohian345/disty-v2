@@ -20,7 +20,7 @@ export default function BootcampDetailHero() {
         `http://127.0.0.1:8000/api/frontend/pelatihan/${slug}`
       );
 
-      setBootcamp(response.data.data);
+      setBootcamp(response.data.pelatihan);
     } catch (error) {
       console.log(error);
     } finally {

@@ -8,27 +8,16 @@ export default function PelatihanForm({ onSubmit, editData = null }) {
 
   const [form, setForm] = useState({
     title: editData?.title || "",
-
     short_description: editData?.short_description || "",
-
     deskripsi: editData?.deskripsi || "",
-
     materi: editData?.materi || "",
-
     kategori: editData?.kategori || "gratis",
-
     level: editData?.level || "Beginner",
-
     status: editData?.status || "published",
-
     link_grup: editData?.link_grup || "",
-
     durasi: editData?.durasi || "",
-
     harga: editData?.harga || 0,
-
     bahasa: editData?.bahasa || "",
-
     tanggal_pelatihan: editData?.tanggal_pelatihan || "",
 
     thumbnail: null,
@@ -45,31 +34,18 @@ export default function PelatihanForm({ onSubmit, editData = null }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const formData = new FormData();
-
     formData.append("title", form.title);
-
     formData.append("short_description", form.short_description);
-
     formData.append("deskripsi", form.deskripsi);
-
     formData.append("materi", form.materi);
-
     formData.append("kategori", form.kategori);
-
     formData.append("level", form.level);
-
     formData.append("status", form.status);
-
     formData.append("link_grup", form.link_grup);
-
     formData.append("durasi", form.durasi);
-
     formData.append("harga", form.harga);
-
     formData.append("bahasa", form.bahasa);
-
     formData.append("tanggal_pelatihan", form.tanggal_pelatihan);
 
     if (form.thumbnail) {
@@ -83,13 +59,13 @@ export default function PelatihanForm({ onSubmit, editData = null }) {
     <form
       onSubmit={handleSubmit}
       className="
-                bg-white
-                rounded-[35px]
-                shadow-sm
-                border
-                border-slate-100
-                overflow-hidden
-            "
+      bg-white
+      rounded-[35px]
+      shadow-sm
+      border
+      border-slate-100
+      overflow-hidden
+    "
     >
       {/* TOP NAVIGATION */}
       <div
@@ -598,11 +574,11 @@ export default function PelatihanForm({ onSubmit, editData = null }) {
 
             <div
               className="
-                            border
-                            border-slate-200
-                            rounded-2xl
-                            overflow-hidden
-                        "
+                border
+              border-slate-200
+                rounded-2xl
+                overflow-hidden
+              "
             >
               <RichTextEditor
                 value={form.materi}
@@ -620,33 +596,33 @@ export default function PelatihanForm({ onSubmit, editData = null }) {
           <div className="md:col-span-2">
             <label
               className="
-                            block
-                            text-sm
-                            font-bold
-                            text-slate-700
-                            mb-2
-                        "
+                block
+                text-sm
+                font-bold
+              text-slate-700
+                mb-2
+              "
             >
               Thumbnail Pelatihan
             </label>
 
             <label
               className="
-                                flex
-                                items-center
-                                justify-center
-                                w-full
-                                h-56
-                                border-2
-                                border-dashed
-                                border-orange-300
-                                rounded-3xl
-                                cursor-pointer
-                                hover:bg-orange-50
-                                transition
-                                overflow-hidden
-                                relative
-                            "
+                flex
+                items-center
+                justify-center
+                w-full
+                h-56
+                border-2
+                border-dashed
+                border-orange-300
+                rounded-3xl
+                cursor-pointer
+                hover:bg-orange-50
+                transition
+                overflow-hidden
+                relative
+            "
             >
               {form.thumbnail ? (
                 <img
