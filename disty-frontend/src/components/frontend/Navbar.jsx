@@ -419,25 +419,28 @@ export default function Navbar() {
 
                       {/* MENU */}
                       <div className="p-3">
-                        {/* PROFILE */}
-                        <button
-                          onClick={() => navigate("/profile")}
-                          className="
-                            w-full
-                            flex
-                            items-center
-                            gap-3
-                            px-4
-                            py-3
-                            rounded-2xl
-                            hover:bg-slate-100
-                            transition
-                          "
-                        >
-                          <FaUser />
+                        
+                        {/* PROFILE USER */}
+                        {user.role !== "admin" && (
+                          <button
+                            onClick={() => navigate("/profile")}
+                            className="
+                              w-full
+                              flex
+                              items-center
+                              gap-3
+                              px-4
+                              py-3
+                              rounded-2xl
+                              hover:bg-slate-100
+                              transition
+                            "
+                          >
+                            <FaUser />
 
-                          <span>Profil Saya</span>
-                        </button>
+                            <span>Profil Saya</span>
+                          </button>
+                        )}
 
                         {/* DASHBOARD */}
                         {user.role === "admin" && (
