@@ -11,6 +11,74 @@ use App\Models\Notification;
 
 class TransaksiPelatihanApiController extends Controller
 {
+
+    public function index()
+    {
+        $transaksi =
+            TransaksiPelatihan::with([
+                'user',
+                'pelatihan'
+            ])
+                ->latest()
+                ->get();
+
+        return response()->json([
+            'status' => 'success',
+            'transaksi' => $transaksi
+        ]);
+    }
+
+
+    public function uploadBukti(
+        Request $request,
+        $id
+    ) {
+
+        $request->validate([
+            'bukti' =>
+                'required|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
+
+        $transaksi =
+            TransaksiPelatihan::findOrFail($id);
+
+        if ($request->hasFile('bukti')) {
+
+            $file = $request->file('bukti');
+
+            $filename =
+                time() . '_' .
+                $file->getClientOriginalName();
+
+            $file->move(
+                public_path('uploads/bukti'),
+                $filename
+            );
+
+            $transaksi->update([
+
+                'bukti' =>
+                    'uploads/bukti/' . $filename,
+
+                'status' =>
+                    'paid',
+
+                'paid_at' =>
+                    now(),
+
+            ]);
+
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' =>
+                'Bukti pembayaran berhasil upload',
+            'transaksi' =>
+                $transaksi
+        ]);
+    }
+
     // ✅ DAFTAR / TRANSAKSI PELATIHAN
     public function store(Request $request)
     {

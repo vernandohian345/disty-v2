@@ -96,6 +96,7 @@ Route::middleware('auth:sanctum')
         );
 
 
+
         // ================= PROFILE =================
     
         Route::get(
@@ -168,6 +169,16 @@ Route::middleware('auth:sanctum')
                 TransaksiPelatihanApiController::class,
                 'store'
             ]
+        );
+
+        Route::post(
+            '/transaksi/pelatihan/upload-bukti/{id}',
+            [TransaksiPelatihanApiController::class, 'uploadBukti']
+        );
+
+        Route::get(
+            '/admin/transaksi/pelatihan',
+            [TransaksiPelatihanApiController::class, 'index']
         );
 
 
@@ -407,26 +418,26 @@ Route::middleware('auth:sanctum')
 
             // ================= USER MANAGEMENT =================
             Route::middleware(['auth:sanctum'])->group(function () {
-            Route::get(
-                '/users',
-                [UserApiController::class, 'index']
-            );
+                Route::get(
+                    '/users',
+                    [UserApiController::class, 'index']
+                );
 
-            Route::post(
-                '/users',
-                [UserApiController::class, 'store']
-            );
+                Route::post(
+                    '/users',
+                    [UserApiController::class, 'store']
+                );
 
-            Route::put(
-                '/users/{id}',
-                [UserApiController::class, 'update']
-            );
+                Route::put(
+                    '/users/{id}',
+                    [UserApiController::class, 'update']
+                );
 
-            Route::delete(
-                '/users/{id}',
-                [UserApiController::class, 'destroy']
-            );
+                Route::delete(
+                    '/users/{id}',
+                    [UserApiController::class, 'destroy']
+                );
 
-        });
+            });
         });
     });
