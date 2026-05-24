@@ -9,8 +9,38 @@ use App\Models\TransaksiPelatihan;
 use App\Models\TransaksiSertifikasi;
 use App\Models\Notification;
 
+
 class ProfileApiController extends Controller
 {
+
+    public function stats(Request $request)
+    {
+        $user = $request->user();
+
+        $totalPelatihan = \App\Models\TransaksiPelatihan::where(
+            'user_id',
+            $user->id
+        )->count();
+
+        $pelatihanSelesai = \App\Models\TransaksiPelatihan::where(
+            'user_id',
+            $user->id
+        )
+            ->where('status', 'completed')
+            ->count();
+
+        $totalSertifikat = \App\Models\TransaksiSertifikasi::where(
+            'user_id',
+            $user->id
+        )->count();
+
+        return response()->json([
+            'total_pelatihan' => $totalPelatihan,
+            'pelatihan_selesai' => $pelatihanSelesai,
+            'total_sertifikat' => $totalSertifikat,
+        ]);
+    }
+
     // ✅ PROFILE USER
     public function index()
     {
@@ -28,29 +58,29 @@ class ProfileApiController extends Controller
             TransaksiPelatihan::with(
                 'pelatihan'
             )
-            ->where(
-                'user_id',
-                $user->id
-            )
-            ->orderBy(
-                'created_at',
-                'desc'
-            )
-            ->get();
+                ->where(
+                    'user_id',
+                    $user->id
+                )
+                ->orderBy(
+                    'created_at',
+                    'desc'
+                )
+                ->get();
 
         $transaksiSertifikasi =
             TransaksiSertifikasi::with(
                 'sertifikasi'
             )
-            ->where(
-                'user_id',
-                $user->id
-            )
-            ->orderBy(
-                'created_at',
-                'desc'
-            )
-            ->get();
+                ->where(
+                    'user_id',
+                    $user->id
+                )
+                ->orderBy(
+                    'created_at',
+                    'desc'
+                )
+                ->get();
 
         return response()->json([
             'status' => 'success',
@@ -82,8 +112,8 @@ class ProfileApiController extends Controller
             TransaksiPelatihan::with(
                 'pelatihan'
             )->findOrFail(
-                $request->transaksi_id
-            );
+                    $request->transaksi_id
+                );
 
         if (
             $transaksi->user_id !== Auth::id()
@@ -182,8 +212,8 @@ class ProfileApiController extends Controller
             TransaksiSertifikasi::with(
                 'sertifikasi'
             )->findOrFail(
-                $request->transaksi_id
-            );
+                    $request->transaksi_id
+                );
 
         if (
             $transaksi->user_id !== Auth::id()

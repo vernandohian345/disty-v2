@@ -67,6 +67,11 @@ Route::middleware('auth:sanctum')->group(function () {
         [ProfileApiController::class, 'uploadBuktiSertifikasi']
     );
 
+    Route::middleware('auth:sanctum')->get(
+        '/profile/stats',
+        [ProfileApiController::class, 'stats']
+    );
+
     // ================= NOTIFICATIONS =================
     Route::get('/notifications', [NotificationApiController::class, 'index']);
 
