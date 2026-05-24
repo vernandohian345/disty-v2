@@ -101,3 +101,15 @@ export const regenerateSertifikat = async (id) => {
     );
 
 };
+
+// =========================
+// MY CERTIFICATES
+// =========================
+export const getMyCertificates = async () => {
+
+    return await axios.get(
+        `${API_URL}/my-certificates`,
+        authHeader()
+    );
+
+};
