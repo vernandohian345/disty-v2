@@ -1,14 +1,47 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
-import RichTextEditor from "../../shared/RichTextEditor";
 import { useNavigate } from "react-router-dom";
 
-export default function PelatihanForm({ onSubmit, editData = null }) {
+import RichTextEditor from "../../shared/RichTextEditor";
+
+const inputClass = `
+w-full
+p-4
+rounded-2xl
+border
+border-slate-200
+focus:outline-none
+focus:ring-4
+focus:ring-orange-200
+transition
+`;
+
+const labelClass = `
+block
+text-sm
+font-bold
+text-slate-700
+mb-2
+`;
+
+const buttonClass = `
+px-6
+py-3
+rounded-2xl
+font-semibold
+transition
+`;
+
+export default function PelatihanForm({
+  onSubmit,
+  editData = null,
+}) {
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
     title: editData?.title || "",
-    short_description: editData?.short_description || "",
+    short_description:
+      editData?.short_description || "",
     deskripsi: editData?.deskripsi || "",
     materi: editData?.materi || "",
     kategori: editData?.kategori || "gratis",
@@ -18,8 +51,8 @@ export default function PelatihanForm({ onSubmit, editData = null }) {
     durasi: editData?.durasi || "",
     harga: editData?.harga || 0,
     bahasa: editData?.bahasa || "",
-    tanggal_pelatihan: editData?.tanggal_pelatihan || "",
-
+    tanggal_pelatihan:
+      editData?.tanggal_pelatihan || "",
     thumbnail: null,
   });
 
@@ -28,29 +61,45 @@ export default function PelatihanForm({ onSubmit, editData = null }) {
 
     setForm((prev) => ({
       ...prev,
-      [name]: files && files.length > 0 ? files[0] : value,
+      [name]:
+        files && files.length > 0
+          ? files[0]
+          : value,
     }));
   };
 
+  const handleEditorChange = (value) => {
+    setForm((prev) => ({
+      ...prev,
+      materi: value,
+    }));
+  };
+
+  const previewThumbnail = useMemo(() => {
+    if (form.thumbnail) {
+      return URL.createObjectURL(form.thumbnail);
+    }
+
+    if (editData?.thumbnail) {
+      return `http://127.0.0.1:8000/uploads/pelatihan/${editData.thumbnail}`;
+    }
+
+    return null;
+  }, [form.thumbnail, editData]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.append("title", form.title);
-    formData.append("short_description", form.short_description);
-    formData.append("deskripsi", form.deskripsi);
-    formData.append("materi", form.materi);
-    formData.append("kategori", form.kategori);
-    formData.append("level", form.level);
-    formData.append("status", form.status);
-    formData.append("link_grup", form.link_grup);
-    formData.append("durasi", form.durasi);
-    formData.append("harga", form.harga);
-    formData.append("bahasa", form.bahasa);
-    formData.append("tanggal_pelatihan", form.tanggal_pelatihan);
 
-    if (form.thumbnail) {
-      formData.append("thumbnail", form.thumbnail);
-    }
+    const formData = new FormData();
+
+    Object.keys(form).forEach((key) => {
+      if (
+        form[key] !== null &&
+        form[key] !== undefined
+      ) {
+        formData.append(key, form[key]);
+      }
+    });
 
     await onSubmit(formData);
   };
@@ -59,94 +108,69 @@ export default function PelatihanForm({ onSubmit, editData = null }) {
     <form
       onSubmit={handleSubmit}
       className="
-      bg-white
-      rounded-[35px]
-      shadow-sm
-      border
-      border-slate-100
-      overflow-hidden
-    "
+        bg-white
+        rounded-[35px]
+        shadow-sm
+        border
+        border-slate-100
+        overflow-hidden
+      "
     >
-      {/* TOP NAVIGATION */}
+      {/* TOP BAR */}
       <div
         className="
-                flex
-                flex-col
-                md:flex-row
-                md:items-center
-                md:justify-between
-                gap-4
-                p-6
-                bg-slate-50
-                border-b
-                border-slate-100
-            "
+          flex
+          flex-col
+          lg:flex-row
+          lg:items-center
+          lg:justify-between
+          gap-4
+          p-6
+          bg-slate-50
+          border-b
+          border-slate-100
+        "
       >
         {/* LEFT */}
-        <div
-          className="
-                    flex
-                    flex-wrap
-                    items-center
-                    gap-3
-                "
-        >
-          {/* BACK */}
+        <div className="flex flex-wrap gap-3">
           <button
             type="button"
             onClick={() => navigate(-1)}
-            className="
-                            flex
-                            items-center
-                            gap-2
-                            px-5
-                            py-3
-                            rounded-2xl
-                            bg-white
-                            border
-                            border-slate-200
-                            hover:bg-slate-100
-                            transition
-                            font-semibold
-                            text-slate-700
-                            shadow-sm
-                        "
+            className={`
+              ${buttonClass}
+              flex
+              items-center
+              gap-2
+              bg-white
+              border
+              border-slate-200
+              hover:bg-slate-100
+              text-slate-700
+              shadow-sm
+            `}
           >
-            <i
-              className="
-                            fas
-                            fa-arrow-left
-                        "
-            ></i>
+            <i className="fas fa-arrow-left"></i>
             Kembali
           </button>
 
-          {/* HOME */}
           <button
             type="button"
-            onClick={() => navigate("/dashboard")}
-            className="
-                            flex
-                            items-center
-                            gap-2
-                            px-5
-                            py-3
-                            rounded-2xl
-                            bg-blue-500
-                            hover:bg-blue-600
-                            transition
-                            font-semibold
-                            text-white
-                            shadow-lg
-                            shadow-blue-200
-                        "
+            onClick={() =>
+              navigate("/dashboard")
+            }
+            className={`
+              ${buttonClass}
+              flex
+              items-center
+              gap-2
+              bg-blue-500
+              hover:bg-blue-600
+              text-white
+              shadow-lg
+              shadow-blue-200
+            `}
           >
-            <i
-              className="
-                            fas
-                            fa-home
-                        "
-            ></i>
+            <i className="fas fa-home"></i>
             Beranda
           </button>
         </div>
@@ -154,88 +178,69 @@ export default function PelatihanForm({ onSubmit, editData = null }) {
         {/* STATUS */}
         <div
           className="
-                    flex
-                    items-center
-                    gap-3
-                    px-5
-                    py-3
-                    rounded-2xl
-                    bg-orange-100
-                    text-orange-600
-                    font-bold
-                    w-fit
-                "
+            flex
+            items-center
+            gap-3
+            px-5
+            py-3
+            rounded-2xl
+            bg-orange-100
+            text-orange-600
+            font-bold
+            w-fit
+          "
         >
           <div
             className="
-                        w-3
-                        h-3
-                        rounded-full
-                        bg-orange-500
-                        animate-pulse
-                    "
+              w-3
+              h-3
+              rounded-full
+              bg-orange-500
+              animate-pulse
+            "
           ></div>
 
-          {editData ? "Mode Edit Pelatihan" : "Mode Tambah Pelatihan"}
+          {editData
+            ? "Mode Edit Pelatihan"
+            : "Mode Tambah Pelatihan"}
         </div>
       </div>
 
       {/* HEADER */}
       <div
         className="
-                bg-gradient-to-r
-                from-orange-500
-                to-orange-400
-                p-8
-                text-white
-            "
+          bg-gradient-to-r
+          from-orange-500
+          to-orange-400
+          p-8
+          text-white
+        "
       >
-        <h2
-          className="
-                    text-4xl
-                    font-black
-                "
-        >
-          {editData ? "Edit Pelatihan" : "Tambah Pelatihan"}
-        </h2>
+        <h1 className="text-4xl font-black">
+          {editData
+            ? "Edit Pelatihan"
+            : "Tambah Pelatihan"}
+        </h1>
 
-        <p
-          className="
-                    text-orange-100
-                    mt-2
-                "
-        >
-          Kelola data pelatihan dengan mudah
+        <p className="text-orange-100 mt-2">
+          Kelola data pelatihan dengan
+          mudah
         </p>
       </div>
 
       {/* BODY */}
-      <div
-        className="
-                p-8
-                space-y-8
-            "
-      >
-        {/* GRID */}
+      <div className="p-8 space-y-8">
         <div
           className="
-                    grid
-                    grid-cols-1
-                    md:grid-cols-2
-                    gap-6
-                "
+            grid
+            grid-cols-1
+            md:grid-cols-2
+            gap-6
+          "
         >
-          {/* NAMA */}
+          {/* TITLE */}
           <div className="md:col-span-2">
-            <label
-              className="
-                            block
-                            text-sm
-                            font-bold
-                            text-slate-700
-                            mb-2
-                        "
-            >
+            <label className={labelClass}>
               Nama Pelatihan
             </label>
 
@@ -245,31 +250,14 @@ export default function PelatihanForm({ onSubmit, editData = null }) {
               value={form.title}
               onChange={handleChange}
               placeholder="Masukkan nama pelatihan"
-              className="
-                                w-full
-                                p-4
-                                rounded-2xl
-                                border
-                                border-slate-200
-                                focus:outline-none
-                                focus:ring-4
-                                focus:ring-orange-200
-                            "
+              className={inputClass}
               required
             />
           </div>
 
           {/* BAHASA */}
           <div>
-            <label
-              className="
-                            block
-                            text-sm
-                            font-bold
-                            text-slate-700
-                            mb-2
-                        "
-            >
+            <label className={labelClass}>
               Bahasa
             </label>
 
@@ -279,31 +267,14 @@ export default function PelatihanForm({ onSubmit, editData = null }) {
               value={form.bahasa}
               onChange={handleChange}
               placeholder="Contoh: Indonesia"
-              className="
-                                w-full
-                                p-4
-                                rounded-2xl
-                                border
-                                border-slate-200
-                                focus:outline-none
-                                focus:ring-4
-                                focus:ring-orange-200
-                            "
+              className={inputClass}
               required
             />
           </div>
 
           {/* DURASI */}
           <div>
-            <label
-              className="
-                            block
-                            text-sm
-                            font-bold
-                            text-slate-700
-                            mb-2
-                        "
-            >
+            <label className={labelClass}>
               Durasi
             </label>
 
@@ -313,92 +284,36 @@ export default function PelatihanForm({ onSubmit, editData = null }) {
               value={form.durasi}
               onChange={handleChange}
               placeholder="Contoh: 2 Jam"
-              className="
-                                w-full
-                                p-4
-                                rounded-2xl
-                                border
-                                border-slate-200
-                                focus:outline-none
-                                focus:ring-4
-                                focus:ring-orange-200
-                            "
+              className={inputClass}
               required
             />
           </div>
 
           {/* KATEGORI */}
           <div>
-            <label
-              className="
-                            block
-                            text-sm
-                            font-bold
-                            text-slate-700
-                            mb-2
-                        "
-            >
+            <label className={labelClass}>
               Kategori
             </label>
 
-            <div className="relative">
-              <select
-                name="kategori"
-                value={form.kategori}
-                onChange={handleChange}
-                className="
-                                    w-full
-                                    appearance-none
-                                    p-4
-                                    rounded-2xl
-                                    border
-                                    border-slate-200
-                                    bg-white
-                                    font-semibold
-                                    text-slate-700
-                                    focus:outline-none
-                                    focus:ring-4
-                                    focus:ring-orange-200
-                                    cursor-pointer
-                                "
-              >
-                <option value="gratis">Gratis</option>
+            <select
+              name="kategori"
+              value={form.kategori}
+              onChange={handleChange}
+              className={inputClass}
+            >
+              <option value="gratis">
+                Gratis
+              </option>
 
-                <option value="berbayar">Berbayar</option>
-              </select>
-
-              {/* ICON */}
-              <div
-                className="
-                                absolute
-                                right-5
-                                top-1/2
-                                -translate-y-1/2
-                                pointer-events-none
-                                text-slate-400
-                            "
-              >
-                <i
-                  className="
-                                    fas
-                                    fa-chevron-down
-                                "
-                ></i>
-              </div>
-            </div>
+              <option value="berbayar">
+                Berbayar
+              </option>
+            </select>
           </div>
 
           {/* HARGA */}
           <div>
-            <label
-              className="
-                            block
-                            text-sm
-                            font-bold
-                            text-slate-700
-                            mb-2
-                        "
-            >
+            <label className={labelClass}>
               Harga
             </label>
 
@@ -407,33 +322,20 @@ export default function PelatihanForm({ onSubmit, editData = null }) {
               name="harga"
               value={form.harga}
               onChange={handleChange}
-              disabled={form.kategori === "gratis"}
+              disabled={
+                form.kategori === "gratis"
+              }
               placeholder="Masukkan harga"
-              className="
-                                w-full
-                                p-4
-                                rounded-2xl
-                                border
-                                border-slate-200
-                                disabled:bg-slate-100
-                                focus:outline-none
-                                focus:ring-4
-                                focus:ring-orange-200
-                            "
+              className={`
+                ${inputClass}
+                disabled:bg-slate-100
+              `}
             />
           </div>
 
           {/* TANGGAL */}
           <div className="md:col-span-2">
-            <label
-              className="
-                            block
-                            text-sm
-                            font-bold
-                            text-slate-700
-                            mb-2
-                        "
-            >
+            <label className={labelClass}>
               Tanggal Pelatihan
             </label>
 
@@ -442,31 +344,14 @@ export default function PelatihanForm({ onSubmit, editData = null }) {
               name="tanggal_pelatihan"
               value={form.tanggal_pelatihan}
               onChange={handleChange}
-              className="
-                                w-full
-                                p-4
-                                rounded-2xl
-                                border
-                                border-slate-200
-                                focus:outline-none
-                                focus:ring-4
-                                focus:ring-orange-200
-                            "
+              className={inputClass}
               required
             />
           </div>
 
-          {/* LINK */}
+          {/* LINK GRUP */}
           <div className="md:col-span-2">
-            <label
-              className="
-                            block
-                            text-sm
-                            font-bold
-                            text-slate-700
-                            mb-2
-                        "
-            >
+            <label className={labelClass}>
               Link Grup
             </label>
 
@@ -476,31 +361,14 @@ export default function PelatihanForm({ onSubmit, editData = null }) {
               value={form.link_grup}
               onChange={handleChange}
               placeholder="Masukkan link grup"
-              className="
-                                w-full
-                                p-4
-                                rounded-2xl
-                                border
-                                border-slate-200
-                                focus:outline-none
-                                focus:ring-4
-                                focus:ring-orange-200
-                            "
+              className={`${inputClass} text-justify`}
               required
             />
           </div>
 
           {/* SHORT DESCRIPTION */}
           <div className="md:col-span-2">
-            <label
-              className="
-        block
-        text-sm
-        font-bold
-        text-slate-700
-        mb-2
-    "
-            >
+            <label className={labelClass}>
               Short Description
             </label>
 
@@ -510,31 +378,14 @@ export default function PelatihanForm({ onSubmit, editData = null }) {
               value={form.short_description}
               onChange={handleChange}
               placeholder="Deskripsi singkat pelatihan"
-              className="
-            w-full
-            p-4
-            rounded-2xl
-            border
-            border-slate-200
-            focus:outline-none
-            focus:ring-4
-            focus:ring-orange-200
-        "
+              className={`${inputClass} text-justify`}
               required
             />
           </div>
 
           {/* DESKRIPSI */}
           <div className="md:col-span-2">
-            <label
-              className="
-                            block
-                            text-sm
-                            font-bold
-                            text-slate-700
-                            mb-2
-                        "
-            >
+            <label className={labelClass}>
               Deskripsi
             </label>
 
@@ -544,49 +395,29 @@ export default function PelatihanForm({ onSubmit, editData = null }) {
               value={form.deskripsi}
               onChange={handleChange}
               placeholder="Masukkan deskripsi pelatihan"
-              className="
-                                w-full
-                                p-4
-                                rounded-2xl
-                                border
-                                border-slate-200
-                                focus:outline-none
-                                focus:ring-4
-                                focus:ring-orange-200
-                            "
+              className={`${inputClass} text-justify`}
               required
             />
           </div>
 
           {/* MATERI */}
           <div className="md:col-span-2">
-            <label
-              className="
-                            block
-                            text-sm
-                            font-bold
-                            text-slate-700
-                            mb-2
-                        "
-            >
+            <label className={labelClass}>
               Materi
             </label>
 
             <div
               className="
                 border
-              border-slate-200
+                border-slate-200
                 rounded-2xl
                 overflow-hidden
               "
             >
               <RichTextEditor
-                value={form.materi}
-                onChange={(value) =>
-                  setForm((prev) => ({
-                    ...prev,
-                    materi: value,
-                  }))
+                content={form.materi}
+                onChange={
+                  handleEditorChange
                 }
               />
             </div>
@@ -594,107 +425,81 @@ export default function PelatihanForm({ onSubmit, editData = null }) {
 
           {/* THUMBNAIL */}
           <div className="md:col-span-2">
-            <label
-              className="
-                block
-                text-sm
-                font-bold
-              text-slate-700
-                mb-2
-              "
-            >
+            <label className={labelClass}>
               Thumbnail Pelatihan
             </label>
 
             <label
               className="
+                relative
                 flex
                 items-center
                 justify-center
                 w-full
-                h-56
+                h-64
                 border-2
                 border-dashed
                 border-orange-300
                 rounded-3xl
                 cursor-pointer
+                overflow-hidden
                 hover:bg-orange-50
                 transition
-                overflow-hidden
-                relative
-            "
+              "
             >
-              {form.thumbnail ? (
+              {previewThumbnail ? (
                 <img
-                  src={URL.createObjectURL(form.thumbnail)}
-                  alt=""
+                  src={previewThumbnail}
+                  alt="Thumbnail"
                   className="
-                                                absolute
-                                                inset-0
-                                                w-full
-                                                h-full
-                                                object-contain
-                                                bg-white
-                                            "
-                />
-              ) : editData?.thumbnail ? (
-                <img
-                  src={`http://127.0.0.1:8000/uploads/pelatihan/${editData.thumbnail}`}
-                  alt=""
-                  className="
-                                                absolute
-                                                inset-0
-                                                w-full
-                                                h-full
-                                                object-contain
-                                                bg-white
-                                            "
+                    absolute
+                    inset-0
+                    w-full
+                    h-full
+                    object-contain
+                    bg-white
+                  "
                 />
               ) : (
-                <div
-                  className="
-                                            text-center
-                                            z-10
-                                        "
-                >
+                <div className="text-center z-10">
                   <div
                     className="
-                                                w-20
-                                                h-20
-                                                rounded-full
-                                                bg-orange-100
-                                                flex
-                                                items-center
-                                                justify-center
-                                                mx-auto
-                                                mb-4
-                                            "
+                      w-20
+                      h-20
+                      rounded-full
+                      bg-orange-100
+                      flex
+                      items-center
+                      justify-center
+                      mx-auto
+                      mb-4
+                    "
                   >
                     <i
                       className="
-                                                    fas
-                                                    fa-cloud-upload-alt
-                                                    text-3xl
-                                                    text-orange-500
-                                                "
+                        fas
+                        fa-cloud-upload-alt
+                        text-3xl
+                        text-orange-500
+                      "
                     ></i>
                   </div>
 
                   <p
                     className="
-                                                font-bold
-                                                text-slate-700
-                                            "
+                      font-bold
+                      text-slate-700
+                    "
                   >
                     Upload Gambar
                   </p>
 
                   <p
                     className="
-                                                text-sm
-                                                text-slate-400
-                                                mt-2
-                                            "
+                      text-sm
+                      text-slate-400
+                      mt-2
+                    "
                   >
                     JPG, PNG maksimal 2MB
                   </p>
@@ -705,10 +510,10 @@ export default function PelatihanForm({ onSubmit, editData = null }) {
                 type="file"
                 name="thumbnail"
                 accept="
-                                    image/png,
-                                    image/jpeg,
-                                    image/jpg
-                                "
+                  image/png,
+                  image/jpeg,
+                  image/jpg
+                "
                 onChange={handleChange}
                 className="hidden"
               />
@@ -720,46 +525,42 @@ export default function PelatihanForm({ onSubmit, editData = null }) {
       {/* FOOTER */}
       <div
         className="
-                p-8
-                border-t
-                border-slate-100
-                flex
-                items-center
-                justify-end
-                gap-4
-            "
+          p-8
+          border-t
+          border-slate-100
+          flex
+          flex-col
+          sm:flex-row
+          justify-end
+          gap-4
+        "
       >
         <button
           type="button"
-          className="
-                        px-6
-                        py-4
-                        rounded-2xl
-                        bg-slate-100
-                        hover:bg-slate-200
-                        font-bold
-                        transition
-                    "
+          onClick={() => navigate(-1)}
+          className={`
+            ${buttonClass}
+            bg-slate-100
+            hover:bg-slate-200
+          `}
         >
           Batal
         </button>
 
         <button
           type="submit"
-          className="
-                        px-8
-                        py-4
-                        rounded-2xl
-                        bg-orange-500
-                        hover:bg-orange-600
-                        text-white
-                        font-bold
-                        shadow-lg
-                        shadow-orange-200
-                        transition
-                    "
+          className={`
+            ${buttonClass}
+            bg-orange-500
+            hover:bg-orange-600
+            text-white
+            shadow-lg
+            shadow-orange-200
+          `}
         >
-          {editData ? "Update Pelatihan" : "Simpan Pelatihan"}
+          {editData
+            ? "Update Pelatihan"
+            : "Simpan Pelatihan"}
         </button>
       </div>
     </form>
