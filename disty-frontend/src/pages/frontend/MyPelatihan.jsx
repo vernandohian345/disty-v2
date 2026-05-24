@@ -1,12 +1,27 @@
+// ==============================
+// IMPORT
+// ==============================
+
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+
+import { FaClock, FaLayerGroup, FaBookOpen, FaTimes } from "react-icons/fa";
+
 import { useNavigate } from "react-router-dom";
 
 export default function MyPelatihan() {
+  // ==============================
+  // STATE
+  // ==============================
+
   const [search, setSearch] = useState("");
+
   const [loading, setLoading] = useState(true);
+
   const [data, setData] = useState([]);
+
   const [statusFilter, setStatusFilter] = useState("all");
+
   const [selectedPelatihan, setSelectedPelatihan] = useState(null);
 
   const navigate = useNavigate();
@@ -21,7 +36,6 @@ export default function MyPelatihan() {
 
   const fetchData = async () => {
     try {
-      // loading start
       setLoading(true);
 
       const token = localStorage.getItem("token");
@@ -39,13 +53,12 @@ export default function MyPelatihan() {
     } catch (error) {
       console.log(error);
     } finally {
-      // loading end
       setLoading(false);
     }
   };
 
   // ==============================
-  // STATUS BADGE COLOR
+  // STATUS COLOR
   // ==============================
 
   const getStatusClass = (status) => {
@@ -64,6 +77,29 @@ export default function MyPelatihan() {
 
       default:
         return "bg-gray-100 text-gray-700";
+    }
+  };
+
+  // ==============================
+  // STATUS TEXT
+  // ==============================
+
+  const getStatusText = (status) => {
+    switch (status) {
+      case "completed":
+        return "Selesai";
+
+      case "pending":
+        return "Menunggu";
+
+      case "paid":
+        return "Dibayar";
+
+      case "rejected":
+        return "Ditolak";
+
+      default:
+        return status;
     }
   };
 
@@ -114,64 +150,64 @@ export default function MyPelatihan() {
   return (
     <section
       className="
-      bg-[#fffaf5]
-      min-h-screen
-      py-24
-    "
+        bg-[#fffaf5]
+        min-h-screen
+        py-24
+      "
     >
       <div
         className="
-        max-w-6xl
-        mx-auto
-        px-4
-      "
+          max-w-6xl
+          mx-auto
+          px-4
+        "
       >
         {/* ==============================
-    TOP NAVIGATION
-============================== */}
+            TOP NAVIGATION
+        ============================== */}
 
         <div
           className="
-    flex
-    items-center
-    justify-between
-    mb-8
-    bg-white/70
-    backdrop-blur-2xl
-    border
-    border-white/30
-    rounded-3xl
-    px-6
-    py-4
-    shadow-lg
-    shadow-black/5
-  "
+            flex
+            items-center
+            justify-between
+            mb-8
+            bg-white/70
+            backdrop-blur-2xl
+            border
+            border-white/30
+            rounded-3xl
+            px-6
+            py-4
+            shadow-lg
+            shadow-black/5
+          "
         >
           {/* LEFT */}
           <div
             className="
-      flex
-      items-center
-      gap-4
-    "
+              flex
+              items-center
+              gap-4
+            "
           >
             {/* BACK BUTTON */}
             <button
               onClick={() => navigate(-1)}
               className="
-        w-12
-        h-12
-        rounded-2xl
-        bg-[#fffaf5]
-        hover:bg-orange-100
-        flex
-        items-center
-        justify-center
-        text-xl
-        text-[#2B1D16]
-        transition-all
-        hover:scale-105
-      "
+                w-12
+                h-12
+                rounded-2xl
+                bg-[#fffaf5]
+                hover:bg-orange-100
+                flex
+                items-center
+                justify-center
+                text-xl
+                text-[#2B1D16]
+                transition-all
+                hover:scale-105
+              "
             >
               ←
             </button>
@@ -180,19 +216,19 @@ export default function MyPelatihan() {
             <div>
               <p
                 className="
-          text-sm
-          text-black/40
-        "
+                  text-sm
+                  text-black/40
+                "
               >
                 Dashboard / Pelatihan
               </p>
 
               <h2
                 className="
-          text-lg
-          font-bold
-          text-[#2B1D16]
-        "
+                  text-lg
+                  font-bold
+                  text-[#2B1D16]
+                "
               >
                 Pelatihan Saya
               </h2>
@@ -202,21 +238,22 @@ export default function MyPelatihan() {
           {/* RIGHT */}
           <div
             className="
-      hidden md:flex
-      items-center
-      gap-3
-    "
+              hidden
+              md:flex
+              items-center
+              gap-3
+            "
           >
             <div
               className="
-        px-4
-        py-2
-        rounded-2xl
-        bg-orange-100
-        text-orange-600
-        text-sm
-        font-semibold
-      "
+                px-4
+                py-2
+                rounded-2xl
+                bg-orange-100
+                text-orange-600
+                text-sm
+                font-semibold
+              "
             >
               {totalPelatihan} Pelatihan
             </div>
@@ -238,7 +275,7 @@ export default function MyPelatihan() {
             text-white
           "
         >
-          {/* Glow */}
+          {/* GLOW */}
           <div
             className="
               absolute
@@ -284,7 +321,7 @@ export default function MyPelatihan() {
               dalam satu dashboard.
             </p>
 
-            {/* Search */}
+            {/* SEARCH */}
             <div className="mt-8">
               <input
                 type="text"
@@ -307,7 +344,7 @@ export default function MyPelatihan() {
               />
             </div>
 
-            {/* Stats */}
+            {/* STATS */}
             <div
               className="
                 grid
@@ -317,7 +354,7 @@ export default function MyPelatihan() {
                 mt-10
               "
             >
-              {/* Total */}
+              {/* TOTAL */}
               <div
                 className="
                   bg-white/10
@@ -339,7 +376,7 @@ export default function MyPelatihan() {
                 </h2>
               </div>
 
-              {/* Completed */}
+              {/* COMPLETED */}
               <div
                 className="
                   bg-white/10
@@ -361,7 +398,7 @@ export default function MyPelatihan() {
                 </h2>
               </div>
 
-              {/* Pending */}
+              {/* PENDING */}
               <div
                 className="
                   bg-white/10
@@ -444,7 +481,7 @@ export default function MyPelatihan() {
           "
         >
           {/* ==============================
-              LOADING SKELETON
+              LOADING
           ============================== */}
 
           {loading ? (
@@ -552,7 +589,7 @@ export default function MyPelatihan() {
                   duration-300
                 "
               >
-                {/* Thumbnail */}
+                {/* THUMBNAIL */}
                 <img
                   src={`http://127.0.0.1:8000/uploads/pelatihan/${item.pelatihan?.thumbnail}`}
                   alt=""
@@ -564,7 +601,7 @@ export default function MyPelatihan() {
                 />
 
                 <div className="p-6">
-                  {/* Title */}
+                  {/* TITLE */}
                   <h2
                     className="
                       text-xl
@@ -575,7 +612,7 @@ export default function MyPelatihan() {
                     {item.pelatihan?.title}
                   </h2>
 
-                  {/* Date */}
+                  {/* DATE */}
                   <p
                     className="
                       mt-2
@@ -586,15 +623,15 @@ export default function MyPelatihan() {
                     Tanggal Daftar:
                     <span
                       className="
-                      font-semibold
-                      ml-2
-                    "
+                        font-semibold
+                        ml-2
+                      "
                     >
                       {formatDate(item.created_at)}
                     </span>
                   </p>
 
-                  {/* Status */}
+                  {/* STATUS */}
                   <div className="mt-4">
                     <span
                       className={`
@@ -606,30 +643,38 @@ export default function MyPelatihan() {
                         ${getStatusClass(item.status)}
                       `}
                     >
-                      {item.status}
+                      {getStatusText(item.status)}
                     </span>
                   </div>
 
+                  {/* DETAIL BUTTON */}
                   <button
                     onClick={() => setSelectedPelatihan(item)}
                     className="
-                        w-full
-                        h-12
-                        mb-3
-                        border
-                        border-black/10
-                        hover:bg-black/5
-                        rounded-2xl
-                        font-semibold
-                        transition-all
-                      "
+                      w-full
+                      h-12
+                      mb-3
+                      mt-6
+                      border
+                      border-black/10
+                      hover:bg-black/5
+                      rounded-2xl
+                      font-semibold
+                      transition-all
+                      flex
+                      items-center
+                      justify-center
+                      gap-2
+                    "
                   >
-                    Lihat Detail
+                    <FaBookOpen />
+
+                    <span>Lihat Detail</span>
                   </button>
 
-                  {/* Action Button */}
-                  <div className="mt-6">
-                    {/* Completed */}
+                  {/* ACTION BUTTON */}
+                  <div>
+                    {/* COMPLETED */}
                     {item.status === "completed" && (
                       <button
                         onClick={() => {
@@ -639,23 +684,20 @@ export default function MyPelatihan() {
                         }}
                         className="
                           w-full
+                          h-12
                           bg-green-500
                           hover:bg-green-400
                           text-white
-                          py-3
                           rounded-2xl
                           font-semibold
                           transition-all
-                          flex
-                          items-center
-                          justify-center
                         "
                       >
                         Masuk Kelas
                       </button>
                     )}
 
-                    {/* Rejected */}
+                    {/* REJECTED */}
                     {item.status === "rejected" && (
                       <button
                         onClick={() =>
@@ -667,10 +709,10 @@ export default function MyPelatihan() {
                         }
                         className="
                           w-full
+                          h-12
                           bg-red-500
                           hover:bg-red-400
                           text-white
-                          py-3
                           rounded-2xl
                           font-semibold
                           transition-all
@@ -680,15 +722,15 @@ export default function MyPelatihan() {
                       </button>
                     )}
 
-                    {/* Pending */}
+                    {/* PENDING */}
                     {(item.status === "pending" || item.status === "paid") && (
                       <button
                         disabled
                         className="
                           w-full
+                          h-12
                           bg-yellow-400
                           text-white
-                          py-3
                           rounded-2xl
                           font-semibold
                           cursor-not-allowed
@@ -704,55 +746,58 @@ export default function MyPelatihan() {
           )}
         </div>
       </div>
+
       {/* ==============================
-    DETAIL MODAL
-============================== */}
+          DETAIL MODAL
+      ============================== */}
 
       {selectedPelatihan && (
         <div
           className="
-      fixed
-      inset-0
-      bg-black/50
-      backdrop-blur-sm
-      z-50
-      flex
-      items-center
-      justify-center
-      p-4
-    "
+            fixed
+            inset-0
+            bg-black/50
+            backdrop-blur-sm
+            z-50
+            flex
+            items-center
+            justify-center
+            p-4
+          "
         >
           <div
             className="
-        bg-white
-        w-full
-        max-w-3xl
-        rounded-[32px]
-        overflow-hidden
-        relative
-        animate-in
-        fade-in
-        zoom-in
-      "
+              bg-white
+              w-full
+              max-w-3xl
+              max-h-[90vh]
+              overflow-y-auto
+              rounded-[32px]
+              overflow-hidden
+              relative
+            "
           >
-            {/* CLOSE */}
+            {/* CLOSE BUTTON */}
             <button
               onClick={() => setSelectedPelatihan(null)}
               className="
-          absolute
-          top-5
-          right-5
-          w-10
-          h-10
-          rounded-full
-          bg-white/80
-          backdrop-blur-xl
-          hover:bg-white
-          transition
-          z-10
-        "
+                absolute
+                top-5
+                right-5
+                w-10
+                h-10
+                rounded-full
+                bg-white/80
+                backdrop-blur-xl
+                hover:bg-white
+                transition
+                z-10
+                flex
+                items-center
+                justify-center
+              "
             >
-              ✕
+              <FaTimes />
             </button>
 
             {/* THUMBNAIL */}
@@ -761,39 +806,40 @@ export default function MyPelatihan() {
                 src={`http://127.0.0.1:8000/uploads/pelatihan/${selectedPelatihan.pelatihan?.thumbnail}`}
                 alt=""
                 className="
-            w-full
-            h-72
-            object-cover
-          "
+                  w-full
+                  h-72
+                  object-cover
+                "
               />
 
               {/* OVERLAY */}
               <div
                 className="
-            absolute
-            inset-0
-            bg-gradient-to-t
-            from-black/70
-            to-transparent
-          "
+                  absolute
+                  inset-0
+                  bg-gradient-to-t
+                  from-black/70
+                  to-transparent
+                "
               />
 
+              {/* TITLE */}
               <div
                 className="
-            absolute
-            bottom-6
-            left-6
-            text-white
-          "
+                  absolute
+                  bottom-6
+                  left-6
+                  text-white
+                "
               >
                 <p className="text-sm text-white/70">Pelatihan</p>
 
                 <h2
                   className="
-              text-3xl
-              font-black
-              mt-2
-            "
+                    text-3xl
+                    font-black
+                    mt-2
+                  "
                 >
                   {selectedPelatihan.pelatihan?.title}
                 </h2>
@@ -805,35 +851,35 @@ export default function MyPelatihan() {
               {/* STATUS */}
               <span
                 className={`
-            px-4
-            py-2
-            rounded-full
-            text-sm
-            font-semibold
-            ${getStatusClass(selectedPelatihan.status)}
-          `}
+                  px-4
+                  py-2
+                  rounded-full
+                  text-sm
+                  font-semibold
+                  ${getStatusClass(selectedPelatihan.status)}
+                `}
               >
-                {selectedPelatihan.status}
+                {getStatusText(selectedPelatihan.status)}
               </span>
 
               {/* DESCRIPTION */}
               <div className="mt-6">
                 <h3
                   className="
-              text-lg
-              font-bold
-              text-[#2B1D16]
-            "
+                    text-lg
+                    font-bold
+                    text-[#2B1D16]
+                  "
                 >
                   Deskripsi
                 </h3>
 
                 <p
                   className="
-              mt-3
-              text-black/60
-              leading-relaxed
-            "
+                    mt-3
+                    text-black/60
+                    leading-relaxed
+                  "
                 >
                   {selectedPelatihan.pelatihan?.description}
                 </p>
@@ -842,18 +888,19 @@ export default function MyPelatihan() {
               {/* INFO GRID */}
               <div
                 className="
-            grid
-            md:grid-cols-2
-            gap-4
-            mt-8
-          "
+                  grid
+                  md:grid-cols-2
+                  gap-4
+                  mt-8
+                "
               >
+                {/* TANGGAL */}
                 <div
                   className="
-              bg-[#fffaf5]
-              rounded-2xl
-              p-5
-            "
+                    bg-[#fffaf5]
+                    rounded-2xl
+                    p-5
+                  "
                 >
                   <p className="text-sm text-black/50">Tanggal Daftar</p>
 
@@ -862,12 +909,13 @@ export default function MyPelatihan() {
                   </h3>
                 </div>
 
+                {/* KATEGORI */}
                 <div
                   className="
-              bg-[#fffaf5]
-              rounded-2xl
-              p-5
-            "
+                    bg-[#fffaf5]
+                    rounded-2xl
+                    p-5
+                  "
                 >
                   <p className="text-sm text-black/50">Kategori</p>
 
@@ -875,6 +923,136 @@ export default function MyPelatihan() {
                     {selectedPelatihan.pelatihan?.kategori}
                   </h3>
                 </div>
+
+                {/* DURASI */}
+                <div
+                  className="
+                    bg-[#fffaf5]
+                    rounded-2xl
+                    p-5
+                  "
+                >
+                  <div
+                    className="
+                      flex
+                      items-center
+                      gap-3
+                    "
+                  >
+                    <div
+                      className="
+                        w-12
+                        h-12
+                        rounded-2xl
+                        bg-orange-100
+                        flex
+                        items-center
+                        justify-center
+                        text-orange-500
+                      "
+                    >
+                      <FaClock />
+                    </div>
+
+                    <div>
+                      <p className="text-sm text-black/50">Durasi</p>
+
+                      <h3 className="font-bold mt-1">3 Bulan</h3>
+                    </div>
+                  </div>
+                </div>
+
+                {/* LEVEL */}
+                <div
+                  className="
+                    bg-[#fffaf5]
+                    rounded-2xl
+                    p-5
+                  "
+                >
+                  <div
+                    className="
+                      flex
+                      items-center
+                      gap-3
+                    "
+                  >
+                    <div
+                      className="
+                        w-12
+                        h-12
+                        rounded-2xl
+                        bg-orange-100
+                        flex
+                        items-center
+                        justify-center
+                        text-orange-500
+                      "
+                    >
+                      <FaLayerGroup />
+                    </div>
+
+                    <div>
+                      <p className="text-sm text-black/50">Level</p>
+
+                      <h3 className="font-bold mt-1">Beginner</h3>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* ACTION BUTTON */}
+              <div
+                className="
+                  flex
+                  flex-col
+                  md:flex-row
+                  gap-4
+                  mt-10
+                "
+              >
+                {/* MASUK KELAS */}
+                {selectedPelatihan.status === "completed" && (
+                  <button
+                    onClick={() => {
+                      toast.success("Membuka kelas...");
+
+                      window.open(
+                        selectedPelatihan.pelatihan?.link_grup,
+                        "_blank",
+                      );
+                    }}
+                    className="
+                      flex-1
+                      h-14
+                      rounded-2xl
+                      bg-green-500
+                      hover:bg-green-400
+                      text-white
+                      font-bold
+                      transition-all
+                    "
+                  >
+                    Masuk Kelas
+                  </button>
+                )}
+
+                {/* CLOSE */}
+                <button
+                  onClick={() => setSelectedPelatihan(null)}
+                  className="
+                    flex-1
+                    h-14
+                    rounded-2xl
+                    border
+                    border-black/10
+                    hover:bg-black/5
+                    font-semibold
+                    transition-all
+                  "
+                >
+                  Tutup
+                </button>
               </div>
             </div>
           </div>

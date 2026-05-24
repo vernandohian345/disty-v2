@@ -14,6 +14,7 @@ import Checkout from "./pages/frontend/Checkout";
 import Success from "./pages/frontend/Success";
 import Payment from "./pages/frontend/Payment";
 import MyPelatihan from "./pages/frontend/MyPelatihan";
+import Profile from "./pages/frontend/Profile";
 
 import Dashboard from "./pages/admin/Dashboard";
 
@@ -56,6 +57,7 @@ export default function App() {
         <Route path="/success" element={<Success />} />
         <Route path="/payment" element={<Payment />} />
         <Route path="/my-pelatihan" element={<MyPelatihan />} />
+        <Route path="/profile" element={<Profile />} />
 
         {/* AUTH */}
         <Route path="/login" element={<Login />} />
