@@ -1,7 +1,14 @@
-import { useEffect, useState } from "react";
+import {
+    useEffect,
+    useState,
+    useRef
+} from "react";
 
 import AdminLayout from "../../layouts/AdminLayout";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 
+import SertifikatTemplate from "../../components/admin/sertifikat/SertifikatTemplate";
 import {
     getPesertaSertifikat,
     markCompleted,
@@ -21,6 +28,11 @@ export default function SertifikatPelatihan() {
 
     const [stats, setStats] =
         useState({});
+    
+    const sertifikatRef = useRef();
+
+    const [previewData, setPreviewData] =
+        useState(null);
 
     const [filterStatus, setFilterStatus] =
         useState("all");
@@ -132,32 +144,53 @@ export default function SertifikatPelatihan() {
     // =========================
     // DOWNLOAD
     // =========================
-    const handleDownload =
-        async (id) => {
+        const handleDownload =
+        async (item) => {
 
             try {
 
-                const response =
-                    await downloadSertifikat(id);
+                setPreviewData(item);
 
-                const url =
-                    window.URL.createObjectURL(
-                        new Blob([response.data])
+                setTimeout(async () => {
+
+                    const canvas =
+                        await html2canvas(
+                            sertifikatRef.current,
+                            {
+                                scale: 3,
+                                useCORS: true,
+                            }
+                        );
+
+                    const imgData =
+                        canvas.toDataURL(
+                            "image/png"
+                        );
+
+                    const pdf =
+                        new jsPDF({
+                            orientation: "landscape",
+                            unit: "px",
+                            format: [
+                                1600,
+                                1131
+                            ],
+                        });
+
+                    pdf.addImage(
+                        imgData,
+                        "PNG",
+                        0,
+                        0,
+                        1600,
+                        1131
                     );
 
-                const link =
-                    document.createElement("a");
+                    pdf.save(
+                        "sertifikat-pelatihan.pdf"
+                    );
 
-                link.href = url;
-
-                link.setAttribute(
-                    "download",
-                    "sertifikat.pdf"
-                );
-
-                document.body.appendChild(link);
-
-                link.click();
+                }, 300);
 
             } catch (error) {
 
@@ -169,76 +202,40 @@ export default function SertifikatPelatihan() {
 
             }
 
-        };
+    };
 
     // =========================
     // REGENERATE
     // =========================
-    const handleRegenerate = async (id) => {
+        const handleRegenerate =
+        async (id) => {
+            const confirmRegenerate =
+                window.confirm(
+                    "Regenerate sertifikat?"
+                );
+            if (!confirmRegenerate) return;
 
-        const confirmRegenerate =
-            window.confirm(
-                "Regenerate sertifikat?"
-            );
-
-        if (!confirmRegenerate) return;
-
-        try {
-
-            await regenerateSertifikat(id);
-
-            alert("Sertifikat berhasil di-regenerate");
-
-            fetchData();
-
-        } catch (error) {
-
-            console.log(error);
-
-            alert("Gagal regenerate sertifikat");
-
-        }
-
+            try {
+                await regenerateSertifikat(id);
+                alert(
+                    "Sertifikat berhasil di-regenerate"
+                );
+                fetchData();
+            } catch (error) {
+                console.log(error);
+                alert(
+                    "Gagal regenerate sertifikat"
+                );
+            }
     };
 
     // =========================
     // PREVIEW
     // =========================
-    const handlePreview =
-        async (id) => {
+   const handlePreview = (item) => {
+    setPreviewData(item);
 
-            try {
-
-                const response =
-                    await previewSertifikat(id);
-
-                const file =
-                    new Blob(
-                        [response.data],
-                        {
-                            type: "application/pdf",
-                        }
-                    );
-
-                const fileURL =
-                    URL.createObjectURL(file);
-
-                window.open(
-                    fileURL,
-                    "_blank"
-                );
-
-            } catch (error) {
-
-                console.log(error);
-
-                alert(
-                    "Gagal preview sertifikat"
-                );
-
-            }
-
-        };
+};
 
     // =========================
     // FILTER
@@ -753,7 +750,7 @@ export default function SertifikatPelatihan() {
                                                                 {/* PREVIEW */}
                                                                 <button
                                                                     onClick={() =>
-                                                                        handlePreview(item.id)
+                                                                        handlePreview(item)
                                                                     }
                                                                     className="
                                                                         px-4
@@ -772,7 +769,7 @@ export default function SertifikatPelatihan() {
                                                                 {/* DOWNLOAD */}
                                                                 <button
                                                                     onClick={() =>
-                                                                        handleDownload(item.id)
+                                                                        handleDownload(item)
                                                                     }
                                                                     className="
                                                                         px-4
@@ -829,7 +826,21 @@ export default function SertifikatPelatihan() {
                 </div>
 
             </div>
+                {/* HIDDEN TEMPLATE */}
+                <div className="fixed -left-[9999px] top-0">
 
+                    {
+                        previewData && (
+
+                            <SertifikatTemplate
+                                ref={sertifikatRef}
+                                data={previewData}
+                            />
+
+                        )
+                    }
+
+                </div>
         </AdminLayout>
 
     );
