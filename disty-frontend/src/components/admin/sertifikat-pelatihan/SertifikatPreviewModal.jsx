@@ -81,13 +81,10 @@ export default function SertifikatPreviewModal({
                         >
                             Download PDF
                         </button>
-
                     </div>
-
                 </div>
 
             </div>
-
             {/* HIDDEN TEMPLATE */}
             <div className="fixed -left-[9999px] top-0">
 
@@ -95,7 +92,6 @@ export default function SertifikatPreviewModal({
                     ref={sertifikatRef}
                     data={previewData}
                 />
-
             </div>
         </>
     );

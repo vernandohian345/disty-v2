@@ -27,7 +27,6 @@ export default function SertifikatFilter({
                     outline-none
                 "
             />
-
             {/* FILTER */}
             <select
                 value={filterStatus}
@@ -43,7 +42,6 @@ export default function SertifikatFilter({
                     outline-none
                 "
             >
-
                 <option value="all">
                     Semua
                 </option>
@@ -63,7 +61,6 @@ export default function SertifikatFilter({
                 <option value="not_completed">
                     Belum Selesai
                 </option>
-
             </select>
 
         </div>

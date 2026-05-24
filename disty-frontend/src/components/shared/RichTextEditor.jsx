@@ -4,6 +4,8 @@ import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
 import Placeholder from "@tiptap/extension-placeholder";
 import Underline from "@tiptap/extension-underline";
+import Youtube from "@tiptap/extension-youtube";
+import TextAlign from "@tiptap/extension-text-align";
 
 export default function RichTextEditor({
   content,
@@ -22,9 +24,17 @@ export default function RichTextEditor({
             placeholder,
         }),
 
+        TextAlign.configure({
+            types: ["heading", "paragraph"],
+        }),
+
         Link.configure({
             openOnClick: false,
         }),
+        Youtube.configure({
+        controls: true,
+        nocookie: true,
+      }),
     ],
 
     content,
@@ -41,6 +51,20 @@ export default function RichTextEditor({
   });
 
   if (!editor) return null;
+
+   const addYoutubeVideo = () => {
+    const url = prompt("Masukkan URL YouTube");
+
+    if (url) {
+      editor.commands.setYoutubeVideo({
+        src: url,
+        width: 640,
+        height: 360,
+      });
+    }
+  };
+
+  
 
   const setLink = () => {
     const previousUrl = editor.getAttributes("link").href;
@@ -134,6 +158,62 @@ export default function RichTextEditor({
           }`}
         >
           Link
+        </button>
+
+        <button
+          type="button"
+          onClick={() => editor.chain().focus().setTextAlign("left").run()}
+          className={`px-3 py-1 rounded-lg text-sm font-medium transition ${
+            editor.isActive({ textAlign: "left" })
+              ? "bg-orange-500 text-white"
+              : "bg-white border border-slate-200"
+          }`}
+        >
+          Left
+        </button>
+
+        <button
+          type="button"
+          onClick={() => editor.chain().focus().setTextAlign("center").run()}
+          className={`px-3 py-1 rounded-lg text-sm font-medium transition ${
+            editor.isActive({ textAlign: "center" })
+              ? "bg-orange-500 text-white"
+              : "bg-white border border-slate-200"
+          }`}
+        >
+          Center
+        </button>
+
+        <button
+          type="button"
+          onClick={() => editor.chain().focus().setTextAlign("right").run()}
+          className={`px-3 py-1 rounded-lg text-sm font-medium transition ${
+            editor.isActive({ textAlign: "right" })
+              ? "bg-orange-500 text-white"
+              : "bg-white border border-slate-200"
+          }`}
+        >
+          Right
+        </button>
+
+        <button
+          type="button"
+          onClick={() => editor.chain().focus().setTextAlign("justify").run()}
+          className={`px-3 py-1 rounded-lg text-sm font-medium transition ${
+            editor.isActive({ textAlign: "justify" })
+              ? "bg-orange-500 text-white"
+              : "bg-white border border-slate-200"
+          }`}
+        >
+          Justify
+        </button>
+
+        <button
+          type="button"
+          onClick={addYoutubeVideo}
+          className="px-3 py-1 rounded-lg text-sm font-medium bg-white border border-slate-200"
+        >
+          YouTube
         </button>
       </div>
 
