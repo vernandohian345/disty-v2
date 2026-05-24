@@ -9,6 +9,7 @@ use App\Models\Pelatihan;
 use App\Models\Notification;
 use Illuminate\Support\Facades\Log;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Storage;
 
 class SertifikatPelatihanApiController extends Controller
 {
@@ -87,84 +88,48 @@ class SertifikatPelatihanApiController extends Controller
     // ✅ GENERATE 1 SERTIFIKAT
     public function generate(int $id)
     {
-        $transaksi = TransaksiPelatihan::with('pelatihan')
-            ->findOrFail($id);
+        try {
 
-        if ($transaksi->sertifikat_pelatihan) {
+            $transaksi =
+                TransaksiPelatihan::with(
+                    'pelatihan',
+                    'user'
+                )->findOrFail($id);
 
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Sertifikat sudah dibuat'
-            ], 400);
-        }
-
-        if ($transaksi->status !== 'completed') {
-
-            return response()->json([
-                'status' => 'error',
-                'message' =>
-                'Peserta belum menyelesaikan pelatihan'
-            ], 400);
-        }
-
-        // nomor sertifikat
-        $nomorSertifikat =
-            'CERT-PLT-' .
-            date('Y') .
-            '-' .
-            str_pad($transaksi->id, 5, '0', STR_PAD_LEFT);
-
-        // generate pdf
-        $html = $this->generateCertificateHtml(
-            $transaksi->nama,
-            $transaksi->pelatihan->nama_pelatihan,
-            $transaksi->pelatihan->tanggal_pelatihan,
-            $nomorSertifikat,
-            $transaksi->pelatihan->durasi
-        );
-
-        $pdf = Pdf::loadHTML($html);
-
-        $pdf->setPaper('a4', 'landscape');
-
-        // simpan file
-        $filename =
-            'sertifikat_' .
-            $transaksi->id .
-            '_' .
-            time() .
-            '.pdf';
-
-        $path =
-            public_path(
-                'uploads/sertifikat_pelatihan/' . $filename
+            $pdf = Pdf::loadView(
+                'sertifikat.pelatihan',
+                [
+                    'transaksi' => $transaksi
+                ]
             );
 
-        $pdf->save($path);
+            $filename =
+                'sertifikat-' .
+                time() .
+                '.pdf';
 
-        // update db
-        $transaksi->sertifikat_pelatihan = $filename;
-        $transaksi->save();
+            Storage::put(
+                'public/sertifikat/' . $filename,
+                $pdf->output()
+            );
 
-        // notification
-        Notification::create([
-            'user_id' => $transaksi->user_id,
-            'type' => 'sertifikat_ready',
-            'title' => 'Sertifikat tersedia',
-            'message' =>
-            'Sertifikat pelatihan sudah tersedia',
-            'icon' => 'certificate',
-            'color' => 'success',
-            'url' => '/profil',
-            'is_read' => false
-        ]);
+            $transaksi->update([
+                'sertifikat_pelatihan' =>
+                'sertifikat/' . $filename
+            ]);
 
-        return response()->json([
-            'status' => 'success',
-            'message' =>
-            'Sertifikat berhasil di-generate',
-            'file' => $filename
-        ]);
+            return response()->json([
+                'message' =>
+                'Sertifikat berhasil dibuat'
+            ]);
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'error' => $e->getMessage(),
+                'line' => $e->getLine(),
+                'file' => $e->getFile(),
+            ], 500);
+        }
     }
 
     // ✅ GENERATE BATCH
@@ -177,7 +142,7 @@ class SertifikatPelatihanApiController extends Controller
             'pelatihan_id',
             $pelatihan_id
         )
-            ->where('status', 'comppleted')
+            ->where('status', 'completed')
             ->where('is_completed', true)
             ->whereNull('sertifikat_pelatihan')
             ->get();

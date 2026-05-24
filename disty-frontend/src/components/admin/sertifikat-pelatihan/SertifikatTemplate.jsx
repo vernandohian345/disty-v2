@@ -91,7 +91,7 @@ forwardRef(({
 
                 Nomor Sertifikat:
                 {" "}
-                {data?.sertifikat_pelatihan || "-"}
+                `Disty-{data?.pelatihan?.title}-${data.id}-${new Date().getFullYear()}`
 
             </div>
 
