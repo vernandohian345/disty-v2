@@ -824,7 +824,83 @@ export default function SertifikatPelatihan() {
                     </table>
 
                 </div>
+        {/* PREVIEW MODAL */}
+        {
+            previewData && (
+                <div
+                    className="
+                        fixed
+                        inset-0
+                        z-50
+                        bg-black/70
+                        flex
+                        items-center
+                        justify-center
+                        p-5
+                    "
+                >
+                    <div
+                        className="
+                            bg-white
+                            rounded-2xl
+                            overflow-auto
+                            max-w-[95vw]
+                            max-h-[95vh]
+                            p-5
+                        "
+                    >
+                        {/* TEMPLATE */}
+                        <SertifikatTemplate
+                            ref={sertifikatRef}
+                            data={previewData}
+                        />
+                        {/* BUTTON */}
+                        <div
+                            className="
+                                flex
+                                justify-end
+                                gap-3
+                                mt-5
+                            "
+                        >
+                            {/* CLOSE */}
+                            <button
+                                onClick={() =>
+                                    setPreviewData(null)
+                                }
+                                className="
+                                    px-5
+                                    py-3
+                                    rounded-xl
+                                    bg-slate-500
+                                    text-white
+                                    font-bold
+                                "
+                            >
+                                Tutup
+                            </button>
 
+                            {/* DOWNLOAD */}
+                            <button
+                                onClick={() =>
+                                    handleDownload(previewData)
+                                }
+                                className="
+                                    px-5
+                                    py-3
+                                    rounded-xl
+                                    bg-blue-600
+                                    text-white
+                                    font-bold
+                                "
+                            >
+                                Download PDF
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )
+        }                        
             </div>
                 {/* HIDDEN TEMPLATE */}
                 <div className="fixed -left-[9999px] top-0">
