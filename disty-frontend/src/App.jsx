@@ -33,6 +33,7 @@ import IndexUser from "./pages/admin/User/Index";
 import CreateUser from "./pages/admin/User/Create";
 
 import SertifikatPelatihan from "./pages/admin/SertifikatPelatihan";
+import SertifikatSertifikasi from "./pages/admin/SertifikatSertifikasi";
 
 import RouteAdmin from "./routes/AdminRoute";
 import ScrollToTop from "./components/shared/ScrollToTop";
@@ -170,6 +171,12 @@ export default function App() {
               <SertifikatPelatihan />
             </RouteAdmin>
           }
+        />
+
+        {/* SERTIFIKAT SERTIFIKASI */}
+        <Route
+            path="/admin/sertifikat-bnsp"
+            element={<SertifikatSertifikasi />}
         />
       </Routes>
     </BrowserRouter>
