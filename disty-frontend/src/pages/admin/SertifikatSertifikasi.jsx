@@ -64,12 +64,125 @@ export default function SertifikatSertifikasi() {
 
     }, []);
 
-    const handleDownloadBnsp = (id) => {
+    const handleDownloadBnsp = async (id) => {
 
-        window.open(
-            `http://127.0.0.1:8000/api/sertifikat-sertifikasi/download-bnsp/${id}`,
-            "_blank"
-        );
+        try {
+
+            const response = await api.get(
+                `/sertifikat-sertifikasi/download-bnsp/${id}`,
+                {
+                    responseType: "blob",
+                }
+            );
+
+            const url =
+                window.URL.createObjectURL(
+                    new Blob([response.data])
+                );
+
+            const link =
+                document.createElement("a");
+
+            link.href = url;
+
+            link.setAttribute(
+                "download",
+                `sertifikat-bnsp-${id}.pdf`
+            );
+
+            document.body.appendChild(link);
+
+            link.click();
+
+            link.remove();
+
+        } catch (error) {
+
+            console.error(error);
+
+            alert("Download gagal");
+
+        }
+
+    };
+
+    const handleUploadBnsp = async (
+        id,
+        file
+    ) => {
+
+        try {
+
+            const formData =
+                new FormData();
+
+            formData.append(
+                "file_bnsp",
+                file
+            );
+
+            await api.post(
+                `/sertifikat-sertifikasi/upload-bnsp/${id}`,
+                formData,
+                {
+                    headers: {
+                        "Content-Type":
+                            "multipart/form-data",
+                    },
+                }
+            );
+
+            alert(
+                "Upload sertifikat berhasil"
+            );
+
+            fetchData();
+
+        } catch (error) {
+
+            console.error(error);
+
+            alert(
+                "Upload gagal"
+            );
+
+        }
+    };
+
+    const handleDeleteBnsp = async (
+        id
+    ) => {
+
+        const confirmDelete =
+            confirm(
+                "Hapus sertifikat BNSP?"
+            );
+
+        if (!confirmDelete) {
+            return;
+        }
+
+        try {
+
+            await api.delete(
+                `/sertifikat-sertifikasi/delete-bnsp/${id}`
+            );
+
+            alert(
+                "Sertifikat berhasil dihapus"
+            );
+
+            fetchData();
+
+        } catch (error) {
+
+            console.error(error);
+
+            alert(
+                "Gagal menghapus sertifikat"
+            );
+
+        }
 
     };
 
@@ -422,33 +535,103 @@ export default function SertifikatSertifikasi() {
                                                     "
                                                 >
 
+                                                    {/* UPLOAD */}
                                                     {
-                                                        item.sertifikat_bnsp && (
+                                                        !item.sertifikat_bnsp && (
 
-                                                            <button
-                                                                onClick={() =>
-                                                                    handleDownloadBnsp(item.id)
-                                                                }
+                                                            <label
                                                                 className="
                                                                     px-4
                                                                     py-2
                                                                     rounded-xl
-                                                                    bg-blue-500
+                                                                    bg-indigo-500
                                                                     text-white
                                                                     font-bold
+                                                                    cursor-pointer
                                                                 "
                                                             >
 
-                                                                Download
+                                                                Upload PDF
 
-                                                            </button>
+                                                                <input
+                                                                    type="file"
+                                                                    accept=".pdf"
+                                                                    className="hidden"
+                                                                    onChange={(e) => {
+
+                                                                        const file =
+                                                                            e.target.files[0];
+
+                                                                        if (file) {
+
+                                                                            handleUploadBnsp(
+                                                                                item.id,
+                                                                                file
+                                                                            );
+
+                                                                        }
+
+                                                                    }}
+                                                                />
+
+                                                            </label>
 
                                                         )
                                                     }
 
+                                                    {/* DOWNLOAD */}
+                                                    {
+                                                        item.sertifikat_bnsp && (
+
+                                                            <>
+                                                            
+                                                                <button
+                                                                    onClick={() =>
+                                                                        handleDownloadBnsp(item.id)
+                                                                    }
+                                                                    className="
+                                                                        px-4
+                                                                        py-2
+                                                                        rounded-xl
+                                                                        bg-blue-500
+                                                                        text-white
+                                                                        font-bold
+                                                                    "
+                                                                >
+
+                                                                    Download
+
+                                                                </button>
+
+                                                                <button
+                                                                    onClick={() =>
+                                                                        handleDeleteBnsp(item.id)
+                                                                    }
+                                                                    className="
+                                                                        px-4
+                                                                        py-2
+                                                                        rounded-xl
+                                                                        bg-red-500
+                                                                        text-white
+                                                                        font-bold
+                                                                    "
+                                                                >
+
+                                                                    Delete
+
+                                                                </button>
+
+                                                            </>
+
+                                                        )
+                                                    }
+                                                        
+
                                                 </div>
 
                                             </td>
+
+                                            
 
                                         </tr>
 
