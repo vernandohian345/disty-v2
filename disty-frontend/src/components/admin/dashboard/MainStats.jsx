@@ -90,7 +90,7 @@ export default function MainStats({
             title: "Peserta Pelatihan",
             value:
                 stats.total_peserta_pelatihan,
-            link: "/admin/transaksi-pelatihan",
+            link: "/admin/Pembayaran",
             bgColor:
                 "bg-gradient-to-br from-sky-100 to-sky-200",
             icon: (

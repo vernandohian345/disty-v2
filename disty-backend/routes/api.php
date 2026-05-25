@@ -32,6 +32,7 @@ Route::post('/login', [AuthApiController::class, 'login']);
 Route::post('/register', [AuthApiController::class, 'register']);
 
 // FRONTEND PELATIHAN
+
 Route::get('/frontend/pelatihan', [FrontendPelatihanApiController::class, 'index']);
 Route::get('/frontend/pelatihan/{slug}', [FrontendPelatihanApiController::class, 'show']);
 
@@ -94,28 +95,29 @@ Route::middleware('auth:sanctum')->group(function () {
         '/notifications/unread-count',
         [NotificationApiController::class, 'getUnreadCount']
     );
+    Route::middleware('auth:sanctum')->group(function () {
+        // ================= TRANSAKSI PELATIHAN =================
+        Route::post(
+            '/transaksi/pelatihan',
+            [TransaksiPelatihanApiController::class, 'store']
+        );
 
-    // ================= TRANSAKSI PELATIHAN =================
-    Route::post(
-        '/transaksi/pelatihan',
-        [TransaksiPelatihanApiController::class, 'store']
-    );
+        Route::post(
+            '/transaksi/pelatihan/upload-bukti/{id}',
+            [TransaksiPelatihanApiController::class, 'uploadBukti']
+        );
 
-    Route::post(
-        '/transaksi/pelatihan/upload-bukti/{id}',
-        [TransaksiPelatihanApiController::class, 'uploadBukti']
-    );
+        Route::get(
+            '/admin/transaksi/pelatihan',
+            [TransaksiPelatihanApiController::class, 'index']
+        );
 
-    Route::get(
-        '/admin/transaksi/pelatihan',
-        [TransaksiPelatihanApiController::class, 'index']
-    );
-
-    // ================= TRANSAKSI SERTIFIKASI =================
-    Route::post(
-        '/transaksi/sertifikasi',
-        [TransaksiSertifikasiApiController::class, 'store']
-    );
+        // ================= TRANSAKSI SERTIFIKASI =================
+        Route::post(
+            '/transaksi/sertifikasi',
+            [TransaksiSertifikasiApiController::class, 'store']
+        );
+    });
 
     // =====================================================
     // ADMIN
