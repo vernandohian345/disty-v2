@@ -16,6 +16,7 @@ import Payment from "./pages/frontend/Payment";
 import MyPelatihan from "./pages/frontend/MyPelatihan";
 import Profile from "./pages/frontend/Profile";
 import MyTransactions from "./pages/frontend/MyTransactions";
+import PaymentPending from "./pages/frontend/PaymentPending";
 
 import Dashboard from "./pages/admin/Dashboard";
 
@@ -61,6 +62,7 @@ export default function App() {
         <Route path="/my-pelatihan" element={<MyPelatihan />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/my-transactions" element={<MyTransactions />}/>
+        <Route path="/payment-pending" element={<PaymentPending />}/>
 
         {/* AUTH */}
         <Route path="/login" element={<Login />} />

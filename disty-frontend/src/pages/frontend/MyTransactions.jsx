@@ -30,9 +30,17 @@ export default function MyTransactions() {
 
   useEffect(() => {
 
+  fetchData();
+
+  const interval = setInterval(() => {
+
     fetchData();
 
-  }, []);
+  }, 5000);
+
+  return () => clearInterval(interval);
+
+}, []);
 
   const fetchData = async () => {
 
@@ -676,7 +684,6 @@ export default function MyTransactions() {
                                 {/* PAID DATE */}
                                 {
                                 item.paid_at && (
-
                                     <p className="
                                     mt-5
                                     text-slate-500
