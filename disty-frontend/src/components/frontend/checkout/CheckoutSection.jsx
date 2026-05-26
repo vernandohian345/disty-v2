@@ -68,22 +68,74 @@ export default function CheckoutSection() {
 
       if (result.status === "success") {
         // GRATIS
-        if (result.kategori === "gratis" && result.link_grup) {
-          window.open(result.link_grup, "_blank");
+        if (
+          result.kategori === "gratis" &&
+          result.link_grup
+        ) {
+
+          window.open(
+            result.link_grup,
+            "_blank"
+          );
 
           navigate("/success");
         }
 
         // BERBAYAR
         else {
-          navigate("/payment", {
-            state: {
-              transaksi: result.transaksi,
-            },
-          });
+
+          window.snap.pay(
+            result.snap_token,
+
+            {
+              onSuccess: function (result) {
+
+                console.log(result);
+
+                alert(
+                  "Pembayaran berhasil!"
+                );
+
+                navigate(
+                  "/payment-success"
+                );
+              },
+
+              onPending: function (result) {
+
+                console.log(result);
+
+                alert(
+                  "Menunggu pembayaran"
+                );
+
+                navigate(
+                  "/payment-pending"
+                );
+              },
+
+              onError: function (result) {
+
+                console.log(result);
+
+                alert(
+                  "Pembayaran gagal"
+                );
+
+                navigate(
+                  "/payment-failed"
+                );
+              },
+
+              onClose: function () {
+
+                alert(
+                  "Popup pembayaran ditutup"
+                );
+              },
+            }
+          );
         }
-      } else {
-        alert(result.message);
       }
     } catch (error) {
       console.log(error);

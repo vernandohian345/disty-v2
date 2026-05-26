@@ -15,6 +15,7 @@ import Success from "./pages/frontend/Success";
 import Payment from "./pages/frontend/Payment";
 import MyPelatihan from "./pages/frontend/MyPelatihan";
 import Profile from "./pages/frontend/Profile";
+import MyTransactions from "./pages/frontend/MyTransactions";
 
 import Dashboard from "./pages/admin/Dashboard";
 
@@ -59,6 +60,7 @@ export default function App() {
         <Route path="/payment" element={<Payment />} />
         <Route path="/my-pelatihan" element={<MyPelatihan />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/my-transactions" element={<MyTransactions />}/>
 
         {/* AUTH */}
         <Route path="/login" element={<Login />} />
