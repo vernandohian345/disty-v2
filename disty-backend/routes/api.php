@@ -36,6 +36,11 @@ Route::post('/register', [AuthApiController::class, 'register']);
 Route::get('/frontend/pelatihan', [FrontendPelatihanApiController::class, 'index']);
 Route::get('/frontend/pelatihan/{slug}', [FrontendPelatihanApiController::class, 'show']);
 
+Route::post(
+    '/midtrans/webhook',
+    [TransaksiPelatihanApiController::class, 'webhook']
+);
+
 // FRONTEND SERTIFIKASI
 Route::get('/frontend/sertifikasi', [FrontendSertifikasiApiController::class, 'index']);
 Route::get('/frontend/sertifikasi/{slug}', [FrontendSertifikasiApiController::class, 'show']);
@@ -111,6 +116,18 @@ Route::middleware('auth:sanctum')->group(function () {
             '/admin/transaksi/pelatihan',
             [TransaksiPelatihanApiController::class, 'index']
         );
+
+        Route::get(
+            '/my-transactions',
+            [TransaksiPelatihanApiController::class, 'myTransactions']
+        );
+
+        Route::post(
+            '/transaksi/repay/{id}',
+            [TransaksiPelatihanApiController::class, 'repay']
+        );
+
+
 
         // ================= TRANSAKSI SERTIFIKASI =================
         Route::post(

@@ -5,81 +5,32 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+
 use App\Models\TransaksiPelatihan;
 use App\Models\Pelatihan;
 use App\Models\Notification;
+use App\Models\PaymentSetting;
+use Midtrans\Notification as MidtransNotification;
+
+use Illuminate\Support\Str;
+
+use Midtrans\Config;
+use Midtrans\Snap;
 
 class TransaksiPelatihanApiController extends Controller
 {
-
     public function index()
     {
-        $transaksi =
-            TransaksiPelatihan::with([
-                'user',
-                'pelatihan'
-            ])
+        $transaksi = TransaksiPelatihan::with([
+            'user',
+            'pelatihan'
+        ])
             ->latest()
             ->get();
 
-        return response()->json([
-            'status' => 'success',
-            'transaksi' => $transaksi
-        ]);
+        return response()->json($transaksi);
     }
 
-
-    public function uploadBukti(Request $request, int $id)
-    {
-        $request->validate([
-            'bukti' => 'required|image|mimes:jpg,jpeg,png|max:2048',
-        ]);
-
-        $transaksi = TransaksiPelatihan::findOrFail($id);
-
-        if ($request->hasFile('bukti')) {
-
-            $file = $request->file('bukti');
-
-            $filename = time() . '_' . $file->getClientOriginalName();
-
-            $file->move(
-                public_path('uploads/bukti'),
-                $filename
-            );
-
-            $transaksi->bukti = 'uploads/bukti/' . $filename;
-        }
-
-        $transaksi->status = 'paid';
-        $transaksi->paid_at = now();
-
-        $transaksi->save();
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Bukti pembayaran berhasil upload',
-            'transaksi' => $transaksi,
-        ]);
-    }
-
-    public function myPelatihan()
-    {
-        $transaksi =
-            TransaksiPelatihan::with('pelatihan')
-                ->where('user_id', Auth::id())
-                ->latest()
-                ->get();
-
-        return response()->json([
-            'status' => 'success',
-            'data' => $transaksi
-        ]);
-    }
-
-
-
-    // ✅ DAFTAR / TRANSAKSI PELATIHAN
     public function store(Request $request)
     {
         // cek login
@@ -92,6 +43,7 @@ class TransaksiPelatihanApiController extends Controller
         }
 
         $request->validate([
+
             'pelatihan_id' =>
             'required',
 
@@ -119,12 +71,17 @@ class TransaksiPelatihanApiController extends Controller
             ? 'gratis'
             : $request->paymentMethod;
 
-        $kode = 'DSTY-' . now()->format('Ymd') . '-' . rand(100, 999);
+        $kode =
+            'DSTY-' .
+            now()->format('Ymd') .
+            '-' .
+            rand(100, 999);
 
-        $existing = TransaksiPelatihan::where(
-            'user_id',
-            Auth::id()
-        )
+        $existing =
+            TransaksiPelatihan::where(
+                'user_id',
+                Auth::id()
+            )
             ->where(
                 'pelatihan_id',
                 $pelatihan->id
@@ -140,7 +97,8 @@ class TransaksiPelatihanApiController extends Controller
 
             return response()->json([
                 'status' => 'error',
-                'message' => 'Anda sudah terdaftar pada pelatihan ini'
+                'message' =>
+                'Anda sudah terdaftar pada pelatihan ini'
             ], 400);
         }
 
@@ -178,10 +136,16 @@ class TransaksiPelatihanApiController extends Controller
                     : 'pending',
             ]);
 
-        // notif
+        /*
+        |--------------------------------------------------------------------------
+        | PELATIHAN GRATIS
+        |--------------------------------------------------------------------------
+        */
+
         if ($pelatihan->kategori === 'gratis') {
 
             Notification::create([
+
                 'user_id' =>
                 Auth::id(),
 
@@ -208,9 +172,12 @@ class TransaksiPelatihanApiController extends Controller
             ]);
 
             return response()->json([
-                'status' => 'success',
 
-                'kategori' => 'gratis',
+                'status' =>
+                'success',
+
+                'kategori' =>
+                'gratis',
 
                 'message' =>
                 'Pendaftaran berhasil',
@@ -223,8 +190,118 @@ class TransaksiPelatihanApiController extends Controller
             ]);
         }
 
-        // notif berbayar
+        /*
+        |--------------------------------------------------------------------------
+        | MIDTRANS CONFIG
+        |--------------------------------------------------------------------------
+        */
+
+        $setting =
+            PaymentSetting::where(
+                'provider',
+                'midtrans'
+            )
+            ->where(
+                'is_active',
+                true
+            )
+            ->first();
+
+        $serverKey =
+            decrypt(
+                $setting->server_key
+            );
+
+        Config::$serverKey =
+            $serverKey;
+
+        Config::$isProduction =
+            $setting->is_production;
+
+        Config::$isSanitized = true;
+
+        Config::$is3ds = true;
+
+        /*
+        |--------------------------------------------------------------------------
+        | GENERATE ORDER ID
+        |--------------------------------------------------------------------------
+        */
+
+        $orderId =
+            'DISTY-' .
+            strtoupper(
+                Str::random(10)
+            );
+
+        /*
+        |--------------------------------------------------------------------------
+        | MIDTRANS PARAMS
+        |--------------------------------------------------------------------------
+        */
+
+        $params = [
+
+            'transaction_details' => [
+
+                'order_id' =>
+                $orderId,
+
+                'gross_amount' =>
+                (int)
+                $pelatihan->harga,
+            ],
+
+            'customer_details' => [
+
+                'first_name' =>
+                $request->nama,
+
+                'email' =>
+                $request->email,
+
+                'phone' =>
+                $request->nomor_hp,
+            ],
+        ];
+
+        /*
+        |--------------------------------------------------------------------------
+        | GENERATE SNAP TOKEN
+        |--------------------------------------------------------------------------
+        */
+
+        $snapToken =
+            Snap::getSnapToken(
+                $params
+            );
+
+        /*
+        |--------------------------------------------------------------------------
+        | UPDATE TRANSAKSI
+        |--------------------------------------------------------------------------
+        */
+
+        $transaksi->update([
+
+            'snap_token' =>
+            $snapToken,
+
+            'midtrans_order_id' =>
+            $orderId,
+
+            'transaction_status' =>
+            'pending',
+        ]);
+
+        /*
+        |--------------------------------------------------------------------------
+        | NOTIFIKASI
+        |--------------------------------------------------------------------------
+        */
+
         Notification::create([
+
             'user_id' =>
             Auth::id(),
 
@@ -232,13 +309,13 @@ class TransaksiPelatihanApiController extends Controller
             'daftar_berbayar',
 
             'title' =>
-            'Pendaftaran Berhasil! ✅',
+            'Menunggu Pembayaran 💳',
 
             'message' =>
-            "Anda berhasil mendaftar pelatihan \"{$pelatihan->title}\".",
+            "Silakan selesaikan pembayaran pelatihan \"{$pelatihan->title}\".",
 
             'icon' =>
-            'fas fa-info-circle',
+            'fas fa-credit-card',
 
             'color' =>
             'warning',
@@ -251,15 +328,303 @@ class TransaksiPelatihanApiController extends Controller
         ]);
 
         return response()->json([
-            'status' => 'success',
 
-            'kategori' => 'berbayar',
+            'status' =>
+            'success',
 
-            'message' =>
-            'Pendaftaran berhasil',
+            'kategori' =>
+            'berbayar',
+
+            'snap_token' =>
+            $snapToken,
 
             'transaksi' =>
             $transaksi
+        ]);
+    }
+
+    public function myTransactions()
+    {
+        $transaksi =
+            TransaksiPelatihan::with(
+                'pelatihan'
+            )
+            ->where(
+                'user_id',
+                Auth::id()
+            )
+            ->latest()
+            ->get();
+
+        return response()->json([
+
+            'status' => 'success',
+
+            'data' => $transaksi
+        ]);
+    }
+
+    public function repay(int $id)
+    {
+        $transaksi =
+            TransaksiPelatihan::with(
+                'pelatihan'
+            )
+            ->findOrFail($id);
+
+        // midtrans config
+        $setting =
+            PaymentSetting::where(
+                'provider',
+                'midtrans'
+            )
+            ->where(
+                'is_active',
+                true
+            )
+            ->first();
+
+        $serverKey =
+            decrypt(
+                $setting->server_key
+            );
+
+        Config::$serverKey =
+            $serverKey;
+
+        Config::$isProduction =
+            $setting->is_production;
+
+        Config::$isSanitized = true;
+
+        Config::$is3ds = true;
+
+        // generate order baru
+        $orderId =
+            'DISTY-REPAY-' .
+            strtoupper(
+                Str::random(10)
+            );
+
+        $params = [
+
+            'transaction_details' => [
+
+                'order_id' =>
+                $orderId,
+
+                'gross_amount' =>
+                (int)
+                $transaksi->total_harga,
+            ],
+
+            'customer_details' => [
+
+                'first_name' =>
+                $transaksi->nama,
+
+                'email' =>
+                $transaksi->email,
+
+                'phone' =>
+                $transaksi->nomor_hp,
+            ],
+        ];
+
+        $snapToken =
+            Snap::getSnapToken(
+                $params
+            );
+
+        // update transaksi
+        $transaksi->update([
+
+            'snap_token' =>
+            $snapToken,
+
+            'midtrans_order_id' =>
+            $orderId,
+        ]);
+
+        return response()->json([
+
+            'status' =>
+            'success',
+
+            'snap_token' =>
+            $snapToken,
+        ]);
+    }
+
+    public function webhook(Request $request)
+    {
+        // CONFIG MIDTRANS
+        $payment =
+            PaymentSetting::where(
+                'provider',
+                'midtrans'
+            )
+            ->where(
+                'is_active',
+                true
+            )
+            ->first();
+
+        Config::$serverKey =
+            decrypt(
+                $payment->server_key
+            );
+
+        Config::$isProduction =
+            $payment->is_production;
+
+        Config::$isSanitized =
+            true;
+
+        Config::$is3ds =
+            true;
+
+        // MIDTRANS NOTIFICATION
+        $notification =
+            new MidtransNotification();
+
+        $transactionStatus =
+            $notification
+            ->transaction_status;
+
+        $paymentType =
+            $notification
+            ->payment_type;
+
+        $orderId =
+            $notification
+            ->order_id;
+
+        // CARI TRANSAKSI
+        $transaksi =
+            TransaksiPelatihan::where(
+                'midtrans_order_id',
+                $orderId
+            )->first();
+
+        if (!$transaksi) {
+
+            return response()->json([
+                'message' =>
+                'Transaksi tidak ditemukan'
+            ], 404);
+        }
+
+        /*
+    |--------------------------------------------------------------------------
+    | SUCCESS / PAID
+    |--------------------------------------------------------------------------
+    */
+
+        if (
+            $transactionStatus ==
+            'settlement'
+            ||
+
+            $transactionStatus ==
+            'capture'
+        ) {
+
+            $transaksi->update([
+
+                'status' =>
+                'completed',
+
+                'transaction_status' =>
+                'paid',
+
+                'payment_type' =>
+                $paymentType,
+
+                'paid_at' =>
+                now(),
+            ]);
+
+            // NOTIFIKASI USER
+            Notification::create([
+
+                'user_id' =>
+                $transaksi->user_id,
+
+                'type' =>
+                'payment_success',
+
+                'title' =>
+                'Pembayaran Berhasil 🎉',
+
+                'message' =>
+                'Pembayaran pelatihan berhasil diverifikasi otomatis.',
+
+                'icon' =>
+                'fas fa-check-circle',
+
+                'color' =>
+                'success',
+
+                'url' =>
+                '/my-transactions',
+
+                'is_read' =>
+                false
+            ]);
+        }
+
+        /*
+    |--------------------------------------------------------------------------
+    | PENDING
+    |--------------------------------------------------------------------------
+    */ else if (
+            $transactionStatus ==
+            'pending'
+        ) {
+
+            $transaksi->update([
+
+                'status' =>
+                'pending',
+
+                'transaction_status' =>
+                'pending',
+            ]);
+        }
+
+        /*
+    |--------------------------------------------------------------------------
+    | FAILED / CANCEL
+    |--------------------------------------------------------------------------
+    */ else if (
+
+            $transactionStatus ==
+            'expire'
+
+            ||
+
+            $transactionStatus ==
+            'cancel'
+
+            ||
+
+            $transactionStatus ==
+            'deny'
+        ) {
+
+            $transaksi->update([
+
+                'status' =>
+                'rejected',
+
+                'transaction_status' =>
+                'failed',
+            ]);
+        }
+
+        return response()->json([
+            'success' => true
         ]);
     }
 }

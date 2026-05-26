@@ -27,6 +27,10 @@ class TransaksiPelatihan extends Model
         'status',
         'is_completed',
         'completed_at',
+        'snap_token',
+        'transaction_status',
+        'payment_type',
+        'midtrans_order_id',
     ];
 
     public function pelatihan()
