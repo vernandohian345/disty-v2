@@ -11,6 +11,8 @@ import {
   FaBookOpen,
 } from "react-icons/fa";
 
+import { ShoppingCart } from "lucide-react";
+
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -19,6 +21,9 @@ export default function Navbar() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const [notifications, setNotifications] = useState([]);
+
+  const [pendingCount, setPendingCount] =
+  useState(0);
 
   const dropdownRef = useRef();
 
@@ -31,17 +36,10 @@ export default function Navbar() {
       setUser(JSON.parse(userData));
     }
 
-    // dummy notif sementara
-    setNotifications([
-      {
-        id: 1,
-        title: "Pembayaran berhasil diverifikasi",
-      },
-      {
-        id: 2,
-        title: "Sertifikat sudah tersedia",
-      },
-    ]);
+    if (userData) {
+      fetchPending();
+    }
+
   }, []);
 
   // close dropdown klik luar
@@ -68,6 +66,53 @@ export default function Navbar() {
 
     window.location.reload();
   };
+
+  const fetchPending = async () => {
+
+  try {
+
+    const token =
+      localStorage.getItem(
+        "token"
+      );
+
+    const response =
+      await fetch(
+
+        "http://127.0.0.1:8000/api/my-transactions",
+
+        {
+          headers: {
+
+            Authorization:
+              `Bearer ${token}`,
+
+            Accept:
+              "application/json",
+          },
+        }
+      );
+
+    const result =
+      await response.json();
+
+    const pending =
+      result.data.filter(
+
+        (item) =>
+          item.status ===
+          "pending"
+      );
+
+    setPendingCount(
+      pending.length
+    );
+
+  } catch (error) {
+
+    console.log(error);
+  }
+};
 
   return (
     <header className="fixed top-0 left-0 w-full z-50">
@@ -246,6 +291,59 @@ export default function Navbar() {
                   "
                   ref={dropdownRef}
                 >
+                  {/* SHOPPING CART */}
+                <button
+                  onClick={() =>
+                    navigate(
+                      "/my-transactions"
+                    )
+                  }
+                  className="
+                    relative
+                    w-10 h-10
+                    rounded-full
+                    bg-slate-100
+                    hover:bg-slate-200
+                    flex
+                    items-center
+                    justify-center
+                    transition
+                  "
+                >
+
+                  <ShoppingCart
+                    className="
+                      text-slate-700
+                    "
+                    size={18}
+                  />
+
+                  {
+                    pendingCount > 0 && (
+
+                      <span
+                        className="
+                          absolute
+                          -top-1
+                          -right-1
+                          bg-red-500
+                          text-white
+                          text-[10px]
+                          w-5 h-5
+                          rounded-full
+                          flex
+                          items-center
+                          justify-center
+                          font-bold
+                        "
+                      >
+
+                        {pendingCount}
+
+                      </span>
+                    )
+                  }
+                </button>
                   {/* NOTIFICATION */}
                   <button
                     onClick={() => navigate("/notifications")}

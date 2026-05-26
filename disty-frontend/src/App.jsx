@@ -15,6 +15,7 @@ import Success from "./pages/frontend/Success";
 import Payment from "./pages/frontend/Payment";
 import MyPelatihan from "./pages/frontend/MyPelatihan";
 import Profile from "./pages/frontend/Profile";
+import MyTransactions from "./pages/frontend/MyTransactions";
 
 import Dashboard from "./pages/admin/Dashboard";
 
@@ -33,6 +34,7 @@ import IndexUser from "./pages/admin/User/Index";
 import CreateUser from "./pages/admin/User/Create";
 
 import SertifikatPelatihan from "./pages/admin/SertifikatPelatihan";
+import SertifikatSertifikasi from "./pages/admin/SertifikatSertifikasi";
 
 import RouteAdmin from "./routes/AdminRoute";
 import ScrollToTop from "./components/shared/ScrollToTop";
@@ -58,6 +60,7 @@ export default function App() {
         <Route path="/payment" element={<Payment />} />
         <Route path="/my-pelatihan" element={<MyPelatihan />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/my-transactions" element={<MyTransactions />}/>
 
         {/* AUTH */}
         <Route path="/login" element={<Login />} />
@@ -170,6 +173,12 @@ export default function App() {
               <SertifikatPelatihan />
             </RouteAdmin>
           }
+        />
+
+        {/* SERTIFIKAT SERTIFIKASI */}
+        <Route
+            path="/admin/sertifikat-bnsp"
+            element={<SertifikatSertifikasi />}
         />
       </Routes>
     </BrowserRouter>
