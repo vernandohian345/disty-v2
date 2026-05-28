@@ -587,4 +587,19 @@ class TransaksiPelatihanApiController extends Controller
             ], 500);
         }
     }
+
+    public function myPelatihan()
+    {
+        $user = Auth::user();
+
+        $data = TransaksiPelatihan::with('pelatihan')
+            ->where('user_id', $user->id)
+            ->latest()
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $data
+        ]);
+    }
 }
