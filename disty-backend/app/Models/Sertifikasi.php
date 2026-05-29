@@ -31,4 +31,12 @@ class Sertifikasi extends Model
     {
         return $this->hasMany(TransaksiSertifikasi::class);
     }
+    protected $appends = [
+        'sampul_url'
+    ];
+
+    public function getSampulUrlAttribute()
+    {
+        return asset('storage/sertifikasi/' . $this->sampul);
+    }
 }

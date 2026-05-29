@@ -10,6 +10,8 @@ import About from "./pages/frontend/About";
 import Notifications from "./pages/frontend/Notifications";
 import Bootcamp from "./pages/frontend/Bootcamp";
 import BootcampDetail from "./pages/frontend/BootcampDetail";
+import Certification from "./pages/frontend/Certification";
+import CertificationDetail from "./pages/frontend/CertificationDetail";
 import Checkout from "./pages/frontend/Checkout";
 import Success from "./pages/frontend/Success";
 import Payment from "./pages/frontend/Payment";
@@ -17,6 +19,7 @@ import MyPelatihan from "./pages/frontend/MyPelatihan";
 import Profile from "./pages/frontend/Profile";
 import MyTransactions from "./pages/frontend/MyTransactions";
 import PaymentPending from "./pages/frontend/PaymentPending";
+import LearningPage from "./pages/frontend/LearningPage";
 
 import Dashboard from "./pages/admin/Dashboard";
 
@@ -55,14 +58,17 @@ export default function App() {
 
         <Route path="/pelatihan" element={<Bootcamp />} />
         <Route path="/pelatihan/:slug" element={<BootcampDetail />} />
+        <Route path="/sertifikasi" element={<Certification />} />
+        <Route path="/sertifikasi/:slug" element={<CertificationDetail />} />
 
         <Route path="/checkout/:slug" element={<Checkout />} />
         <Route path="/success" element={<Success />} />
         <Route path="/payment" element={<Payment />} />
         <Route path="/my-pelatihan" element={<MyPelatihan />} />
+        <Route path="/learning/:id" element={<LearningPage />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/my-transactions" element={<MyTransactions />}/>
-        <Route path="/payment-pending" element={<PaymentPending />}/>
+        <Route path="/my-transactions" element={<MyTransactions />} />
+        <Route path="/payment-pending" element={<PaymentPending />} />
 
         {/* AUTH */}
         <Route path="/login" element={<Login />} />
@@ -179,8 +185,8 @@ export default function App() {
 
         {/* SERTIFIKAT SERTIFIKASI */}
         <Route
-            path="/admin/sertifikat-bnsp"
-            element={<SertifikatSertifikasi />}
+          path="/admin/sertifikat-bnsp"
+          element={<SertifikatSertifikasi />}
         />
       </Routes>
     </BrowserRouter>

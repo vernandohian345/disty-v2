@@ -43,19 +43,19 @@ class TransaksiPelatihanApiController extends Controller
         $request->validate([
 
             'pelatihan_id' =>
-            'required',
+                'required',
 
             'nama' =>
-            'required',
+                'required',
 
             'email' =>
-            'required|email',
+                'required|email',
 
             'nomor_hp' =>
-            'required',
+                'required',
 
             'paymentMethod' =>
-            'nullable|in:transfer,ewallet',
+                'nullable|in:transfer,ewallet',
         ]);
 
         $pelatihan =
@@ -80,23 +80,23 @@ class TransaksiPelatihanApiController extends Controller
                 'user_id',
                 Auth::id()
             )
-            ->where(
-                'pelatihan_id',
-                $pelatihan->id
-            )
-            ->whereIn('status', [
-                'pending',
-                'paid',
-                'completed'
-            ])
-            ->first();
+                ->where(
+                    'pelatihan_id',
+                    $pelatihan->id
+                )
+                ->whereIn('status', [
+                    'pending',
+                    'paid',
+                    'completed'
+                ])
+                ->first();
 
         if ($existing) {
 
             return response()->json([
                 'status' => 'error',
                 'message' =>
-                'Anda sudah terdaftar pada pelatihan ini'
+                    'Anda sudah terdaftar pada pelatihan ini'
             ], 400);
         }
 
@@ -105,31 +105,31 @@ class TransaksiPelatihanApiController extends Controller
             TransaksiPelatihan::create([
 
                 'user_id' =>
-                Auth::id(),
+                    Auth::id(),
 
                 'pelatihan_id' =>
-                $request->pelatihan_id,
+                    $request->pelatihan_id,
 
                 'nama' =>
-                $request->nama,
+                    $request->nama,
 
                 'email' =>
-                $request->email,
+                    $request->email,
 
                 'nomor_hp' =>
-                $request->nomor_hp,
+                    $request->nomor_hp,
 
                 'metode_pembayaran' =>
-                $metode,
+                    $metode,
 
                 'kode_transaksi' =>
-                $kode,
+                    $kode,
 
                 'total_harga' =>
-                $pelatihan->harga,
+                    $pelatihan->harga,
 
                 'status' =>
-                $pelatihan->kategori === 'gratis'
+                    $pelatihan->kategori === 'gratis'
                     ? 'completed'
                     : 'pending',
             ]);
@@ -145,46 +145,46 @@ class TransaksiPelatihanApiController extends Controller
             Notification::create([
 
                 'user_id' =>
-                Auth::id(),
+                    Auth::id(),
 
                 'type' =>
-                'daftar_gratis',
+                    'daftar_gratis',
 
                 'title' =>
-                'Pendaftaran Berhasil! 🎉',
+                    'Pendaftaran Berhasil! 🎉',
 
                 'message' =>
-                "Anda berhasil mendaftar pelatihan \"{$pelatihan->title}\".",
+                    "Anda berhasil mendaftar pelatihan \"{$pelatihan->title}\".",
 
                 'icon' =>
-                'fas fa-check-circle',
+                    'fas fa-check-circle',
 
                 'color' =>
-                'success',
+                    'success',
 
                 'url' =>
-                '/profil',
+                    '/profil',
 
                 'is_read' =>
-                false
+                    false
             ]);
 
             return response()->json([
 
                 'status' =>
-                'success',
+                    'success',
 
                 'kategori' =>
-                'gratis',
+                    'gratis',
 
                 'message' =>
-                'Pendaftaran berhasil',
+                    'Pendaftaran berhasil',
 
                 'link_grup' =>
-                $pelatihan->link_grup,
+                    $pelatihan->link_grup,
 
                 'transaksi' =>
-                $transaksi
+                    $transaksi
             ]);
         }
 
@@ -199,11 +199,11 @@ class TransaksiPelatihanApiController extends Controller
                 'provider',
                 'midtrans'
             )
-            ->where(
-                'is_active',
-                true
-            )
-            ->first();
+                ->where(
+                    'is_active',
+                    true
+                )
+                ->first();
 
         $serverKey =
             decrypt(
@@ -243,23 +243,23 @@ class TransaksiPelatihanApiController extends Controller
             'transaction_details' => [
 
                 'order_id' =>
-                $orderId,
+                    $orderId,
 
                 'gross_amount' =>
-                (int)
-                $pelatihan->harga,
+                    (int) 
+                    $pelatihan->harga,
             ],
 
             'customer_details' => [
 
                 'first_name' =>
-                $request->nama,
+                    $request->nama,
 
                 'email' =>
-                $request->email,
+                    $request->email,
 
                 'phone' =>
-                $request->nomor_hp,
+                    $request->nomor_hp,
             ],
         ];
 
@@ -283,13 +283,13 @@ class TransaksiPelatihanApiController extends Controller
         $transaksi->update([
 
             'snap_token' =>
-            $snapToken,
+                $snapToken,
 
             'midtrans_order_id' =>
-            $orderId,
+                $orderId,
 
             'transaction_status' =>
-            'pending',
+                'pending',
         ]);
 
         /*
@@ -301,43 +301,43 @@ class TransaksiPelatihanApiController extends Controller
         Notification::create([
 
             'user_id' =>
-            Auth::id(),
+                Auth::id(),
 
             'type' =>
-            'daftar_berbayar',
+                'daftar_berbayar',
 
             'title' =>
-            'Menunggu Pembayaran 💳',
+                'Menunggu Pembayaran 💳',
 
             'message' =>
-            "Silakan selesaikan pembayaran pelatihan \"{$pelatihan->title}\".",
+                "Silakan selesaikan pembayaran pelatihan \"{$pelatihan->title}\".",
 
             'icon' =>
-            'fas fa-credit-card',
+                'fas fa-credit-card',
 
             'color' =>
-            'warning',
+                'warning',
 
             'url' =>
-            '/profil',
+                '/profil',
 
             'is_read' =>
-            false
+                false
         ]);
 
         return response()->json([
 
             'status' =>
-            'success',
+                'success',
 
             'kategori' =>
-            'berbayar',
+                'berbayar',
 
             'snap_token' =>
-            $snapToken,
+                $snapToken,
 
             'transaksi' =>
-            $transaksi
+                $transaksi
         ]);
     }
 
@@ -347,12 +347,12 @@ class TransaksiPelatihanApiController extends Controller
             TransaksiPelatihan::with(
                 'pelatihan'
             )
-            ->where(
-                'user_id',
-                Auth::id()
-            )
-            ->latest()
-            ->get();
+                ->where(
+                    'user_id',
+                    Auth::id()
+                )
+                ->latest()
+                ->get();
 
         return response()->json([
 
@@ -368,7 +368,7 @@ class TransaksiPelatihanApiController extends Controller
             TransaksiPelatihan::with(
                 'pelatihan'
             )
-            ->findOrFail($id);
+                ->findOrFail($id);
 
         // midtrans config
         $setting =
@@ -376,11 +376,11 @@ class TransaksiPelatihanApiController extends Controller
                 'provider',
                 'midtrans'
             )
-            ->where(
-                'is_active',
-                true
-            )
-            ->first();
+                ->where(
+                    'is_active',
+                    true
+                )
+                ->first();
 
         $serverKey =
             decrypt(
@@ -409,23 +409,23 @@ class TransaksiPelatihanApiController extends Controller
             'transaction_details' => [
 
                 'order_id' =>
-                $orderId,
+                    $orderId,
 
                 'gross_amount' =>
-                (int)
-                $transaksi->total_harga,
+                    (int) 
+                    $transaksi->total_harga,
             ],
 
             'customer_details' => [
 
                 'first_name' =>
-                $transaksi->nama,
+                    $transaksi->nama,
 
                 'email' =>
-                $transaksi->email,
+                    $transaksi->email,
 
                 'phone' =>
-                $transaksi->nomor_hp,
+                    $transaksi->nomor_hp,
             ],
         ];
 
@@ -438,19 +438,19 @@ class TransaksiPelatihanApiController extends Controller
         $transaksi->update([
 
             'snap_token' =>
-            $snapToken,
+                $snapToken,
 
             'midtrans_order_id' =>
-            $orderId,
+                $orderId,
         ]);
 
         return response()->json([
 
             'status' =>
-            'success',
+                'success',
 
             'snap_token' =>
-            $snapToken,
+                $snapToken,
         ]);
     }
 
@@ -513,7 +513,7 @@ class TransaksiPelatihanApiController extends Controller
 
                 return response()->json([
                     'message' =>
-                    'Transaksi tidak ditemukan'
+                        'Transaksi tidak ditemukan'
                 ], 404);
             }
 
@@ -527,16 +527,16 @@ class TransaksiPelatihanApiController extends Controller
                 $transaksi->update([
 
                     'status' =>
-                    'completed',
+                        'completed',
 
                     'transaction_status' =>
-                    'paid',
+                        'paid',
 
                     'payment_type' =>
-                    $paymentType,
+                        $paymentType,
 
                     'paid_at' =>
-                    now(),
+                        now(),
                 ]);
             }
 
@@ -548,10 +548,10 @@ class TransaksiPelatihanApiController extends Controller
                 $transaksi->update([
 
                     'status' =>
-                    'pending',
+                        'pending',
 
                     'transaction_status' =>
-                    'pending',
+                        'pending',
                 ]);
             }
 
@@ -568,10 +568,10 @@ class TransaksiPelatihanApiController extends Controller
                 $transaksi->update([
 
                     'status' =>
-                    'rejected',
+                        'rejected',
 
                     'transaction_status' =>
-                    'failed',
+                        'failed',
                 ]);
             }
 
@@ -586,5 +586,26 @@ class TransaksiPelatihanApiController extends Controller
                 'error' => $e->getMessage()
             ], 500);
         }
+    }
+
+    // ==============================
+// MY PELATIHAN USER
+// ==============================
+
+    public function myPelatihan()
+    {
+        $data = TransaksiPelatihan::with('pelatihan')
+            ->where('user_id', Auth::id())
+            ->whereIn('status', [
+                'paid',
+                'completed'
+            ])
+            ->latest()
+            ->get();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $data
+        ]);
     }
 }

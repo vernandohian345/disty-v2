@@ -127,6 +127,13 @@ Route::middleware('auth:sanctum')->group(function () {
             [TransaksiPelatihanApiController::class, 'repay']
         );
 
+        // ================= MY PELATIHAN =================
+
+        Route::get(
+            '/my-pelatihan',
+            [TransaksiPelatihanApiController::class, 'myPelatihan']
+        );
+
 
 
         // ================= TRANSAKSI SERTIFIKASI =================
