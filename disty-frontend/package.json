@@ -41,7 +41,8 @@
     "react-is": "^19.2.6",
     "react-player": "^3.4.0",
     "react-router-dom": "^7.15.0",
-    "recharts": "^3.8.1"
+    "recharts": "^3.8.1",
+    "sweetalert2": "^11.26.25"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
