@@ -542,9 +542,38 @@ class TransaksiPelatihanApiController extends Controller
         'success' => true
     ], 200);
 }
-    // ==============================
-// MY PELATIHAN USER
-// ==============================
+
+public function checkStatus($id)
+{
+    $transaksi = TransaksiPelatihan::findOrFail($id);
+
+    $setting = PaymentSetting::first();
+
+    \Midtrans\Config::$serverKey = decrypt($setting->server_key);
+    \Midtrans\Config::$isProduction = $setting->is_production;
+
+    $status = \Midtrans\Transaction::status(
+        $transaksi->midtrans_order_id
+    );
+
+    if (
+        $status->transaction_status === 'settlement' ||
+        $status->transaction_status === 'capture'
+    ) {
+
+        $transaksi->update([
+            'status' => 'completed',
+            'transaction_status' => 'paid',
+            'payment_type' => $status->payment_type ?? null,
+            'paid_at' => now()
+        ]);
+    }
+
+    return response()->json([
+        'success' => true,
+        'data' => $transaksi->fresh()
+    ]);
+}
 
     public function myPelatihan()
     {
