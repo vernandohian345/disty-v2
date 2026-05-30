@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 export default function CheckoutSection() {
-  const { slug } = useParams();
+  const { type, slug } = useParams();
   const navigate = useNavigate();
-  const [bootcamp, setBootcamp] = useState(null);
+  const [data, setData] = useState(null);
 
   const [formData, setFormData] = useState({
     nama: "",
@@ -16,8 +16,8 @@ export default function CheckoutSection() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchBootcamp();
-  }, [slug]);
+    fetchData();
+  }, [slug, type]);
 
   const handleChange = (e) => {
     setFormData({
@@ -37,7 +37,9 @@ export default function CheckoutSection() {
       }
 
       const response = await fetch(
-        "http://127.0.0.1:8000/api/transaksi/pelatihan",
+        type === "sertifikasi"
+          ? "http://127.0.0.1:8000/api/transaksi/sertifikasi"
+          : "http://127.0.0.1:8000/api/transaksi/pelatihan",
         {
           method: "POST",
 
@@ -47,13 +49,23 @@ export default function CheckoutSection() {
             "Content-Type": "application/json",
           },
 
-          body: JSON.stringify({
-            pelatihan_id: bootcamp.id,
-            nama: formData.nama,
-            email: formData.email,
-            nomor_hp: formData.nomor_hp,
-            paymentMethod: formData.paymentMethod,
-          }),
+          body: JSON.stringify(
+            type === "sertifikasi"
+              ? {
+                  sertifikasi_id: data.id,
+                  nama: formData.nama,
+                  email: formData.email,
+                  nomor_hp: formData.nomor_hp,
+                  paymentMethod: formData.paymentMethod,
+                }
+              : {
+                  pelatihan_id: data.id,
+                  nama: formData.nama,
+                  email: formData.email,
+                  nomor_hp: formData.nomor_hp,
+                  paymentMethod: formData.paymentMethod,
+                },
+          ),
         },
       );
 
@@ -67,74 +79,65 @@ export default function CheckoutSection() {
       }
 
       if (result.status === "success") {
-        // GRATIS
-        if (
-          result.kategori === "gratis" &&
-          result.link_grup
-        ) {
+        // FLOW SERTIFIKASI
+        if (type === "sertifikasi") {
+          // GRATIS
+          if (result.kategori === "gratis" && result.link_grup) {
+            window.open(result.link_grup, "_blank");
 
-          window.open(
-            result.link_grup,
-            "_blank"
-          );
+            navigate("/success");
 
-          navigate("/success");
+            return;
+          }
+
+          // BERBAYAR
+          navigate("/payment", {
+            state: {
+              transaksi: result.transaksi,
+              type: "sertifikasi",
+              harga: data.harga,
+              nama_program: data.nama_sertifikasi,
+            },
+          });
+
+          return;
         }
 
-        // BERBAYAR
-        else {
+        // FLOW PELATIHAN
+        if (result.kategori === "gratis" && result.link_grup) {
+          window.open(result.link_grup, "_blank");
 
-          window.snap.pay(
-            result.snap_token,
+          navigate("/success");
+        } else {
+          window.snap.pay(result.snap_token, {
+            onSuccess: function (result) {
+              console.log(result);
 
-            {
-              onSuccess: function (result) {
+              alert("Pembayaran berhasil!");
 
-                console.log(result);
+              navigate("/payment-success");
+            },
 
-                alert(
-                  "Pembayaran berhasil!"
-                );
+            onPending: function (result) {
+              console.log(result);
 
-                navigate(
-                  "/payment-success"
-                );
-              },
+              alert("Menunggu pembayaran");
 
-              onPending: function (result) {
+              navigate("/payment-pending");
+            },
 
-                console.log(result);
+            onError: function (result) {
+              console.log(result);
 
-                alert(
-                  "Menunggu pembayaran"
-                );
+              alert("Pembayaran gagal");
 
-                navigate(
-                  "/payment-pending"
-                );
-              },
+              navigate("/payment-failed");
+            },
 
-              onError: function (result) {
-
-                console.log(result);
-
-                alert(
-                  "Pembayaran gagal"
-                );
-
-                navigate(
-                  "/payment-failed"
-                );
-              },
-
-              onClose: function () {
-
-                alert(
-                  "Popup pembayaran ditutup"
-                );
-              },
-            }
-          );
+            onClose: function () {
+              alert("Popup pembayaran ditutup");
+            },
+          });
         }
       }
     } catch (error) {
@@ -142,17 +145,24 @@ export default function CheckoutSection() {
     }
   };
 
-  const fetchBootcamp = async () => {
+  const fetchData = async () => {
     try {
       setLoading(true);
 
-      const response = await fetch(
-        `http://127.0.0.1:8000/api/frontend/pelatihan/${slug}`,
-      );
+      const endpoint =
+        type === "sertifikasi"
+          ? `http://127.0.0.1:8000/api/frontend/sertifikasi/${slug}`
+          : `http://127.0.0.1:8000/api/frontend/pelatihan/${slug}`;
+
+      const response = await fetch(endpoint);
 
       const result = await response.json();
 
-      setBootcamp(result.pelatihan);
+      if (type === "sertifikasi") {
+        setData(result.sertifikasi);
+      } else {
+        setData(result.pelatihan);
+      }
     } catch (error) {
       console.log(error);
     } finally {
@@ -170,9 +180,19 @@ export default function CheckoutSection() {
     );
   }
 
-  if (!bootcamp) {
+  if (!data) {
     return null;
   }
+
+  const isSertifikasi = type === "sertifikasi";
+
+  const title = isSertifikasi ? data.nama_sertifikasi : data.title;
+
+  const description = isSertifikasi ? data.deskripsi : data.short_description;
+
+  const image = isSertifikasi
+    ? `http://127.0.0.1:8000/uploads/sertifikasi/${data.sampul}`
+    : data.thumbnail_url;
 
   return (
     <section className="relative overflow-hidden bg-[#fffaf5] py-24">
@@ -186,8 +206,8 @@ export default function CheckoutSection() {
             {/* Thumbnail */}
             <div className="overflow-hidden rounded-[36px]">
               <img
-                src={bootcamp.thumbnail_url}
-                alt={bootcamp.title}
+                src={image}
+                alt={title}
                 className="w-full h-[380px] object-cover"
               />
             </div>
@@ -195,29 +215,44 @@ export default function CheckoutSection() {
             {/* Content */}
             <div className="mt-8">
               <p className="text-orange-500 font-semibold uppercase tracking-wide">
-                Checkout Pelatihan
+                {isSertifikasi ? "Checkout Sertifikasi" : "Checkout Pelatihan"}
               </p>
 
               <h1 className="mt-4 text-4xl font-black text-[#2B1D16] leading-tight">
-                {bootcamp.title}
+                {title}
               </h1>
 
               <p className="mt-6 text-[#6b625d] leading-relaxed text-lg">
-                {bootcamp.short_description}
+                {description}
               </p>
 
-              {/* Benefit */}
-              <div className="mt-8 space-y-4">
-                {bootcamp.benefits?.map((item, index) => (
-                  <div key={index} className="flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-2xl bg-orange-500 text-white flex items-center justify-center font-bold">
-                      ✓
-                    </div>
+              {isSertifikasi && (
+                <div className="mt-8">
+                  <h3 className="font-bold text-[#2B1D16] mb-4">
+                    Materi Sertifikasi
+                  </h3>
 
-                    <p className="text-[#2B1D16] font-medium">{item}</p>
-                  </div>
-                ))}
-              </div>
+                  <p className="text-[#6b625d] whitespace-pre-line">
+                    {data.materi}
+                  </p>
+                </div>
+              )}
+
+              {/* Benefit */}
+
+              {!isSertifikasi && (
+                <div className="mt-8 space-y-4">
+                  {data.benefits?.map((item, index) => (
+                    <div key={index} className="flex items-center gap-4">
+                      <div className="w-10 h-10 rounded-2xl bg-orange-500 text-white flex items-center justify-center font-bold">
+                        ✓
+                      </div>
+
+                      <p className="text-[#2B1D16] font-medium">{item}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
 
@@ -306,7 +341,7 @@ export default function CheckoutSection() {
               </div>
 
               {/* Payment Method */}
-              {Number(bootcamp.harga) > 0 && (
+              {Number(data.harga) > 0 && (
                 <div>
                   <label
                     className="
@@ -349,28 +384,30 @@ export default function CheckoutSection() {
 
                 <div className="mt-6 space-y-4">
                   <div className="flex items-center justify-between">
-                    <p className="text-[#6b625d]">Pelatihan</p>
+                    <p className="text-[#6b625d]">
+                      {isSertifikasi ? "Sertifikasi" : "Pelatihan"}
+                    </p>
 
-                    <h3 className="font-semibold text-[#2B1D16]">
-                      {bootcamp.title}
-                    </h3>
+                    <h3 className="font-semibold text-[#2B1D16]">{title}</h3>
                   </div>
 
                   <div className="flex items-center justify-between">
                     <p className="text-[#6b625d]">Durasi</p>
 
                     <h3 className="font-semibold text-[#2B1D16]">
-                      {bootcamp.durasi}
+                      {data.durasi}
                     </h3>
                   </div>
 
-                  <div className="flex items-center justify-between">
-                    <p className="text-[#6b625d]">Level</p>
+                  {!isSertifikasi && (
+                    <div className="flex items-center justify-between">
+                      <p className="text-[#6b625d]">Level</p>
 
-                    <h3 className="font-semibold text-[#2B1D16]">
-                      {bootcamp.level}
-                    </h3>
-                  </div>
+                      <h3 className="font-semibold text-[#2B1D16]">
+                        {data.level}
+                      </h3>
+                    </div>
+                  )}
                 </div>
 
                 {/* Divider */}
@@ -381,9 +418,9 @@ export default function CheckoutSection() {
                   <p className="text-lg font-bold text-[#2B1D16]">Total</p>
 
                   <h3 className="text-2xl font-black text-orange-500">
-                    {Number(bootcamp.harga) === 0
+                    {Number(data.harga) === 0
                       ? "Gratis"
-                      : `Rp${Number(bootcamp.harga).toLocaleString("id-ID")}`}
+                      : `Rp${Number(data.harga).toLocaleString("id-ID")}`}
                   </h3>
                 </div>
               </div>
@@ -405,7 +442,7 @@ export default function CheckoutSection() {
                   shadow-orange-500/20
                 "
               >
-                {Number(bootcamp.harga) === 0
+                {Number(data.harga) === 0
                   ? "Daftar Sekarang"
                   : "Lanjut Pembayaran"}
               </button>

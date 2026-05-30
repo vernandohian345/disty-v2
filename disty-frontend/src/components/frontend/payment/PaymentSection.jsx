@@ -4,7 +4,11 @@ import { useState } from "react";
 export default function PaymentSection() {
   const navigate = useNavigate();
   const location = useLocation();
+  console.log(location.state);
   const [bukti, setBukti] = useState(null);
+  const type = location.state?.type;
+  const harga = location.state?.harga;
+  const namaProgram = location.state?.nama_program;
 
   const transaksi = location.state?.transaksi;
 
@@ -28,8 +32,15 @@ export default function PaymentSection() {
 
       formData.append("bukti", bukti);
 
+      const endpoint =
+        type === "sertifikasi"
+          ? "http://127.0.0.1:8000/api/profile/upload-bukti-sertifikasi"
+          : "http://127.0.0.1:8000/api/profile/upload-bukti-pelatihan";
+
+      formData.append("transaksi_id", transaksi.id);
+
       const response = await fetch(
-        `http://127.0.0.1:8000/api/transaksi/pelatihan/upload-bukti/${transaksi.id}`,
+        endpoint,
 
         {
           method: "POST",
@@ -64,15 +75,31 @@ export default function PaymentSection() {
           <div className="mt-10 space-y-5">
             <div className="flex justify-between">
               <span>Kode Transaksi</span>
+              <span className="font-bold">
+                {type === "sertifikasi"
+                  ? `SRT-${transaksi.id}`
+                  : transaksi.kode_transaksi}
+              </span>{" "}
+            </div>
 
-              <span className="font-bold">{transaksi.kode_transaksi}</span>
+            <div className="flex justify-between">
+              <span>Program</span>
+
+              <span className="font-bold">
+                {type === "sertifikasi"
+                  ? namaProgram
+                  : transaksi.nama_pelatihan}
+              </span>
             </div>
 
             <div className="flex justify-between">
               <span>Total Pembayaran</span>
 
               <span className="font-bold text-orange-500">
-                Rp {Number(transaksi.total_harga).toLocaleString("id-ID")}
+                Rp{" "}
+                {Number(
+                  type === "sertifikasi" ? harga : transaksi.total_harga,
+                ).toLocaleString("id-ID")}
               </span>
             </div>
 

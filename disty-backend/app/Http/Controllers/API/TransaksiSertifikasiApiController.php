@@ -14,7 +14,7 @@ class TransaksiSertifikasiApiController extends Controller
     // ✅ DAFTAR / TRANSAKSI SERTIFIKASI
     public function store(Request $request)
     {
-         if (!Auth::check()) {
+        if (!Auth::check()) {
 
             return response()->json([
                 'status' => 'error',
@@ -43,6 +43,39 @@ class TransaksiSertifikasiApiController extends Controller
             Sertifikasi::findOrFail(
                 $request->sertifikasi_id
             );
+
+        // =========================
+// CEK SUDAH TERDAFTAR
+// =========================
+
+        $existing =
+            TransaksiSertifikasi::where(
+                'user_id',
+                Auth::id()
+            )
+                ->where(
+                    'sertifikasi_id',
+                    $request->sertifikasi_id
+                )
+                ->whereIn(
+                    'status',
+                    [
+                        'pending',
+                        'paid',
+                        'approved'
+                    ]
+                )
+                ->first();
+
+        if ($existing) {
+
+            return response()->json([
+                'status' => 'error',
+
+                'message' =>
+                    'Anda sudah terdaftar pada sertifikasi ini'
+            ], 422);
+        }
 
         // metode pembayaran
         $metode =
@@ -121,7 +154,7 @@ class TransaksiSertifikasiApiController extends Controller
 
         // notif berbayar
         Notification::create([
-            'user_id' => Auth::id() ,
+            'user_id' => Auth::id(),
 
             'type' =>
                 'daftar_berbayar',

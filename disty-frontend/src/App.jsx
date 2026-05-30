@@ -61,7 +61,7 @@ export default function App() {
         <Route path="/sertifikasi" element={<Certification />} />
         <Route path="/sertifikasi/:slug" element={<CertificationDetail />} />
 
-        <Route path="/checkout/:slug" element={<Checkout />} />
+        <Route path="/checkout/:type/:slug" element={<Checkout />} />
         <Route path="/success" element={<Success />} />
         <Route path="/payment" element={<Payment />} />
         <Route path="/my-pelatihan" element={<MyPelatihan />} />
