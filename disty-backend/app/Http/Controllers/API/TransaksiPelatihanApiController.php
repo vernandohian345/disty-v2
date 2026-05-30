@@ -455,138 +455,93 @@ class TransaksiPelatihanApiController extends Controller
     }
 
     public function webhook(Request $request)
-    {
-        try {
+{
+    Log::info('MIDTRANS WEBHOOK', $request->all());
 
-            Log::info('MIDTRANS WEBHOOK', $request->all());
+    $payload = $request->all();
 
-            // CONFIG MIDTRANS
-            $payment = PaymentSetting::where(
-                'provider',
-                'midtrans'
-            )
-                ->where(
-                    'is_active',
-                    true
-                )
-                ->first();
+    $orderId = $payload['order_id'] ?? null;
+    $transactionStatus = $payload['transaction_status'] ?? null;
+    $paymentType = $payload['payment_type'] ?? null;
 
-            if (!$payment) {
+    Log::info('ORDER ID', [
+        'order_id' => $orderId
+    ]);
 
-                return response()->json([
-                    'message' => 'Payment setting not found'
-                ], 404);
-            }
+    Log::info('TRANSACTION STATUS', [
+        'status' => $transactionStatus
+    ]);
 
-            Config::$serverKey =
-                decrypt($payment->server_key);
-
-            Config::$isProduction =
-                $payment->is_production;
-
-            Config::$isSanitized = true;
-            Config::$is3ds = true;
-
-            // MIDTRANS
-            $notification =
-                new MidtransNotification();
-
-            $transactionStatus =
-                $notification->transaction_status;
-
-            $paymentType =
-                $notification->payment_type;
-
-            $orderId =
-                $notification->order_id;
-
-            Log::info('ORDER ID : ' . $orderId);
-
-            // TRANSAKSI
-            $transaksi =
-                TransaksiPelatihan::where(
-                    'midtrans_order_id',
-                    $orderId
-                )->first();
-
-            if (!$transaksi) {
-
-                return response()->json([
-                    'message' =>
-                        'Transaksi tidak ditemukan'
-                ], 404);
-            }
-
-            // SUCCESS
-            if (
-                $transactionStatus == 'settlement'
-                ||
-                $transactionStatus == 'capture'
-            ) {
-
-                $transaksi->update([
-
-                    'status' =>
-                        'completed',
-
-                    'transaction_status' =>
-                        'paid',
-
-                    'payment_type' =>
-                        $paymentType,
-
-                    'paid_at' =>
-                        now(),
-                ]);
-            }
-
-            // PENDING
-            else if (
-                $transactionStatus == 'pending'
-            ) {
-
-                $transaksi->update([
-
-                    'status' =>
-                        'pending',
-
-                    'transaction_status' =>
-                        'pending',
-                ]);
-            }
-
-            // FAILED
-            else if (
-
-                $transactionStatus == 'expire'
-                ||
-                $transactionStatus == 'cancel'
-                ||
-                $transactionStatus == 'deny'
-            ) {
-
-                $transaksi->update([
-
-                    'status' =>
-                        'rejected',
-
-                    'transaction_status' =>
-                        'failed',
-                ]);
-            }
-
-            return response()->json([
-                'success' => true
-            ]);
-        } catch (\Exception $e) {
-
-            Log::error($e->getMessage());
-
-            return response()->json([
-                'error' => $e->getMessage()
-            ], 500);
-        }
+    if (!$orderId) {
+        return response()->json([
+            'message' => 'Order ID kosong'
+        ], 400);
     }
+
+    $transaksi = TransaksiPelatihan::where(
+        'midtrans_order_id',
+        $orderId
+    )->first();
+
+    if (!$transaksi) {
+
+        Log::error('TRANSAKSI TIDAK DITEMUKAN', [
+            'order_id' => $orderId
+        ]);
+
+        return response()->json([
+            'message' => 'Transaksi tidak ditemukan'
+        ], 404);
+    }
+
+    if (
+        $transactionStatus === 'settlement' ||
+        $transactionStatus === 'capture'
+    ) {
+
+        $transaksi->update([
+            'status' => 'completed',
+            'transaction_status' => 'paid',
+            'payment_type' => $paymentType,
+            'paid_at' => now(),
+        ]);
+
+        Notification::create([
+            'user_id' => $transaksi->user_id,
+            'type' => 'payment_success',
+            'title' => 'Pembayaran Berhasil 🎉',
+            'message' => 'Pembayaran berhasil diverifikasi otomatis.',
+            'icon' => 'fas fa-check-circle',
+            'color' => 'success',
+            'url' => '/my-transactions',
+            'is_read' => false,
+        ]);
+    }
+
+    if ($transactionStatus === 'pending') {
+
+        $transaksi->update([
+            'status' => 'pending',
+            'transaction_status' => 'pending',
+        ]);
+    }
+
+    if (
+        $transactionStatus === 'expire' ||
+        $transactionStatus === 'cancel' ||
+        $transactionStatus === 'deny'
+    ) {
+
+        $transaksi->update([
+            'status' => 'rejected',
+            'transaction_status' => 'failed',
+        ]);
+    }
+
+    return response()->json([
+        'success' => true
+    ], 200);
+}
     // ==============================
 // MY PELATIHAN USER
 // ==============================
