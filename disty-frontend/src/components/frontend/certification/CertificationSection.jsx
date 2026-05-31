@@ -113,7 +113,7 @@ export default function CertificationSection() {
             >
               <div className="h-[220px] bg-orange-100 flex items-center justify-center">
                 <img
-                  src={`http://127.0.0.1:8000/storage/sertifikasi/${item.sampul}`}
+                  src={`http://127.0.0.1:8000/uploads/sertifikasi/${item.sampul}`}
                   alt={item.nama_sertifikasi}
                   className="w-full h-full object-cover"
                 />

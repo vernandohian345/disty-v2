@@ -389,7 +389,7 @@ function SidebarCard({ bootcamp }) {
 
         {/* CTAs */}
         <Link
-          to={`/checkout/${bootcamp.slug}`}
+          to={`/checkout/pelatihan/${bootcamp.slug}`}
           className="
             w-full flex items-center justify-between
             h-12 px-5 rounded-2xl mb-3
