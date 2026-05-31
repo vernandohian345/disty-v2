@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 export default function CheckoutSection() {
   const { slug } = useParams();
@@ -78,63 +79,68 @@ export default function CheckoutSection() {
             "_blank"
           );
 
-          navigate("/success");
+          Swal.fire({
+            icon: "success",
+            title: "Pendaftaran Berhasil",
+            text: "Anda telah berhasil terdaftar pada pelatihan.",
+            confirmButtonColor: "#f97316",
+          }).then(() => {
+            navigate("/my-transactions");
+          });
         }
 
         // BERBAYAR
         else {
 
-          window.snap.pay(
-            result.snap_token,
+          window.snap.pay(result.snap_token, {
+            onSuccess: function (result) {
+              console.log(result);
 
-            {
-              onSuccess: function (result) {
+              Swal.fire({
+                icon: "success",
+                title: "Pembayaran Berhasil",
+                text: "Pembayaran Anda berhasil.",
+                confirmButtonColor: "#f97316",
+              }).then(() => {
+                navigate("/my-transactions");
+              });
+            },
 
-                console.log(result);
+            onPending: function (result) {
+              console.log(result);
 
-                alert(
-                  "Pembayaran berhasil!"
-                );
+              Swal.fire({
+                icon: "info",
+                title: "Pembayaran Pending",
+                text: "Silakan selesaikan pembayaran Anda.",
+                confirmButtonColor: "#f97316",
+              }).then(() => {
+                navigate("/my-transactions");
+              });
+            },
 
-                navigate(
-                  "/payment-success"
-                );
-              },
+            onError: function (result) {
+              console.log(result);
 
-              onPending: function (result) {
+              Swal.fire({
+                icon: "error",
+                title: "Pembayaran Gagal",
+                text: "Terjadi kesalahan saat pembayaran.",
+                confirmButtonColor: "#f97316",
+              });
+            },
 
-                console.log(result);
-
-                alert(
-                  "Menunggu pembayaran"
-                );
-
-                navigate(
-                  "/payment-pending"
-                );
-              },
-
-              onError: function (result) {
-
-                console.log(result);
-
-                alert(
-                  "Pembayaran gagal"
-                );
-
-                navigate(
-                  "/payment-failed"
-                );
-              },
-
-              onClose: function () {
-
-                alert(
-                  "Popup pembayaran ditutup"
-                );
-              },
-            }
-          );
+            onClose: function () {
+              Swal.fire({
+                icon: "warning",
+                title: "Pembayaran Belum Selesai",
+                text: "Anda menutup popup pembayaran.",
+                confirmButtonColor: "#f97316",
+              }).then(() => {
+                navigate("/my-transactions");
+              });
+            },
+          });
         }
       }
     } catch (error) {

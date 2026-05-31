@@ -109,6 +109,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/transaksi/repay/{id}',[TransaksiPelatihanApiController::class, 'repay']);
         Route::get('/transaksi/check-status/{id}',[TransaksiPelatihanApiController::class, 'checkStatus']);
 
+
+
         // ================= MY PELATIHAN =================
 
         Route::get(

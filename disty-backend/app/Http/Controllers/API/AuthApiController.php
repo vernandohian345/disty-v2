@@ -48,68 +48,79 @@ class AuthApiController extends Controller
     }
 
     // ✅ REGISTER
-    public function register(Request $request)
-    {
-        $request->validate([
-            'name' =>
-            'required|string|max:255',
+   public function register(Request $request)
+{
+    $request->validate([
 
-            'username' =>
-            'required|string|max:255|unique:users,username',
+        'name' =>
+        'required|string|max:255',
 
-            'email' =>
-            'required|email|unique:users,email',
+        'username' =>
+        'required|string|max:255|unique:users,username',
 
-            'password' =>
-            'required|min:6|confirmed',
-        ], [
-            'email.regex' =>
-            'Email Harus menggunakan @gmail.com',
-        ]);
+        'email' =>
+        'required|email|unique:users,email',
 
-        // random avatar color
-        $colors = [
-            '#FF6B6B',
-            '#4ECDC4',
-            '#45B7D1',
-            '#FFA07A',
-            '#98D8C8',
-            '#F7DC6F',
-            '#BB8FCE'
-        ];
+        'phone' =>
+        'required|string|max:20',
 
-        $randomColor =
-            $colors[array_rand($colors)];
+        'agree_terms' =>
+        'required|accepted',
 
-        $user = User::create([
-            'name' =>
-            $request->name,
+        'password' =>
+        'required|min:6|confirmed',
 
-            'username' =>
-            $request->username,
+    ]);
 
-            'email' =>
-            $request->email,
+    $colors = [
+        '#FF6B6B',
+        '#4ECDC4',
+        '#45B7D1',
+        '#FFA07A',
+        '#98D8C8',
+        '#F7DC6F',
+        '#BB8FCE'
+    ];
 
-            'password' =>
-            Hash::make(
-                $request->password
-            ),
+    $randomColor =
+        $colors[array_rand($colors)];
 
-            'role' => 'user',
+    $user = User::create([
 
-            'avatar_color' =>
-            $randomColor,
-        ]);
+        'name' =>
+        $request->name,
 
-        return response()->json([
-            'status' => 'success',
-            'message' =>
-            'Registrasi berhasil',
-            'user' => $user
-        ]);
-    }
+        'username' =>
+        $request->username,
 
+        'email' =>
+        $request->email,
+
+        'phone' =>
+        $request->phone,
+
+        'agree_terms' =>
+        $request->agree_terms,
+
+        'password' =>
+        Hash::make(
+            $request->password
+        ),
+
+        'role' =>
+        'user',
+
+        'avatar_color' =>
+        $randomColor,
+
+    ]);
+
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Registrasi berhasil',
+        'user' => $user
+    ]);
+}
     // ✅ LOGOUT
     public function logout(Request $request)
     {

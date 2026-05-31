@@ -9,8 +9,10 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { useLocation } from "react-router-dom";
 
 export default function MyTransactions() {
+  const location = useLocation();
   const navigate = useNavigate();
 
   const [data, setData] = useState([]);
@@ -26,14 +28,32 @@ export default function MyTransactions() {
   });
 
   useEffect(() => {
+  fetchData();
+
+  if (location.state?.paymentStatus === "success") {
+    Swal.fire({
+      icon: "success",
+      title: "Pembayaran Berhasil",
+      text: "Pembayaran Anda berhasil.",
+      confirmButtonColor: "#f97316",
+    });
+  }
+
+  if (location.state?.paymentStatus === "pending") {
+    Swal.fire({
+      icon: "info",
+      title: "Pembayaran Pending",
+      text: "Silakan selesaikan pembayaran Anda.",
+      confirmButtonColor: "#f97316",
+    });
+  }
+
+  const interval = setInterval(() => {
     fetchData();
+  }, 5000);
 
-    const interval = setInterval(() => {
-      fetchData();
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, []);
+  return () => clearInterval(interval);
+}, []);
 
   const fetchData = async () => {
     try {
@@ -97,7 +117,7 @@ export default function MyTransactions() {
     }
   };
 
-  const handleRepay = async (id) => {
+  const handleRepay = async (id, kodeTransaksi) =>  {
     try {
       const token = localStorage.getItem("token");
 
@@ -115,20 +135,26 @@ export default function MyTransactions() {
       const result = await response.json();
 
       window.snap.pay(result.snap_token, {
-        onSuccess: () => {
-          Toast.fire({
+        onSuccess: async () => {
+          await fetchData();
+
+          Swal.fire({
             icon: "success",
-            title: "Pembayaran berhasil",
+            title: "Pembayaran Berhasil",
+            text: "Pembayaran Anda telah berhasil diverifikasi.",
+            confirmButtonColor: "#f97316",
           });
-          fetchData();
         },
 
-        onPending: () => {
-          Toast.fire({
+        onPending: async () => {
+          await fetchData();
+
+          Swal.fire({
             icon: "info",
-            title: "Menunggu pembayaran",
+            title: "Pembayaran Pending",
+            text: "Silakan selesaikan pembayaran Anda terlebih dahulu.",
+            confirmButtonColor: "#f97316",
           });
-          fetchData();
         },
 
         onError: () => {
@@ -139,9 +165,11 @@ export default function MyTransactions() {
         },
 
         onClose: () => {
-          Toast.fire({
+          Swal.fire({
             icon: "warning",
-            title: "Pembayaran belum selesai",
+            title: "Pembayaran Belum Selesai",
+            text: "Anda menutup popup pembayaran sebelum transaksi selesai.",
+            confirmButtonColor: "#f97316",
           });
         },
       });
@@ -178,7 +206,7 @@ export default function MyTransactions() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between flex-wrap gap-4">
           <button
-            onClick={() => navigate(-1)}
+            onClick={() => navigate("/pelatihan")}
             className="flex items-center gap-2 h-10 px-4 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 transition"
           >
             <ArrowLeft size={16} />
@@ -315,7 +343,7 @@ export default function MyTransactions() {
                     {item.status === "pending" ? (
                       <div className="flex flex-col sm:flex-row gap-2">
                         <button
-                          onClick={() => handleRepay(item.id)}
+                          onClick={() => handleRepay(item.id, item.kode_transaksi)}
                           className="h-10 px-5 rounded-xl bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium transition"
                         >
                           Bayar Sekarang
