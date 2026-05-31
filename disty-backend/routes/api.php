@@ -197,25 +197,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/sertifikat-pelatihan/preview/{id}',[SertifikatPelatihanApiController::class, 'preview']);
 
     // ================= SERTIFIKAT SERTIFIKASI =================
-    Route::get(
-        '/sertifikat-sertifikasi',
-        [SertifikatSertifikasiApiController::class, 'index']
-    );
-
-    Route::post(
-        '/sertifikat-sertifikasi/generate/{id}',
-        [SertifikatSertifikasiApiController::class, 'generate']
-    );
-
-    Route::get(
-        '/sertifikat-sertifikasi/download/{id}',
-        [SertifikatSertifikasiApiController::class, 'download']
-    );
-
-    Route::post(
-        '/sertifikat-sertifikasi/upload-bnsp/{id}',
-        [SertifikatSertifikasiApiController::class, 'uploadBnsp']
-    );
+    Route::get('/sertifikat-sertifikasi',[SertifikatSertifikasiApiController::class, 'index']);
+    Route::post('/sertifikat-sertifikasi/generate/{id}',[SertifikatSertifikasiApiController::class, 'generate']);
+    Route::get('/sertifikat-sertifikasi/download/{id}',[SertifikatSertifikasiApiController::class, 'download']);
+    Route::post('/sertifikat-sertifikasi/upload-bnsp/{id}',[SertifikatSertifikasiApiController::class, 'uploadBnsp']);
 
     Route::get(
         '/sertifikat-sertifikasi/download-bnsp/{id}',

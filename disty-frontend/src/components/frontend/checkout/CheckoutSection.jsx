@@ -237,11 +237,8 @@ export default function CheckoutSection() {
   }
 
   const isSertifikasi = type === "sertifikasi";
-
   const title = isSertifikasi ? data.nama_sertifikasi : data.title;
-
   const description = isSertifikasi ? data.deskripsi : data.short_description;
-
   const image = isSertifikasi
     ? `http://127.0.0.1:8000/uploads/sertifikasi/${data.sampul}`
     : data.thumbnail_url;
@@ -250,7 +247,6 @@ export default function CheckoutSection() {
     <section className="relative overflow-hidden bg-[#fffaf5] py-24">
       {/* Glow */}
       <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-orange-300/20 blur-3xl rounded-full"></div>
-
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-start">
           {/* LEFT */}
@@ -263,7 +259,6 @@ export default function CheckoutSection() {
                 className="w-full h-[380px] object-cover"
               />
             </div>
-
             {/* Content */}
             <div className="mt-8">
               <p className="text-orange-500 font-semibold uppercase tracking-wide">
@@ -277,7 +272,6 @@ export default function CheckoutSection() {
               <p className="mt-6 text-[#6b625d] leading-relaxed text-lg">
                 {description}
               </p>
-
               {isSertifikasi && (
                 <div className="mt-8">
                   <h3 className="font-bold text-[#2B1D16] mb-4">
@@ -411,15 +405,15 @@ export default function CheckoutSection() {
                     value={formData.paymentMethod}
                     onChange={handleChange}
                     className="
-        w-full
-        h-14
-        rounded-2xl
-        border
-        border-orange-100
-        px-5
-        outline-none
-        focus:border-orange-300
-      "
+                      w-full
+                      h-14
+                      rounded-2xl
+                      border
+                      border-orange-100
+                      px-5
+                      outline-none
+                      focus:border-orange-300
+                      "
                   >
                     <option value="transfer">Transfer Bank</option>
 
