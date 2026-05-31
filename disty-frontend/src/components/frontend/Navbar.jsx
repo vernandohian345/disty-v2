@@ -9,21 +9,21 @@ import {
   FaSignOutAlt,
   FaTachometerAlt,
   FaBookOpen,
+  FaChevronDown,
 } from "react-icons/fa";
 
 import { ShoppingCart } from "lucide-react";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-
+  const [programOpen, setProgramOpen] = useState(false);
   const [user, setUser] = useState(null);
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const [notifications, setNotifications] = useState([]);
 
-  const [pendingCount, setPendingCount] =
-  useState(0);
+  const [pendingCount, setPendingCount] = useState(0);
 
   const dropdownRef = useRef();
 
@@ -39,7 +39,6 @@ export default function Navbar() {
     if (userData) {
       fetchPending();
     }
-
   }, []);
 
   // close dropdown klik luar
@@ -68,51 +67,30 @@ export default function Navbar() {
   };
 
   const fetchPending = async () => {
+    try {
+      const token = localStorage.getItem("token");
 
-  try {
-
-    const token =
-      localStorage.getItem(
-        "token"
-      );
-
-    const response =
-      await fetch(
-
+      const response = await fetch(
         "http://127.0.0.1:8000/api/my-transactions",
 
         {
           headers: {
+            Authorization: `Bearer ${token}`,
 
-            Authorization:
-              `Bearer ${token}`,
-
-            Accept:
-              "application/json",
+            Accept: "application/json",
           },
-        }
+        },
       );
 
-    const result =
-      await response.json();
+      const result = await response.json();
 
-    const pending =
-      result.data.filter(
+      const pending = result.data.filter((item) => item.status === "pending");
 
-        (item) =>
-          item.status ===
-          "pending"
-      );
-
-    setPendingCount(
-      pending.length
-    );
-
-  } catch (error) {
-
-    console.log(error);
-  }
-};
+      setPendingCount(pending.length);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <header className="fixed top-0 left-0 w-full z-50">
@@ -162,45 +140,79 @@ export default function Navbar() {
                 )}
               </NavLink>
 
-              <NavLink
-                to="/pelatihan"
-                className={({ isActive }) =>
-                  `relative px-4 py-2 text-sm font-medium transition-all duration-300 ${
-                    isActive
-                      ? "text-orange-400"
-                      : "text-black/80 hover:text-orange-300"
-                  }`
-                }
-              >
-                {({ isActive }) => (
-                  <>
-                    Pelatihan
-                    {isActive && (
-                      <span className="absolute left-1/2 -translate-x-1/2 bottom-0 w-8 h-[3px] bg-orange-400 rounded-full"></span>
-                    )}
-                  </>
-                )}
-              </NavLink>
+              <div className="relative">
+                <div className="relative">
+                  <button
+                    onClick={() => setProgramOpen(!programOpen)}
+                    className="
+      flex items-center gap-2
+      px-4 py-2
+      text-sm font-medium
+      text-black/80
+      hover:text-orange-400
+      transition-all duration-300
+    "
+                  >
+                    Program
+                    <FaChevronDown
+                      className={`text-xs transition-all duration-300 ${
+                        programOpen ? "rotate-180" : ""
+                      }`}
+                    />
+                  </button>
+                </div>
 
-              <NavLink
-                to="/sertifikasi"
-                className={({ isActive }) =>
-                  `relative px-4 py-2 text-sm font-medium transition-all duration-300 ${
-                    isActive
-                      ? "text-orange-400"
-                      : "text-black/80 hover:text-orange-300"
-                  }`
-                }
-              >
-                {({ isActive }) => (
-                  <>
+                {/* Dropdown */}
+
+                <div
+                  className={`
+    absolute top-full left-0 mt-2
+    w-52
+    bg-white
+    rounded-2xl
+    shadow-xl
+    border border-slate-100
+    overflow-hidden
+    z-50
+    transition-all duration-200
+    ${
+      programOpen
+        ? "opacity-100 visible translate-y-0"
+        : "opacity-0 invisible -translate-y-2"
+    }
+  `}
+                >
+                  <NavLink
+                    to="/pelatihan"
+                    className="
+        block
+        px-5 py-3
+        text-sm
+        text-slate-700
+        hover:bg-orange-50
+        hover:text-orange-500
+        transition
+      "
+                  >
+                    Pelatihan
+                  </NavLink>
+
+                  <NavLink
+                    to="/sertifikasi"
+                    className="
+        block
+        px-5 py-3
+        text-sm
+        text-slate-700
+        hover:bg-orange-50
+        hover:text-orange-500
+        transition
+      "
+                  >
                     Sertifikasi
-                    {isActive && (
-                      <span className="absolute left-1/2 -translate-x-1/2 bottom-0 w-8 h-[3px] bg-orange-400 rounded-full"></span>
-                    )}
-                  </>
-                )}
-              </NavLink>
+                  </NavLink>
+                </div>
+              </div>
 
               <NavLink
                 to="/blog"
@@ -292,13 +304,9 @@ export default function Navbar() {
                   ref={dropdownRef}
                 >
                   {/* SHOPPING CART */}
-                <button
-                  onClick={() =>
-                    navigate(
-                      "/my-transactions"
-                    )
-                  }
-                  className="
+                  <button
+                    onClick={() => navigate("/my-transactions")}
+                    className="
                     relative
                     w-10 h-10
                     rounded-full
@@ -309,18 +317,15 @@ export default function Navbar() {
                     justify-center
                     transition
                   "
-                >
-
-                  <ShoppingCart
-                    className="
+                  >
+                    <ShoppingCart
+                      className="
                       text-slate-700
                     "
-                    size={18}
-                  />
+                      size={18}
+                    />
 
-                  {
-                    pendingCount > 0 && (
-
+                    {pendingCount > 0 && (
                       <span
                         className="
                           absolute
@@ -337,13 +342,10 @@ export default function Navbar() {
                           font-bold
                         "
                       >
-
                         {pendingCount}
-
                       </span>
-                    )
-                  }
-                </button>
+                    )}
+                  </button>
                   {/* NOTIFICATION */}
                   <button
                     onClick={() => navigate("/notifications")}
@@ -518,7 +520,6 @@ export default function Navbar() {
 
                       {/* MENU */}
                       <div className="p-3">
-                        
                         {/* PROFILE USER */}
                         {user.role !== "admin" && (
                           <button
@@ -543,7 +544,7 @@ export default function Navbar() {
 
                         {/* MY PELATIHAN */}
                         <button
-                          onClick={() => navigate("/my-pelatihan")}
+                          onClick={() => navigate("/program-saya")}
                           className="
                             w-full
                             flex

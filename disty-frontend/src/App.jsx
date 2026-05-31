@@ -15,7 +15,7 @@ import CertificationDetail from "./pages/frontend/CertificationDetail";
 import Checkout from "./pages/frontend/Checkout";
 import Success from "./pages/frontend/Success";
 import Payment from "./pages/frontend/Payment";
-import MyPelatihan from "./pages/frontend/MyPelatihan";
+import MyProgram from "./pages/frontend/MyProgram";
 import Profile from "./pages/frontend/Profile";
 import MyTransactions from "./pages/frontend/MyTransactions";
 import PaymentPending from "./pages/frontend/PaymentPending";
@@ -64,11 +64,12 @@ export default function App() {
         <Route path="/checkout/:type/:slug" element={<Checkout />} />
         <Route path="/success" element={<Success />} />
         <Route path="/payment" element={<Payment />} />
-        <Route path="/my-pelatihan" element={<MyPelatihan />} />
+
         <Route path="/learning/:id" element={<LearningPage />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/my-transactions" element={<MyTransactions />} />
         <Route path="/payment-pending" element={<PaymentPending />} />
+        <Route path="/program-saya" element={<MyProgram />} />
 
         {/* AUTH */}
         <Route path="/login" element={<Login />} />

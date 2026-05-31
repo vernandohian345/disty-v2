@@ -9,7 +9,6 @@ use App\Models\TransaksiPelatihan;
 use App\Models\TransaksiSertifikasi;
 use App\Models\Notification;
 
-
 class ProfileApiController extends Controller
 {
 
@@ -38,6 +37,25 @@ class ProfileApiController extends Controller
             'total_pelatihan' => $totalPelatihan,
             'pelatihan_selesai' => $pelatihanSelesai,
             'total_sertifikat' => $totalSertifikat,
+        ]);
+    }
+
+    public function mySertifikasi()
+    {
+        $data =
+            TransaksiSertifikasi::with(
+                'sertifikasi'
+            )
+                ->where(
+                    'user_id',
+                    Auth::id()
+                )
+                ->latest()
+                ->get();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $data
         ]);
     }
 
