@@ -20,16 +20,7 @@ export default function Footer() {
 
       <div className="relative z-10 max-w-[1700px] mx-auto px-6 lg:px-8">
         {/* CTA SECTION */}
-        <div className="relative mb-16">
-          <div className="relative z-10 text-center">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black leading-tight text-white">
-              Bangun Skill Masa Depan
-              <span className="block text-orange-400">
-                Bersama Disty Academy
-              </span>
-            </h2>
-          </div>
-        </div>
+
         {/* Top */}
         <div className="grid lg:grid-cols-4 gap-14">
           {/* Brand */}
@@ -51,35 +42,35 @@ export default function Footer() {
             <div className="flex items-center gap-4 mt-8">
               <a
                 href="#"
-                className="w-16 h-12 rounded-2xl bg-slate-800 hover:bg-blue-600 flex items-center justify-center transition-all duration-300 hover:-translate-y-1"
+                className="w-14 h-14 rounded-2xl bg-slate-800 hover:bg-blue-600 flex items-center justify-center transition-all duration-300 hover:-translate-y-1"
               >
                 <FaFacebook className="w-6 h-6" />
               </a>
 
               <a
                 href="#"
-                className="w-16 h-12 rounded-2xl bg-slate-800 hover:bg-pink-500 flex items-center justify-center transition-all duration-300 hover:-translate-y-1"
+                className="w-14 h-14 rounded-2xl bg-slate-800 hover:bg-pink-500 flex items-center justify-center transition-all duration-300 hover:-translate-y-1"
               >
                 <FaInstagram className="w-6 h-6" />
               </a>
 
               <a
                 href="#"
-                className="w-16 h-12 rounded-2xl bg-slate-800 hover:bg-blue-500 flex items-center justify-center transition-all duration-300 hover:-translate-y-1"
+                className="w-14 h-14 rounded-2xl bg-slate-800 hover:bg-blue-500 flex items-center justify-center transition-all duration-300 hover:-translate-y-1"
               >
                 <FaLinkedin className="w-6 h-6" />
               </a>
 
               <a
                 href="#"
-                className="w-16 h-12 rounded-2xl bg-slate-800 hover:bg-red-500 flex items-center justify-center transition-all duration-300 hover:-translate-y-1"
+                className="w-14 h-14 rounded-2xl bg-slate-800 hover:bg-red-500 flex items-center justify-center transition-all duration-300 hover:-translate-y-1"
               >
                 <FaYoutube className="w-6 h-6" />
               </a>
 
               <a
                 href="#"
-                className="w-16 h-12 rounded-2xl bg-slate-800 hover:bg-sky-500 flex items-center justify-center transition-all duration-300 hover:-translate-y-1"
+                className="w-14 h-14 rounded-2xl bg-slate-800 hover:bg-sky-500 flex items-center justify-center transition-all duration-300 hover:-translate-y-1"
               >
                 <FaTwitter className="w-6 h-6" />
               </a>
@@ -92,27 +83,48 @@ export default function Footer() {
 
             <ul className="space-y-4 text-slate-400">
               <li>
-                <a href="#" className="hover:text-primary transition">
+                <button
+                  onClick={() => navigate("/")}
+                  className="hover:text-orange-400 transition-all duration-300"
+                >
                   Beranda
-                </a>
+                </button>
               </li>
 
               <li>
-                <a href="#" className="hover:text-primary transition">
-                  Program
-                </a>
+                <button
+                  onClick={() => navigate("/pelatihan")}
+                  className="hover:text-orange-400 transition-all duration-300"
+                >
+                  Pelatihan
+                </button>
               </li>
 
               <li>
-                <a href="#" className="hover:text-primary transition">
-                  Artikel
-                </a>
+                <button
+                  onClick={() => navigate("/sertifikasi")}
+                  className="hover:text-orange-400 transition-all duration-300"
+                >
+                  Sertifikasi
+                </button>
               </li>
 
               <li>
-                <a href="#" className="hover:text-primary transition">
-                  FAQ
-                </a>
+                <button
+                  onClick={() => navigate("/blog")}
+                  className="hover:text-orange-400 transition-all duration-300"
+                >
+                  Blog
+                </button>
+              </li>
+
+              <li>
+                <button
+                  onClick={() => navigate("/about")}
+                  className="hover:text-orange-400 transition-all duration-300"
+                >
+                  Tentang Kami
+                </button>
               </li>
             </ul>
           </div>
@@ -121,29 +133,13 @@ export default function Footer() {
           <div>
             <h3 className="text-xl font-bold mb-6">Program</h3>
 
-            <ul className="space-y-4 text-slate-400">
-              <li>
-                <a href="#" className="hover:text-primary transition">
-                  UI/UX Design
-                </a>
-              </li>
-
-              <li>
-                <a href="#" className="hover:text-primary transition">
-                  Web Development
-                </a>
-              </li>
-
-              <li>
-                <a href="#" className="hover:text-primary transition">
-                  Digital Marketing
-                </a>
-              </li>
-
-              <li>
-                <a href="#" className="hover:text-primary transition">
-                  Data Science
-                </a>
+            <ul className="space-y-4">
+              <li className="text-slate-400">Pelatihan Digital Skill</li>
+              <li className="text-slate-400">Sertifikasi Profesional</li>
+              <li className="text-slate-400">Bootcamp Karier</li>
+              <li className="text-slate-400">Workshop Interaktif</li>
+              <li className="text-slate-400">
+                Program Pengembangan Kompetensi
               </li>
             </ul>
           </div>
@@ -177,17 +173,17 @@ export default function Footer() {
         </div>
 
         {/* Bottom */}
-        <div className="border-t border-slate-800 mt-16 pt-8 flex flex-col lg:flex-row items-center justify-between gap-4">
+        <div className="border-t border-slate-700/50 mt-20 pt-8 flex flex-col lg:flex-row items-center justify-between gap-4">
+          {" "}
           <p className="text-slate-500 text-sm">
             © 2026 Disty Akademi. All rights reserved.
           </p>
-
           <div className="flex items-center gap-6 text-sm text-slate-500">
-            <a href="#" className="hover:text-primary transition">
+            <a href="#" className="hover:text-orange-400 transition">
               Privacy Policy
             </a>
 
-            <a href="#" className="hover:text-primary transition">
+            <a href="#" className="hover:text-orange-400 transition">
               Terms & Conditions
             </a>
           </div>

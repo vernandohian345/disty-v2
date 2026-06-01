@@ -1,47 +1,165 @@
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+
 import Button from "../../ui/Button";
 import Reveal from "../../ui/Reveal";
 
-import { FaArrowRight, FaUsers, FaLayerGroup } from "react-icons/fa";
-
-const programs = [
-  {
-    title: "UI/UX Design Bootcamp",
-
-    category: "Design",
-
-    image: "/src/assets/images/Beranda/UIUX Design Bootcamp.jpg",
-
-    students: "120+ Peserta",
-
-    level: "Beginner",
-  },
-
-  {
-    title: "Frontend Web Development",
-
-    category: "Programming",
-
-    image: "/src/assets/images/Beranda/Frontend Web Development.jpg",
-
-    students: "200+ Peserta",
-
-    level: "Intermediate",
-  },
-
-  {
-    title: "Digital Marketing Mastery",
-
-    category: "Marketing",
-
-    image: "/src/assets/images/Beranda/Digital_Marketing.jpg",
-
-    students: "90+ Peserta",
-
-    level: "Beginner",
-  },
-];
+import { FaArrowRight } from "react-icons/fa";
 
 export default function ProgramSection() {
+  const [pelatihan, setPelatihan] = useState([]);
+  const [sertifikasi, setSertifikasi] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+
+      const [pelatihanRes, sertifikasiRes] = await Promise.all([
+        fetch("http://127.0.0.1:8000/api/frontend/pelatihan"),
+        fetch("http://127.0.0.1:8000/api/frontend/sertifikasi"),
+      ]);
+
+      const pelatihanData = await pelatihanRes.json();
+      const sertifikasiData = await sertifikasiRes.json();
+
+      setPelatihan(pelatihanData.data?.slice(0, 3) || []);
+      setSertifikasi(sertifikasiData.data?.data?.slice(0, 3) || []);
+    } catch (error) {
+      console.error("Gagal mengambil data program:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const renderCard = (
+    image,
+    title,
+    category,
+    description,
+    link,
+    type = "pelatihan",
+  ) => (
+    <Reveal key={title}>
+      <Link
+        to={link}
+        className="
+          group
+          relative
+          overflow-hidden
+          rounded-[36px]
+          h-[520px]
+          block
+          shadow-xl
+          hover:-translate-y-4
+          transition-all
+          duration-700
+        "
+      >
+        <img
+          src={image}
+          alt={title}
+          className="
+            absolute
+            inset-0
+            w-full
+            h-full
+            object-cover
+            group-hover:scale-110
+            transition
+            duration-700
+          "
+        />
+
+        <div
+          className="
+            absolute
+            inset-0
+            bg-gradient-to-t
+            from-black
+            via-black/50
+            to-transparent
+          "
+        />
+
+        <div
+          className="
+            absolute
+            top-6
+            left-6
+            bg-white/90
+            backdrop-blur-xl
+            px-4
+            py-2
+            rounded-full
+            text-sm
+            font-semibold
+            text-orange-500
+          "
+        >
+          {category}
+        </div>
+
+        <div
+          className="
+            absolute
+            bottom-0
+            left-0
+            w-full
+            p-8
+            text-white
+          "
+        >
+          <span className="text-orange-300 text-sm font-semibold uppercase">
+            {type}
+          </span>
+
+          <h3
+            className="
+              text-3xl
+              font-black
+              leading-tight
+              mt-3
+            "
+          >
+            {title}
+          </h3>
+
+          <p
+            className="
+              mt-4
+              text-white/70
+              leading-relaxed
+              line-clamp-3
+            "
+          >
+            {description}
+          </p>
+
+          <div
+            className="
+              mt-8
+              flex
+              items-center
+              gap-3
+              font-semibold
+              text-orange-300
+              group-hover:translate-x-2
+              transition-all
+            "
+          >
+            <span>Lihat Detail</span>
+            <FaArrowRight />
+          </div>
+        </div>
+      </Link>
+    </Reveal>
+  );
+
   return (
     <section
       className="
@@ -51,10 +169,6 @@ export default function ProgramSection() {
         bg-white
       "
     >
-      {/* ==============================
-          BACKGROUND GLOW
-      ============================== */}
-
       <div
         className="
           absolute
@@ -92,18 +206,8 @@ export default function ProgramSection() {
             z-10
           "
         >
-          {/* ==============================
-              HEADING
-          ============================== */}
-
-          <div
-            className="
-              text-center
-              max-w-4xl
-              mx-auto
-            "
-          >
-            {/* BADGE */}
+          {/* HEADER */}
+          <div className="text-center max-w-4xl mx-auto">
             <div
               className="
                 inline-flex
@@ -122,7 +226,6 @@ export default function ProgramSection() {
               Program Unggulan
             </div>
 
-            {/* TITLE */}
             <h2
               className="
                 text-4xl
@@ -133,17 +236,9 @@ export default function ProgramSection() {
               "
             >
               Pilih Program
-              <span
-                className="
-                  text-[#f9c115]
-                  block
-                "
-              >
-                Sesuai Passion Kamu
-              </span>
+              <span className="text-[#f9c115] block">Sesuai Passion Kamu</span>
             </h2>
 
-            {/* DESCRIPTION */}
             <p
               className="
                 mt-6
@@ -152,209 +247,71 @@ export default function ProgramSection() {
                 leading-relaxed
               "
             >
-              Temukan berbagai bootcamp dan pelatihan terbaik yang dirancang
-              langsung sesuai kebutuhan industri digital modern.
+              Temukan berbagai pelatihan dan sertifikasi terbaik yang dirancang
+              sesuai kebutuhan industri digital modern.
             </p>
           </div>
 
-          {/* ==============================
-              PROGRAM CARDS
-          ============================== */}
+          {loading ? (
+            <div className="text-center py-20">
+              <h3 className="text-2xl font-bold text-orange-500">
+                Memuat Program...
+              </h3>
+            </div>
+          ) : (
+            <>
+              {/* PELATIHAN */}
+              <div className="mt-20">
+                <h3 className="text-3xl font-black text-[#2B1D16] mb-8">
+                  Pelatihan
+                </h3>
 
-          <div
-            className="
-              grid
-              grid-cols-1
-              md:grid-cols-2
-              lg:grid-cols-3
-              gap-8
-              mt-20
-            "
-          >
-            {programs.map((program, index) => (
-              <Reveal key={index} delay={index * 0.2}>
-                <a
-                  href="/program"
-                  className="
-                    group
-                    relative
-                    overflow-hidden
-                    rounded-[36px]
-                    h-[520px]
-                    block
-                    shadow-xl
-                    hover:-translate-y-4
-                    transition-all
-                    duration-700
-                  "
-                >
-                  {/* IMAGE */}
-                  <img
-                    src={program.image}
-                    alt={program.title}
-                    className="
-                      absolute
-                      inset-0
-                      w-full
-                      h-full
-                      object-cover
-                      group-hover:scale-110
-                      transition
-                      duration-700
-                    "
-                  />
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {pelatihan.map((item) =>
+                    renderCard(
+                      item.thumbnail_url,
+                      item.title,
+                      item.kategori,
+                      item.short_description,
+                      `/pelatihan/${item.slug}`,
+                      "Pelatihan",
+                    ),
+                  )}
+                </div>
+              </div>
 
-                  {/* OVERLAY */}
-                  <div
-                    className="
-                      absolute
-                      inset-0
-                      bg-gradient-to-t
-                      from-black
-                      via-black/50
-                      to-transparent
-                    "
-                  />
+              {/* SERTIFIKASI */}
+              <div className="mt-24">
+                <h3 className="text-3xl font-black text-[#2B1D16] mb-8">
+                  Sertifikasi
+                </h3>
 
-                  {/* GLOW */}
-                  <div
-                    className="
-                      absolute
-                      inset-0
-                      bg-orange-500/0
-                      group-hover:bg-orange-500/10
-                      transition-all
-                      duration-500
-                    "
-                  />
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {sertifikasi.map((item) =>
+                    renderCard(
+                      `http://127.0.0.1:8000/uploads/sertifikasi/${item.sampul}`,
+                      item.nama_sertifikasi,
+                      item.kategori,
+                      item.deskripsi,
+                      `/sertifikasi/${item.slug}`,
+                      "Sertifikasi",
+                    ),
+                  )}
+                </div>
+              </div>
 
-                  {/* CATEGORY */}
-                  <div
-                    className="
-                      absolute
-                      top-6
-                      left-6
-                      bg-white/90
-                      backdrop-blur-xl
-                      px-4
-                      py-2
-                      rounded-full
-                      text-sm
-                      font-semibold
-                      text-orange-500
-                    "
-                  >
-                    {program.category}
-                  </div>
+              {/* CTA */}
+              <div className="flex justify-center gap-4 mt-20">
+                <Link to="/pelatihan">
+                  <Button>Lihat Semua Pelatihan</Button>
+                </Link>
 
-                  {/* CONTENT */}
-                  <div
-                    className="
-                      absolute
-                      bottom-0
-                      left-0
-                      w-full
-                      p-8
-                      text-white
-                    "
-                  >
-                    {/* MINI STATS */}
-                    <div
-                      className="
-                        flex
-                        items-center
-                        gap-4
-                        text-sm
-                        text-white/70
-                      "
-                    >
-                      {/* STUDENTS */}
-                      <div
-                        className="
-                          flex
-                          items-center
-                          gap-2
-                        "
-                      >
-                        <FaUsers />
-
-                        <span>{program.students}</span>
-                      </div>
-
-                      {/* LEVEL */}
-                      <div
-                        className="
-                          flex
-                          items-center
-                          gap-2
-                        "
-                      >
-                        <FaLayerGroup />
-
-                        <span>{program.level}</span>
-                      </div>
-                    </div>
-
-                    {/* TITLE */}
-                    <h3
-                      className="
-                        text-3xl
-                        font-black
-                        leading-tight
-                        mt-5
-                      "
-                    >
-                      {program.title}
-                    </h3>
-
-                    {/* DESCRIPTION */}
-                    <p
-                      className="
-                        mt-4
-                        text-white/70
-                        leading-relaxed
-                      "
-                    >
-                      Pelajari skill modern dengan mentor profesional dan
-                      kurikulum industri terbaru.
-                    </p>
-
-                    {/* CTA */}
-                    <div
-                      className="
-                        mt-8
-                        flex
-                        items-center
-                        gap-3
-                        font-semibold
-                        text-orange-300
-                        group-hover:translate-x-2
-                        transition-all
-                      "
-                    >
-                      <span>Lihat Program</span>
-
-                      <FaArrowRight />
-                    </div>
-                  </div>
-                </a>
-              </Reveal>
-            ))}
-          </div>
-
-          {/* ==============================
-              BOTTOM CTA
-          ============================== */}
-
-          <div
-            className="
-              flex
-              justify-center
-              mt-20
-            "
-          >
-            <Button>Lihat Semua Program</Button>
-          </div>
+                <Link to="/sertifikasi">
+                  <Button>Lihat Semua Sertifikasi</Button>
+                </Link>
+              </div>
+            </>
+          )}
         </div>
       </Reveal>
     </section>

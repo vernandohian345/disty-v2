@@ -14,7 +14,7 @@ import Certification from "./pages/frontend/Certification";
 import CertificationDetail from "./pages/frontend/CertificationDetail";
 import Checkout from "./pages/frontend/Checkout";
 import Payment from "./pages/frontend/Payment";
-import MyPelatihan from "./pages/frontend/MyPelatihan";
+import MyProgram from "./pages/frontend/MyProgram";
 import Profile from "./pages/frontend/Profile";
 import MyTransactions from "./pages/frontend/MyTransactions";
 import LearningPage from "./pages/frontend/LearningPage";
@@ -62,10 +62,15 @@ export default function App() {
         <Route path="/checkout/:slug" element={<Checkout />} />
         <Route path="/checkout/:type/:slug" element={<Checkout />} />
         <Route path="/payment" element={<Payment />} />
-        <Route path="/my-pelatihan" element={<MyPelatihan />} />
+
         <Route path="/learning/:id" element={<LearningPage />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/my-transactions" element={<MyTransactions />} />
+<<<<<<< HEAD
+=======
+        <Route path="/payment-pending" element={<PaymentPending />} />
+        <Route path="/program-saya" element={<MyProgram />} />
+>>>>>>> origin/fitur-sertifikasi
 
         {/* AUTH */}
         <Route path="/login" element={<Login />} />

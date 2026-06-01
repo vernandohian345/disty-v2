@@ -156,8 +156,11 @@ export default function MyPelatihanHero() {
                 leading-[1.05]
               "
             >
-              Selamat Datang
-              <span className="block text-orange-400">di Kelas Kamu</span>
+              Program Saya
+              <span className="block text-orange-400">
+                Kelola pelatihan dan sertifikasi yang telah kamu ikuti bersama
+                Disty Academy
+              </span>
             </h1>
 
             {/* DESCRIPTION */}
