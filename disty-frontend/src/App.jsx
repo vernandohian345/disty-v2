@@ -66,11 +66,7 @@ export default function App() {
         <Route path="/learning/:id" element={<LearningPage />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/my-transactions" element={<MyTransactions />} />
-<<<<<<< HEAD
-=======
-        <Route path="/payment-pending" element={<PaymentPending />} />
         <Route path="/program-saya" element={<MyProgram />} />
->>>>>>> origin/fitur-sertifikasi
 
         {/* AUTH */}
         <Route path="/login" element={<Login />} />
