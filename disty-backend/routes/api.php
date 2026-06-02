@@ -36,10 +36,8 @@ Route::post('/register', [AuthApiController::class, 'register']);
 Route::get('/frontend/pelatihan', [FrontendPelatihanApiController::class, 'index']);
 Route::get('/frontend/pelatihan/{slug}', [FrontendPelatihanApiController::class, 'show']);
 
-Route::post(
-    '/midtrans/webhook',
-    [TransaksiPelatihanApiController::class, 'webhook']
-);
+Route::post('/midtrans/webhook',[TransaksiPelatihanApiController::class, 'webhook']);
+Route::post('/midtrans/sertifikasi/webhook',[TransaksiSertifikasiApiController::class, 'webhook']);
 
 // FRONTEND SERTIFIKASI
 Route::get('/frontend/sertifikasi', [FrontendSertifikasiApiController::class, 'index']);
@@ -101,7 +99,6 @@ Route::middleware('auth:sanctum')->group(function () {
         [NotificationApiController::class, 'getUnreadCount']
     );
     Route::middleware('auth:sanctum')->group(function () {
-        // ================= TRANSAKSI PELATIHAN =================
         Route::post('/transaksi/pelatihan', [TransaksiPelatihanApiController::class, 'store']);
         Route::post('/transaksi/pelatihan/upload-bukti/{id}', [TransaksiPelatihanApiController::class, 'uploadBukti']);
         Route::get('/admin/transaksi/pelatihan', [TransaksiPelatihanApiController::class, 'index']);
@@ -109,29 +106,13 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/transaksi/repay/{id}', [TransaksiPelatihanApiController::class, 'repay']);
         Route::get('/transaksi/check-status/{id}', [TransaksiPelatihanApiController::class, 'checkStatus']);
 
-
-
-        // ================= MY PELATIHAN =================
-
-        Route::get(
-            '/my-pelatihan',
-            [TransaksiPelatihanApiController::class, 'myPelatihan']
-        );
-
-        // ================= MY SERTIFIKASI =================
-
-        Route::get(
-            '/my-sertifikasi',
-            [ProfileApiController::class, 'mySertifikasi']
-        );
-
-
-
+        Route::get('/my-pelatihan',[TransaksiPelatihanApiController::class, 'myPelatihan']);
+        Route::get('/my-sertifikasi',[ProfileApiController::class, 'mySertifikasi']);
+        
         // ================= TRANSAKSI SERTIFIKASI =================
-        Route::post(
-            '/transaksi/sertifikasi',
-            [TransaksiSertifikasiApiController::class, 'store']
-        );
+        Route::post('/transaksi/sertifikasi',[TransaksiSertifikasiApiController::class, 'store']);
+        Route::post('/transaksi/sertifikasi/repay/{id}',[TransaksiSertifikasiApiController::class, 'repay']);
+        Route::get('/transaksi/sertifikasi/check-status/{id}',[TransaksiSertifikasiApiController::class, 'checkStatus']);
     });
 
     // =====================================================
