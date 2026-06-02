@@ -557,7 +557,9 @@ public function checkStatus($id)
 
     public function myPelatihan()
     {
-        $data = TransaksiPelatihan::with('pelatihan')
+        $data = TransaksiPelatihan::with([
+            'pelatihan.moduls'
+        ])
             ->where('user_id', Auth::id())
             ->whereIn('status', [
                 'paid',

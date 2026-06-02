@@ -23,7 +23,8 @@ class PelatihanApiController extends Controller
     // ✅ GET detail pelatihan
     public function show(int $id)
     {
-        $pelatihan = Pelatihan::findOrFail($id);
+        $pelatihan = Pelatihan::with('moduls')
+            ->findOrFail($id);
 
         return response()->json([
             'status' => 'success',
@@ -79,7 +80,6 @@ class PelatihanApiController extends Controller
 
         // upload gambar
         if ($request->hasFile('thumbnail')) {
-
             $file = $request->file('thumbnail');
 
             $filename =
@@ -94,6 +94,35 @@ class PelatihanApiController extends Controller
         }
 
         $pelatihan = \App\Models\Pelatihan::create($data);
+
+        $moduls = json_decode(
+            $request->moduls,
+            true
+        );
+
+        if ($moduls) {
+
+            foreach ($moduls as $modul) {
+
+                $pelatihan->moduls()->create([
+
+                    'judul' =>
+                        $modul['judul'],
+
+                    'deskripsi' =>
+                        $modul['deskripsi'] ?? null,
+
+                    'video_url' =>
+                        $modul['video_url'],
+
+                    'durasi' =>
+                        $modul['durasi'],
+
+                    'urutan' =>
+                        $modul['urutan'],
+                ]);
+            }
+        }
 
 
         return response()->json([
@@ -200,10 +229,42 @@ class PelatihanApiController extends Controller
 
         $pelatihan->update($data);
 
+        $moduls = json_decode(
+            $request->moduls,
+            true
+        );
+
+        if ($moduls) {
+
+            // hapus modul lama
+            $pelatihan->moduls()->delete();
+
+            foreach ($moduls as $index => $modul) {
+
+                $pelatihan->moduls()->create([
+
+                    'judul' =>
+                        $modul['judul'],
+
+                    'deskripsi' =>
+                        $modul['deskripsi'] ?? null,
+
+                    'video_url' =>
+                        $modul['video_url'] ?? null,
+
+                    'durasi' =>
+                        $modul['durasi'],
+
+                    'urutan' =>
+                        $modul['urutan'] ?? ($index + 1),
+                ]);
+            }
+        }
+
         return response()->json([
             'status' => 'success',
             'message' => 'Pelatihan berhasil diupdate',
-            'data' => $pelatihan
+            'data' => $pelatihan->load('moduls')
         ]);
     }
 
