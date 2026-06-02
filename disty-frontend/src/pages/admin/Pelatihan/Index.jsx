@@ -9,6 +9,8 @@ import DeleteModal from "../../../components/admin/pelatihan/DeleteModal";
 
 import {
   getPelatihans,
+  getPelatihan,
+  createPelatihan,
   updatePelatihan,
   deletePelatihan,
 } from "../../../services/pelatihanService";
@@ -558,10 +560,29 @@ export default function IndexPelatihan() {
         onView={(item) => {
           console.log(item);
         }}
-        onEdit={(item) => {
-          setEditData(item);
+        onEdit={async (item) => {
+        try {
+
+          const response =
+            await getPelatihan(item.id);
+
+          console.log(
+            "DETAIL",
+            response.data.data
+          );
+
+          setEditData(
+            response.data.data
+          );
+
           setOpenModal(true);
-        }}
+
+        } catch (error) {
+
+          console.log(error);
+
+        }
+      }}
         onDelete={(item) => {
           setSelectedPelatihan(item);
           setDeleteModal(true);

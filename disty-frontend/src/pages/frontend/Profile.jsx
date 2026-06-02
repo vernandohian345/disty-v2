@@ -86,22 +86,22 @@ export default function Profile() {
         <button
           onClick={() => navigate(-1)}
           className="
-    mb-6
-    flex
-    items-center
-    gap-3
-    px-5 py-3
-    rounded-2xl
-    bg-orange-300
-    hover:bg-orange-50
-    border
-    border-slate-200
-    shadow-sm
-    transition-all
-    text-slate-700
-    hover:text-orange-500
-    font-semibold
-  "
+            mb-6
+            flex
+            items-center
+            gap-3
+            px-5 py-3
+            rounded-2xl
+            bg-orange-300
+            hover:bg-orange-50
+            border
+            border-slate-200
+            shadow-sm
+            transition-all
+            text-slate-700
+            hover:text-orange-500
+            font-semibold
+          "
         >
           <FaArrowLeft />
 
