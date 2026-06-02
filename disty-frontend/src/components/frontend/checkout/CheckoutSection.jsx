@@ -100,16 +100,51 @@ export default function CheckoutSection() {
           }
 
           // BERBAYAR
-          navigate("/payment", {
-            state: {
-              transaksi: result.transaksi,
-              type: "sertifikasi",
-              harga: data.harga,
-              nama_program: data.nama_sertifikasi,
-            },
-          });
+            window.snap.pay(result.snap_token, {
+              onSuccess: function () {
+                Swal.fire({
+                  icon: "success",
+                  title: "Pembayaran Berhasil",
+                  text: "Pembayaran Anda berhasil.",
+                  confirmButtonColor: "#f97316",
+                }).then(() => {
+                  navigate("/my-transactions");
+                });
+              },
 
-          return;
+              onPending: function () {
+                Swal.fire({
+                  icon: "info",
+                  title: "Pembayaran Pending",
+                  text: "Silakan selesaikan pembayaran Anda.",
+                  confirmButtonColor: "#f97316",
+                }).then(() => {
+                  navigate("/my-transactions");
+                });
+              },
+
+              onError: function () {
+                Swal.fire({
+                  icon: "error",
+                  title: "Pembayaran Gagal",
+                  text: "Terjadi kesalahan saat pembayaran.",
+                  confirmButtonColor: "#f97316",
+                });
+              },
+
+              onClose: function () {
+                Swal.fire({
+                  icon: "warning",
+                  title: "Pembayaran Belum Selesai",
+                  text: "Anda menutup popup pembayaran.",
+                  confirmButtonColor: "#f97316",
+                }).then(() => {
+                  navigate("/my-transactions");
+                });
+              },
+            });
+
+            return;
         }
 
         // FLOW PELATIHAN

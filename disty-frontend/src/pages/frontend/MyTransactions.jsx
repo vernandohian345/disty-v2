@@ -78,19 +78,21 @@ export default function MyTransactions() {
     }
   };
 
-  const handleCheckStatus = async (id) => {
+    const handleCheckStatus = async (id, jenis) => {
     try {
       const token = localStorage.getItem("token");
 
-      const response = await fetch(
-        `http://127.0.0.1:8000/api/transaksi/check-status/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            Accept: "application/json",
-          },
-        }
-      );
+      const endpoint =
+        jenis === "sertifikasi"
+          ? `http://127.0.0.1:8000/api/transaksi/sertifikasi/check-status/${id}`
+          : `http://127.0.0.1:8000/api/transaksi/check-status/${id}`;
+
+      const response = await fetch(endpoint, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+      });
 
       const result = await response.json();
 
@@ -117,66 +119,68 @@ export default function MyTransactions() {
     }
   };
 
-  const handleRepay = async (id, kodeTransaksi) =>  {
-    try {
-      const token = localStorage.getItem("token");
+  const handleRepay = async (id, jenis) => {
+  try {
+    const token = localStorage.getItem("token");
 
-      const response = await fetch(
-        `http://127.0.0.1:8000/api/transaksi/repay/${id}`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            Accept: "application/json",
-          },
-        }
-      );
+    const endpoint =
+      jenis === "sertifikasi"
+        ? `http://127.0.0.1:8000/api/transaksi/sertifikasi/repay/${id}`
+        : `http://127.0.0.1:8000/api/transaksi/repay/${id}`;
 
-      const result = await response.json();
+    const response = await fetch(endpoint, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json",
+      },
+    });
 
-      window.snap.pay(result.snap_token, {
-        onSuccess: async () => {
-          await fetchData();
+    const result = await response.json();
 
-          Swal.fire({
-            icon: "success",
-            title: "Pembayaran Berhasil",
-            text: "Pembayaran Anda telah berhasil diverifikasi.",
-            confirmButtonColor: "#f97316",
-          });
-        },
+    window.snap.pay(result.snap_token, {
+      onSuccess: async () => {
+        await fetchData();
 
-        onPending: async () => {
-          await fetchData();
+        Swal.fire({
+          icon: "success",
+          title: "Pembayaran Berhasil",
+          text: "Pembayaran berhasil diverifikasi.",
+          confirmButtonColor: "#f97316",
+        });
+      },
 
-          Swal.fire({
-            icon: "info",
-            title: "Pembayaran Pending",
-            text: "Silakan selesaikan pembayaran Anda terlebih dahulu.",
-            confirmButtonColor: "#f97316",
-          });
-        },
+      onPending: async () => {
+        await fetchData();
 
-        onError: () => {
-          Toast.fire({
-            icon: "error",
-            title: "Pembayaran gagal",
-          });
-        },
+        Swal.fire({
+          icon: "info",
+          title: "Pembayaran Pending",
+          text: "Silakan selesaikan pembayaran Anda.",
+          confirmButtonColor: "#f97316",
+        });
+      },
 
-        onClose: () => {
-          Swal.fire({
-            icon: "warning",
-            title: "Pembayaran Belum Selesai",
-            text: "Anda menutup popup pembayaran sebelum transaksi selesai.",
-            confirmButtonColor: "#f97316",
-          });
-        },
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
+      onError: () => {
+        Toast.fire({
+          icon: "error",
+          title: "Pembayaran gagal",
+        });
+      },
+
+      onClose: () => {
+        Swal.fire({
+          icon: "warning",
+          title: "Pembayaran belum selesai",
+          text: "Anda menutup popup pembayaran.",
+          confirmButtonColor: "#f97316",
+        });
+      },
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
 
   const filteredData =
     activeTab === "all"
@@ -188,8 +192,10 @@ export default function MyTransactions() {
   ).length;
 
   const completedCount = data.filter(
-    (item) => item.status === "completed"
-  ).length;
+  (item) =>
+    item.status === "completed" ||
+    item.status === "approved"
+).length;
 
   if (loading) {
     return (
@@ -305,7 +311,7 @@ export default function MyTransactions() {
 
                     <div>
                       <h2 className="text-lg font-semibold text-slate-900">
-                        {item.pelatihan?.title}
+                        {item.nama_program}
                       </h2>
 
                       <p className="mt-1 text-sm text-slate-500">
@@ -313,7 +319,23 @@ export default function MyTransactions() {
                         <span className="ml-1 font-medium text-slate-700">
                           {item.kode_transaksi}
                         </span>
-                      </p>
+                      </p>  
+                      <div
+                        className={`px-3 py-1 rounded-full text-xs font-medium ${
+                          item.jenis === "pelatihan"
+                            ? "bg-purple-50 text-purple-600"
+                            : "bg-cyan-50 text-cyan-600"
+                        }`}
+                      >
+                        {item.jenis === "pelatihan"
+                          ? "Pelatihan"
+                          : "Sertifikasi"}
+                      </div>
+                      <div className="mt-2 flex flex-wrap gap-2">
+                    </div>
+
+                      <div className="mt-2 flex flex-wrap gap-2">
+                    </div>
 
                       <div className="mt-3 flex flex-wrap gap-2">
                         <div
@@ -343,14 +365,14 @@ export default function MyTransactions() {
                     {item.status === "pending" ? (
                       <div className="flex flex-col sm:flex-row gap-2">
                         <button
-                          onClick={() => handleRepay(item.id, item.kode_transaksi)}
+                          onClick={() => handleRepay(item.id, item.jenis)}
                           className="h-10 px-5 rounded-xl bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium transition"
                         >
                           Bayar Sekarang
                         </button>
 
                         <button
-                          onClick={() => handleCheckStatus(item.id)}
+                          onClick={() => handleCheckStatus(item.id, item.jenis)}
                           className="h-10 px-5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-sm font-medium transition"
                         >
                           Check Status
