@@ -483,7 +483,12 @@ export default function IndexSertifikasi() {
                 data={filteredSertifikasis}
                 loading={loading}
                 onView={(item) => {
-                    console.log(item);
+
+                    console.log(item.id);
+
+                    window.location.href =
+                        `/admin/sertifikasi/${item.id}`;
+
                 }}
                 
                 onEdit={(item) => {

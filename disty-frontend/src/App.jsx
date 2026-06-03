@@ -126,8 +126,13 @@ export default function App() {
 
         <Route
             path="/admin/sertifikasi/:id"
-            element={<DetailSertifikasi />}
+            element={
+                <RouteAdmin>
+                    <DetailSertifikasi />
+                </RouteAdmin>
+            }
         />
+
         {/* ADMIN PEMBAYARAN */}
         <Route
           path="/admin/pembayaran"

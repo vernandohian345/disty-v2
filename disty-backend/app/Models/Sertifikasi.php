@@ -37,8 +37,8 @@ class Sertifikasi extends Model
         'sampul_url'
     ];
 
-    public function getSampulUrlAttribute()
+   public function getSampulUrlAttribute()
     {
-        return asset('storage/sertifikasi/' . $this->sampul);
+        return asset('storage/sertifikasi/' . rawurlencode($this->sampul));
     }
 }

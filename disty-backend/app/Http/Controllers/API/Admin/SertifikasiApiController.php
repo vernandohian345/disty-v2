@@ -29,13 +29,27 @@ class SertifikasiApiController extends Controller
     }
 
     // ✅ GET detail sertifikasi
-    public function show(int $id)
+    public function show($id)
     {
-        $sertifikasi = Sertifikasi::findOrFail($id);
+        $sertifikasi = Sertifikasi::with('transaksi.user')->findOrFail($id);
+
+        // hitung peserta yang sudah bayar / berhasil
+        $pesertaCount = $sertifikasi->transaksi
+            ->where('status', 'paid')
+            ->count();
+
+        // auto update status full
+        if ($pesertaCount >= $sertifikasi->kuota) {
+
+            $sertifikasi->status = 'full';
+            $sertifikasi->save();
+
+        }
 
         return response()->json([
-            'status' => 'success',
-            'data' => $sertifikasi
+            'success' => true,
+            'data' => $sertifikasi,
+            'peserta_count' => $pesertaCount
         ]);
     }
 
@@ -73,11 +87,11 @@ class SertifikasiApiController extends Controller
 
             $file = $request->file('sampul');
 
-            $filename =
-                time() . '_' . $file->getClientOriginalName();
+           $filename = time() . '.' . $file->getClientOriginalExtension();
+
 
             $file->move(
-                public_path('uploads/sertifikasi'),
+                public_path('storage/sertifikasi'),
                 $filename
             );
 
@@ -153,8 +167,8 @@ class SertifikasiApiController extends Controller
 
             $file = $request->file('sampul');
 
-            $filename =
-                time() . '_' . $file->getClientOriginalName();
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+
 
             $file->move(
                 public_path('uploads/sertifikasi'),

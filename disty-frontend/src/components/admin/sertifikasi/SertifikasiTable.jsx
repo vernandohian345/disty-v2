@@ -251,22 +251,9 @@ export default function SertifikasiTable({
                         ">
 
                             <img
-                                src={
-                                    item.sampul
-                                        ? `http://127.0.0.1:8000/uploads/sertifikasi/${item.sampul}`
-                                        : "https://placehold.co/600x400?text=No+Image"
-                                }
+                                src={item.sampul_url}
                                 alt=""
-                                className="
-                                    w-full
-                                    lg:w-32
-                                    h-24
-                                    rounded-2xl
-                                    object-cover
-                                    shadow-sm
-                                    border
-                                    border-slate-100
-                                "
+                                className="w-32 h-32 rounded-2xl object-cover"
                             />
 
                         </div>
@@ -409,29 +396,20 @@ export default function SertifikasiTable({
 
                             {/* VIEW */}
                             <button
-                                onClick={() =>
-                                    onView(item)
-                                }
+                                onClick={() => {
+                                    alert("VIEW CLICKED");
+                                    onView(item);
+                                }}
                                 className="
-                                    flex
-                                    items-center
-                                    justify-center
-                                    w-11
-                                    h-11
-                                    rounded-2xl
+                                    w-10
+                                    h-10
+                                    rounded-xl
                                     bg-slate-100
-                                    hover:bg-slate-800
-                                    hover:text-white
-                                    text-slate-600
-                                    transition
-                                    shadow-sm
+                                    hover:bg-slate-200
                                 "
                             >
 
-                                <i className="
-                                    fas
-                                    fa-eye
-                                "></i>
+                                👁
 
                             </button>
 
