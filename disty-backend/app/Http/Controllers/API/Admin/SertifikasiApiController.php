@@ -12,7 +12,15 @@ class SertifikasiApiController extends Controller
     // ✅ GET semua sertifikasi
     public function index()
     {
-        $sertifikasis = Sertifikasi::latest()->paginate(10);
+        $sertifikasis = Sertifikasi::withCount([
+            'transaksi as peserta_terdaftar' => function ($query) {
+                $query->whereIn('status', [
+                    'paid',
+                    'success',
+                    'completed'
+                ]);
+            }
+        ])->latest()->paginate(10);
 
         return response()->json([
             'status' => 'success',
@@ -37,7 +45,6 @@ class SertifikasiApiController extends Controller
         $request->validate([
             'nama_sertifikasi'   => 'required|string|max:255',
             'deskripsi'          => 'required|string',
-            'bahasa'             => 'required|string',
             'kategori'           => 'required|string',
             'link_grup'          => 'required|string',
             'tanggal_sertifikasi'=> 'required|date',
@@ -105,7 +112,6 @@ class SertifikasiApiController extends Controller
             'harga'            => $request->kategori === 'berbayar'
                                         ? 'required|numeric|min:1'
                                         : 'nullable',
-            'bahasa'           => 'required|string',
             'sampul'           => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 

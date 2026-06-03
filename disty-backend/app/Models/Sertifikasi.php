@@ -12,7 +12,6 @@ class Sertifikasi extends Model
         'nama_sertifikasi',
         'slug',
         'deskripsi',
-        'bahasa',
         'kategori',
         'harga',
         'tanggal_sertifikasi',

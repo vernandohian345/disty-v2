@@ -25,9 +25,6 @@ export default function SertifikasiForm({
         harga:
             editData?.harga || 0,
 
-        bahasa:
-            editData?.bahasa || "",
-
         tanggal_sertifikasi:
             editData?.tanggal_sertifikasi || "",
 
@@ -301,42 +298,6 @@ export default function SertifikasiForm({
                             }
                             onChange={handleChange}
                             placeholder="Masukkan nama Sertifikasi"
-                            className="
-                                w-full
-                                p-4
-                                rounded-2xl
-                                border
-                                border-slate-200
-                                focus:outline-none
-                                focus:ring-4
-                                focus:ring-orange-200
-                            "
-                            required
-                        />
-
-                    </div>
-
-                    {/* BAHASA */}
-                    <div>
-
-                        <label className="
-                            block
-                            text-sm
-                            font-bold
-                            text-slate-700
-                            mb-2
-                        ">
-
-                            Bahasa
-
-                        </label>
-
-                        <input
-                            type="text"
-                            name="bahasa"
-                            value={form.bahasa}
-                            onChange={handleChange}
-                            placeholder="Contoh: Indonesia"
                             className="
                                 w-full
                                 p-4

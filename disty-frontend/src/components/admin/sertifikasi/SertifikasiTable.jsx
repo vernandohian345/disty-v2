@@ -302,7 +302,7 @@ export default function SertifikasiTable({
                                 ">
 
                                     {
-                                        item.bahasa
+                                        item.mode
                                     }
 
                                 </span>
@@ -320,8 +320,10 @@ export default function SertifikasiTable({
                                 ">
 
                                     {
-                                        item.durasi
-                                    }
+                                        item.peserta_terdaftar || 0
+                                    } / {
+                                        item.kuota
+                                    } Peserta
 
                                 </span>
 
