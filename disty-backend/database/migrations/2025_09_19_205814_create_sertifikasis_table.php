@@ -22,7 +22,6 @@ return new class extends Migration
             $table->string('bahasa', 100);
             $table->enum('kategori', ['gratis', 'berbayar'])->default('gratis');
             $table->text('deskripsi')->nullable();
-            $table->text('materi')->nullable();
             $table->text('syarat')->nullable();
             $table->timestamps();
         });

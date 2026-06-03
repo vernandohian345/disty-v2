@@ -1,6 +1,5 @@
 import { useState } from "react";
 
-import RichTextEditor from "../../shared/RichTextEditor";
 import { useNavigate } from "react-router-dom";
 
 export default function SertifikasiForm({
@@ -16,9 +15,6 @@ export default function SertifikasiForm({
 
         deskripsi:
             editData?.deskripsi || "",
-
-        materi:
-            editData?.materi || "",
 
         kategori:
             editData?.kategori || "gratis",
@@ -37,6 +33,24 @@ export default function SertifikasiForm({
 
         tanggal_sertifikasi:
             editData?.tanggal_sertifikasi || "",
+
+        registration_deadline:
+            editData?.registration_deadline || "",
+
+        lokasi:
+            editData?.lokasi || "",
+
+        kuota:
+            editData?.kuota || 0,
+
+        mode:
+            editData?.mode || "offline",
+
+        penyelenggara:
+            editData?.penyelenggara || "",
+
+        status:
+            editData?.status || "open",
 
         sampul: null,
     });
@@ -522,6 +536,234 @@ export default function SertifikasiForm({
 
                     </div>
 
+                    {/* DEADLINE */}
+                    <div>
+
+                        <label className="
+                            block
+                            text-sm
+                            font-bold
+                            text-slate-700
+                            mb-2
+                        ">
+
+                            Deadline Pendaftaran
+
+                        </label>
+
+                        <input
+                            type="date"
+                            name="registration_deadline"
+                            value={form.registration_deadline}
+                            onChange={handleChange}
+                            className="
+                                w-full
+                                p-4
+                                rounded-2xl
+                                border
+                                border-slate-200
+                                focus:outline-none
+                                focus:ring-4
+                                focus:ring-orange-200
+                            "
+                            required
+                        />
+
+                    </div>
+
+                    {/* LOKASI */}
+                    <div>
+
+                        <label className="
+                            block
+                            text-sm
+                            font-bold
+                            text-slate-700
+                            mb-2
+                        ">
+
+                            Lokasi
+
+                        </label>
+
+                        <input
+                            type="text"
+                            name="lokasi"
+                            value={form.lokasi}
+                            onChange={handleChange}
+                            placeholder="Contoh: Surabaya"
+                            className="
+                                w-full
+                                p-4
+                                rounded-2xl
+                                border
+                                border-slate-200
+                                focus:outline-none
+                                focus:ring-4
+                                focus:ring-orange-200
+                            "
+                            required
+                        />
+
+                    </div>
+
+                    {/* KUOTA */}
+                    <div>
+
+                        <label className="
+                            block
+                            text-sm
+                            font-bold
+                            text-slate-700
+                            mb-2
+                        ">
+
+                            Kuota Peserta
+
+                        </label>
+
+                        <input
+                            type="number"
+                            name="kuota"
+                            value={form.kuota}
+                            onChange={handleChange}
+                            placeholder="Contoh: 30"
+                            className="
+                                w-full
+                                p-4
+                                rounded-2xl
+                                border
+                                border-slate-200
+                                focus:outline-none
+                                focus:ring-4
+                                focus:ring-orange-200
+                            "
+                            required
+                        />
+
+                    </div>
+
+                    {/* MODE */}
+                    <div>
+
+                        <label className="
+                            block
+                            text-sm
+                            font-bold
+                            text-slate-700
+                            mb-2
+                        ">
+
+                            Mode Sertifikasi
+
+                        </label>
+
+                        <select
+                            name="mode"
+                            value={form.mode}
+                            onChange={handleChange}
+                            className="
+                                w-full
+                                p-4
+                                rounded-2xl
+                                border
+                                border-slate-200
+                            "
+                        >
+
+                            <option value="offline">
+                                Offline
+                            </option>
+
+                            <option value="online">
+                                Online
+                            </option>
+
+                            <option value="hybrid">
+                                Hybrid
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    {/* PENYELENGGARA */}
+                    <div>
+
+                        <label className="
+                            block
+                            text-sm
+                            font-bold
+                            text-slate-700
+                            mb-2
+                        ">
+
+                            Penyelenggara
+
+                        </label>
+
+                        <input
+                            type="text"
+                            name="penyelenggara"
+                            value={form.penyelenggara}
+                            onChange={handleChange}
+                            placeholder="Contoh: BNSP"
+                            className="
+                                w-full
+                                p-4
+                                rounded-2xl
+                                border
+                                border-slate-200
+                            "
+                            required
+                        />
+
+                    </div>
+
+                    {/* STATUS */}
+                    <div>
+
+                        <label className="
+                            block
+                            text-sm
+                            font-bold
+                            text-slate-700
+                            mb-2
+                        ">
+
+                            Status
+
+                        </label>
+
+                        <select
+                            name="status"
+                            value={form.status}
+                            onChange={handleChange}
+                            className="
+                                w-full
+                                p-4
+                                rounded-2xl
+                                border
+                                border-slate-200
+                            "
+                        >
+
+                            <option value="open">
+                                Open
+                            </option>
+
+                            <option value="closed">
+                                Closed
+                            </option>
+
+                            <option value="finished">
+                                Completed
+                            </option>
+
+                        </select>
+
+                    </div>
+
                     {/* LINK */}
                     <div className="md:col-span-2">
 
@@ -553,7 +795,7 @@ export default function SertifikasiForm({
                                 focus:ring-4
                                 focus:ring-orange-200
                             "
-                            required
+                            
                         />
 
                     </div>
@@ -591,42 +833,6 @@ export default function SertifikasiForm({
                             "
                             required
                         />
-
-                    </div>
-
-                    {/* MATERI */}
-                    <div className="md:col-span-2">
-
-                        <label className="
-                            block
-                            text-sm
-                            font-bold
-                            text-slate-700
-                            mb-2
-                        ">
-
-                            Materi
-
-                        </label>
-
-                        <div className="
-                            border
-                            border-slate-200
-                            rounded-2xl
-                            overflow-hidden
-                        ">
-
-                            <RichTextEditor
-                                value={form.materi}
-                                onChange={(value) =>
-                                    setForm((prev) => ({
-                                        ...prev,
-                                        materi: value,
-                                    }))
-                                }
-                            />
-
-                        </div>
 
                     </div>
 

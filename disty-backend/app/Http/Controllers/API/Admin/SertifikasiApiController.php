@@ -38,10 +38,14 @@ class SertifikasiApiController extends Controller
             'nama_sertifikasi'   => 'required|string|max:255',
             'deskripsi'          => 'required|string',
             'bahasa'             => 'required|string',
-            'materi'             => 'required|string',
             'kategori'           => 'required|string',
             'link_grup'          => 'required|string',
             'tanggal_sertifikasi'=> 'required|date',
+            'registration_deadline' => 'required|date',
+            'lokasi'             => 'required|string',
+            'mode'               => 'required|string',
+            'penyelenggara'      => 'required|string',
+            'kuota'              => 'required|integer|min:1',
             'harga'              => $request->kategori === 'berbayar'
                                         ? 'required|numeric|min:1'
                                         : 'nullable',
@@ -91,11 +95,15 @@ class SertifikasiApiController extends Controller
         $request->validate([
             'nama_sertifikasi' => 'required|string|max:255',
             'deskripsi'        => 'required',
-            'materi'           => 'nullable|string',
             'kategori'         => 'required|string',
             'link_grup'        => 'required|string',
             'durasi'           => 'required|string|max:100',
             'tanggal_sertifikasi' => 'required|date',
+            'registration_deadline' => 'required|date',
+            'lokasi' => 'required|string',
+            'mode' => 'required|string',
+            'penyelenggara' => 'required|string',
+            'kuota' => 'required|integer|min:1',
             'harga'            => $request->kategori === 'berbayar'
                                         ? 'required|numeric|min:1'
                                         : 'nullable',

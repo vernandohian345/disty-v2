@@ -45,8 +45,41 @@ class TransaksiSertifikasiApiController extends Controller
             );
 
         // =========================
-// CEK SUDAH TERDAFTAR
-// =========================
+        // CEK KUOTA
+        // =========================
+
+        $jumlahPeserta =
+            TransaksiSertifikasi::where(
+                'sertifikasi_id',
+                $sertifikasi->id
+            )->count();
+
+        if ($jumlahPeserta >= $sertifikasi->kuota) {
+
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Kuota sertifikasi penuh'
+            ], 422);
+        }
+
+        // =========================
+        // CEK DEADLINE
+        // =========================
+
+        if (
+            $sertifikasi->registration_deadline &&
+            now()->gt($sertifikasi->registration_deadline)
+        ) {
+
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Pendaftaran sudah ditutup'
+            ], 422);
+        }
+
+        // =========================
+        // CEK SUDAH TERDAFTAR
+        // =========================
 
         $existing =
             TransaksiSertifikasi::where(
@@ -61,8 +94,8 @@ class TransaksiSertifikasiApiController extends Controller
                     'status',
                     [
                         'pending',
-                        'paid',
-                        'approved'
+                        'approved',
+                        'completed'
                     ]
                 )
                 ->first();

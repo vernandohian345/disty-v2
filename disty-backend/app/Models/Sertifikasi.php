@@ -11,16 +11,21 @@ class Sertifikasi extends Model
     protected $fillable = [
         'nama_sertifikasi',
         'slug',
-        'tanggal_sertifikasi',
+        'deskripsi',
+        'bahasa',
+        'kategori',
         'harga',
         'durasi',
-        'bahasa',
-        'deskripsi',
-        'materi',
-        'kategori',
-        'link_grup',
+        'tanggal_sertifikasi',
         'sampul',
-        'syarat',
+        'link_grup',
+
+        'lokasi',
+        'kuota',
+        'registration_deadline',
+        'mode',
+        'penyelenggara',
+        'status',
     ];
 
     public function transaksi()
