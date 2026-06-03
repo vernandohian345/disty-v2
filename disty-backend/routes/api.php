@@ -100,14 +100,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/transaksi/sertifikasi/repay/{id}',[TransaksiSertifikasiApiController::class, 'repay']);
         Route::get('/transaksi/sertifikasi/check-status/{id}',[TransaksiSertifikasiApiController::class, 'checkStatus']);
     });
-
-    // =====================================================
-    // ADMIN
-    // =====================================================
-
-    // DASHBOARD
-    Route::get('/dashboard', [DashboardApiController::class, 'index']);
-
+    
     // modal pelatihan user
     Route::prefix('admin')->group(function () {
         Route::get('/pelatihan/{pelatihan}/modul',[PelatihanModulApiController::class, 'index']);
@@ -116,6 +109,15 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/pelatihan/modul/{id}',[PelatihanModulApiController::class, 'update']);
         Route::delete('/pelatihan/modul/{id}',[PelatihanModulApiController::class, 'destroy']);
     });
+
+    
+    // =====================================================
+    // ADMIN
+    // =====================================================
+
+    // DASHBOARD
+    Route::get('/dashboard', [DashboardApiController::class, 'index']);
+
 
     // ================= PELATIHAN =================
     Route::get('/pelatihan', [PelatihanApiController::class, 'index']);
