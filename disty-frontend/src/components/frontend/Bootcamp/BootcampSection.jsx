@@ -292,7 +292,7 @@ export default function BootcampSection() {
       {/* Top decorative rule */}
       <div className="h-px w-full bg-gradient-to-r from-transparent via-orange-200 to-transparent" />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 py-20 lg:py-28">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 py-20 lg:py-14">
         {/* ── HEADER ─────────────────────────────────── */}
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-10 mb-14">
           {/* Title */}
@@ -394,7 +394,7 @@ export default function BootcampSection() {
                 >
                   {filter}
                   {activeFilter === filter && (
-                    <span className="absolute -top-1 -right-1 w-2 h-2 bg-orange-500 rounded-full" />
+                    <span className="absolute -top-1 -right-1 w-2 h-2 " />
                   )}
                 </button>
               ))}

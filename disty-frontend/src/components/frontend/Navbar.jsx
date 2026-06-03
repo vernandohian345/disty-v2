@@ -559,7 +559,7 @@ export default function Navbar() {
                         >
                           <FaBookOpen />
 
-                          <span>Pelatihan Saya</span>
+                          <span>Program Saya</span>
                         </button>
 
                         {/* DASHBOARD */}

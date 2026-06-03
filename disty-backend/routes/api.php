@@ -108,6 +108,14 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/pelatihan/modul/{id}',[PelatihanModulApiController::class, 'show']);
         Route::put('/pelatihan/modul/{id}',[PelatihanModulApiController::class, 'update']);
         Route::delete('/pelatihan/modul/{id}',[PelatihanModulApiController::class, 'destroy']);
+        Route::post(
+            '/transaksi/sertifikasi',
+            [TransaksiSertifikasiApiController::class, 'store']
+        );
+        Route::get(
+            '/my-certificates',
+            [SertifikatPelatihanApiController::class, 'myCertificates']
+        );
     });
 
     

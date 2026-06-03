@@ -107,8 +107,8 @@ export default function ProgramHero() {
             overflow-hidden
             rounded-[40px]
 
-            min-h-[680px]
-            lg:min-h-[760px]
+            min-h-[540px]
+            lg:min-h-[650px]
 
             bg-[#1a0f0a]
 
@@ -418,11 +418,11 @@ export default function ProgramHero() {
               flex
               items-center
 
-              min-h-[680px]
-              lg:min-h-[760px]
+              min-h-[540px]
+              lg:min-h-[650px]
 
               px-6
-              py-20
+              py-12
 
               sm:px-10
 
@@ -430,50 +430,6 @@ export default function ProgramHero() {
             "
           >
             <div className="max-w-[580px]">
-              {/* ========================================
-                  EYEBROW
-              ======================================== */}
-
-              <motion.div
-                initial={{
-                  opacity: 0,
-                  y: 16,
-                }}
-                animate={{
-                  opacity: 1,
-                  y: 0,
-                }}
-                transition={{
-                  duration: 0.5,
-                }}
-                className="
-                  inline-flex
-                  items-center
-                  gap-2.5
-                  mb-8
-                "
-              >
-                <div
-                  className="
-                    h-px
-                    w-8
-                    bg-orange-400/80
-                  "
-                />
-
-                <span
-                  className="
-                    text-orange-400
-                    text-[11px]
-                    font-bold
-                    uppercase
-                    tracking-[0.22em]
-                  "
-                >
-                  Disty Academy Programs
-                </span>
-              </motion.div>
-
               {/* ========================================
                   HEADING
               ======================================== */}
