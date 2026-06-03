@@ -102,14 +102,14 @@ export default function HeroSection() {
                     </svg>
                   </div>
                   <div>
-                    <p className="text-white/100 text-xs font-medium uppercase tracking-widest">
+                    <p className="text-white/100 text-[20px] font-medium uppercase tracking-widest">
                       Sertifikasi
                     </p>
-                    <h3 className="text-2xl font-black text-orange-400 leading-tight">
+                    <h3 className="text-[50px] font-black text-orange-400 leading-tight">
                       BNSP
                     </h3>
                     <div className="flex items-center gap-1.5 mt-1">
-                      <span className="text-white/100 text-xs">
+                      <span className="text-white/100 text-[16px]">
                         Diakui Profesional
                       </span>
                     </div>
@@ -134,13 +134,13 @@ export default function HeroSection() {
                     </svg>
                   </div>
                   <div>
-                    <p className="text-white/100 text-xs font-medium uppercase tracking-widest">
+                    <p className="text-white/100 text-[20px] font-medium uppercase tracking-widest">
                       Peserta
                     </p>
-                    <h3 className="text-2xl font-black text-orange-400 leading-tight">
+                    <h3 className="text-[50px] font-black text-orange-400 leading-tight">
                       500+
                     </h3>
-                    <p className="text-white/100 text-xs mt-1">
+                    <p className="text-white/100 text-[16px] mt-1">
                       Peserta Aktif Disty
                     </p>
                   </div>
@@ -164,13 +164,13 @@ export default function HeroSection() {
                     </svg>
                   </div>
                   <div>
-                    <p className="text-white/100 text-xs font-medium uppercase tracking-widest">
+                    <p className="text-white/100 text-[20px] font-medium uppercase tracking-widest">
                       Program
                     </p>
-                    <h3 className="text-2xl font-black text-orange-400 leading-tight">
+                    <h3 className="text-[50px] font-black text-orange-400 leading-tight">
                       50+
                     </h3>
-                    <p className="text-white/100 text-xs mt-1">
+                    <p className="text-white/100 text-[16px] mt-1">
                       Bootcamp Digital
                     </p>
                   </div>

@@ -130,6 +130,10 @@ Route::middleware('auth:sanctum')->group(function () {
             '/transaksi/sertifikasi',
             [TransaksiSertifikasiApiController::class, 'store']
         );
+        Route::get(
+            '/my-certificates',
+            [SertifikatPelatihanApiController::class, 'myCertificates']
+        );
     });
 
     // =====================================================

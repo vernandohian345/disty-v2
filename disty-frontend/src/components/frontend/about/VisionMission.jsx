@@ -42,7 +42,7 @@ export default function VisionMission() {
               Visi
             </p>
 
-            <h3 className="text-xl font-black text-slate-900 leading-relaxed">
+            <h3 className="text-xl text-center font-black text-slate-900 leading-relaxed">
               Menjadi Lembaga pelatihan nasional yang terbaik, terkemuka dan
               terpercaya dalam memberikan menyelenggarakan pendidikan dan
               pelatihan berbasis kompetensi sesuai dengan Standar Kompetensi
