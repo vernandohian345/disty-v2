@@ -50,7 +50,6 @@ class SertifikasiApiController extends Controller
                                         ? 'required|numeric|min:1'
                                         : 'nullable',
             'sampul'             => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            'durasi'             => 'required|string|max:100',
         ]);
 
         $data = $request->all();
@@ -97,7 +96,6 @@ class SertifikasiApiController extends Controller
             'deskripsi'        => 'required',
             'kategori'         => 'required|string',
             'link_grup'        => 'required|string',
-            'durasi'           => 'required|string|max:100',
             'tanggal_sertifikasi' => 'required|date',
             'registration_deadline' => 'required|date',
             'lokasi' => 'required|string',

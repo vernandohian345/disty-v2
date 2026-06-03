@@ -15,11 +15,9 @@ class Sertifikasi extends Model
         'bahasa',
         'kategori',
         'harga',
-        'durasi',
         'tanggal_sertifikasi',
         'sampul',
         'link_grup',
-
         'lokasi',
         'kuota',
         'registration_deadline',

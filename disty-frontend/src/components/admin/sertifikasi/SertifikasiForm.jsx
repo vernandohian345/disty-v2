@@ -22,9 +22,6 @@ export default function SertifikasiForm({
         link_grup:
             editData?.link_grup || "",
 
-        durasi:
-            editData?.durasi || "",
-
         harga:
             editData?.harga || 0,
 
@@ -355,41 +352,6 @@ export default function SertifikasiForm({
 
                     </div>
 
-                    {/* DURASI */}
-                    <div>
-
-                        <label className="
-                            block
-                            text-sm
-                            font-bold
-                            text-slate-700
-                            mb-2
-                        ">
-
-                            Durasi
-
-                        </label>
-
-                        <input
-                            type="text"
-                            name="durasi"
-                            value={form.durasi}
-                            onChange={handleChange}
-                            placeholder="Contoh: 2 Jam"
-                            className="
-                                w-full
-                                p-4
-                                rounded-2xl
-                                border
-                                border-slate-200
-                                focus:outline-none
-                                focus:ring-4
-                                focus:ring-orange-200
-                            "
-                            required
-                        />
-
-                    </div>
 
                     {/* KATEGORI */}
                     <div>
