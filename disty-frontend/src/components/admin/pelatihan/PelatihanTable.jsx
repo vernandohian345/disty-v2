@@ -241,15 +241,15 @@ export default function PelatihanTable({
                 }
                 alt=""
                 className="
-                                    w-full
-                                    lg:w-32
-                                    h-24
-                                    rounded-2xl
-                                    object-cover
-                                    shadow-sm
-                                    border
-                                    border-slate-100
-                                "
+                  w-full
+                  lg:w-32
+                  h-24
+                  rounded-2xl
+                  object-cover
+                  shadow-sm
+                  border
+                  border-slate-100
+                "
               />
             </div>
 

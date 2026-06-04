@@ -56,49 +56,31 @@ export default function LearningPage() {
       }
 
       // ========================================
-      // FORMAT MATERI
+      // FORMAT MODULES FROM DATABASE
       // ========================================
 
-      const rawMateri = foundCourse?.pelatihan?.materi;
+      const modules =
+        foundCourse?.pelatihan?.moduls?.map((modul) => ({
+          id: modul.id,
 
-      let materiList = [];
+          title: modul.judul,
 
-      // ARRAY
-      if (Array.isArray(rawMateri)) {
-        materiList = rawMateri;
-      }
+          duration: modul.durasi,
 
-      // STRING
-      else if (typeof rawMateri === "string") {
-        materiList = rawMateri
-          .replace(/<[^>]*>/g, "")
-          .split(",")
-          .map((item) => item.trim())
-          .filter(Boolean);
-      }
+          completed: false,
 
-      // NULL / EMPTY
-      else {
-        materiList = ["Pengenalan Materi"];
-      }
+          video: modul.video_url,
 
-      // ========================================
-      // FORMAT MODULES
-      // ========================================
+          materials: [
+            modul.deskripsi || "Belum ada deskripsi materi",
+          ],
+        })) || [];
 
-      const modules = materiList.map((item, index) => ({
-        id: index + 1,
-
-        title: item,
-
-        duration: "15 Menit",
-
-        completed: true,
-
-        video: "https://youtu.be/u9u_E6TG5Ko?si=fCDaQiClNXD47MAF",
-
-        materials: [item],
-      }));
+        console.log("MODULS => ", modules);
+        console.log(
+          "FOUND COURSE FULL =>",
+          JSON.stringify(foundCourse, null, 2)
+        );
 
       // ========================================
       // FORMAT COURSE

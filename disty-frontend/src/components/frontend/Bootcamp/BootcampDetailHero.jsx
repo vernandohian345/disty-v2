@@ -94,7 +94,7 @@ const WhatsAppIcon = () => (
 // ── SKELETON ───────────────────────────────────────────────
 function SkeletonHero() {
   return (
-    <section className="relative overflow-hidden bg-[#0f0a07]">
+    <section className="relative overflow-hidden bg-[#fafafa]">
       <div className="max-w-[1800px] mx-auto px-4 lg:px-6 py-6">
         <div className="relative overflow-hidden rounded-[36px] min-h-[680px] bg-[#1a0f0a] border border-white/[0.07] animate-pulse">
           {/* Fake thumbnail gradient */}
@@ -103,7 +103,7 @@ function SkeletonHero() {
             <div className="max-w-xl space-y-5 w-full">
               <div className="h-3 w-28 bg-white/10 rounded-full" />
               <div className="space-y-3">
-                <div className="h-10 w-3/4 bg-white/10 rounded-xl" />
+                <div className="h-10 w-3/4 bg-white rounded-xl" />
                 <div className="h-10 w-2/3 bg-white/[0.07] rounded-xl" />
               </div>
               <div className="h-4 w-full bg-white/[0.07] rounded-lg" />
@@ -255,7 +255,7 @@ export default function BootcampDetailHero() {
         <div
           className="
           relative overflow-hidden rounded-[36px]
-          min-h-[680px] lg:min-h-[740px]
+          min-h-[580px] lg:min-h-[640px]
           bg-[#1a0f0a]
           border border-white/[0.07]
           shadow-[0_32px_100px_rgba(0,0,0,0.55)]
@@ -303,14 +303,14 @@ export default function BootcampDetailHero() {
             items-start lg:items-center
             justify-between
             gap-8
-            min-h-[680px] lg:min-h-[740px]
+            min-h-[580px] lg:min-h-[640px]
             px-6 pt-24 pb-14
             sm:px-10
             lg:px-14 lg:pt-0
           "
           >
             {/* ── CONTENT LEFT ─────────────────────────── */}
-            <div className="flex-1 max-w-[580px]">
+            <div className="flex-1 max-w-[580px] pt-8">
               {/* Category pill */}
               <div className="inline-flex items-center gap-2 bg-white/[0.08] backdrop-blur-xl border border-white/[0.1] rounded-full px-4 py-2 mb-6">
                 <span className="w-1.5 h-1.5 rounded-full bg-orange-400 shrink-0" />
@@ -421,7 +421,7 @@ export default function BootcampDetailHero() {
                     h-13 px-6 rounded-2xl
                     border border-white/[0.15] bg-white/[0.07]
                     hover:bg-white/[0.12] hover:border-white/[0.25]
-                    text-white/78 hover:text-white
+                    text-white hover:text-white
                     text-sm font-bold
                     backdrop-blur-sm
                     transition-all duration-300
@@ -519,19 +519,6 @@ export default function BootcampDetailHero() {
                 </p>
               </div>
             </div>
-          </div>
-
-          {/* ── SCROLL INDICATOR ─────────────────────────── */}
-          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-1.5">
-            {[0, 200, 400].map((delay) => (
-              <div
-                key={delay}
-                className="w-1 h-1 rounded-full bg-white/25"
-                style={{
-                  animation: `ping 1.5s ${delay}ms ease-in-out infinite`,
-                }}
-              />
-            ))}
           </div>
         </div>
       </div>

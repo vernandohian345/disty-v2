@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\PelatihanModul;
 
 class Pelatihan extends Model
 {
@@ -47,6 +48,14 @@ class Pelatihan extends Model
     public function transaksi()
     {
         return $this->hasMany(TransaksiPelatihan::class, 'pelatihan_id');
+    }
+
+     public function moduls()
+    {
+        return $this->hasMany(
+            PelatihanModul::class,
+            'pelatihan_id'
+        )->orderBy('urutan');
     }
 
 

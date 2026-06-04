@@ -166,12 +166,12 @@ export default function PembayaranDetailModal({
               src={`http://127.0.0.1:8000/${data.bukti}`}
               alt="Bukti"
               className="
-  w-full
-  max-h-[250px]
-  rounded-3xl
-  object-contain
-  bg-gray-100
-"
+                w-full
+                max-h-[250px]
+                rounded-3xl
+                object-contain
+                bg-gray-100
+              "
               onError={(e) => {
                 e.target.src = "https://placehold.co/600x400";
               }}
@@ -181,23 +181,23 @@ export default function PembayaranDetailModal({
           {/* FOOTER */}
           <div
             className="
-                        flex
-                        flex-wrap
-                        justify-end
-                        gap-4
-                        mt-8
-                    "
+              flex
+              flex-wrap
+              justify-end
+              gap-4
+              mt-8
+            "
           >
             <button
               onClick={() => onReject(data.id)}
               className="
-                                px-6
-                                py-3
-                                rounded-2xl
-                                bg-red-500
-                                text-white
-                                font-bold
-                            "
+                  px-6
+                  py-3
+                  rounded-2xl
+                  bg-red-500
+                  text-white
+                  font-bold
+                "
             >
               Reject
             </button>
@@ -205,13 +205,13 @@ export default function PembayaranDetailModal({
             <button
               onClick={() => onApprove(data.id)}
               className="
-                                px-6
-                                py-3
-                                rounded-2xl
-                                bg-green-500
-                                text-white
-                                font-bold
-                            "
+                  px-6
+                  py-3
+                  rounded-2xl
+                  bg-green-500
+                  text-white
+                  font-bold
+                "
             >
               Approve
             </button>

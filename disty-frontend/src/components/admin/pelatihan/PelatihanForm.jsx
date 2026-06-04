@@ -1,6 +1,5 @@
-import { useMemo, useState } from "react";
-
 import { useNavigate } from "react-router-dom";
+import { useMemo, useState, useEffect } from "react";
 
 import RichTextEditor from "../../shared/RichTextEditor";
 
@@ -32,39 +31,80 @@ font-semibold
 transition
 `;
 
-export default function PelatihanForm({
-  onSubmit,
-  editData = null,
-}) {
+export default function PelatihanForm({ onSubmit, editData = null }) {
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
-    title: editData?.title || "",
-    short_description:
-      editData?.short_description || "",
-    deskripsi: editData?.deskripsi || "",
-    materi: editData?.materi || "",
-    kategori: editData?.kategori || "gratis",
-    level: editData?.level || "Beginner",
-    status: editData?.status || "published",
-    link_grup: editData?.link_grup || "",
-    durasi: editData?.durasi || "",
-    harga: editData?.harga || 0,
-    bahasa: editData?.bahasa || "",
-    tanggal_pelatihan:
-      editData?.tanggal_pelatihan || "",
+    title: "",
+    short_description: "",
+    deskripsi: "",
+    materi: "",
+    kategori: "gratis",
+    level: "Beginner",
+    status: "published",
+    link_grup: "",
+    durasi: "",
+    harga: 0,
+    bahasa: "",
+    tanggal_pelatihan: "",
     thumbnail: null,
   });
+
+  const [moduls, setModuls] = useState([
+    {
+      judul: "",
+      deskripsi: "",
+      video_url: "",
+      durasi: "",
+      urutan: 1,
+    },
+  ]);
+
+  useEffect(() => {
+    console.log("EDIT DATA =", editData);
+    console.log("MODULS =", editData?.moduls);
+  }, [editData]);
+
+  useEffect(() => {
+    if (!editData) return;
+
+    setForm({
+      title: editData.title || "",
+      short_description: editData.short_description || "",
+      deskripsi: editData.deskripsi || "",
+      materi: editData.materi || "",
+      kategori: editData.kategori || "gratis",
+      level: editData.level || "Beginner",
+      status: editData.status || "published",
+      link_grup: editData.link_grup || "",
+      durasi: editData.durasi || "",
+      harga: editData.harga || 0,
+      bahasa: editData.bahasa || "",
+      tanggal_pelatihan: editData.tanggal_pelatihan || "",
+      thumbnail: null,
+    });
+
+    if (editData.moduls && editData.moduls.length > 0) {
+      setModuls(editData.moduls);
+    } else {
+      setModuls([
+        {
+          judul: "",
+          deskripsi: "",
+          video_url: "",
+          durasi: "",
+          urutan: 1,
+        },
+      ]);
+    }
+  }, [editData]);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
 
     setForm((prev) => ({
       ...prev,
-      [name]:
-        files && files.length > 0
-          ? files[0]
-          : value,
+      [name]: files && files.length > 0 ? files[0] : value,
     }));
   };
 
@@ -73,6 +113,33 @@ export default function PelatihanForm({
       ...prev,
       materi: value,
     }));
+  };
+
+  const addModule = () => {
+    setModuls([
+      ...moduls,
+      {
+        judul: "",
+        deskripsi: "",
+        video_url: "",
+        durasi: "",
+        urutan: moduls.length + 1,
+      },
+    ]);
+  };
+
+  const removeModule = (index) => {
+    const updated = [...moduls];
+    updated.splice(index, 1);
+    setModuls(updated);
+  };
+
+  const handleModuleChange = (index, field, value) => {
+    const updated = [...moduls];
+
+    updated[index][field] = value;
+
+    setModuls(updated);
   };
 
   const previewThumbnail = useMemo(() => {
@@ -93,13 +160,12 @@ export default function PelatihanForm({
     const formData = new FormData();
 
     Object.keys(form).forEach((key) => {
-      if (
-        form[key] !== null &&
-        form[key] !== undefined
-      ) {
+      if (form[key] !== null && form[key] !== undefined) {
         formData.append(key, form[key]);
       }
     });
+
+    formData.append("moduls", JSON.stringify(moduls));
 
     await onSubmit(formData);
   };
@@ -155,9 +221,7 @@ export default function PelatihanForm({
 
           <button
             type="button"
-            onClick={() =>
-              navigate("/dashboard")
-            }
+            onClick={() => navigate("/dashboard")}
             className={`
               ${buttonClass}
               flex
@@ -200,9 +264,7 @@ export default function PelatihanForm({
             "
           ></div>
 
-          {editData
-            ? "Mode Edit Pelatihan"
-            : "Mode Tambah Pelatihan"}
+          {editData ? "Mode Edit Pelatihan" : "Mode Tambah Pelatihan"}
         </div>
       </div>
 
@@ -217,14 +279,11 @@ export default function PelatihanForm({
         "
       >
         <h1 className="text-4xl font-black">
-          {editData
-            ? "Edit Pelatihan"
-            : "Tambah Pelatihan"}
+          {editData ? "Edit Pelatihan" : "Tambah Pelatihan"}
         </h1>
 
         <p className="text-orange-100 mt-2">
-          Kelola data pelatihan dengan
-          mudah
+          Kelola data pelatihan dengan mudah
         </p>
       </div>
 
@@ -240,9 +299,7 @@ export default function PelatihanForm({
         >
           {/* TITLE */}
           <div className="md:col-span-2">
-            <label className={labelClass}>
-              Nama Pelatihan
-            </label>
+            <label className={labelClass}>Nama Pelatihan</label>
 
             <input
               type="text"
@@ -257,9 +314,7 @@ export default function PelatihanForm({
 
           {/* BAHASA */}
           <div>
-            <label className={labelClass}>
-              Bahasa
-            </label>
+            <label className={labelClass}>Bahasa</label>
 
             <input
               type="text"
@@ -274,9 +329,7 @@ export default function PelatihanForm({
 
           {/* DURASI */}
           <div>
-            <label className={labelClass}>
-              Durasi
-            </label>
+            <label className={labelClass}>Durasi</label>
 
             <input
               type="text"
@@ -291,9 +344,7 @@ export default function PelatihanForm({
 
           {/* KATEGORI */}
           <div>
-            <label className={labelClass}>
-              Kategori
-            </label>
+            <label className={labelClass}>Kategori</label>
 
             <select
               name="kategori"
@@ -301,30 +352,22 @@ export default function PelatihanForm({
               onChange={handleChange}
               className={inputClass}
             >
-              <option value="gratis">
-                Gratis
-              </option>
+              <option value="gratis">Gratis</option>
 
-              <option value="berbayar">
-                Berbayar
-              </option>
+              <option value="berbayar">Berbayar</option>
             </select>
           </div>
 
           {/* HARGA */}
           <div>
-            <label className={labelClass}>
-              Harga
-            </label>
+            <label className={labelClass}>Harga</label>
 
             <input
               type="number"
               name="harga"
               value={form.harga}
               onChange={handleChange}
-              disabled={
-                form.kategori === "gratis"
-              }
+              disabled={form.kategori === "gratis"}
               placeholder="Masukkan harga"
               className={`
                 ${inputClass}
@@ -335,9 +378,7 @@ export default function PelatihanForm({
 
           {/* TANGGAL */}
           <div className="md:col-span-2">
-            <label className={labelClass}>
-              Tanggal Pelatihan
-            </label>
+            <label className={labelClass}>Tanggal Pelatihan</label>
 
             <input
               type="date"
@@ -351,9 +392,7 @@ export default function PelatihanForm({
 
           {/* LINK GRUP */}
           <div className="md:col-span-2">
-            <label className={labelClass}>
-              Link Grup
-            </label>
+            <label className={labelClass}>Link Grup</label>
 
             <input
               type="text"
@@ -368,9 +407,7 @@ export default function PelatihanForm({
 
           {/* SHORT DESCRIPTION */}
           <div className="md:col-span-2">
-            <label className={labelClass}>
-              Short Description
-            </label>
+            <label className={labelClass}>Short Description</label>
 
             <textarea
               rows="3"
@@ -385,9 +422,7 @@ export default function PelatihanForm({
 
           {/* DESKRIPSI */}
           <div className="md:col-span-2">
-            <label className={labelClass}>
-              Deskripsi
-            </label>
+            <label className={labelClass}>Deskripsi</label>
 
             <textarea
               rows="5"
@@ -402,9 +437,7 @@ export default function PelatihanForm({
 
           {/* MATERI */}
           <div className="md:col-span-2">
-            <label className={labelClass}>
-              Materi
-            </label>
+            <label className={labelClass}>Materi</label>
 
             <div
               className="
@@ -416,18 +449,105 @@ export default function PelatihanForm({
             >
               <RichTextEditor
                 content={form.materi}
-                onChange={
-                  handleEditorChange
-                }
+                onChange={handleEditorChange}
               />
+            </div>
+          </div>
+
+          {/* MODUL PELATIHAN */}
+
+          <div className="md:col-span-2">
+            <div className="flex justify-between items-center mb-4">
+              <label className={labelClass}>Modul Pelatihan</label>
+
+              <button
+                type="button"
+                onClick={addModule}
+                className="
+                  px-4 py-2
+                  bg-orange-500
+                  text-white
+                  rounded-xl
+                "
+              >
+                + Tambah Modul
+              </button>
+            </div>
+            <div className="space-y-5">
+              {moduls.map((modul, index) => (
+                <div
+                  key={index}
+                  className="
+                    border
+                    rounded-2xl
+                    p-5
+                    bg-slate-50
+                  "
+                >
+                  <div className="flex justify-between mb-4">
+                    <h3 className="font-bold text-lg">Modul {index + 1}</h3>
+
+                    {moduls.length > 1 && (
+                      <button
+                        type="button"
+                        onClick={() => removeModule(index)}
+                        className="
+                          text-red-500
+                          font-semibold
+                        "
+                      >
+                        Hapus
+                      </button>
+                    )}
+                  </div>
+
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <input
+                      type="text"
+                      placeholder="Judul Modul"
+                      value={modul.judul}
+                      onChange={(e) =>
+                        handleModuleChange(index, "judul", e.target.value)
+                      }
+                      className={inputClass}
+                    />
+
+                    <input
+                      type="text"
+                      placeholder="Durasi"
+                      value={modul.durasi}
+                      onChange={(e) =>
+                        handleModuleChange(index, "durasi", e.target.value)
+                      }
+                      className={inputClass}
+                    />
+                  </div>
+                  <textarea
+                    rows="3"
+                    placeholder="Deskripsi Modul"
+                    value={modul.deskripsi}
+                    onChange={(e) =>
+                      handleModuleChange(index, "deskripsi", e.target.value)
+                    }
+                    className={`${inputClass} mt-4`}
+                  />
+                  <input
+                    type="text"
+                    placeholder="URL Youtube"
+                    value={modul.video_url}
+                    onChange={(e) =>
+                      handleModuleChange(index, "video_url", e.target.value)
+                    }
+                    className={`${inputClass} mt-4`}
+                  />
+                </div>
+              ))}
             </div>
           </div>
 
           {/* THUMBNAIL */}
           <div className="md:col-span-2">
-            <label className={labelClass}>
-              Thumbnail Pelatihan
-            </label>
+            <label className={labelClass}>Thumbnail Pelatihan</label>
 
             <label
               className="
@@ -558,9 +678,7 @@ export default function PelatihanForm({
             shadow-orange-200
           `}
         >
-          {editData
-            ? "Update Pelatihan"
-            : "Simpan Pelatihan"}
+          {editData ? "Update Pelatihan" : "Simpan Pelatihan"}
         </button>
       </div>
     </form>

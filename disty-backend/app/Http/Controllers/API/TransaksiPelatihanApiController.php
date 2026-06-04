@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Log;
 use Midtrans\Config;
 use Midtrans\Notification as MidtransNotification;
 use Midtrans\Snap;
+use App\Models\TransaksiSertifikasi;
 
 class TransaksiPelatihanApiController extends Controller
 {
@@ -341,27 +342,6 @@ class TransaksiPelatihanApiController extends Controller
         ]);
     }
 
-    public function myTransactions()
-    {
-        $transaksi =
-            TransaksiPelatihan::with(
-                'pelatihan'
-            )
-                ->where(
-                    'user_id',
-                    Auth::id()
-                )
-                ->latest()
-                ->get();
-
-        return response()->json([
-
-            'status' => 'success',
-
-            'data' => $transaksi
-        ]);
-    }
-
     public function repay(int $id)
     {
         $transaksi =
@@ -577,7 +557,9 @@ public function checkStatus($id)
 
     public function myPelatihan()
     {
-        $data = TransaksiPelatihan::with('pelatihan')
+        $data = TransaksiPelatihan::with([
+            'pelatihan.moduls'
+        ])
             ->where('user_id', Auth::id())
             ->whereIn('status', [
                 'paid',
@@ -585,6 +567,47 @@ public function checkStatus($id)
             ])
             ->latest()
             ->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $data
+        ]);
+    }
+
+    public function myTransactions()
+    {
+        $userId = Auth::id();
+
+        $pelatihan = TransaksiPelatihan::with('pelatihan')
+            ->where('user_id', $userId)
+            ->get()
+            ->map(function ($item) {
+
+                $item->jenis = 'pelatihan';
+
+                $item->nama_program =
+                    $item->pelatihan?->title;
+
+                return $item;
+            });
+
+        $sertifikasi = TransaksiSertifikasi::with('sertifikasi')
+            ->where('user_id', $userId)
+            ->get()
+            ->map(function ($item) {
+
+                $item->jenis = 'sertifikasi';
+
+                $item->nama_program =
+                    $item->sertifikasi?->nama_sertifikasi;
+
+                return $item;
+            });
+
+        $data = $pelatihan
+            ->concat($sertifikasi)
+            ->sortByDesc('created_at')
+            ->values();
 
         return response()->json([
             'success' => true,

@@ -3,7 +3,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import PelatihanForm from "./PelatihanForm";
 import { useEffect, useState } from "react";
 
-
 export default function PelatihanModal({
   isOpen,
   onClose,

@@ -88,12 +88,10 @@ class FrontendPelatihanApiController extends Controller
     // ✅ DETAIL PELATIHAN
     public function show(string $slug)
     {
-        $pelatihan = Pelatihan::where(
-            'slug',
-            $slug
-        )->firstOrFail();
+        $pelatihan = Pelatihan::with('moduls')
+            ->where('slug', $slug)
+            ->firstOrFail();
 
-        // rekomendasi
         $rekomendasi = Pelatihan::where(
             'id',
             '!=',
@@ -103,9 +101,7 @@ class FrontendPelatihanApiController extends Controller
                 'kategori',
                 $pelatihan->kategori
             )
-
             ->where('status', 'published')
-
             ->inRandomOrder()
             ->take(4)
             ->get();
