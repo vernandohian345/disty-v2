@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Link } from "react-router-dom";
 
 export default function CertificationDetailContent() {
   const { slug } = useParams();
@@ -17,10 +16,6 @@ export default function CertificationDetailContent() {
   });
 
   const [submitting, setSubmitting] = useState(false);
-
-  useEffect(() => {
-    fetchDetail();
-  }, [slug]);
 
   const handleChange = (e) => {
     setFormData({
@@ -86,21 +81,25 @@ export default function CertificationDetailContent() {
     }
   };
 
-  const fetchDetail = async () => {
-    try {
-      const response = await fetch(
-        `http://127.0.0.1:8000/api/frontend/sertifikasi/${slug}`,
-      );
+    useEffect(() => {
+    const loadData = async () => {
+      try {
+        const response = await fetch(
+          `http://127.0.0.1:8000/api/frontend/sertifikasi/${slug}`,
+        );
 
-      const result = await response.json();
+        const result = await response.json();
 
-      setSertifikasi(result.sertifikasi);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  };
+        setSertifikasi(result.sertifikasi);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
+  }, [slug]);
 
   if (loading) {
     return (
@@ -124,36 +123,102 @@ export default function CertificationDetailContent() {
     sertifikasi.peserta_terdaftar || 0;
 
   const isFull =
-      peserta >= sertifikasi.kuota;
+    peserta >= sertifikasi.kuota;
+
+  const isClosed =
+      new Date() >
+      new Date(sertifikasi.registration_deadline);
+
+  const formatTanggal = (tanggal) => {
+      return new Date(tanggal).toLocaleDateString(
+          "id-ID",
+          {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+          }
+      );
+  };
 
   return (
     <section className="bg-[#fffaf5] pb-24">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
         <div className="grid lg:grid-cols-3 gap-10">
+          
           {/* LEFT */}
+          
           <div className="lg:col-span-2">
-            <img
-              src={sertifikasi.sampul_url ||"https://placehold.co/600x400?text=Sertifikasi"}
-              alt={sertifikasi.nama_sertifikasi}
-              className="w-full h-[420px] object-cover rounded-3xl"
-            />
 
-            <h1 className="mt-8 text-4xl font-black text-[#2B1D16]">
-              {sertifikasi.nama_sertifikasi}
-            </h1>
+              {/* TITLE */}
+              <div className="mb-8">
 
-            <div className="mt-6">
-              <h3 className="text-xl font-bold mb-3">Deskripsi</h3>
+                  <h1 className="
+                      text-5xl
+                      font-black
+                      text-[#2B1D16]
+                      leading-tight
+                  ">
+                      {sertifikasi.nama_sertifikasi}
+                  </h1>
 
-              <p className="text-[#6b625d] whitespace-pre-line">
-                {sertifikasi.deskripsi}
-              </p>
-            </div>
+              </div>
+
+              {/* IMAGE */}
+              <div className="relative">
+
+                  <img
+                      src={
+                          sertifikasi.sampul_url ||
+                          "https://placehold.co/1200x700?text=Sertifikasi"
+                      }
+                      alt={sertifikasi.nama_sertifikasi}
+                      className="
+                          w-full
+                          h-[420px]
+                          object-cover
+                          rounded-[32px]
+                      "
+                  />
+
+              </div>
+
+              {/* CONTENT */}
+              <div className="mt-14">
+
+                  <h3 className="
+                      text-3xl
+                      font-black
+                      text-[#2B1D16]
+                      mb-5
+                  ">
+                      Deskripsi Sertifikasi
+                  </h3>
+
+                  <p className="
+                      text-lg
+                      leading-relaxed
+                      text-[#6b625d]
+                      whitespace-pre-line
+                  ">
+                      {sertifikasi.deskripsi}
+                  </p>
+
+              </div>
+
           </div>
 
           {/* RIGHT */}
           <div>
-            <div className="sticky top-28 bg-white rounded-3xl p-8 border border-orange-100 shadow-sm">
+            <div className="
+                sticky
+                top-28
+                bg-white
+                rounded-[32px]
+                p-8
+                border
+                border-orange-100
+                shadow-xl
+            ">
               <h3 className="text-3xl font-black text-orange-500">
                 {Number(sertifikasi.harga) === 0
                   ? "Gratis"
@@ -165,8 +230,26 @@ export default function CertificationDetailContent() {
                 <div>
                   <p className="text-sm text-gray-500">Tanggal Sertifikasi</p>
                   <h4 className="font-bold">
-                    {sertifikasi.tanggal_sertifikasi}
+                    {formatTanggal(sertifikasi.tanggal_sertifikasi)}
                   </h4>
+                </div>
+
+                <div>
+                    <p className="text-sm text-gray-500">
+                        Deadline Pendaftaran
+                    </p>
+
+                    <h4 className="font-bold">
+
+                        {
+                            sertifikasi.registration_deadline
+                                ? formatTanggal(
+                                    sertifikasi.registration_deadline
+                                  )
+                                : "-"
+                        }
+
+                    </h4>
                 </div>
 
                 <div>
@@ -212,29 +295,31 @@ export default function CertificationDetailContent() {
               </div>
 
               <button
-                  disabled={isFull}
+                  onClick={() => setShowModal(true)}
+                  disabled={isFull || isClosed}
                   className={`
-                      mt-8
+                      mt-10
                       w-full
-                      inline-flex
-                      justify-center
-                      py-4
+                      h-14
                       rounded-2xl
-                      font-semibold
+                      font-bold
+                      text-lg
                       transition-all
 
                       ${
-                          isFull
-                              ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                          isFull || isClosed
+                              ? "bg-gray-200 text-gray-500 cursor-not-allowed"
                               : "bg-orange-500 hover:bg-orange-600 text-white"
                       }
                   `}
               >
 
                   {
-                      isFull
+                      isClosed
                           ? "Pendaftaran Ditutup"
-                          : "Daftar Sertifikasi"
+                          : isFull
+                              ? "Kuota Penuh"
+                              : "Daftar Sekarang"
                   }
 
               </button>
@@ -242,6 +327,7 @@ export default function CertificationDetailContent() {
           </div>
         </div>
       </div>
+
       {showModal && (
         <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
           <div className="bg-white rounded-3xl w-full max-w-lg p-8">

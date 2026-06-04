@@ -14,41 +14,44 @@ export default function DetailSertifikasi() {
     const [pesertaCount, setPesertaCount] = useState(0);
     
     useEffect(() => {
-        fetchDetailSertifikasi();
-    }, []);
 
-    const fetchDetailSertifikasi = async () => {
+        const loadData = async () => {
 
-        try {
+            try {
 
-            setLoading(true);
+                setLoading(true);
 
-            const token = localStorage.getItem("token");
+                const token = localStorage.getItem("token");
 
-            const response = await axios.get(
-                `http://127.0.0.1:8000/api/sertifikasi/${id}`,
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
+                const response = await axios.get(
+                    `http://127.0.0.1:8000/api/sertifikasi/${id}`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                );
 
-            setSertifikasi(response.data.data);
+                setSertifikasi(response.data.data);
 
-            setPesertaCount(response.data.peserta_count);
+                setPesertaCount(response.data.peserta_count);
 
-        } catch (error) {
+            } catch (error) {
 
-            console.log(error);
+                console.log(error);
 
-        } finally {
+            } finally {
 
-            setLoading(false);
+                setLoading(false);
 
-        }
+            }
 
-    };
+        };
+
+        loadData();
+
+    }, [id]);
+
 
     const formatDate = (dateString) => {
         return new Date(dateString).toLocaleDateString("id-ID", {
@@ -266,6 +269,21 @@ export default function DetailSertifikasi() {
                                             Tanggal:
                                         </span>{" "}
                                         {formatDate(sertifikasi.tanggal_sertifikasi)}
+                                    </div>
+
+                                    <div>
+                                        <span className="font-bold">
+                                            Deadline:
+                                        </span>{" "}
+
+                                        {
+                                            sertifikasi.registration_deadline
+                                                ? formatDate(
+                                                    sertifikasi.registration_deadline
+                                                )
+                                                : "-"
+                                        }
+
                                     </div>
 
                                     <div>

@@ -36,17 +36,31 @@ export default function Sertifikasi() {
     const [selectedData, setSelectedData] =
         useState(null);
 
+
+    const loadSertifikasis = async () => {
+
+        try {
+
+            const response =
+                await getSertifikasis();
+
+            setSertifikasis(
+                response.data.data.data
+            );
+
+        } catch (error) {
+
+            console.log(error);
+
+        }
+
+    };
     // =========================
     // FETCH
     // =========================
     useEffect(() => {
 
-        fetchSertifikasis();
-
-    }, []);
-
-    const fetchSertifikasis =
-        async () => {
+        const loadData = async () => {
 
             try {
 
@@ -71,6 +85,12 @@ export default function Sertifikasi() {
 
         };
 
+        loadData();
+
+    }, []);
+
+   
+
     // =========================
     // CREATE
     // =========================
@@ -83,7 +103,7 @@ export default function Sertifikasi() {
                     formData
                 );
 
-                await fetchSertifikasis();
+                await loadSertifikasis();
 
                 setOpenModal(false);
 
@@ -116,7 +136,7 @@ export default function Sertifikasi() {
                     formData
                 );
 
-                await fetchSertifikasis();
+                await loadSertifikasis();
 
                 setOpenModal(false);
 
@@ -150,7 +170,7 @@ export default function Sertifikasi() {
                     selectedData.id
                 );
 
-                await fetchSertifikasis();
+                await loadSertifikasis();
 
                 setDeleteModal(false);
 

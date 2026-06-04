@@ -10,40 +10,40 @@ export default function CertificationSection() {
   const [activeFilter, setActiveFilter] = useState("Semua");
 
   useEffect(() => {
-    fetchSertifikasi();
+  const loadData = async () => {
+      try {
+        setLoading(true);
+
+        let url = "http://127.0.0.1:8000/api/frontend/sertifikasi";
+
+        const params = new URLSearchParams();
+
+        if (search) {
+          params.append("q", search);
+        }
+
+        if (activeFilter !== "Semua") {
+          params.append("kategori", activeFilter.toLowerCase());
+        }
+
+        if (params.toString()) {
+          url += `?${params.toString()}`;
+        }
+
+        const response = await fetch(url);
+
+        const result = await response.json();
+
+        setSertifikasis(result.data.data || []);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
   }, [search, activeFilter]);
-
-  const fetchSertifikasi = async () => {
-    try {
-      setLoading(true);
-
-      let url = "http://127.0.0.1:8000/api/frontend/sertifikasi";
-
-      const params = new URLSearchParams();
-
-      if (search) {
-        params.append("q", search);
-      }
-
-      if (activeFilter !== "Semua") {
-        params.append("kategori", activeFilter.toLowerCase());
-      }
-
-      if (params.toString()) {
-        url += `?${params.toString()}`;
-      }
-
-      const response = await fetch(url);
-
-      const result = await response.json();
-
-      setSertifikasis(result.data.data || []);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   if (loading) {
     return (
@@ -54,6 +54,17 @@ export default function CertificationSection() {
       </section>
     );
   }
+
+  const formatTanggal = (tanggal) => {
+      return new Date(tanggal).toLocaleDateString(
+          "id-ID",
+          {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+          }
+      );
+  };
 
   return (
     <section className="bg-[#fffaf5] pb-20">
@@ -202,7 +213,7 @@ export default function CertificationSection() {
                       </p>
 
                       <h4 className="font-bold">
-                          {item.tanggal_sertifikasi}
+                          {formatTanggal(item.tanggal_sertifikasi)}
                       </h4>
                   </div>
 
