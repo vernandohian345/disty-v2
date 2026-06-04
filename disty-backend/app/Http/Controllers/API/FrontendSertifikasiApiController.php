@@ -36,12 +36,6 @@ class FrontendSertifikasiApiController extends Controller
                         'deskripsi',
                         'like',
                         '%' . $word . '%'
-                    )
-
-                    ->orWhere(
-                        'materi',
-                        'like',
-                        '%' . $word . '%'
                     );
                 }
             });

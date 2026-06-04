@@ -27,7 +27,9 @@ export default function CreateSertifikasi() {
 
             } catch (error) {
 
-                console.log(error);
+                console.log(
+                    error.response.data
+                );
 
             }
 

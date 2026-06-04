@@ -1,45 +1,84 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-import RichTextEditor from "../../shared/RichTextEditor";
 import { useNavigate } from "react-router-dom";
+
+
 
 export default function SertifikasiForm({
     onSubmit,
     editData = null,
 }) {
 
+    
+
     const navigate = useNavigate();
 
     const [form, setForm] = useState({
-        nama_sertifikasi:
-            editData?.nama_sertifikasi || "",
+        nama_sertifikasi: "",
+        kategori: "gratis",
+        harga: 0,
+        tanggal_sertifikasi: "",
+        registration_deadline: "",
 
-        deskripsi:
-            editData?.deskripsi || "",
+        metode: "offline",
+        lokasi: "",
+        penyelenggara: "",
+        kuota: 0,
 
-        materi:
-            editData?.materi || "",
-
-        kategori:
-            editData?.kategori || "gratis",
-
-        link_grup:
-            editData?.link_grup || "",
-
-        durasi:
-            editData?.durasi || "",
-
-        harga:
-            editData?.harga || 0,
-
-        bahasa:
-            editData?.bahasa || "",
-
-        tanggal_sertifikasi:
-            editData?.tanggal_sertifikasi || "",
+        link_grup: "",
+        deskripsi: "",
+        status: "draft",
 
         sampul: null,
-    });
+        });
+
+    useEffect(() => {
+
+        if (editData) {
+
+            setForm({
+                nama_sertifikasi:
+                    editData.nama_sertifikasi || "",
+
+                kategori:
+                    editData.kategori || "gratis",
+
+                harga:
+                    editData.harga || 0,
+
+                tanggal_sertifikasi:
+                    editData.tanggal_sertifikasi || "",
+
+                registration_deadline:
+                    editData.registration_deadline || "",
+
+                metode:
+                    editData.metode || "offline",
+
+                lokasi:
+                    editData.lokasi || "",
+
+                penyelenggara:
+                    editData.penyelenggara || "",
+
+                kuota:
+                    editData.kuota || 0,
+
+                link_grup:
+                    editData.link_grup || "",
+
+                deskripsi:
+                    editData.deskripsi || "",
+
+                status:
+                    editData.status || "draft",
+
+                sampul: null,
+            });
+
+        }
+
+    }, [editData]);
 
     const handleChange = (e) => {
 
@@ -305,78 +344,6 @@ export default function SertifikasiForm({
 
                     </div>
 
-                    {/* BAHASA */}
-                    <div>
-
-                        <label className="
-                            block
-                            text-sm
-                            font-bold
-                            text-slate-700
-                            mb-2
-                        ">
-
-                            Bahasa
-
-                        </label>
-
-                        <input
-                            type="text"
-                            name="bahasa"
-                            value={form.bahasa}
-                            onChange={handleChange}
-                            placeholder="Contoh: Indonesia"
-                            className="
-                                w-full
-                                p-4
-                                rounded-2xl
-                                border
-                                border-slate-200
-                                focus:outline-none
-                                focus:ring-4
-                                focus:ring-orange-200
-                            "
-                            required
-                        />
-
-                    </div>
-
-                    {/* DURASI */}
-                    <div>
-
-                        <label className="
-                            block
-                            text-sm
-                            font-bold
-                            text-slate-700
-                            mb-2
-                        ">
-
-                            Durasi
-
-                        </label>
-
-                        <input
-                            type="text"
-                            name="durasi"
-                            value={form.durasi}
-                            onChange={handleChange}
-                            placeholder="Contoh: 2 Jam"
-                            className="
-                                w-full
-                                p-4
-                                rounded-2xl
-                                border
-                                border-slate-200
-                                focus:outline-none
-                                focus:ring-4
-                                focus:ring-orange-200
-                            "
-                            required
-                        />
-
-                    </div>
-
                     {/* KATEGORI */}
                     <div>
                         <label className="
@@ -522,6 +489,108 @@ export default function SertifikasiForm({
 
                     </div>
 
+                    {/* DEADLINE */}
+                    <div>
+                        <label className="font-semibold">
+                            Deadline Pendaftaran
+                        </label>
+
+                        <input
+                            type="date"
+                            name="registration_deadline"
+                            value={form.registration_deadline}
+                            onChange={handleChange}
+                            className="w-full border rounded-xl p-4"
+                            required
+                        />
+
+                    </div>
+
+                    {/* METODE */}
+                    <div>
+                        <label className="font-semibold">
+                            Metode Sertifikasi
+                        </label>
+
+                        <select
+                            name="metode"
+                            value={form.metode}
+                            onChange={handleChange}
+                            className="w-full border rounded-xl p-4"
+                        >
+                            <option value="online">Online</option>
+                            <option value="offline">Offline</option>
+                            <option value="hybrid">Hybrid</option>
+                        </select>
+                    </div>
+
+                    {/* KUOTA */}
+                    <div>
+                        <label className="font-semibold">
+                            Kuota Peserta
+                        </label>
+
+                        <input
+                            type="number"
+                            name="kuota"
+                            value={form.kuota}
+                            onChange={handleChange}
+                            placeholder="Contoh: 30"
+                            className="w-full border rounded-xl p-4"
+                        />
+                    </div>
+
+                    {/* STATUS */}
+                    <div>
+                        <label className="font-semibold">
+                            Status Sertifikasi
+                        </label>
+
+                        <select
+                            name="status"
+                            value={form.status}
+                            onChange={handleChange}
+                            className="w-full border rounded-xl p-4"
+                        >
+                            <option value="draft">Draft</option>
+                            <option value="open">Open</option>
+                            <option value="closed">Closed</option>
+                            <option value="finished">Finished</option>
+                        </select>
+                    </div>
+
+                    {/* LOKASI */}
+                    <div>
+                        <label className="font-semibold">
+                            Lokasi Sertifikasi
+                        </label>
+
+                        <input
+                            type="text"
+                            name="lokasi"
+                            value={form.lokasi}
+                            onChange={handleChange}
+                            placeholder="Contoh: Surabaya"
+                            className="w-full border rounded-xl p-4"
+                        />
+                        </div>
+
+                    {/* PENYELENGGARA */}
+                    <div>
+                        <label className="font-semibold">
+                            Penyelenggara Sertifikasi
+                        </label>
+
+                        <input
+                            type="text"
+                            name="penyelenggara"
+                            value={form.penyelenggara}
+                            onChange={handleChange}
+                            placeholder="Contoh: BNSP"
+                            className="w-full border rounded-xl p-4"
+                        />
+                        </div>
+
                     {/* LINK */}
                     <div className="md:col-span-2">
 
@@ -553,7 +622,6 @@ export default function SertifikasiForm({
                                 focus:ring-4
                                 focus:ring-orange-200
                             "
-                            required
                         />
 
                     </div>
@@ -594,41 +662,6 @@ export default function SertifikasiForm({
 
                     </div>
 
-                    {/* MATERI */}
-                    <div className="md:col-span-2">
-
-                        <label className="
-                            block
-                            text-sm
-                            font-bold
-                            text-slate-700
-                            mb-2
-                        ">
-
-                            Materi
-
-                        </label>
-
-                        <div className="
-                            border
-                            border-slate-200
-                            rounded-2xl
-                            overflow-hidden
-                        ">
-
-                            <RichTextEditor
-                                value={form.materi}
-                                onChange={(value) =>
-                                    setForm((prev) => ({
-                                        ...prev,
-                                        materi: value,
-                                    }))
-                                }
-                            />
-
-                        </div>
-
-                    </div>
 
                     {/* SAMPUL */}
                     <div className="md:col-span-2">
@@ -781,6 +814,7 @@ export default function SertifikasiForm({
 
                 <button
                     type="button"
+                    onClick={() => navigate(-1)}
                     className="
                         px-6
                         py-4

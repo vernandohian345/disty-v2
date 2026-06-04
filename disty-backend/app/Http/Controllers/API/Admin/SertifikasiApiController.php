@@ -37,21 +37,37 @@ class SertifikasiApiController extends Controller
         $request->validate([
             'nama_sertifikasi'   => 'required|string|max:255',
             'deskripsi'          => 'required|string',
-            'bahasa'             => 'required|string',
-            'materi'             => 'required|string',
             'kategori'           => 'required|string',
-            'link_grup'          => 'required|string',
+            'link_grup' => 'nullable|string',
             'tanggal_sertifikasi'=> 'required|date',
             'harga'              => $request->kategori === 'berbayar'
                                         ? 'required|numeric|min:1'
                                         : 'nullable',
             'sampul'             => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            'durasi'             => 'required|string|max:100',
+            'kuota' => 'required|integer|min:1',
+
+            'lokasi' => 'required|string|max:255',
+
+            'metode' => 'required|in:online,offline,hybrid',
+
+            'penyelenggara' => 'required|string|max:255',
+
+            'tanggal_mulai' => 'required|date',
+
+            'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
+
+            'status' => 'required|in:draft,open,closed,finished',
         ]);
 
         $data = $request->all();
 
-        $data['slug'] = Str::slug($request->nama_sertifikasi);
+        $slug = Str::slug($request->nama_sertifikasi);
+
+        $count = Sertifikasi::where('slug', 'LIKE', "{$slug}%")->count();
+
+        $data['slug'] = $count
+            ? "{$slug}-" . ($count + 1)
+            : $slug;
 
         $data['harga'] =
             $request->kategori === 'gratis'
@@ -91,16 +107,26 @@ class SertifikasiApiController extends Controller
         $request->validate([
             'nama_sertifikasi' => 'required|string|max:255',
             'deskripsi'        => 'required',
-            'materi'           => 'nullable|string',
             'kategori'         => 'required|string',
-            'link_grup'        => 'required|string',
-            'durasi'           => 'required|string|max:100',
+            'link_grup' => 'nullable|string',
             'tanggal_sertifikasi' => 'required|date',
             'harga'            => $request->kategori === 'berbayar'
                                         ? 'required|numeric|min:1'
                                         : 'nullable',
-            'bahasa'           => 'required|string',
             'sampul'           => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'kuota' => 'required|integer|min:1',
+
+            'lokasi' => 'required|string|max:255',
+
+            'metode' => 'required|in:online,offline,hybrid',
+
+            'penyelenggara' => 'required|string|max:255',
+
+            'tanggal_mulai' => 'required|date',
+
+            'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
+
+            'status' => 'required|in:draft,open,closed,finished',
         ]);
 
         $data = $request->all();

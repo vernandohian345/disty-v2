@@ -13,14 +13,18 @@ class Sertifikasi extends Model
         'slug',
         'tanggal_sertifikasi',
         'harga',
-        'durasi',
-        'bahasa',
         'deskripsi',
-        'materi',
         'kategori',
         'link_grup',
         'sampul',
         'syarat',
+
+        'kuota',
+        'lokasi',
+        'metode',
+        'penyelenggara',
+        'registration_deadline',
+        'status',
     ];
 
     public function transaksi()
