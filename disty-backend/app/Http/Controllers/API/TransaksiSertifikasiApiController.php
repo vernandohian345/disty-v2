@@ -44,6 +44,22 @@ class TransaksiSertifikasiApiController extends Controller
                 $request->sertifikasi_id
             );
 
+        $pesertaCount = TransaksiSertifikasi::where(
+            'sertifikasi_id',
+            $sertifikasi->id
+        )
+        ->where('status', 'paid')
+        ->count();
+
+        if ($pesertaCount >= $sertifikasi->kuota) {
+
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Kuota sertifikasi sudah penuh'
+            ], 400);
+
+        }
+
         // =========================
         // CEK KUOTA
         // =========================

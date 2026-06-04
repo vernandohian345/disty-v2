@@ -484,10 +484,7 @@ export default function IndexSertifikasi() {
                 loading={loading}
                 onView={(item) => {
 
-                    console.log(item.id);
-
-                    window.location.href =
-                        `/admin/sertifikasi/${item.id}`;
+                    navigate(`/admin/sertifikasi/${item.id}`);
 
                 }}
                 

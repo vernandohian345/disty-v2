@@ -120,6 +120,12 @@ export default function CertificationDetailContent() {
     );
   }
 
+  const peserta =
+    sertifikasi.peserta_terdaftar || 0;
+
+  const isFull =
+      peserta >= sertifikasi.kuota;
+
   return (
     <section className="bg-[#fffaf5] pb-24">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
@@ -127,7 +133,7 @@ export default function CertificationDetailContent() {
           {/* LEFT */}
           <div className="lg:col-span-2">
             <img
-              src={`http://127.0.0.1:8000/uploads/sertifikasi/${sertifikasi.sampul}`}
+              src={sertifikasi.sampul_url ||"https://placehold.co/600x400?text=Sertifikasi"}
               alt={sertifikasi.nama_sertifikasi}
               className="w-full h-[420px] object-cover rounded-3xl"
             />
@@ -143,22 +149,6 @@ export default function CertificationDetailContent() {
                 {sertifikasi.deskripsi}
               </p>
             </div>
-
-            <div className="mt-10">
-              <h3 className="text-xl font-bold mb-3">Materi</h3>
-
-              <p className="text-[#6b625d] whitespace-pre-line">
-                {sertifikasi.materi}
-              </p>
-            </div>
-
-            <div className="mt-10">
-              <h3 className="text-xl font-bold mb-3">Persyaratan</h3>
-
-              <p className="text-[#6b625d] whitespace-pre-line">
-                {sertifikasi.syarat}
-              </p>
-            </div>
           </div>
 
           {/* RIGHT */}
@@ -171,15 +161,6 @@ export default function CertificationDetailContent() {
               </h3>
 
               <div className="mt-8 space-y-4">
-                <div>
-                  <p className="text-sm text-gray-500">Durasi</p>
-                  <h4 className="font-bold">{sertifikasi.durasi}</h4>
-                </div>
-
-                <div>
-                  <p className="text-sm text-gray-500">Bahasa</p>
-                  <h4 className="font-bold">{sertifikasi.bahasa}</h4>
-                </div>
 
                 <div>
                   <p className="text-sm text-gray-500">Tanggal Sertifikasi</p>
@@ -187,26 +168,76 @@ export default function CertificationDetailContent() {
                     {sertifikasi.tanggal_sertifikasi}
                   </h4>
                 </div>
+
+                <div>
+                    <p className="text-sm text-gray-500">
+                        Mode
+                    </p>
+
+                    <h4 className="font-bold capitalize">
+                        {sertifikasi.mode}
+                    </h4>
+                </div>
+
+                <div>
+                    <p className="text-sm text-gray-500">
+                        Lokasi
+                    </p>
+
+                    <h4 className="font-bold">
+                        {sertifikasi.lokasi}
+                    </h4>
+                </div>
+
+                <div>
+                    <p className="text-sm text-gray-500">
+                        Penyelenggara
+                    </p>
+
+                    <h4 className="font-bold">
+                        {sertifikasi.penyelenggara}
+                    </h4>
+                </div>
+
+                <div>
+                    <p className="text-sm text-gray-500">
+                        Kuota
+                    </p>
+
+                    <h4 className="font-bold">
+                        {sertifikasi.peserta_terdaftar || 0}
+                        / {sertifikasi.kuota} Peserta
+                    </h4>
+                </div>
               </div>
 
-              <Link
-                to={`/checkout/sertifikasi/${sertifikasi.slug}`}
-                className="
-                  mt-8
-                  w-full
-                  inline-flex
-                  justify-center
-                  bg-orange-500
-                  hover:bg-orange-600
-                  text-white
-                  py-4
-                  rounded-2xl
-                  font-semibold
-                  transition-all
-                "
+              <button
+                  disabled={isFull}
+                  className={`
+                      mt-8
+                      w-full
+                      inline-flex
+                      justify-center
+                      py-4
+                      rounded-2xl
+                      font-semibold
+                      transition-all
+
+                      ${
+                          isFull
+                              ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                              : "bg-orange-500 hover:bg-orange-600 text-white"
+                      }
+                  `}
               >
-                Daftar Sertifikasi
-              </Link>
+
+                  {
+                      isFull
+                          ? "Pendaftaran Ditutup"
+                          : "Daftar Sertifikasi"
+                  }
+
+              </button>
             </div>
           </div>
         </div>

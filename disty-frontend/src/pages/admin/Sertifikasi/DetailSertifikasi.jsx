@@ -9,6 +9,8 @@ export default function DetailSertifikasi() {
 
     const [sertifikasi, setSertifikasi] = useState(null);
 
+    const [loading, setLoading] = useState(true);
+
     const [pesertaCount, setPesertaCount] = useState(0);
     
     useEffect(() => {
@@ -16,7 +18,11 @@ export default function DetailSertifikasi() {
     }, []);
 
     const fetchDetailSertifikasi = async () => {
+
         try {
+
+            setLoading(true);
+
             const token = localStorage.getItem("token");
 
             const response = await axios.get(
@@ -29,11 +35,19 @@ export default function DetailSertifikasi() {
             );
 
             setSertifikasi(response.data.data);
+
             setPesertaCount(response.data.peserta_count);
 
         } catch (error) {
+
             console.log(error);
+
+        } finally {
+
+            setLoading(false);
+
         }
+
     };
 
     const formatDate = (dateString) => {
@@ -52,8 +66,67 @@ export default function DetailSertifikasi() {
         }).format(number);
     };
 
-    if (!sertifikasi) {
-        return <div>Loading...</div>;
+    if (loading) {
+
+        return (
+
+            <AdminLayout>
+
+                <div className="p-10">
+
+                    <div className="
+                        animate-pulse
+                        space-y-6
+                    ">
+
+                        <div className="
+                            h-14
+                            bg-slate-200
+                            rounded-2xl
+                            w-1/2
+                        "></div>
+
+                        <div className="
+                            h-80
+                            bg-slate-200
+                            rounded-3xl
+                        "></div>
+
+                        <div className="
+                            grid
+                            grid-cols-1
+                            md:grid-cols-3
+                            gap-5
+                        ">
+
+                            <div className="
+                                h-32
+                                bg-slate-200
+                                rounded-3xl
+                            "></div>
+
+                            <div className="
+                                h-32
+                                bg-slate-200
+                                rounded-3xl
+                            "></div>
+
+                            <div className="
+                                h-32
+                                bg-slate-200
+                                rounded-3xl
+                            "></div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </AdminLayout>
+
+        );
+
     }
 
     const isFull = pesertaCount >= sertifikasi.kuota;

@@ -396,10 +396,7 @@ export default function SertifikasiTable({
 
                             {/* VIEW */}
                             <button
-                                onClick={() => {
-                                    alert("VIEW CLICKED");
-                                    onView(item);
-                                }}
+                                onClick={() => onView(item)}
                                 className="
                                     w-10
                                     h-10

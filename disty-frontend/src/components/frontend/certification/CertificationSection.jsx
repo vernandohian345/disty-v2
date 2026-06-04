@@ -102,6 +102,7 @@ export default function CertificationSection() {
             <div
               key={item.id}
               className="
+                group
                 bg-white
                 rounded-[30px]
                 overflow-hidden
@@ -111,18 +112,80 @@ export default function CertificationSection() {
                 transition-all
               "
             >
-              <div className="h-[220px] bg-orange-100 flex items-center justify-center">
+              <div className="relative h-[220px] bg-orange-100 flex items-center justify-center">
                 <img
-                  src={`http://127.0.0.1:8000/uploads/sertifikasi/${item.sampul}`}
+                  src={item.sampul_url ||"https://placehold.co/600x400?text=Sertifikasi"}
                   alt={item.nama_sertifikasi}
-                  className="w-full h-full object-cover"
+                  className="
+                      w-full
+                      h-full
+                      object-cover
+                      group-hover:scale-105
+                      transition-all
+                      duration-500
+                  "
                 />
+                <div className="
+                    absolute
+                    inset-0
+                    bg-gradient-to-t
+                    from-black/20
+                    to-transparent
+                "></div>
               </div>
 
               <div className="p-6">
-                <span className="text-orange-500 text-sm font-semibold uppercase">
-                  {item.kategori}
-                </span>
+
+                <div className="flex items-center justify-between mb-4">
+
+                  {/* KATEGORI */}
+                  <span
+                      className={`
+                          px-3
+                          py-1
+                          rounded-full
+                          text-xs
+                          font-bold
+                          uppercase
+
+                          ${
+                              item.kategori === "gratis"
+                                  ? "bg-green-100 text-green-700"
+                                  : "bg-orange-100 text-orange-700"
+                          }
+                      `}
+                  >
+
+                      {item.kategori}
+
+                  </span>
+
+                  {/* STATUS */}
+                  <span
+                      className={`
+                          px-3
+                          py-1
+                          rounded-full
+                          text-xs
+                          font-bold
+
+                          ${
+                              item.status === "full"
+                                  ? "bg-red-100 text-red-700"
+                                  : "bg-blue-100 text-blue-700"
+                          }
+                      `}
+                  >
+
+                      {
+                          item.status === "full"
+                              ? "FULL"
+                              : "OPEN"
+                      }
+
+                  </span>
+
+              </div>
 
                 <h3 className="mt-3 text-2xl font-black text-[#2B1D16]">
                   {item.nama_sertifikasi}
@@ -134,9 +197,13 @@ export default function CertificationSection() {
 
                 <div className="mt-6 flex justify-between">
                   <div>
-                    <p className="text-xs text-gray-500">Durasi</p>
+                      <p className="text-xs text-gray-500">
+                          Tanggal
+                      </p>
 
-                    <h4 className="font-bold">{item.durasi}</h4>
+                      <h4 className="font-bold">
+                          {item.tanggal_sertifikasi}
+                      </h4>
                   </div>
 
                   <div className="text-right">
@@ -168,6 +235,8 @@ export default function CertificationSection() {
                   Lihat Detail
                 </Link>
               </div>
+
+              
             </div>
           ))}
         </div>
