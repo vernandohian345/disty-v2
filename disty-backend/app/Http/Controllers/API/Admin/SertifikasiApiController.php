@@ -37,14 +37,14 @@ class SertifikasiApiController extends Controller
         $request->validate([
             'nama_sertifikasi'   => 'required|string|max:255',
             'deskripsi'          => 'required|string',
-            'kategori'           => 'required|string',
+            'tipe_harga' => 'required|in:gratis,berbayar',
             'link_grup' => 'nullable|string',
             'tanggal_sertifikasi'=> 'required|date',
-            'harga'              => $request->kategori === 'berbayar'
+            'harga'              => $request->tipe_harga === 'berbayar'
                                         ? 'required|numeric|min:1'
                                         : 'nullable',
             'sampul'             => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            'kuota' => 'required|integer|min:1',
+            'kuota' => 'required|integer|min:0',
 
             'lokasi' => 'required|string|max:255',
 
@@ -52,9 +52,7 @@ class SertifikasiApiController extends Controller
 
             'penyelenggara' => 'required|string|max:255',
 
-            'tanggal_mulai' => 'required|date',
-
-            'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
+            'registration_deadline' => 'nullable|date|before_or_equal:tanggal_sertifikasi',
 
             'status' => 'required|in:draft,open,closed,finished',
         ]);
@@ -70,7 +68,7 @@ class SertifikasiApiController extends Controller
             : $slug;
 
         $data['harga'] =
-            $request->kategori === 'gratis'
+            $request->tipe_harga === 'gratis'
             ? 0
             : $request->harga;
 
@@ -107,14 +105,14 @@ class SertifikasiApiController extends Controller
         $request->validate([
             'nama_sertifikasi' => 'required|string|max:255',
             'deskripsi'        => 'required',
-            'kategori'         => 'required|string',
+            'tipe_harga' => 'required|in:gratis,berbayar',
             'link_grup' => 'nullable|string',
             'tanggal_sertifikasi' => 'required|date',
-            'harga'            => $request->kategori === 'berbayar'
+            'harga'            => $request->tipe_harga === 'berbayar'
                                         ? 'required|numeric|min:1'
                                         : 'nullable',
             'sampul'           => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            'kuota' => 'required|integer|min:1',
+            'kuota' => 'required|integer|min:0',
 
             'lokasi' => 'required|string|max:255',
 
@@ -122,9 +120,7 @@ class SertifikasiApiController extends Controller
 
             'penyelenggara' => 'required|string|max:255',
 
-            'tanggal_mulai' => 'required|date',
-
-            'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
+            'registration_deadline' => 'nullable|date|before_or_equal:tanggal_sertifikasi',
 
             'status' => 'required|in:draft,open,closed,finished',
         ]);
@@ -142,7 +138,7 @@ class SertifikasiApiController extends Controller
             : $slug;
 
         $data['harga'] =
-            $request->kategori === 'gratis'
+            $request->tipe_harga === 'gratis'
             ? 0
             : $request->harga;
 

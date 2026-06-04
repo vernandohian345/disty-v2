@@ -15,7 +15,7 @@ export default function SertifikasiForm({
 
     const [form, setForm] = useState({
         nama_sertifikasi: "",
-        kategori: "gratis",
+        tipe_harga: "gratis",
         harga: 0,
         tanggal_sertifikasi: "",
         registration_deadline: "",
@@ -361,8 +361,8 @@ export default function SertifikasiForm({
                         <div className="relative">
 
                             <select
-                                name="kategori"
-                                value={form.kategori}
+                                name="tipe_harga"
+                                value={form.tipe_harga}
                                 onChange={handleChange}
                                 className="
                                     w-full
@@ -433,8 +433,7 @@ export default function SertifikasiForm({
                             value={form.harga}
                             onChange={handleChange}
                             disabled={
-                                form.kategori ===
-                                "gratis"
+                                form.tipe_harga === "gratis"
                             }
                             placeholder="Masukkan harga"
                             className="
