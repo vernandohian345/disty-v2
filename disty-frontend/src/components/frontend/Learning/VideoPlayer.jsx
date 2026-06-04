@@ -15,7 +15,7 @@ export default function VideoPlayer({ module }) {
   if (!module) {
     return null;
   }
-
+  console.log("MODULE =", module);
   return (
     <section>
       {/* ========================================
@@ -49,7 +49,13 @@ export default function VideoPlayer({ module }) {
             bg-black
           "
         >
-          <ReactPlayer url={module.video} controls width="100%" height="100%" />
+          <ReactPlayer
+            src={module.video}
+            controls={true}
+            width="100%"
+            height="100%"
+            playing={false}
+          />
         </div>
 
         {/* ========================================

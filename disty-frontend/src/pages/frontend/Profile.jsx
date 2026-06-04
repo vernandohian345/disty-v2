@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
-// import {
-//   FaUserCircle,
-//   FaCamera,
-//   FaBookOpen,
-//   FaCertificate,
-//   FaCheckCircle,
-//   FaArrowLeft,
-//   FaDownload,
-// } from "react-icons/fa";
+import {
+  FaUserCircle,
+  FaCamera,
+  FaBookOpen,
+  FaCertificate,
+  FaCheckCircle,
+  FaArrowLeft,
+  FaDownload,
+} from "react-icons/fa";
 import { getProfileStats } from "../../services/profileService";
 import { getMyCertificates } from "../../services/SertifikatPelatihanService";
 import Navbar from "../../components/frontend/Navbar";
@@ -308,27 +308,12 @@ export default function Profile() {
         {/* ── HERO SECTION (Membungkus Back Button & Page Header) ── */}
         <div
           className="
-    relative w-full
-    bg-gradient-to-br
-    pt-12 pb-10 px-4 lg:px-6
-    border-b border-orange-100/60
-    overflow-hidden
-
-    mb-6
-    flex
-    items-center
-    gap-3
-    rounded-2xl
-    bg-orange-300
-    hover:bg-orange-50
-    border
-    border-slate-200
-    shadow-sm
-    transition-all
-    text-slate-700
-    hover:text-orange-500
-    font-semibold
-  "
+  relative w-full
+  bg-gradient-to-br
+  pt-12 pb-10 px-4 lg:px-6
+  border-b border-orange-100/60
+  overflow-hidden
+"
         >
           <div
             className="absolute inset-0 opacity-[0.04]"

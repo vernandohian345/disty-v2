@@ -31,10 +31,7 @@ font-semibold
 transition
 `;
 
-export default function PelatihanForm({
-  onSubmit,
-  editData = null,
-}) {
+export default function PelatihanForm({ onSubmit, editData = null }) {
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
@@ -54,52 +51,40 @@ export default function PelatihanForm({
   });
 
   const [moduls, setModuls] = useState([
-  {
-    judul: "",
-    deskripsi: "",
-    video_url: "",
-    durasi: "",
-    urutan: 1,
-  },
-]);
+    {
+      judul: "",
+      deskripsi: "",
+      video_url: "",
+      durasi: "",
+      urutan: 1,
+    },
+  ]);
 
-    useEffect(() => {
-      console.log("EDIT DATA =", editData);
-      console.log("MODULS =", editData?.moduls);
-    }, [editData]);
+  useEffect(() => {
+    console.log("EDIT DATA =", editData);
+    console.log("MODULS =", editData?.moduls);
+  }, [editData]);
 
   useEffect(() => {
     if (!editData) return;
 
     setForm({
       title: editData.title || "",
-      short_description:
-        editData.short_description || "",
+      short_description: editData.short_description || "",
       deskripsi: editData.deskripsi || "",
       materi: editData.materi || "",
-      kategori:
-        editData.kategori || "gratis",
-      level:
-        editData.level || "Beginner",
-      status:
-        editData.status || "published",
-      link_grup:
-        editData.link_grup || "",
-      durasi:
-        editData.durasi || "",
-      harga:
-        editData.harga || 0,
-      bahasa:
-        editData.bahasa || "",
-      tanggal_pelatihan:
-        editData.tanggal_pelatihan || "",
+      kategori: editData.kategori || "gratis",
+      level: editData.level || "Beginner",
+      status: editData.status || "published",
+      link_grup: editData.link_grup || "",
+      durasi: editData.durasi || "",
+      harga: editData.harga || 0,
+      bahasa: editData.bahasa || "",
+      tanggal_pelatihan: editData.tanggal_pelatihan || "",
       thumbnail: null,
     });
 
-    if (
-      editData.moduls &&
-      editData.moduls.length > 0
-    ) {
+    if (editData.moduls && editData.moduls.length > 0) {
       setModuls(editData.moduls);
     } else {
       setModuls([
@@ -119,10 +104,7 @@ export default function PelatihanForm({
 
     setForm((prev) => ({
       ...prev,
-      [name]:
-        files && files.length > 0
-          ? files[0]
-          : value,
+      [name]: files && files.length > 0 ? files[0] : value,
     }));
   };
 
@@ -134,35 +116,31 @@ export default function PelatihanForm({
   };
 
   const addModule = () => {
-  setModuls([
-    ...moduls,
-    {
-      judul: "",
-      deskripsi: "",
-      video_url: "",
-      durasi: "",
-      urutan: moduls.length + 1,
-    },
-  ]);
-};
+    setModuls([
+      ...moduls,
+      {
+        judul: "",
+        deskripsi: "",
+        video_url: "",
+        durasi: "",
+        urutan: moduls.length + 1,
+      },
+    ]);
+  };
 
-const removeModule = (index) => {
-  const updated = [...moduls];
-  updated.splice(index, 1);
-  setModuls(updated);
-};
+  const removeModule = (index) => {
+    const updated = [...moduls];
+    updated.splice(index, 1);
+    setModuls(updated);
+  };
 
-const handleModuleChange = (
-  index,
-  field,
-  value
-) => {
-  const updated = [...moduls];
+  const handleModuleChange = (index, field, value) => {
+    const updated = [...moduls];
 
-  updated[index][field] = value;
+    updated[index][field] = value;
 
-  setModuls(updated);
-};
+    setModuls(updated);
+  };
 
   const previewThumbnail = useMemo(() => {
     if (form.thumbnail) {
@@ -182,18 +160,12 @@ const handleModuleChange = (
     const formData = new FormData();
 
     Object.keys(form).forEach((key) => {
-      if (
-        form[key] !== null &&
-        form[key] !== undefined
-      ) {
+      if (form[key] !== null && form[key] !== undefined) {
         formData.append(key, form[key]);
       }
     });
 
-    formData.append(
-      "moduls",
-      JSON.stringify(moduls)
-    );
+    formData.append("moduls", JSON.stringify(moduls));
 
     await onSubmit(formData);
   };
@@ -249,9 +221,7 @@ const handleModuleChange = (
 
           <button
             type="button"
-            onClick={() =>
-              navigate("/dashboard")
-            }
+            onClick={() => navigate("/dashboard")}
             className={`
               ${buttonClass}
               flex
@@ -294,9 +264,7 @@ const handleModuleChange = (
             "
           ></div>
 
-          {editData
-            ? "Mode Edit Pelatihan"
-            : "Mode Tambah Pelatihan"}
+          {editData ? "Mode Edit Pelatihan" : "Mode Tambah Pelatihan"}
         </div>
       </div>
 
@@ -311,14 +279,11 @@ const handleModuleChange = (
         "
       >
         <h1 className="text-4xl font-black">
-          {editData
-            ? "Edit Pelatihan"
-            : "Tambah Pelatihan"}
+          {editData ? "Edit Pelatihan" : "Tambah Pelatihan"}
         </h1>
 
         <p className="text-orange-100 mt-2">
-          Kelola data pelatihan dengan
-          mudah
+          Kelola data pelatihan dengan mudah
         </p>
       </div>
 
@@ -334,9 +299,7 @@ const handleModuleChange = (
         >
           {/* TITLE */}
           <div className="md:col-span-2">
-            <label className={labelClass}>
-              Nama Pelatihan
-            </label>
+            <label className={labelClass}>Nama Pelatihan</label>
 
             <input
               type="text"
@@ -351,9 +314,7 @@ const handleModuleChange = (
 
           {/* BAHASA */}
           <div>
-            <label className={labelClass}>
-              Bahasa
-            </label>
+            <label className={labelClass}>Bahasa</label>
 
             <input
               type="text"
@@ -368,9 +329,7 @@ const handleModuleChange = (
 
           {/* DURASI */}
           <div>
-            <label className={labelClass}>
-              Durasi
-            </label>
+            <label className={labelClass}>Durasi</label>
 
             <input
               type="text"
@@ -385,9 +344,7 @@ const handleModuleChange = (
 
           {/* KATEGORI */}
           <div>
-            <label className={labelClass}>
-              Kategori
-            </label>
+            <label className={labelClass}>Kategori</label>
 
             <select
               name="kategori"
@@ -395,30 +352,22 @@ const handleModuleChange = (
               onChange={handleChange}
               className={inputClass}
             >
-              <option value="gratis">
-                Gratis
-              </option>
+              <option value="gratis">Gratis</option>
 
-              <option value="berbayar">
-                Berbayar
-              </option>
+              <option value="berbayar">Berbayar</option>
             </select>
           </div>
 
           {/* HARGA */}
           <div>
-            <label className={labelClass}>
-              Harga
-            </label>
+            <label className={labelClass}>Harga</label>
 
             <input
               type="number"
               name="harga"
               value={form.harga}
               onChange={handleChange}
-              disabled={
-                form.kategori === "gratis"
-              }
+              disabled={form.kategori === "gratis"}
               placeholder="Masukkan harga"
               className={`
                 ${inputClass}
@@ -429,9 +378,7 @@ const handleModuleChange = (
 
           {/* TANGGAL */}
           <div className="md:col-span-2">
-            <label className={labelClass}>
-              Tanggal Pelatihan
-            </label>
+            <label className={labelClass}>Tanggal Pelatihan</label>
 
             <input
               type="date"
@@ -445,9 +392,7 @@ const handleModuleChange = (
 
           {/* LINK GRUP */}
           <div className="md:col-span-2">
-            <label className={labelClass}>
-              Link Grup
-            </label>
+            <label className={labelClass}>Link Grup</label>
 
             <input
               type="text"
@@ -462,9 +407,7 @@ const handleModuleChange = (
 
           {/* SHORT DESCRIPTION */}
           <div className="md:col-span-2">
-            <label className={labelClass}>
-              Short Description
-            </label>
+            <label className={labelClass}>Short Description</label>
 
             <textarea
               rows="3"
@@ -479,9 +422,7 @@ const handleModuleChange = (
 
           {/* DESKRIPSI */}
           <div className="md:col-span-2">
-            <label className={labelClass}>
-              Deskripsi
-            </label>
+            <label className={labelClass}>Deskripsi</label>
 
             <textarea
               rows="5"
@@ -496,9 +437,7 @@ const handleModuleChange = (
 
           {/* MATERI */}
           <div className="md:col-span-2">
-            <label className={labelClass}>
-              Materi
-            </label>
+            <label className={labelClass}>Materi</label>
 
             <div
               className="
@@ -510,9 +449,7 @@ const handleModuleChange = (
             >
               <RichTextEditor
                 content={form.materi}
-                onChange={
-                  handleEditorChange
-                }
+                onChange={handleEditorChange}
               />
             </div>
           </div>
@@ -521,10 +458,7 @@ const handleModuleChange = (
 
           <div className="md:col-span-2">
             <div className="flex justify-between items-center mb-4">
-
-              <label className={labelClass}>
-                Modul Pelatihan
-              </label>
+              <label className={labelClass}>Modul Pelatihan</label>
 
               <button
                 type="button"
@@ -538,11 +472,9 @@ const handleModuleChange = (
               >
                 + Tambah Modul
               </button>
-
             </div>
             <div className="space-y-5">
               {moduls.map((modul, index) => (
-
                 <div
                   key={index}
                   className="
@@ -552,19 +484,13 @@ const handleModuleChange = (
                     bg-slate-50
                   "
                 >
-
                   <div className="flex justify-between mb-4">
-
-                    <h3 className="font-bold text-lg">
-                      Modul {index + 1}
-                    </h3>
+                    <h3 className="font-bold text-lg">Modul {index + 1}</h3>
 
                     {moduls.length > 1 && (
                       <button
                         type="button"
-                        onClick={() =>
-                          removeModule(index)
-                        }
+                        onClick={() => removeModule(index)}
                         className="
                           text-red-500
                           font-semibold
@@ -573,21 +499,15 @@ const handleModuleChange = (
                         Hapus
                       </button>
                     )}
-
                   </div>
 
                   <div className="grid md:grid-cols-2 gap-4">
-
                     <input
                       type="text"
                       placeholder="Judul Modul"
                       value={modul.judul}
                       onChange={(e) =>
-                        handleModuleChange(
-                          index,
-                          "judul",
-                          e.target.value
-                        )
+                        handleModuleChange(index, "judul", e.target.value)
                       }
                       className={inputClass}
                     />
@@ -597,11 +517,7 @@ const handleModuleChange = (
                       placeholder="Durasi"
                       value={modul.durasi}
                       onChange={(e) =>
-                        handleModuleChange(
-                          index,
-                          "durasi",
-                          e.target.value
-                        )
+                        handleModuleChange(index, "durasi", e.target.value)
                       }
                       className={inputClass}
                     />
@@ -611,11 +527,7 @@ const handleModuleChange = (
                     placeholder="Deskripsi Modul"
                     value={modul.deskripsi}
                     onChange={(e) =>
-                      handleModuleChange(
-                        index,
-                        "deskripsi",
-                        e.target.value
-                      )
+                      handleModuleChange(index, "deskripsi", e.target.value)
                     }
                     className={`${inputClass} mt-4`}
                   />
@@ -624,15 +536,10 @@ const handleModuleChange = (
                     placeholder="URL Youtube"
                     value={modul.video_url}
                     onChange={(e) =>
-                      handleModuleChange(
-                        index,
-                        "video_url",
-                        e.target.value
-                      )
+                      handleModuleChange(index, "video_url", e.target.value)
                     }
                     className={`${inputClass} mt-4`}
                   />
-
                 </div>
               ))}
             </div>
@@ -640,9 +547,7 @@ const handleModuleChange = (
 
           {/* THUMBNAIL */}
           <div className="md:col-span-2">
-            <label className={labelClass}>
-              Thumbnail Pelatihan
-            </label>
+            <label className={labelClass}>Thumbnail Pelatihan</label>
 
             <label
               className="
@@ -773,9 +678,7 @@ const handleModuleChange = (
             shadow-orange-200
           `}
         >
-          {editData
-            ? "Update Pelatihan"
-            : "Simpan Pelatihan"}
+          {editData ? "Update Pelatihan" : "Simpan Pelatihan"}
         </button>
       </div>
     </form>
