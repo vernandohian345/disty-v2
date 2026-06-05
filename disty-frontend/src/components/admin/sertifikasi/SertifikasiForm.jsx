@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 export default function SertifikasiForm({
     onSubmit,
     editData = null,
+    onClose,
 }) {
 
     const navigate = useNavigate();
@@ -17,26 +18,29 @@ export default function SertifikasiForm({
         deskripsi:
             editData?.deskripsi || "",
 
-        materi:
-            editData?.materi || "",
-
         kategori:
             editData?.kategori || "gratis",
 
         link_grup:
             editData?.link_grup || "",
 
-        durasi:
-            editData?.durasi || "",
-
         harga:
             editData?.harga || 0,
 
-        bahasa:
-            editData?.bahasa || "",
-
         tanggal_sertifikasi:
             editData?.tanggal_sertifikasi || "",
+
+        deadline_pendaftaran:
+            editData?.deadline_pendaftaran || "",
+
+        metode:
+            editData?.metode || "",
+
+        penyelenggara:
+            editData?.penyelenggara || "",
+
+        lokasi:
+            editData?.lokasi || "",
 
         sampul: null,
     });
@@ -126,29 +130,26 @@ export default function SertifikasiForm({
                     {/* BACK */}
                     <button
                         type="button"
-                        onClick={() => navigate(-1)}
+                        onClick={onClose}
                         className="
                             flex
                             items-center
-                            gap-2
-                            px-5
-                            py-3
+                            gap-3
+                            px-7
+                            py-4
                             rounded-2xl
                             bg-white
                             border
                             border-slate-200
+                            text-slate-700
+                            font-bold
                             hover:bg-slate-100
                             transition
-                            font-semibold
-                            text-slate-700
                             shadow-sm
                         "
                     >
 
-                        <i className="
-                            fas
-                            fa-arrow-left
-                        "></i>
+                        <i className="fas fa-arrow-left"></i>
 
                         Kembali
 
@@ -290,78 +291,6 @@ export default function SertifikasiForm({
                             }
                             onChange={handleChange}
                             placeholder="Masukkan nama Sertifikasi"
-                            className="
-                                w-full
-                                p-4
-                                rounded-2xl
-                                border
-                                border-slate-200
-                                focus:outline-none
-                                focus:ring-4
-                                focus:ring-orange-200
-                            "
-                            required
-                        />
-
-                    </div>
-
-                    {/* BAHASA */}
-                    <div>
-
-                        <label className="
-                            block
-                            text-sm
-                            font-bold
-                            text-slate-700
-                            mb-2
-                        ">
-
-                            Bahasa
-
-                        </label>
-
-                        <input
-                            type="text"
-                            name="bahasa"
-                            value={form.bahasa}
-                            onChange={handleChange}
-                            placeholder="Contoh: Indonesia"
-                            className="
-                                w-full
-                                p-4
-                                rounded-2xl
-                                border
-                                border-slate-200
-                                focus:outline-none
-                                focus:ring-4
-                                focus:ring-orange-200
-                            "
-                            required
-                        />
-
-                    </div>
-
-                    {/* DURASI */}
-                    <div>
-
-                        <label className="
-                            block
-                            text-sm
-                            font-bold
-                            text-slate-700
-                            mb-2
-                        ">
-
-                            Durasi
-
-                        </label>
-
-                        <input
-                            type="text"
-                            name="durasi"
-                            value={form.durasi}
-                            onChange={handleChange}
-                            placeholder="Contoh: 2 Jam"
                             className="
                                 w-full
                                 p-4
@@ -522,6 +451,165 @@ export default function SertifikasiForm({
 
                     </div>
 
+                    {/* DEADLINE */}
+                    <div>
+
+                        <label className="
+                            block
+                            text-sm
+                            font-bold
+                            text-slate-700
+                            mb-2
+                        ">
+
+                            Deadline Pendaftaran
+
+                        </label>
+
+                        <input
+                            type="date"
+                            name="deadline_pendaftaran"
+                            value={form.deadline_pendaftaran}
+                            onChange={handleChange}
+                            className="
+                                w-full
+                                p-4
+                                rounded-2xl
+                                border
+                                border-slate-200
+                                focus:outline-none
+                                focus:ring-4
+                                focus:ring-orange-200
+                            "
+                            required
+                        />
+
+                    </div>
+
+                    {/* METODE */}
+                    <div>
+
+                        <label className="
+                            block
+                            text-sm
+                            font-bold
+                            text-slate-700
+                            mb-2
+                        ">
+
+                            Metode
+
+                        </label>
+
+                        <select
+                            name="metode"
+                            value={form.metode}
+                            onChange={handleChange}
+                            className="
+                                w-full
+                                p-4
+                                rounded-2xl
+                                border
+                                border-slate-200
+                                focus:outline-none
+                                focus:ring-4
+                                focus:ring-orange-200
+                            "
+                            required
+                        >
+
+                            <option value="">
+                                Pilih Metode
+                            </option>
+
+                            <option value="online">
+                                Online
+                            </option>
+
+                            <option value="offline">
+                                Offline
+                            </option>
+
+                            <option value="hybrid">
+                                Hybrid
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    {/* PENYELENGGARA */}
+                    <div>
+
+                        <label className="
+                            block
+                            text-sm
+                            font-bold
+                            text-slate-700
+                            mb-2
+                        ">
+
+                            Penyelenggara
+
+                        </label>
+
+                        <input
+                            type="text"
+                            name="penyelenggara"
+                            value={form.penyelenggara}
+                            onChange={handleChange}
+                            placeholder="Contoh: BNSP"
+                            className="
+                                w-full
+                                p-4
+                                rounded-2xl
+                                border
+                                border-slate-200
+                                focus:outline-none
+                                focus:ring-4
+                                focus:ring-orange-200
+                            "
+                            required
+                        />
+
+                    </div>
+
+                    {/* LOKASI */}
+                    <div>
+
+                        <label className="
+                            block
+                            text-sm
+                            font-bold
+                            text-slate-700
+                            mb-2
+                        ">
+
+                            Lokasi
+
+                        </label>
+
+                        <input
+                            type="text"
+                            name="lokasi"
+                            value={form.lokasi}
+                            onChange={handleChange}
+                            placeholder="Contoh: Surabaya"
+                            className="
+                                w-full
+                                p-4
+                                rounded-2xl
+                                border
+                                border-slate-200
+                                focus:outline-none
+                                focus:ring-4
+                                focus:ring-orange-200
+                            "
+                            required
+                        />
+
+                    </div>
+
                     {/* LINK */}
                     <div className="md:col-span-2">
 
@@ -594,41 +682,6 @@ export default function SertifikasiForm({
 
                     </div>
 
-                    {/* MATERI */}
-                    <div className="md:col-span-2">
-
-                        <label className="
-                            block
-                            text-sm
-                            font-bold
-                            text-slate-700
-                            mb-2
-                        ">
-
-                            Materi
-
-                        </label>
-
-                        <div className="
-                            border
-                            border-slate-200
-                            rounded-2xl
-                            overflow-hidden
-                        ">
-
-                            <RichTextEditor
-                                value={form.materi}
-                                onChange={(value) =>
-                                    setForm((prev) => ({
-                                        ...prev,
-                                        materi: value,
-                                    }))
-                                }
-                            />
-
-                        </div>
-
-                    </div>
 
                     {/* SAMPUL */}
                     <div className="md:col-span-2">
@@ -781,14 +834,17 @@ export default function SertifikasiForm({
 
                 <button
                     type="button"
+                    onClick={onClose}
                     className="
-                        px-6
+                        px-8
                         py-4
                         rounded-2xl
                         bg-slate-100
                         hover:bg-slate-200
+                        text-slate-700
                         font-bold
                         transition
+                        shadow-sm
                     "
                 >
 

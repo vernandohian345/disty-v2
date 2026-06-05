@@ -12,26 +12,21 @@ export default function CreateSertifikasi() {
 
     const navigate = useNavigate();
 
-    const handleSubmit =
-        async (formData) => {
+    const handleSubmit = async (formData) => {
 
-            try {
+        try {
 
-                await createSertifikasi(
-                    formData
-                );
+            await createSertifikasi(formData);
 
-                navigate(
-                    "/admin/sertifikasi"
-                );
+            navigate("/admin/sertifikasi");
 
-            } catch (error) {
+        } catch (error) {
 
-                console.log(error);
+            console.log(error.response.data.errors);
 
-            }
+        }
 
-        };
+    };
 
     return (
 
@@ -49,6 +44,7 @@ export default function CreateSertifikasi() {
 
             <SertifikasiForm
                 onSubmit={handleSubmit}
+                onClose={() => navigate("/admin/sertifikasi")}
             />
 
         </AdminLayout>

@@ -23,7 +23,7 @@ class SertifikasiApiController extends Controller
     // ✅ GET detail sertifikasi
     public function show(int $id)
     {
-        $sertifikasi = Sertifikasi::findOrFail($id);
+        $sertifikasi = Sertifikasi::with('peserta.user')->findOrFail($id);
 
         return response()->json([
             'status' => 'success',
@@ -37,8 +37,6 @@ class SertifikasiApiController extends Controller
         $request->validate([
             'nama_sertifikasi'   => 'required|string|max:255',
             'deskripsi'          => 'required|string',
-            'bahasa'             => 'required|string',
-            'materi'             => 'required|string',
             'kategori'           => 'required|string',
             'link_grup'          => 'required|string',
             'tanggal_sertifikasi'=> 'required|date',
@@ -46,7 +44,10 @@ class SertifikasiApiController extends Controller
                                         ? 'required|numeric|min:1'
                                         : 'nullable',
             'sampul'             => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            'durasi'             => 'required|string|max:100',
+            'deadline_pendaftaran' => 'required|date',
+            'metode' => 'required|in:online,offline,hybrid',
+            'penyelenggara' => 'required|string|max:255',
+            'lokasi' => 'required|string|max:255',
         ]);
 
         $data = $request->all();
@@ -91,16 +92,17 @@ class SertifikasiApiController extends Controller
         $request->validate([
             'nama_sertifikasi' => 'required|string|max:255',
             'deskripsi'        => 'required',
-            'materi'           => 'nullable|string',
             'kategori'         => 'required|string',
             'link_grup'        => 'required|string',
-            'durasi'           => 'required|string|max:100',
             'tanggal_sertifikasi' => 'required|date',
             'harga'            => $request->kategori === 'berbayar'
                                         ? 'required|numeric|min:1'
                                         : 'nullable',
-            'bahasa'           => 'required|string',
             'sampul'           => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'deadline_pendaftaran' => 'required|date',
+            'metode' => 'required|in:online,offline,hybrid',
+            'penyelenggara' => 'required|string|max:255',
+            'lokasi' => 'required|string|max:255',
         ]);
 
         $data = $request->all();

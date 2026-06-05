@@ -12,6 +12,7 @@ use App\Models\Notification;
 use App\Models\PaymentSetting;
 use App\Models\Sertifikasi;
 use App\Models\TransaksiSertifikasi;
+use App\Models\SertifikasiUser;
 
 use Midtrans\Config;
 use Midtrans\Snap;
@@ -271,6 +272,12 @@ class TransaksiSertifikasiApiController extends Controller
                     $status->payment_type ?? null,
                 'paid_at' => now(),
             ]);
+
+            // AUTO MASUK PESERTA
+            SertifikasiUser::firstOrCreate([
+                'user_id' => $transaksi->user_id,
+                'sertifikasi_id' => $transaksi->sertifikasi_id,
+            ]);
         }
 
         return response()->json([
@@ -326,6 +333,7 @@ class TransaksiSertifikasiApiController extends Controller
             ], 404);
         }
 
+
         if (
             $transactionStatus === 'settlement' ||
             $transactionStatus === 'capture'
@@ -336,6 +344,12 @@ class TransaksiSertifikasiApiController extends Controller
                 'transaction_status' => 'paid',
                 'payment_type' => $paymentType,
                 'paid_at' => now(),
+            ]);
+
+            // AUTO MASUK PESERTA
+            SertifikasiUser::firstOrCreate([
+                'user_id' => $transaksi->user_id,
+                'sertifikasi_id' => $transaksi->sertifikasi_id,
             ]);
 
             Notification::create([
@@ -349,6 +363,8 @@ class TransaksiSertifikasiApiController extends Controller
                 'is_read' => false,
             ]);
         }
+
+
 
         if ($transactionStatus === 'pending') {
 

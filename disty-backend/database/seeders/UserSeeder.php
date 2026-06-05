@@ -22,6 +22,7 @@ class UserSeeder extends Seeder
             'password' => Hash::make('min@5202'),
             'avatar_color' => '#946B3A',
             'role' => 'admin',
+            'phone' => '08123456789',
         ]);
 
         User::create([
@@ -31,6 +32,7 @@ class UserSeeder extends Seeder
             'password' => Hash::make('john@2025'),
             'avatar_color' => '#3A6B94',
             'role' => 'user',
+            'phone' => '08987654321',
         ]);
     }
 }

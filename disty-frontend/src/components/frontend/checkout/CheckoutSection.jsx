@@ -304,20 +304,19 @@ export default function CheckoutSection() {
                 {title}
               </h1>
 
-              <p className="mt-6 text-[#6b625d] leading-relaxed text-lg">
+              <div
+                className="
+                  mt-6
+                  text-[#6b625d]
+                  leading-[2.1]
+                  text-[17px]
+                  whitespace-pre-line
+                  break-words
+                  text-justify
+                "
+              >
                 {description}
-              </p>
-              {isSertifikasi && (
-                <div className="mt-8">
-                  <h3 className="font-bold text-[#2B1D16] mb-4">
-                    Materi Sertifikasi
-                  </h3>
-
-                  <p className="text-[#6b625d] whitespace-pre-line">
-                    {data.materi}
-                  </p>
-                </div>
-              )}
+              </div>
 
               {/* Benefit */}
 

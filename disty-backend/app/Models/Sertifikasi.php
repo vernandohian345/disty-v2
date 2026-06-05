@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\SertifikasiUser;
 
 class Sertifikasi extends Model
 {
@@ -13,14 +14,15 @@ class Sertifikasi extends Model
         'slug',
         'tanggal_sertifikasi',
         'harga',
-        'durasi',
-        'bahasa',
         'deskripsi',
-        'materi',
         'kategori',
         'link_grup',
         'sampul',
         'syarat',
+        'deadline_pendaftaran',
+        'metode',
+        'penyelenggara',
+        'lokasi',
     ];
 
     public function transaksi()
@@ -39,4 +41,23 @@ class Sertifikasi extends Model
     {
         return asset('storage/sertifikasi/' . $this->sampul);
     }
+
+    public function peserta()
+    {
+        return $this->hasMany(
+            SertifikasiUser::class,
+            'sertifikasi_id'
+        );
+    }
+
+
+    public function users()
+    {
+        return $this->belongsToMany(
+            User::class,
+            'sertifikasi_user'
+        );
+    }
+
+
 }

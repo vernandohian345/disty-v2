@@ -211,21 +211,42 @@ function SidebarCard({ sertifikasi, onDaftar }) {
     : `Rp ${Number(sertifikasi.harga).toLocaleString("id-ID")}`;
 
   const infoRows = [
-    { icon: <ClockIcon />, label: "Durasi", value: sertifikasi.durasi },
-    { icon: <GlobeIcon />, label: "Bahasa", value: sertifikasi.bahasa },
     {
       icon: <CalendarIcon />,
-      label: "Tanggal Sertifikasi",
-      value: sertifikasi.tanggal_sertifikasi,
+      label: "Tanggal Pelaksanaan",
+      value: new Date(
+        sertifikasi.tanggal_sertifikasi
+      ).toLocaleDateString("id-ID", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      }),
+    },
+
+    {
+      icon: <CheckIcon />,
+      label: "Deadline Pendaftaran",
+      value: new Date(
+        sertifikasi.deadline_pendaftaran
+      ).toLocaleDateString("id-ID", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      }),
+    },
+
+    {
+      icon: <GlobeIcon />,
+      label: "Penyelenggara",
+      value: sertifikasi.penyelenggara,
     },
   ];
 
   const checks = [
     "Sertifikat digital resmi",
-    "Akses materi persiapan",
+    "Mendapatkan skill industri",
     "Bimbingan instruktur bersertifikat",
     "Berlaku internasional",
-    "Update soal & materi gratis",
   ];
 
   return (
@@ -739,61 +760,6 @@ export default function CertificationDetailContent() {
 
               <Divider />
 
-              {/* ── MATERI ─────────────────────────────────── */}
-              <div>
-                <SectionHeading
-                  eyebrow="Kurikulum"
-                  line1="Materi yang"
-                  line2Grad="Akan Diujikan"
-                />
-                <ContentBlock text={sertifikasi.materi} />
-              </div>
-
-              <Divider />
-
-              {/* ── PERSYARATAN ────────────────────────────── */}
-              <div>
-                <SectionHeading
-                  eyebrow="Persyaratan"
-                  line1="Syarat"
-                  line2Grad="Pendaftaran"
-                />
-                {/* Syarat ditampilkan sebagai list-style cards */}
-                <div className="mt-7 space-y-3">
-                  {sertifikasi.syarat ? (
-                    sertifikasi.syarat
-                      .split("\n")
-                      .filter(Boolean)
-                      .map((line, i) => (
-                        <div
-                          key={i}
-                          className="
-                            flex items-start gap-3.5 px-5 py-4
-                            rounded-[16px] bg-white
-                            border border-orange-100/80
-                            hover:border-orange-200
-                            transition-colors duration-300
-                          "
-                        >
-                          <div
-                            className="
-                            w-6 h-6 rounded-[8px] shrink-0 mt-0.5
-                            bg-orange-500/10 border border-orange-500/25
-                            flex items-center justify-center text-orange-500
-                          "
-                          >
-                            <CheckIcon />
-                          </div>
-                          <p className="text-sm text-[#4a3830] font-semibold leading-relaxed">
-                            {line}
-                          </p>
-                        </div>
-                      ))
-                  ) : (
-                    <ContentBlock text={sertifikasi.syarat} />
-                  )}
-                </div>
-              </div>
             </div>
 
             {/* ── RIGHT SIDEBAR ─────────────────────────────── */}
