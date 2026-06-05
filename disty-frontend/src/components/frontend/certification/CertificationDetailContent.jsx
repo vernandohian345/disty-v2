@@ -211,21 +211,42 @@ function SidebarCard({ sertifikasi, onDaftar }) {
     : `Rp ${Number(sertifikasi.harga).toLocaleString("id-ID")}`;
 
   const infoRows = [
-    { icon: <ClockIcon />, label: "Durasi", value: sertifikasi.durasi },
-    { icon: <GlobeIcon />, label: "Bahasa", value: sertifikasi.bahasa },
     {
       icon: <CalendarIcon />,
-      label: "Tanggal Sertifikasi",
-      value: sertifikasi.tanggal_sertifikasi,
+      label: "Tanggal Pelaksanaan",
+      value: new Date(
+        sertifikasi.tanggal_sertifikasi
+      ).toLocaleDateString("id-ID", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      }),
+    },
+
+    {
+      icon: <CheckIcon />,
+      label: "Deadline Pendaftaran",
+      value: new Date(
+        sertifikasi.deadline_pendaftaran
+      ).toLocaleDateString("id-ID", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      }),
+    },
+
+    {
+      icon: <GlobeIcon />,
+      label: "Penyelenggara",
+      value: sertifikasi.penyelenggara,
     },
   ];
 
   const checks = [
     "Sertifikat digital resmi",
-    "Akses materi persiapan",
+    "Mendapatkan skill industri",
     "Bimbingan instruktur bersertifikat",
     "Berlaku internasional",
-    "Update soal & materi gratis",
   ];
 
   return (
