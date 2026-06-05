@@ -1,15 +1,9 @@
-export default function DeleteModal({
-    isOpen,
-    onClose,
-    onDelete,
-    title,
-}) {
+export default function DeleteModal({ isOpen, onClose, onDelete, title }) {
+  if (!isOpen) return null;
 
-    if (!isOpen) return null;
-
-    return (
-
-        <div className="
+  return (
+    <div
+      className="
             fixed
             inset-0
             z-50
@@ -19,9 +13,10 @@ export default function DeleteModal({
             bg-black/50
             backdrop-blur-sm
             p-5
-        ">
-
-            <div className="
+        "
+    >
+      <div
+        className="
                 w-full
                 max-w-md
                 bg-white
@@ -32,10 +27,11 @@ export default function DeleteModal({
                 fade-in
                 zoom-in
                 duration-300
-            ">
-
-                {/* TOP */}
-                <div className="
+            "
+      >
+        {/* TOP */}
+        <div
+          className="
                     bg-gradient-to-r
                     from-red-500
                     to-rose-500
@@ -44,16 +40,18 @@ export default function DeleteModal({
                     text-center
                     relative
                     overflow-hidden
-                ">
-
-                    {/* GLOW */}
-                    <div className="
+                "
+        >
+          {/* GLOW */}
+          <div
+            className="
                         absolute
                         inset-0
                         opacity-20
-                    ">
-
-                        <div className="
+                    "
+          >
+            <div
+              className="
                             absolute
                             w-52
                             h-52
@@ -62,17 +60,19 @@ export default function DeleteModal({
                             -top-20
                             -right-20
                             blur-3xl
-                        "></div>
+                        "
+            ></div>
+          </div>
 
-                    </div>
-
-                    <div className="
+          <div
+            className="
                         relative
                         z-10
-                    ">
-
-                        {/* ICON */}
-                        <div className="
+                    "
+          >
+            {/* ICON */}
+            <div
+              className="
                             w-24
                             h-24
                             mx-auto
@@ -82,77 +82,77 @@ export default function DeleteModal({
                             items-center
                             justify-center
                             mb-5
-                        ">
-
-                            <i className="
+                        "
+            >
+              <i
+                className="
                                 fas
                                 fa-user-slash
                                 text-4xl
-                            "></i>
+                            "
+              ></i>
+            </div>
 
-                        </div>
-
-                        {/* TITLE */}
-                        <h2 className="
+            {/* TITLE */}
+            <h2
+              className="
                             text-3xl
                             font-black
-                        ">
+                        "
+            >
+              Hapus User
+            </h2>
+          </div>
+        </div>
 
-                            Hapus User
-
-                        </h2>
-
-                    </div>
-
-                </div>
-
-                {/* BODY */}
-                <div className="
+        {/* BODY */}
+        <div
+          className="
                     p-8
                     text-center
-                ">
-
-                    <h3 className="
+                "
+        >
+          <h3
+            className="
                         text-2xl
                         font-bold
                         text-slate-800
-                    ">
+                    "
+          >
+            Yakin ingin menghapus?
+          </h3>
 
-                        Yakin ingin menghapus?
-
-                    </h3>
-
-                    <p className="
+          <p
+            className="
                         text-slate-500
                         mt-3
                         leading-relaxed
-                    ">
-
-                        Akun user
-                        <span className="
+                    "
+          >
+            Akun user
+            <span
+              className="
                             font-bold
                             text-red-500
-                        ">
+                        "
+            >
+              {" "}
+              {title}{" "}
+            </span>
+            akan dihapus permanen dan tidak dapat dikembalikan.
+          </p>
 
-                            {" "} {title} {" "}
-
-                        </span>
-
-                        akan dihapus permanen dan
-                        tidak dapat dikembalikan.
-
-                    </p>
-
-                    {/* BUTTON */}
-                    <div className="
+          {/* BUTTON */}
+          <div
+            className="
                         flex
                         gap-4
                         mt-8
-                    ">
-
-                        <button
-                            onClick={onClose}
-                            className="
+                    "
+          >
+            <button
+              onClick={onClose}
+              className="
                                 flex-1
                                 py-4
                                 rounded-2xl
@@ -161,15 +161,13 @@ export default function DeleteModal({
                                 font-bold
                                 transition
                             "
-                        >
+            >
+              Batal
+            </button>
 
-                            Batal
-
-                        </button>
-
-                        <button
-                            onClick={onDelete}
-                            className="
+            <button
+              onClick={onDelete}
+              className="
                                 flex-1
                                 py-4
                                 rounded-2xl
@@ -181,19 +179,12 @@ export default function DeleteModal({
                                 shadow-red-200
                                 transition
                             "
-                        >
-
-                            Hapus
-
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </div>
-
+            >
+              Hapus
+            </button>
+          </div>
         </div>
-
-    );
+      </div>
+    </div>
+  );
 }

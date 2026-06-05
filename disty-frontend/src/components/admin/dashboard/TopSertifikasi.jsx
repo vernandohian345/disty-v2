@@ -1,17 +1,9 @@
-import {
-    Award,
-    Trophy,
-    Users,
-    ArrowUpRight,
-    Sparkles,
-} from "lucide-react";
+import { Award, Trophy, Users, ArrowUpRight, Sparkles } from "lucide-react";
 
-export default function TopSertifikasi({
-    data,
-}) {
-    return (
-
-        <div className="
+export default function TopSertifikasi({ data }) {
+  return (
+    <div
+      className="
             relative
             overflow-hidden
             rounded-[32px]
@@ -19,10 +11,11 @@ export default function TopSertifikasi({
             border-slate-200
             bg-white
             shadow-xl
-        ">
-
-            {/* BACKGROUND EFFECT */}
-            <div className="
+        "
+    >
+      {/* BACKGROUND EFFECT */}
+      <div
+        className="
                 absolute
                 -top-20
                 -right-20
@@ -32,9 +25,11 @@ export default function TopSertifikasi({
                 bg-cyan-100
                 opacity-40
                 blur-3xl
-            " />
+            "
+      />
 
-            <div className="
+      <div
+        className="
                 absolute
                 -bottom-20
                 -left-20
@@ -44,10 +39,12 @@ export default function TopSertifikasi({
                 bg-blue-100
                 opacity-30
                 blur-3xl
-            " />
+            "
+      />
 
-            {/* HEADER */}
-            <div className="
+      {/* HEADER */}
+      <div
+        className="
                 relative
                 z-10
                 flex
@@ -55,20 +52,21 @@ export default function TopSertifikasi({
                 justify-between
                 border-b
                 border-slate-100
-                p-6
-            ">
-
-                <div className="
+                p-4 md:p-6
+            "
+      >
+        <div
+          className="
                     flex
                     items-center
                     gap-4
-                ">
-
-                    {/* ICON */}
-                    <div className="
+                "
+        >
+          {/* ICON */}
+          <div
+            className="
                         flex
-                        h-14
-                        w-14
+                        h-10 w-10 md:h-14 md:w-14
                         items-center
                         justify-center
                         rounded-2xl
@@ -77,42 +75,38 @@ export default function TopSertifikasi({
                         to-blue-500
                         shadow-lg
                         shadow-cyan-200
-                    ">
+                    "
+          >
+            <Award className="w-5 h-5 md:w-7 md:h-7 text-white" />
+          </div>
 
-                        <Award
-                            className="
-                                text-white
-                            "
-                            size={28}
-                        />
-
-                    </div>
-
-                    {/* TITLE */}
-                    <div>
-
-                        <h2 className="
-                            text-2xl
+          {/* TITLE */}
+          <div>
+            <h2
+              className="
+                            text-lg md:text-2xl
                             font-black
                             text-slate-800
-                        ">
-                            Top Sertifikasi
-                        </h2>
+                        "
+            >
+              Top Sertifikasi
+            </h2>
 
-                        <p className="
+            <p
+              className="
                             mt-1
-                            text-sm
+                            text-xs md:text-sm
                             text-slate-500
-                        ">
-                            Sertifikasi paling diminati
-                        </p>
+                        "
+            >
+              Sertifikasi paling diminati
+            </p>
+          </div>
+        </div>
 
-                    </div>
-
-                </div>
-
-                {/* BADGE */}
-                <div className="
+        {/* BADGE */}
+        <div
+          className="
                     hidden
                     md:flex
                     items-center
@@ -124,32 +118,25 @@ export default function TopSertifikasi({
                     text-sm
                     font-semibold
                     text-cyan-600
-                ">
+                "
+        >
+          <Sparkles size={18} />
+          Trending
+        </div>
+      </div>
 
-                    <Sparkles size={18} />
-
-                    Trending
-
-                </div>
-
-            </div>
-
-            {/* LIST */}
-            <div className="
+      {/* LIST */}
+      <div
+        className="
                 relative
                 z-10
-                p-6
-                space-y-4
-            ">
-
-                {
-                    data.map(
-                        (item, index) => (
-
-                            <div
-                                key={item.id}
-
-                                className="
+                p-3 md:p-6 space-y-3 md:space-y-4
+            "
+      >
+        {data.map((item, index) => (
+          <div
+            key={item.id}
+            className="
                                     group
                                     flex
                                     items-center
@@ -158,7 +145,8 @@ export default function TopSertifikasi({
                                     border
                                     border-slate-100
                                     bg-slate-50
-                                    p-5
+                                    p-3 md:p-5
+                                    rounded-2xl md:rounded-3xl
                                     transition-all
                                     duration-300
                                     hover:-translate-y-1
@@ -166,20 +154,25 @@ export default function TopSertifikasi({
                                     hover:bg-white
                                     hover:shadow-lg
                                 "
-                            >
-
-                                {/* LEFT */}
-                                <div className="
+          >
+            {/* LEFT */}
+            <div
+              className="
                                     flex
                                     items-center
                                     gap-4
-                                ">
-
-                                    {/* RANK */}
-                                    <div className={`
+                                "
+            >
+              {/* RANK */}
+              <div
+                className={`
                                         flex
-                                        h-14
-                                        w-14
+                                        h-10
+                                        w-10
+                                        md:h-14
+                                        md:w-14
+                                        text-sm
+                                        md:text-lg
                                         items-center
                                         justify-center
                                         rounded-2xl
@@ -188,72 +181,64 @@ export default function TopSertifikasi({
                                         shadow-sm
 
                                         ${
-                                            index === 0
-                                                ? "bg-gradient-to-br from-yellow-300 to-yellow-400 text-white"
-                                                : index === 1
-                                                ? "bg-gradient-to-br from-slate-300 to-slate-400 text-white"
-                                                : index === 2
+                                          index === 0
+                                            ? "bg-gradient-to-br from-yellow-300 to-yellow-400 text-white"
+                                            : index === 1
+                                              ? "bg-gradient-to-br from-slate-300 to-slate-400 text-white"
+                                              : index === 2
                                                 ? "bg-gradient-to-br from-orange-300 to-orange-400 text-white"
                                                 : "bg-white text-slate-700"
                                         }
-                                    `}>
+                                    `}
+              >
+                {index === 0 ? (
+                  <Trophy className="w-4 h-4 md:w-6 md:h-6" size={22} />
+                ) : (
+                  `#${index + 1}`
+                )}
+              </div>
 
-                                        {
-                                            index === 0
-                                                ? <Trophy size={22} />
-                                                : `#${index + 1}`
-                                        }
-
-                                    </div>
-
-                                    {/* INFO */}
-                                    <div>
-
-                                        <h3 className="
-                                            text-lg
+              {/* INFO */}
+              <div>
+                <h3
+                  className="
+                                            text-sm md:text-lg
                                             font-bold
+                                            line-clamp-2
                                             text-slate-800
                                             transition-all
                                             duration-300
                                             group-hover:text-cyan-500
-                                        ">
+                                        "
+                >
+                  {item.nama_sertifikasi}
+                </h3>
 
-                                            {item.nama_sertifikasi}
-
-                                        </h3>
-
-                                        <div className="
+                <div
+                  className="
                                             mt-2
                                             flex
                                             items-center
                                             gap-2
-                                            text-sm
+                                            text-xs md:text-sm
                                             text-slate-500
-                                        ">
+                                        "
+                >
+                  <Users size={16} />
 
-                                            <Users
-                                                size={16}
-                                            />
+                  <span>{item.transaksi_sertifikasi_count} peserta</span>
+                </div>
+              </div>
+            </div>
 
-                                            <span>
-
-                                                {
-                                                    item.transaksi_sertifikasi_count
-                                                } peserta
-
-                                            </span>
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                                {/* RIGHT */}
-                                <div className="
+            {/* RIGHT */}
+            <div
+              className="
                                     flex
-                                    h-12
-                                    w-12
+                                    h-9
+                                    w-9
+                                    md:h-12
+                                    md:w-12
                                     items-center
                                     justify-center
                                     rounded-2xl
@@ -263,22 +248,13 @@ export default function TopSertifikasi({
                                     duration-300
                                     group-hover:bg-cyan-500
                                     group-hover:text-white
-                                ">
-
-                                    <ArrowUpRight
-                                        size={20}
-                                    />
-
-                                </div>
-
-                            </div>
-
-                        )
-                    )
-                }
-
+                                "
+            >
+              <ArrowUpRight className="w-4 h-4 md:w-5 md:h-5" size={20} />
             </div>
-
-        </div>
-    );
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }

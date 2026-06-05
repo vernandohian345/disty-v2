@@ -5,155 +5,139 @@ import UserModal from "../../../components/admin/user/UserModal";
 import DeleteModal from "../../../components/admin/user/DeleteModal";
 import { useNavigate } from "react-router-dom";
 import {
-    getUsers,
-    createUser,
-    updateUser,
-    deleteUser,
+  getUsers,
+  createUser,
+  updateUser,
+  deleteUser,
 } from "../../../services/userService";
 
 export default function IndexUser() {
-    const navigate = useNavigate();
-    const [users, setUsers] =
-        useState([]);
-    const [loading, setLoading] =
-        useState(true);
-    const [search, setSearch] =
-        useState("");
-    const [openModal, setOpenModal] =
-        useState(false);
-    const [editData, setEditData] =
-        useState(null);
-    const [deleteModal, setDeleteModal] =
-        useState(false);
-    const [selectedUser, setSelectedUser] =
-        useState(null);
-    useEffect(() => {
-        fetchUsers();
-    }, []);
-    const fetchUsers =
-        async () => {
+  const navigate = useNavigate();
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
+  const [openModal, setOpenModal] = useState(false);
+  const [editData, setEditData] = useState(null);
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+  const fetchUsers = async () => {
+    try {
+      setLoading(true);
+      const response = await getUsers();
+      setUsers(response.data.data);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-            try {
-                setLoading(true);
-                const response =
-                    await getUsers();
-                setUsers(
-                    response.data.data
-                );
-            } catch (error) {
-                console.log(error);
-            } finally {
-                setLoading(false);
-            }
-        };
+  const handleSubmit = async (formData) => {
+    try {
+      if (editData) {
+        await updateUser(editData.id, formData);
+      } else {
+        await createUser(formData);
+      }
+      await fetchUsers();
+      setOpenModal(false);
+      setEditData(null);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handleDelete = async () => {
+    try {
+      await deleteUser(selectedUser.id);
+      await fetchUsers();
+      setDeleteModal(false);
+      setSelectedUser(null);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-    const handleSubmit =
-        async (formData) => {
-            try {
-                if (editData) {
-                    await updateUser(
-                        editData.id,
-                        formData
-                    );
-                } else {
-                    await createUser(
-                        formData
-                    );
-                }
-                await fetchUsers();
-                setOpenModal(false);
-                setEditData(null);
-            } catch (error) {
-                console.log(error);
-            }
-        };
-    const handleDelete =
-    async () => {
-        try {
-            await deleteUser(
-                selectedUser.id
-            );
-            await fetchUsers();
-            setDeleteModal(false);
-            setSelectedUser(null);
-        } catch (error) {
-            console.log(error);
-        }
-    };
+  const filteredUsers = users.filter((item) =>
+    item.name?.toLowerCase().includes(search.toLowerCase()),
+  );
 
-    const filteredUsers =
-        users.filter((item) =>
-            item.name
-                ?.toLowerCase()
-                .includes(
-                    search.toLowerCase()
-                )
-        );
-
-    return (
-
-        <AdminLayout>
-            {/* HEADER */}
-            <div className="
-                flex
-                items-center
-                justify-between
-                mb-8
-            ">
-                <div>
-                    <h1 className="
-                        text-4xl
+  return (
+    <AdminLayout>
+      {/* HEADER */}
+      <div
+        className="
+            flex
+            flex-col
+            sm:flex-row
+            sm:items-center
+            sm:justify-between
+            gap-4
+            mb-6
+        "
+      >
+        <div>
+          <h1
+            className="
+                        text-2xl md:text-4xl
                         font-black
                         text-slate-800
-                    ">
-                        Kelola User
-                    </h1>
-                    <p className="
+                    "
+          >
+            Kelola User
+          </h1>
+          <p
+            className="
                         text-slate-500
                         mt-2
-                    ">
-                        Manage seluruh akun admin dan user
-                    </p>
-                </div>
-
-                <button
-                    onClick={() => {
-                        navigate(
-                            "/admin/users/create"
-                        );
-                    }}
-                    className="
-                        px-6
-                        py-4
-                        rounded-2xl
-                        bg-orange-500
-                        hover:bg-orange-600
-                        transition-all
-                        text-white
-                        font-bold
-                        shadow-lg
-                        shadow-orange-200
                     "
-                >
+          >
+            Manage seluruh akun admin dan user
+          </p>
+        </div>
 
-                    + Tambah User
+        <button
+          onClick={() => {
+            navigate("/admin/users/create");
+          }}
+          className="
+                    w-full
+                    sm:w-auto
+                    px-5
+                    sm:px-6
+                    py-3
+                    sm:py-4
+                    rounded-2xl
+                    bg-orange-500
+                    hover:bg-orange-600
+                    transition-all
+                    text-sm
+                    sm:text-base
+                    text-white
+                    font-bold
+                    shadow-lg
+                    shadow-orange-200"
+        >
+          + Tambah User
+        </button>
+      </div>
 
-                </button>
-
-            </div>
-
-            {/* STATS CARD */}
-            <div className="
+      {/* STATS CARD */}
+      <div
+        className="
                 grid
                 grid-cols-1
-                md:grid-cols-2
+                sm:grid-cols-2
                 xl:grid-cols-3
                 gap-6
                 mb-6
-            ">
-
-                {/* TOTAL USER */}
-                <div className="
+            "
+      >
+        {/* TOTAL USER */}
+        <div
+          className="
                     bg-white
                     rounded-[30px]
                     p-7
@@ -162,9 +146,10 @@ export default function IndexUser() {
                     border-slate-100
                     relative
                     overflow-hidden
-                ">
-
-                    <div className="
+                "
+        >
+          <div
+            className="
                         absolute
                         -right-8
                         -top-8
@@ -172,41 +157,50 @@ export default function IndexUser() {
                         h-36
                         rounded-full
                         bg-orange-100/50
-                    "></div>
+                    "
+          ></div>
 
-                    <div className="
+          <div
+            className="
                         flex
                         items-start
                         justify-between
                         relative
                         z-10
-                    ">
-                        <div>
-                            <p className="
+                    "
+          >
+            <div>
+              <p
+                className="
                                 text-slate-500
                                 font-medium
-                            ">
-                                Total User
-                            </p>
+                            "
+              >
+                Total User
+              </p>
 
-                            <h2 className="
+              <h2
+                className="
                                 text-5xl
                                 font-black
                                 text-slate-800
                                 mt-4
-                            ">
-                                {users.length}
-
-                            </h2>
-                            <p className="
+                            "
+              >
+                {users.length}
+              </h2>
+              <p
+                className="
                                 text-sm
                                 text-slate-400
                                 mt-3
-                            ">
-                                Semua akun dashboard
-                            </p>
-                        </div>
-                        <div className="
+                            "
+              >
+                Semua akun dashboard
+              </p>
+            </div>
+            <div
+              className="
                             w-16
                             h-16
                             rounded-2xl
@@ -216,17 +210,21 @@ export default function IndexUser() {
                             justify-center
                             text-orange-500
                             text-2xl
-                        ">
-                            <i className="
+                        "
+            >
+              <i
+                className="
                                 fas
                                 fa-users
-                            "></i>
-                        </div>
-                    </div>
-                </div>
+                            "
+              ></i>
+            </div>
+          </div>
+        </div>
 
-                {/* ADMIN */}
-                <div className="
+        {/* ADMIN */}
+        <div
+          className="
                     bg-white
                     rounded-[30px]
                     p-7
@@ -235,9 +233,10 @@ export default function IndexUser() {
                     border-slate-100
                     relative
                     overflow-hidden
-                ">
-
-                    <div className="
+                "
+        >
+          <div
+            className="
                         absolute
                         -right-8
                         -top-8
@@ -245,47 +244,50 @@ export default function IndexUser() {
                         h-36
                         rounded-full
                         bg-orange-100/50
-                    "></div>
+                    "
+          ></div>
 
-                    <div className="
+          <div
+            className="
                         flex
                         items-start
                         justify-between
                         relative
                         z-10
-                    ">
-                        <div>
-                            <p className="
+                    "
+          >
+            <div>
+              <p
+                className="
                                 text-slate-500
                                 font-medium
-                            ">
-                                Total Admin
-                            </p>
-                            <h2 className="
+                            "
+              >
+                Total Admin
+              </p>
+              <h2
+                className="
                                 text-5xl
                                 font-black
                                 text-slate-800
                                 mt-4
-                            ">
-                                {
-                                    users.filter(
-                                        (item) =>
-                                            item.role ===
-                                            "admin"
-                                    ).length
-                                }
-
-                            </h2>
-                            <p className="
+                            "
+              >
+                {users.filter((item) => item.role === "admin").length}
+              </h2>
+              <p
+                className="
                                 text-sm
                                 text-slate-400
                                 mt-3
-                            ">
-                                Administrator dashboard
-                            </p>
-                        </div>
+                            "
+              >
+                Administrator dashboard
+              </p>
+            </div>
 
-                        <div className="
+            <div
+              className="
                             w-16
                             h-16
                             rounded-2xl
@@ -295,18 +297,21 @@ export default function IndexUser() {
                             justify-center
                             text-orange-500
                             text-2xl
-                        ">
-                            <i className="
+                        "
+            >
+              <i
+                className="
                                 fas
                                 fa-user-shield
-                            "></i>
+                            "
+              ></i>
+            </div>
+          </div>
+        </div>
 
-                        </div>
-                    </div>
-                </div>
-
-                {/* USER */}
-                <div className="
+        {/* USER */}
+        <div
+          className="
                     bg-white
                     rounded-[30px]
                     p-7
@@ -315,9 +320,10 @@ export default function IndexUser() {
                     border-slate-100
                     relative
                     overflow-hidden
-                ">
-
-                    <div className="
+                "
+        >
+          <div
+            className="
                         absolute
                         -right-8
                         -top-8
@@ -325,47 +331,50 @@ export default function IndexUser() {
                         h-36
                         rounded-full
                         bg-blue-100/50
-                    "></div>
+                    "
+          ></div>
 
-                    <div className="
+          <div
+            className="
                         flex
                         items-start
                         justify-between
                         relative
                         z-10
-                    ">
-                        <div>
-                            <p className="
+                    "
+          >
+            <div>
+              <p
+                className="
                                 text-slate-500
                                 font-medium
-                            ">
-                                Total User Biasa
-                            </p>
-                            <h2 className="
+                            "
+              >
+                Total User Biasa
+              </p>
+              <h2
+                className="
                                 text-5xl
                                 font-black
                                 text-slate-800
                                 mt-4
-                            ">
-                                {
-                                    users.filter(
-                                        (item) =>
-                                            item.role ===
-                                            "user"
-                                    ).length
-                                }
-
-                            </h2>
-                            <p className="
+                            "
+              >
+                {users.filter((item) => item.role === "user").length}
+              </h2>
+              <p
+                className="
                                 text-sm
                                 text-slate-400
                                 mt-3
-                            ">
-                                User biasa dashboard
-                            </p>
-                        </div>
+                            "
+              >
+                User biasa dashboard
+              </p>
+            </div>
 
-                        <div className="
+            <div
+              className="
                             w-16
                             h-16
                             rounded-2xl
@@ -375,28 +384,33 @@ export default function IndexUser() {
                             justify-center
                             text-blue-500
                             text-2xl
-                        ">
-                            <i className="
+                        "
+            >
+              <i
+                className="
                                 fas
                                 fa-user
-                            "></i>
-                        </div>
-                    </div>
-                </div>
+                            "
+              ></i>
             </div>
+          </div>
+        </div>
+      </div>
 
-            {/* SEARCH */}
-            <div className="
+      {/* SEARCH */}
+      <div
+        className="
                 bg-white
                 rounded-3xl
-                p-5
+                p-2 md:p-5
                 mb-6
                 border
                 border-slate-100
-            ">
-                <div className="relative">
-
-                    <i className="
+            "
+      >
+        <div className="relative">
+          <i
+            className="
                         fas
                         fa-search
                         absolute
@@ -404,18 +418,15 @@ export default function IndexUser() {
                         top-1/2
                         -translate-y-1/2
                         text-slate-400
-                    "></i>
+                    "
+          ></i>
 
-                    <input
-                        type="text"
-                        placeholder="Cari user..."
-                        value={search}
-                        onChange={(e) =>
-                            setSearch(
-                                e.target.value
-                            )
-                        }
-                        className="
+          <input
+            type="text"
+            placeholder="Cari user..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="
                             w-full
                             pl-14
                             pr-5
@@ -428,58 +439,48 @@ export default function IndexUser() {
                             focus:ring-orange-100
                             focus:border-orange-400
                         "
-                    />
-                </div>
-            </div>
+          />
+        </div>
+      </div>
 
-            {/* TABLE */}
-            <UserTable
-                data={filteredUsers}
-                loading={loading}
-                onEdit={(item) => {
+      {/* TABLE */}
+      <UserTable
+        data={filteredUsers}
+        loading={loading}
+        onEdit={(item) => {
+          setEditData(item);
 
-                    setEditData(item);
+          setOpenModal(true);
+        }}
+        onDelete={(item) => {
+          setSelectedUser(item);
 
-                    setOpenModal(true);
+          setDeleteModal(true);
+        }}
+      />
 
-                }}
-                onDelete={(item) => {
+      {/* MODAL */}
+      <UserModal
+        isOpen={openModal}
+        onClose={() => {
+          setOpenModal(false);
 
-                    setSelectedUser(item);
+          setEditData(null);
+        }}
+        onSubmit={handleSubmit}
+        editData={editData}
+      />
 
-                    setDeleteModal(true);
+      <DeleteModal
+        isOpen={deleteModal}
+        onClose={() => {
+          setDeleteModal(false);
 
-                }}
-            />
-
-            {/* MODAL */}
-            <UserModal
-                isOpen={openModal}
-                onClose={() => {
-
-                    setOpenModal(false);
-
-                    setEditData(null);
-
-                }}
-                onSubmit={handleSubmit}
-                editData={editData}
-            />
-
-            <DeleteModal
-                isOpen={deleteModal}
-                onClose={() => {
-
-                    setDeleteModal(false);
-
-                    setSelectedUser(null);
-
-                }}
-                onDelete={handleDelete}
-                title={selectedUser?.name}
-            />
-
-        </AdminLayout>
-
-    );
+          setSelectedUser(null);
+        }}
+        onDelete={handleDelete}
+        title={selectedUser?.name}
+      />
+    </AdminLayout>
+  );
 }

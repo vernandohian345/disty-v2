@@ -200,109 +200,120 @@ export default function Blog() {
         </div>
       </div>
 
-      {/* TABLE */}
-      <div className="bg-white rounded-[35px] shadow-sm overflow-hidden border border-slate-100">
-        {/* HEADER TABLE */}
-        <div
-          className="
-                        grid grid-cols-6 gap-4 p-5
-                        bg-slate-50 border-b
-                        font-bold text-slate-700
-                    "
-        >
-          <div>No</div>
-          <div>Sampul</div>
-          <div>Judul</div>
-          <div>Kategori</div>
-          <div>Status</div>
-          <div className="text-center">Aksi</div>
-        </div>
-
-        {/* LOADING */}
-        {loading ? (
-          <div className="p-10 text-center text-slate-500">Loading...</div>
-        ) : filteredBlogs.length === 0 ? (
-          <div className="p-16 text-center">
-            <div
+      {/* TABLE MOBILE*/}
+      <div className="block lg:hidden p-4 space-y-4">
+        {filteredBlogs.map((item, index) => (
+          <div
+            key={item.id}
+            className="
+        bg-white
+        rounded-3xl
+        border
+        border-slate-100
+        overflow-hidden
+        shadow-sm
+      "
+          >
+            {/* COVER */}
+            <img
+              src={
+                item.sampul
+                  ? `http://127.0.0.1:8000/uploads/blog/${item.sampul}`
+                  : "https://placehold.co/300x200?text=No+Image"
+              }
+              alt=""
               className="
-                                w-24 h-24 rounded-full bg-orange-100
-                                flex items-center justify-center
-                                mx-auto mb-5
-                            "
-            >
-              <i className="fas fa-newspaper text-3xl text-orange-500"></i>
-            </div>
+          w-full
+          h-44
+          object-cover
+        "
+            />
 
-            <h3 className="text-2xl font-black text-slate-700">
-              Belum Ada Blog
-            </h3>
-          </div>
-        ) : (
-          filteredBlogs.map((item, index) => (
-            <div
-              key={item.id}
-              className="
-                                grid grid-cols-6 gap-4 p-5
-                                items-center border-b
-                                hover:bg-slate-50 transition
-                            "
-            >
-              {/* NO */}
-              <div>{index + 1}</div>
-
-              {/* SAMPUL */}
-              <div>
-                <img
-                  src={
-                    item.sampul
-                      ? `http://127.0.0.1:8000/uploads/blog/${item.sampul}`
-                      : "https://placehold.co/300x200?text=No+Image"
-                  }
-                  alt=""
-                  className="w-20 h-16 rounded-2xl object-cover"
-                />
-              </div>
-
-              {/* JUDUL */}
-              <div>
-                <h3 className="font-bold text-slate-800">{item.judul}</h3>
-                <p className="text-sm text-slate-500 mt-1">{item.penulis}</p>
-              </div>
-
-              {/* KATEGORI */}
-              <div>
-                <span className="px-4 py-2 rounded-full text-xs font-bold bg-blue-100 text-blue-700">
-                  {item.kategori ?? "-"}
-                </span>
-              </div>
-
+            <div className="p-4">
               {/* STATUS */}
-              <div>
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-slate-400">#{index + 1}</span>
+
                 <span
                   className={`
-                                        px-4 py-2 rounded-full text-xs font-bold
-                                        ${
-                                          item.status === "published"
-                                            ? "bg-green-100 text-green-700"
-                                            : "bg-slate-100 text-slate-600"
-                                        }
-                                    `}
+              px-3
+              py-1
+              rounded-full
+              text-xs
+              font-bold
+              ${
+                item.status === "published"
+                  ? "bg-green-100 text-green-700"
+                  : "bg-slate-100 text-slate-600"
+              }
+            `}
                 >
                   {item.status}
                 </span>
               </div>
 
-              {/* AKSI */}
-              <div className="flex items-center justify-center gap-3">
+              {/* JUDUL */}
+              <h3
+                className="
+            mt-3
+            text-lg
+            font-black
+            text-slate-800
+            line-clamp-2
+          "
+              >
+                {item.judul}
+              </h3>
+
+              {/* PENULIS */}
+              <p
+                className="
+            text-sm
+            text-slate-500
+            mt-2
+          "
+              >
+                ✍️ {item.penulis}
+              </p>
+
+              {/* KATEGORI */}
+              <div className="mt-3">
+                <span
+                  className="
+              inline-flex
+              px-3
+              py-1
+              rounded-full
+              bg-blue-100
+              text-blue-700
+              text-xs
+              font-bold
+            "
+                >
+                  {item.kategori ?? "-"}
+                </span>
+              </div>
+
+              {/* ACTION */}
+              <div
+                className="
+            mt-4
+            grid
+            grid-cols-2
+            gap-3
+          "
+              >
                 <button
                   onClick={() => openEditModal(item)}
                   className="
-                                        w-11 h-11 rounded-2xl
-                                        bg-blue-100 hover:bg-blue-500
-                                        text-blue-600 hover:text-white transition
-                                    "
+              h-11
+              rounded-2xl
+              bg-blue-100
+              text-blue-600
+              font-semibold
+            "
                 >
-                  <i className="fas fa-pen"></i>
+                  Edit
                 </button>
 
                 <button
@@ -311,22 +322,163 @@ export default function Blog() {
                     setDeleteModal(true);
                   }}
                   className="
+              h-11
+              rounded-2xl
+              bg-red-100
+              text-red-600
+              font-semibold
+            "
+                >
+                  Hapus
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* table desktop */}
+      <div className="hidden lg:block">
+        <div className="bg-white rounded-[35px] shadow-sm overflow-hidden border border-slate-100">
+          {/* HEADER TABLE */}
+          <div
+            className="
+                        grid grid-cols-6 gap-4 p-5
+                        bg-slate-50 border-b
+                        font-bold text-slate-700
+                    "
+          >
+            <div>No</div>
+            <div>Sampul</div>
+            <div>Judul</div>
+            <div>Kategori</div>
+            <div>Status</div>
+            <div className="text-center">Aksi</div>
+          </div>
+
+          {/* LOADING */}
+          {loading ? (
+            <div className="p-10 text-center text-slate-500">Loading...</div>
+          ) : filteredBlogs.length === 0 ? (
+            <div className="p-16 text-center">
+              <div
+                className="
+                                w-24 h-24 rounded-full bg-orange-100
+                                flex items-center justify-center
+                                mx-auto mb-5
+                            "
+              >
+                <i className="fas fa-newspaper text-3xl text-orange-500"></i>
+              </div>
+
+              <h3 className="text-2xl font-black text-slate-700">
+                Belum Ada Blog
+              </h3>
+            </div>
+          ) : (
+            filteredBlogs.map((item, index) => (
+              <div
+                key={item.id}
+                className="
+                                grid grid-cols-6 gap-4 p-5
+                                items-center border-b
+                                hover:bg-slate-50 transition
+                            "
+              >
+                {/* NO */}
+                <div>{index + 1}</div>
+
+                {/* SAMPUL */}
+                <div>
+                  <img
+                    src={
+                      item.sampul
+                        ? `http://127.0.0.1:8000/uploads/blog/${item.sampul}`
+                        : "https://placehold.co/300x200?text=No+Image"
+                    }
+                    alt=""
+                    className="w-20 h-16 rounded-2xl object-cover"
+                  />
+                </div>
+
+                {/* JUDUL */}
+                <div>
+                  <h3 className="font-bold text-slate-800">{item.judul}</h3>
+                  <p className="text-sm text-slate-500 mt-1">{item.penulis}</p>
+                </div>
+
+                {/* KATEGORI */}
+                <div>
+                  <span className="px-4 py-2 rounded-full text-xs font-bold bg-blue-100 text-blue-700">
+                    {item.kategori ?? "-"}
+                  </span>
+                </div>
+
+                {/* STATUS */}
+                <div>
+                  <span
+                    className={`
+                                        px-4 py-2 rounded-full text-xs font-bold
+                                        ${
+                                          item.status === "published"
+                                            ? "bg-green-100 text-green-700"
+                                            : "bg-slate-100 text-slate-600"
+                                        }
+                                    `}
+                  >
+                    {item.status}
+                  </span>
+                </div>
+
+                {/* AKSI */}
+                <div className="flex items-center justify-center gap-3">
+                  <button
+                    onClick={() => openEditModal(item)}
+                    className="
+                                        w-11 h-11 rounded-2xl
+                                        bg-blue-100 hover:bg-blue-500
+                                        text-blue-600 hover:text-white transition
+                                    "
+                  >
+                    <i className="fas fa-pen"></i>
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      setSelectedBlog(item);
+                      setDeleteModal(true);
+                    }}
+                    className="
                                         w-11 h-11 rounded-2xl
                                         bg-red-100 hover:bg-red-500
                                         text-red-600 hover:text-white transition
                                     "
-                >
-                  <i className="fas fa-trash"></i>
-                </button>
+                  >
+                    <i className="fas fa-trash"></i>
+                  </button>
+                </div>
               </div>
-            </div>
-          ))
-        )}
+            ))
+          )}
+        </div>
       </div>
 
       {/* MODAL FORM CREATE & EDIT */}
       {openModal && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+        <div
+          className="
+                fixed
+                inset-0
+                bg-black/60
+                backdrop-blur-sm
+                z-50
+                flex
+                items-end
+                sm:items-center
+                justify-center
+                p-0
+                sm:p-4"
+        >
           <div className="bg-white rounded-3xl p-8 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
             <h2 className="text-2xl font-black text-slate-800 mb-6">
               {editData ? "Edit Blog" : "Tambah Blog"}

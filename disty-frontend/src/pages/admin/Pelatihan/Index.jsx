@@ -82,9 +82,7 @@ export default function IndexPelatihan() {
         .includes(search.toLowerCase());
 
       const matchKategori =
-        kategoriFilter === ""
-          ? true
-          : item.kategori === kategoriFilter;
+        kategoriFilter === "" ? true : item.kategori === kategoriFilter;
 
       return matchSearch && matchKategori;
     })
@@ -103,29 +101,38 @@ export default function IndexPelatihan() {
   return (
     <AdminLayout>
       {/* HEADER */}
-      <div className="flex items-center justify-between mb-8">
+      <div
+        className="
+                  flex
+                  flex-col
+                  sm:flex-row
+                  sm:items-center
+                  sm:justify-between
+                  gap-4
+                  mb-6
+                "
+      >
         <div>
-          <h1 className="text-4xl font-black">
-            Kelola Pelatihan
-          </h1>
+          <h1 className="text-2xl md:text-4xl font-black">Kelola Pelatihan</h1>
 
-          <p className="text-slate-500 mt-2">
-            Manage seluruh data pelatihan
-          </p>
+          <p className="text-slate-500 mt-2">Manage seluruh data pelatihan</p>
         </div>
 
         <button
           onClick={() => navigate("/admin/pelatihan/create")}
           className="
-            px-6
-            py-4
-            rounded-2xl
-            bg-orange-500
-            hover:bg-orange-600
-            text-white
-            font-bold
-            transition
-          "
+                  w-full
+                  sm:w-auto
+                  px-5
+                  py-3
+                  rounded-2xl
+                  bg-orange-500
+                  hover:bg-orange-600
+                  text-white
+                  text-sm
+                  font-bold
+                  transition
+                "
         >
           + Tambah Pelatihan
         </button>
@@ -136,7 +143,7 @@ export default function IndexPelatihan() {
         className="
           grid
           grid-cols-1
-          md:grid-cols-2
+          sm:grid-cols-2
           xl:grid-cols-3
           gap-6
           mb-6
@@ -177,9 +184,7 @@ export default function IndexPelatihan() {
             "
           >
             <div>
-              <p className="text-slate-500 font-medium">
-                Total Pelatihan
-              </p>
+              <p className="text-slate-500 font-medium">Total Pelatihan</p>
 
               <h2
                 className="
@@ -250,9 +255,7 @@ export default function IndexPelatihan() {
             "
           >
             <div>
-              <p className="text-slate-500 font-medium">
-                Pelatihan Gratis
-              </p>
+              <p className="text-slate-500 font-medium">Pelatihan Gratis</p>
 
               <h2
                 className="
@@ -262,11 +265,7 @@ export default function IndexPelatihan() {
                   mt-4
                 "
               >
-                {
-                  pelatihans.filter(
-                    (item) => item.kategori === "gratis"
-                  ).length
-                }
+                {pelatihans.filter((item) => item.kategori === "gratis").length}
               </h2>
 
               <p className="text-sm text-slate-400 mt-3">
@@ -327,9 +326,7 @@ export default function IndexPelatihan() {
             "
           >
             <div>
-              <p className="text-slate-500 font-medium">
-                Pelatihan Berbayar
-              </p>
+              <p className="text-slate-500 font-medium">Pelatihan Berbayar</p>
 
               <h2
                 className="
@@ -340,15 +337,12 @@ export default function IndexPelatihan() {
                 "
               >
                 {
-                  pelatihans.filter(
-                    (item) => item.kategori === "berbayar"
-                  ).length
+                  pelatihans.filter((item) => item.kategori === "berbayar")
+                    .length
                 }
               </h2>
 
-              <p className="text-sm text-slate-400 mt-3">
-                Pelatihan premium
-              </p>
+              <p className="text-sm text-slate-400 mt-3">Pelatihan premium</p>
             </div>
 
             <div
@@ -436,9 +430,7 @@ export default function IndexPelatihan() {
             <div className="relative min-w-[220px]">
               <select
                 value={kategoriFilter}
-                onChange={(e) =>
-                  setKategoriFilter(e.target.value)
-                }
+                onChange={(e) => setKategoriFilter(e.target.value)}
                 className="
                   w-full
                   h-16
@@ -481,9 +473,7 @@ export default function IndexPelatihan() {
             <div className="relative min-w-[220px]">
               <select
                 value={sortFilter}
-                onChange={(e) =>
-                  setSortFilter(e.target.value)
-                }
+                onChange={(e) => setSortFilter(e.target.value)}
                 className="
                   w-full
                   h-16
@@ -503,13 +493,9 @@ export default function IndexPelatihan() {
               >
                 <option value="">Urutkan</option>
 
-                <option value="terpopuler">
-                  Terpopuler
-                </option>
+                <option value="terpopuler">Terpopuler</option>
 
-                <option value="terendah">
-                  Harga Terendah
-                </option>
+                <option value="terendah">Harga Terendah</option>
               </select>
 
               <div
@@ -561,28 +547,18 @@ export default function IndexPelatihan() {
           console.log(item);
         }}
         onEdit={async (item) => {
-        try {
+          try {
+            const response = await getPelatihan(item.id);
 
-          const response =
-            await getPelatihan(item.id);
+            console.log("DETAIL", response.data.data);
 
-          console.log(
-            "DETAIL",
-            response.data.data
-          );
+            setEditData(response.data.data);
 
-          setEditData(
-            response.data.data
-          );
-
-          setOpenModal(true);
-
-        } catch (error) {
-
-          console.log(error);
-
-        }
-      }}
+            setOpenModal(true);
+          } catch (error) {
+            console.log(error);
+          }
+        }}
         onDelete={(item) => {
           setSelectedPelatihan(item);
           setDeleteModal(true);

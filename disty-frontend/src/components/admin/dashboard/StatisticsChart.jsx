@@ -1,47 +1,45 @@
 import {
-    ResponsiveContainer,
-    AreaChart,
-    Area,
-    CartesianGrid,
-    XAxis,
-    YAxis,
-    Tooltip,
-    Legend,
+  ResponsiveContainer,
+  AreaChart,
+  Area,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
 } from "recharts";
 
-import {
-    TrendingUp,
-    Activity,
-} from "lucide-react";
+import { TrendingUp, Activity } from "lucide-react";
 
-export default function StatisticsChart({
-    chartData,
-}) {
-    return (
-        <div className="
+export default function StatisticsChart({ chartData }) {
+  return (
+    <div
+      className="
             mt-8
             overflow-hidden
-            rounded-[32px]
+            rounded-2xl md:rounded-[32px]
             bg-white
             shadow-xl
             border
             border-slate-200
-        ">
-
-            {/* HEADER */}
-            <div className="
+        "
+    >
+      {/* HEADER */}
+      <div
+        className="
                 relative
                 overflow-hidden
                 bg-gradient-to-r
                 from-slate-900
                 via-slate-800
                 to-slate-900
-                p-8
+                p-4 md:p-8
                 text-white
-            ">
-
-                {/* BACKGROUND EFFECT */}
-                <div className="
+            "
+      >
+        {/* BACKGROUND EFFECT */}
+        <div
+          className="
                     absolute
                     top-0
                     right-0
@@ -50,9 +48,11 @@ export default function StatisticsChart({
                     bg-blue-500/20
                     rounded-full
                     blur-3xl
-                " />
+                "
+        />
 
-                <div className="
+        <div
+          className="
                     absolute
                     bottom-0
                     left-0
@@ -61,9 +61,11 @@ export default function StatisticsChart({
                     bg-orange-500/20
                     rounded-full
                     blur-3xl
-                " />
+                "
+        />
 
-                <div className="
+        <div
+          className="
                     relative
                     z-10
                     flex
@@ -72,20 +74,25 @@ export default function StatisticsChart({
                     lg:items-center
                     lg:justify-between
                     gap-6
-                ">
-
-                    {/* TITLE */}
-                    <div>
-                        <div className="
+                "
+        >
+          {/* TITLE */}
+          <div>
+            <div
+              className="
                             flex
                             items-center
                             gap-4
-                        ">
-
-                            <div className="
-                                w-16
-                                h-16
-                                rounded-3xl
+                        "
+            >
+              <div
+                className="
+                                w-12
+                                h-12
+                                md:w-16
+                                md:h-16
+                                rounded-2xl
+                                md:rounded-3xl
                                 bg-white/10
                                 backdrop-blur-xl
                                 border
@@ -93,76 +100,81 @@ export default function StatisticsChart({
                                 flex
                                 items-center
                                 justify-center
-                            ">
+                            "
+              >
+                <TrendingUp className="w-6 h-6 md:w-8 md:h-8 text-orange-400" />
+              </div>
 
-                                <TrendingUp
-                                    size={30}
-                                    className="
-                                        text-orange-400
-                                    "
-                                />
-                            </div>
-
-                            <div>
-
-                                <h2 className="
-                                    text-3xl
+              <div>
+                <h2
+                  className="
+                                    text-xl md:text-3xl
                                     font-black
-                                ">
-                                    Statistik Peserta
-                                </h2>
+                                "
+                >
+                  Statistik Peserta
+                </h2>
 
-                                <p className="
+                <p
+                  className="
                                     text-slate-300
                                     mt-1
-                                    text-sm
-                                ">
-                                    Grafik perkembangan peserta
-                                    pelatihan & sertifikasi
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+                                    text-xs md:text-sm
+                                "
+                >
+                  Grafik perkembangan peserta pelatihan & sertifikasi
+                </p>
+              </div>
+            </div>
+          </div>
 
-                    {/* STATUS */}
-                    <div className="
+          {/* STATUS */}
+          <div
+            className="
                         flex
                         flex-wrap
                         items-center
                         gap-3
-                    ">
-                        {/* PELATIHAN */}
-                        <div className="
+                    "
+          >
+            {/* PELATIHAN */}
+            <div
+              className="
                             flex
                             items-center
                             gap-2
-                            px-4
-                            py-2
+                            px-3 py-1.5 md:px-4 md:py-2
                             rounded-2xl
                             bg-white/10
                             border
                             border-white/10
                             backdrop-blur-md
-                        ">
-                            <div className="
+                        "
+            >
+              <div
+                className="
                                 w-3
                                 h-3
                                 rounded-full
                                 bg-blue-400
                                 shadow-lg
                                 shadow-blue-400/50
-                            " />
+                            "
+              />
 
-                            <span className="
-                                text-sm
+              <span
+                className="
+                                text-xs md:text-sm
                                 font-medium
-                            ">
-                                Pelatihan
-                            </span>
-                        </div>
+                            "
+              >
+                Pelatihan
+              </span>
+            </div>
 
-                        {/* SERTIFIKASI */}
-                        <div className="
+            {/* SERTIFIKASI */}
+            <div
+              className="
                             flex
                             items-center
                             gap-2
@@ -173,189 +185,171 @@ export default function StatisticsChart({
                             border
                             border-white/10
                             backdrop-blur-md
-                        ">
-
-                            <div className="
+                        "
+            >
+              <div
+                className="
                                 w-3
                                 h-3
                                 rounded-full
                                 bg-emerald-400
                                 shadow-lg
                                 shadow-emerald-400/50
-                            " />
-                            <span className="
-                                text-sm
+                            "
+              />
+              <span
+                className="
+                                text-xs md:text-sm
                                 font-medium
-                            ">
-                                Sertifikasi
-                            </span>
-                        </div>
-                    </div>
-                </div>
+                            "
+              >
+                Sertifikasi
+              </span>
             </div>
+          </div>
+        </div>
+      </div>
 
-            {/* CHART */}
-            <div className="p-6 bg-slate-50">
-
-                <div className="
+      {/* CHART */}
+      <div className="p-3 md:p-6 bg-slate-50">
+        <div
+          className="
                     rounded-3xl
                     bg-white
                     border
                     border-slate-200
-                    p-6
+                    p-3 md:p-6
                     shadow-sm
-                ">
-                    <div className="
+                "
+        >
+          <div
+            className="
                         flex
                         items-center
                         justify-between
                         mb-6
-                    ">
-                        <div>
-                            <h3 className="
-                                text-xl
+                    "
+          >
+            <div>
+              <h3
+                className="
+                                text-base md:text-xl
                                 font-bold
                                 text-slate-800
-                            ">
-                                Overview Data
-                            </h3>
-                            <p className="
-                                text-sm
+                            "
+              >
+                Overview Data
+              </h3>
+              <p
+                className="
+                                text-xs md:text-sm
                                 text-slate-500
                                 mt-1
-                            ">
-                                Data peserta dalam beberapa bulan terakhir
-                            </p>
-                        </div>
+                            "
+              >
+                Data peserta dalam beberapa bulan terakhir
+              </p>
+            </div>
 
-                        <div className="
-                            w-12
-                            h-12
+            <div
+              className="
+                            w-10
+                            h-10
+                            md:w-12
+                            md:h-12
                             rounded-2xl
                             bg-orange-100
                             flex
                             items-center
                             justify-center
-                        ">
-                            <Activity
-                                className="
+                        "
+            >
+              <Activity
+                className="
                                     text-orange-500
                                 "
-                            />
-                        </div>
-                    </div>
-
-                    <div className="w-full h-[420px] min-h-[420px]">
-                        <ResponsiveContainer
-                            width="100%"
-                            height={420}
-                        >
-                            <AreaChart
-                                data={chartData}
-                                margin={{
-                                    top: 10,
-                                    right: 10,
-                                    left: -20,
-                                    bottom: 0,
-                                }}
-                            >
-                                <defs>
-                                    <linearGradient
-                                        id="pelatihan"
-                                        x1="0"
-                                        y1="0"
-                                        x2="0"
-                                        y2="1"
-                                    >
-                                        <stop
-                                            offset="5%"
-                                            stopColor="#3B82F6"
-                                            stopOpacity={0.4}
-                                        />
-                                        <stop
-                                            offset="95%"
-                                            stopColor="#3B82F6"
-                                            stopOpacity={0}
-                                        />
-                                    </linearGradient>
-
-                                    <linearGradient
-                                        id="sertifikasi"
-                                        x1="0"
-                                        y1="0"
-                                        x2="0"
-                                        y2="1"
-                                    >
-                                        <stop
-                                            offset="5%"
-                                            stopColor="#10B981"
-                                            stopOpacity={0.4}
-                                        />
-                                        <stop
-                                            offset="95%"
-                                            stopColor="#10B981"
-                                            stopOpacity={0}
-                                        />
-                                    </linearGradient>
-
-                                </defs>
-                                <CartesianGrid
-                                    strokeDasharray="3 3"
-                                    stroke="#E2E8F0"
-                                    vertical={false}
-                                />
-                                <XAxis
-                                    dataKey="name"
-                                    tick={{
-                                        fill: "#64748B",
-                                        fontSize: 12,
-                                    }}
-                                    axisLine={false}
-                                    tickLine={false}
-                                />
-                                <YAxis
-                                    tick={{
-                                        fill: "#64748B",
-                                        fontSize: 12,
-                                    }}
-                                    axisLine={false}
-                                    tickLine={false}
-                                />
-
-                                <Tooltip
-                                    contentStyle={{
-                                        borderRadius: "20px",
-                                        border: "none",
-                                        boxShadow:
-                                            "0 10px 40px rgba(0,0,0,0.1)",
-                                    }}
-                                />
-                                <Legend />
-
-                                {/* PELATIHAN */}
-                                <Area
-                                    type="monotone"
-                                    dataKey="pelatihan"
-                                    stroke="#3B82F6"
-                                    fillOpacity={1}
-                                    fill="url(#pelatihan)"
-                                    strokeWidth={4}
-                                />
-
-                                {/* SERTIFIKASI */}
-                                <Area
-                                    type="monotone"
-                                    dataKey="sertifikasi"
-                                    stroke="#10B981"
-                                    fillOpacity={1}
-                                    fill="url(#sertifikasi)"
-                                    strokeWidth={4}
-                                />
-                            </AreaChart>
-                        </ResponsiveContainer>
-                    </div>
-                </div>
+              />
             </div>
+          </div>
+
+          <div className="w-full h-[260px] md:h-[420px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart
+                data={chartData}
+                margin={{
+                  top: 5,
+                  right: 0,
+                  left: -30,
+                  bottom: 0,
+                }}
+              >
+                <defs>
+                  <linearGradient id="pelatihan" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.4} />
+                    <stop offset="95%" stopColor="#3B82F6" stopOpacity={0} />
+                  </linearGradient>
+
+                  <linearGradient id="sertifikasi" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#10B981" stopOpacity={0.4} />
+                    <stop offset="95%" stopColor="#10B981" stopOpacity={0} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid
+                  strokeDasharray="3 3"
+                  stroke="#E2E8F0"
+                  vertical={false}
+                />
+                <XAxis
+                  dataKey="name"
+                  tick={{
+                    fill: "#64748B",
+                    fontSize: 12,
+                  }}
+                  axisLine={false}
+                  tickLine={false}
+                />
+                <YAxis
+                  tick={{
+                    fill: "#64748B",
+                    fontSize: 12,
+                  }}
+                  axisLine={false}
+                  tickLine={false}
+                />
+
+                <Tooltip
+                  contentStyle={{
+                    borderRadius: "20px",
+                    border: "none",
+                    boxShadow: "0 10px 40px rgba(0,0,0,0.1)",
+                  }}
+                />
+                <Legend />
+
+                {/* PELATIHAN */}
+                <Area
+                  type="monotone"
+                  dataKey="pelatihan"
+                  stroke="#3B82F6"
+                  fillOpacity={1}
+                  fill="url(#pelatihan)"
+                  strokeWidth={4}
+                />
+
+                {/* SERTIFIKASI */}
+                <Area
+                  type="monotone"
+                  dataKey="sertifikasi"
+                  stroke="#10B981"
+                  fillOpacity={1}
+                  fill="url(#sertifikasi)"
+                  strokeWidth={4}
+                />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
         </div>
-    );
+      </div>
+    </div>
+  );
 }

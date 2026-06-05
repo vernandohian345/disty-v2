@@ -1,18 +1,11 @@
 import UserForm from "./UserForm";
 
-export default function UserModal({
-    isOpen,
-    onClose,
-    onSubmit,
-    editData,
-}) {
+export default function UserModal({ isOpen, onClose, onSubmit, editData }) {
+  if (!isOpen) return null;
 
-    if (!isOpen) return null;
-
-    return (
-
-        <div
-            className="
+  return (
+    <div
+      className="
                 fixed
                 inset-0
                 z-[999]
@@ -23,44 +16,50 @@ export default function UserModal({
                 backdrop-blur-sm
                 p-5
             "
-        >
+    >
+      {/* MODAL */}
+      <div
+        className="
+            relative
+            w-full
+            max-w-3xl
 
-            {/* MODAL */}
-            <div
-                className="
-                    relative
-                    w-full
-                    max-w-3xl
-                    bg-white
-                    rounded-[32px]
-                    overflow-hidden
-                    shadow-2xl
-                    animate-in
-                    fade-in
-                    zoom-in-95
-                    duration-200
-                "
-            >
+            max-h-[95vh]
+            overflow-y-auto
 
-                {/* TOP BAR */}
-                <div className="
+            bg-white
+
+            rounded-[24px]
+            md:rounded-[32px]
+
+            shadow-2xl
+        "
+      >
+        {/* TOP BAR */}
+        <div
+          className="
                     h-1.5
                     bg-gradient-to-r
                     from-orange-400
                     via-orange-500
                     to-orange-600
-                "></div>
+                "
+        ></div>
 
-                {/* CLOSE BUTTON */}
-                <button
-                    onClick={onClose}
-                    className="
+        {/* CLOSE BUTTON */}
+        <button
+          onClick={onClose}
+          className="
                         absolute
-                        top-6
-                        right-6
+                        top-4
+                        right-4
+                        md:top-6
+                        md:right-6
+                        w-10
+                        h-10
                         z-20
-                        w-11
-                        h-11
+                        md:w-11
+                        md:h-11
                         rounded-2xl
                         bg-slate-100
                         hover:bg-red-50
@@ -71,31 +70,37 @@ export default function UserModal({
                         justify-center
                         text-slate-500
                     "
-                >
-
-                    <i className="
+        >
+          <i
+            className="
                         fas
                         fa-times
-                    "></i>
+                    "
+          ></i>
+        </button>
 
-                </button>
-
-                {/* HEADER */}
-                <div className="
-                    px-10
-                    pt-10
-                    pb-7
+        {/* HEADER */}
+        <div
+          className="
+                    px-5
+                    md:px-10
+                    pt-6
+                    md:pt-10
+                    pb-5
+                    md:pb-7
                     border-b
                     border-slate-100
-                ">
-
-                    {/* BADGE */}
-                    <div className="
+                "
+        >
+          {/* BADGE */}
+          <div
+            className="
                         inline-flex
                         items-center
                         gap-2
                         px-4
                         py-2
+                        hidden sm:inline-flex
                         rounded-2xl
                         bg-orange-50
                         border
@@ -104,67 +109,55 @@ export default function UserModal({
                         text-xs
                         font-bold
                         mb-5
-                    ">
-
-                        <div className="
+                    "
+          >
+            <div
+              className="
                             w-2
                             h-2
                             rounded-full
                             bg-orange-500
-                        "></div>
+                        "
+            ></div>
+            Dashboard User Management
+          </div>
 
-                        Dashboard User Management
-
-                    </div>
-
-                    {/* TITLE */}
-                    <h2 className="
+          {/* TITLE */}
+          <h2
+            className="
                         text-4xl
                         font-black
                         tracking-tight
                         text-slate-800
-                    ">
+                    "
+          >
+            {editData ? "Edit User" : "Tambah User"}
+          </h2>
 
-                        {
-                            editData
-                                ? "Edit User"
-                                : "Tambah User"
-                        }
-
-                    </h2>
-
-                    {/* DESC */}
-                    <p className="
+          {/* DESC */}
+          <p
+            className="
                         text-slate-500
                         mt-3
                         text-[15px]
                         leading-relaxed
-                    ">
-
-                        Kelola akun admin dan user
-                        dashboard dengan tampilan
-                        modern dan profesional.
-
-                    </p>
-
-                </div>
-
-                {/* BODY */}
-                <div className="
-                    p-8
-                    bg-slate-50/50
-                ">
-
-                    <UserForm
-                        onSubmit={onSubmit}
-                        editData={editData}
-                    />
-
-                </div>
-
-            </div>
-
+                    "
+          >
+            Kelola akun admin dan user dashboard dengan tampilan modern dan
+            profesional.
+          </p>
         </div>
 
-    );
+        {/* BODY */}
+        <div
+          className="
+                    p-8
+                    bg-slate-50/50
+                "
+        >
+          <UserForm onSubmit={onSubmit} editData={editData} />
+        </div>
+      </div>
+    </div>
+  );
 }

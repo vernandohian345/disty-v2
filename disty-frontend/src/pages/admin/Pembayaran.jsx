@@ -216,10 +216,10 @@ export default function Pembayaran() {
       <div
         className="
                 grid
-                grid-cols-1
-                md:grid-cols-2
+                grid-cols-2
                 xl:grid-cols-4
-                gap-6
+                gap-3
+                md:gap-6
                 mb-8
             "
       >
@@ -227,9 +227,15 @@ export default function Pembayaran() {
         <div
           className="
                     bg-white
-                    rounded-3xl
-                    p-6
+                    rounded-[24px]
+                    p-4
+                    md:p-6
+                    border
+                    border-slate-100
                     shadow-sm
+                    hover:shadow-lg
+                    transition-all
+                    duration-300
                 "
         >
           <div
@@ -285,10 +291,16 @@ export default function Pembayaran() {
         {/* PENDING */}
         <div
           className="
-                    bg-white
-                    rounded-3xl
-                    p-6
-                    shadow-sm
+                  bg-white
+                  rounded-[24px]
+                  p-4
+                  md:p-6
+                  border
+                  border-slate-100
+                  shadow-sm
+                  hover:shadow-lg
+                  transition-all
+                  duration-300
                 "
         >
           <div
@@ -345,9 +357,15 @@ export default function Pembayaran() {
         <div
           className="
                     bg-white
-                    rounded-3xl
-                    p-6
+                    rounded-[24px]
+                    p-4
+                    md:p-6
+                    border
+                    border-slate-100
                     shadow-sm
+                    hover:shadow-lg
+                    transition-all
+                    duration-300
                 "
         >
           <div
@@ -359,7 +377,7 @@ export default function Pembayaran() {
           >
             <div>
               <p
-                className="
+                className=" 
                                 text-slate-500
                             "
               >
@@ -460,7 +478,6 @@ export default function Pembayaran() {
         </div>
       </div>
 
-      {/* FILTER */}
       {/* FILTER */}
       <div
         className="
@@ -689,13 +706,112 @@ export default function Pembayaran() {
         </div>
       </div>
 
-      {/* TABLE */}
+      {/* Table MOBILE */}
+      <div className="block lg:hidden p-4 space-y-4">
+        {filteredData.map((item) => {
+          const program =
+            item.pelatihan?.title || item.sertifikasi?.nama_sertifikasi;
+
+          return (
+            <div
+              key={item.id}
+              className="
+              bg-white
+              rounded-3xl
+              border
+              border-slate-100
+              shadow-sm
+              overflow-hidden
+            "
+            >
+              {/* HEADER */}
+              <div className="p-4 flex items-start gap-3">
+                <img
+                  src={
+                    item.bukti
+                      ? `http://127.0.0.1:8000/uploads/${item.bukti}`
+                      : "https://placehold.co/100x70"
+                  }
+                  alt=""
+                  className="
+                  w-20
+                  h-20
+                  rounded-2xl
+                  object-cover
+                  border
+                  border-slate-100
+                "
+                />
+
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-bold text-slate-800 line-clamp-2">
+                    {item.user?.name}
+                  </h3>
+
+                  <p className="text-sm text-slate-500 truncate">
+                    {item.user?.email}
+                  </p>
+
+                  <span
+                    className={`
+                    inline-flex
+                    mt-2
+                    px-3
+                    py-1
+                    rounded-full
+                    text-xs
+                    font-bold
+                    ${getStatusClass(item.status)}
+                  `}
+                  >
+                    {item.status}
+                  </span>
+                </div>
+              </div>
+
+              {/* BODY */}
+              <div className="px-4 pb-4">
+                <div className="bg-slate-50 rounded-2xl p-3">
+                  <p className="text-xs text-slate-400">Program</p>
+
+                  <h4 className="font-semibold text-slate-700 mt-1">
+                    {program}
+                  </h4>
+                </div>
+
+                <button
+                  onClick={() => {
+                    setSelectedData(item);
+                    setOpenModal(true);
+                  }}
+                  className="
+                  w-full
+                  mt-4
+                  py-3
+                  rounded-2xl
+                  bg-orange-500
+                  hover:bg-orange-600
+                  text-white
+                  font-bold
+                  transition-all
+                "
+                >
+                  Lihat Detail
+                </button>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Table Desktop */}
       <div
         className="
                 bg-white
                 rounded-3xl
                 shadow-sm
                 overflow-hidden
+                hidden lg:table-row
             "
       >
         <div

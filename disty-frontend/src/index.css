@@ -12,12 +12,7 @@ html {
 
 * {
   transition-property:
-    color,
-    background-color,
-    border-color,
-    transform,
-    opacity,
-    box-shadow;
+    color, background-color, border-color, transform, opacity, box-shadow;
 
   transition-duration: 200ms;
 }
@@ -42,4 +37,27 @@ html {
 
 html {
   scroll-behavior: smooth;
+}
+
+@media (max-width: 768px) {
+  .calendar-mobile .fc {
+    font-size: 12px;
+  }
+
+  .calendar-mobile .fc-toolbar {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .calendar-mobile .fc-toolbar-title {
+    font-size: 1rem !important;
+    font-weight: 700;
+  }
+
+  .calendar-mobile .fc-button {
+    padding: 6px 10px !important;
+    font-size: 12px !important;
+    border-radius: 10px !important;
+  }
 }
