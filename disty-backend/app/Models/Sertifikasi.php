@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\SertifikasiUser;
 
 class Sertifikasi extends Model
 {
@@ -43,6 +44,20 @@ class Sertifikasi extends Model
 
     public function peserta()
     {
-        return $this->hasMany(PendaftaranSertifikasi::class);
+        return $this->hasMany(
+            SertifikasiUser::class,
+            'sertifikasi_id'
+        );
     }
+
+
+    public function users()
+    {
+        return $this->belongsToMany(
+            User::class,
+            'sertifikasi_user'
+        );
+    }
+
+
 }

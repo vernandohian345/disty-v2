@@ -317,9 +317,10 @@ export default function SertifikasiModal({
                                     </div>
                                 </div>
                                 {/* FORM */}
-                                <SertifikasiForm
+                               <SertifikasiForm
                                     onSubmit={onSubmit}
                                     editData={editData}
+                                    onClose={onClose}
                                 />
                             </div>
                         </div>

@@ -68,4 +68,15 @@ class User extends Authenticatable
     {
         return $this->hasMany(TransaksiPelatihan::class);
     }
+
+
+    public function sertifikasis()
+    {
+        return $this->belongsToMany(
+            Sertifikasi::class,
+            'sertifikasi_user'
+        );
+    }
+
+
 }

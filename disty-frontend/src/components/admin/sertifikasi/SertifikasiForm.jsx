@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 export default function SertifikasiForm({
     onSubmit,
     editData = null,
+    onClose,
 }) {
 
     const navigate = useNavigate();
@@ -129,29 +130,26 @@ export default function SertifikasiForm({
                     {/* BACK */}
                     <button
                         type="button"
-                        onClick={() => navigate(-1)}
+                        onClick={onClose}
                         className="
                             flex
                             items-center
-                            gap-2
-                            px-5
-                            py-3
+                            gap-3
+                            px-7
+                            py-4
                             rounded-2xl
                             bg-white
                             border
                             border-slate-200
+                            text-slate-700
+                            font-bold
                             hover:bg-slate-100
                             transition
-                            font-semibold
-                            text-slate-700
                             shadow-sm
                         "
                     >
 
-                        <i className="
-                            fas
-                            fa-arrow-left
-                        "></i>
+                        <i className="fas fa-arrow-left"></i>
 
                         Kembali
 
@@ -836,15 +834,17 @@ export default function SertifikasiForm({
 
                 <button
                     type="button"
-                    onClick={() => navigate("/admin/sertifikasi")}
+                    onClick={onClose}
                     className="
-                        px-6
+                        px-8
                         py-4
                         rounded-2xl
                         bg-slate-100
                         hover:bg-slate-200
+                        text-slate-700
                         font-bold
                         transition
+                        shadow-sm
                     "
                 >
 

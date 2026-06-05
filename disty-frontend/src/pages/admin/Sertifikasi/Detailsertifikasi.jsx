@@ -495,7 +495,7 @@ export default function ShowSertifikasi() {
                             font-black
                             text-center
                         ">
-                            0
+                            {sertifikasi?.peserta?.length || 0}
                         </h2>
 
                     </div>

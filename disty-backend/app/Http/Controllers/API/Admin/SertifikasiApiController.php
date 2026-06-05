@@ -23,7 +23,7 @@ class SertifikasiApiController extends Controller
     // ✅ GET detail sertifikasi
     public function show(int $id)
     {
-        $sertifikasi = Sertifikasi::findOrFail($id);
+        $sertifikasi = Sertifikasi::with('peserta.user')->findOrFail($id);
 
         return response()->json([
             'status' => 'success',
