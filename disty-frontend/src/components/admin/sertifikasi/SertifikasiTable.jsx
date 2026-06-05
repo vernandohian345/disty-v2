@@ -1,20 +1,18 @@
 import { useNavigate } from "react-router-dom";
 
 export default function SertifikasiTable({
-    data,
-    loading,
-    onView,
-    onEdit,
-    onDelete,
+  data,
+  loading,
+  onView,
+  onEdit,
+  onDelete,
 }) {
+  const navigate = useNavigate();
 
-    const navigate = useNavigate();
-
-    if (loading) {
-
-        return (
-
-            <div className="
+  if (loading) {
+    return (
+      <div
+        className="
                 bg-white
                 rounded-[32px]
                 p-14
@@ -22,9 +20,10 @@ export default function SertifikasiTable({
                 shadow-sm
                 border
                 border-slate-100
-            ">
-
-                <div className="
+            "
+      >
+        <div
+          className="
                     animate-spin
                     w-14
                     h-14
@@ -34,36 +33,35 @@ export default function SertifikasiTable({
                     rounded-full
                     mx-auto
                     mb-5
-                "></div>
+                "
+        ></div>
 
-                <p className="
+        <p
+          className="
                     text-slate-500
                     font-medium
-                ">
+                "
+        >
+          Memuat data Sertifikasi...
+        </p>
+      </div>
+    );
+  }
 
-                    Memuat data Sertifikasi...
-
-                </p>
-
-            </div>
-
-        );
-
-    }
-
-    return (
-
-        <div className="
+  return (
+    <div
+      className="
             bg-white
             rounded-[32px]
             border
             border-slate-100
             shadow-sm
             overflow-hidden
-        ">
-
-            {/* HEADER */}
-            <div className="
+        "
+    >
+      {/* HEADER */}
+      <div
+        className="
                 flex
                 flex-col
                 md:flex-row
@@ -73,33 +71,32 @@ export default function SertifikasiTable({
                 p-7
                 border-b
                 border-slate-100
-            ">
-
-                <div>
-
-                    <h2 className="
+            "
+      >
+        <div>
+          <h2
+            className="
                         text-3xl
                         font-black
                         text-slate-800
-                    ">
+                    "
+          >
+            Data Sertifikasi
+          </h2>
 
-                        Data Sertifikasi
-
-                    </h2>
-
-                    <p className="
+          <p
+            className="
                         text-slate-500
                         mt-2
-                    ">
+                    "
+          >
+            Kelola seluruh data Sertifikasi dengan mudah
+          </p>
+        </div>
 
-                        Kelola seluruh data Sertifikasi dengan mudah
-
-                    </p>
-
-                </div>
-
-                {/* TOTAL */}
-                <div className="
+        {/* TOTAL */}
+        <div
+          className="
                     flex
                     items-center
                     gap-3
@@ -110,24 +107,147 @@ export default function SertifikasiTable({
                     text-orange-600
                     font-bold
                     w-fit
-                ">
-
-                    <div className="
+                "
+        >
+          <div
+            className="
                         w-3
                         h-3
                         rounded-full
                         bg-orange-500
                         animate-pulse
-                    "></div>
+                    "
+          ></div>
+          Total: {data.length}
+        </div>
+      </div>
 
-                    Total: {data.length}
+      <div className="block lg:hidden p-4 space-y-4">
+        {data.map((item, index) => (
+          <div
+            key={item.id}
+            className="
+        bg-white
+        border
+        border-slate-100
+        rounded-[28px]
+        overflow-hidden
+        shadow-sm
+      "
+          >
+            <img
+              src={
+                item.sampul
+                  ? `http://127.0.0.1:8000/uploads/sertifikasi/${item.sampul}`
+                  : "https://placehold.co/600x400?text=No+Image"
+              }
+              alt=""
+              className="
+          w-full
+          h-44
+          object-cover
+        "
+            />
 
-                </div>
+            <div className="p-4">
+              <div className="flex items-center justify-between">
+                <span
+                  className={`
+              px-3
+              py-1
+              rounded-full
+              text-xs
+              font-bold
+              ${
+                item.kategori === "gratis"
+                  ? "bg-green-100 text-green-700"
+                  : "bg-orange-100 text-orange-700"
+              }
+            `}
+                >
+                  {item.kategori}
+                </span>
 
+                <span className="text-xs text-slate-400">#{index + 1}</span>
+              </div>
+
+              <h3 className="mt-3 text-lg font-black text-slate-800 line-clamp-2">
+                {item.nama_sertifikasi}
+              </h3>
+
+              <div className="mt-3 flex flex-wrap gap-2">
+                <span className="px-3 py-1 rounded-full bg-slate-100 text-xs">
+                  {item.metode}
+                </span>
+
+                <span className="px-3 py-1 rounded-full bg-slate-100 text-xs">
+                  {item.lokasi}
+                </span>
+              </div>
+
+              <div className="mt-4">
+                <p className="text-xs text-slate-500">Harga Sertifikasi</p>
+
+                <h4 className="text-xl font-black text-orange-500">
+                  Rp {Number(item.harga).toLocaleString("id-ID")}
+                </h4>
+              </div>
+
+              <div className="mt-5 grid grid-cols-3 gap-2">
+                <button
+                  onClick={() => navigate(`/admin/sertifikasi/${item.id}`)}
+                  className="
+              h-11
+              rounded-2xl
+              bg-slate-100
+              text-slate-600
+              flex
+              items-center
+              justify-center
+            "
+                >
+                  <i className="fas fa-eye"></i>
+                </button>
+
+                <button
+                  onClick={() => onEdit(item)}
+                  className="
+              h-11
+              rounded-2xl
+              bg-blue-100
+              text-blue-600
+              flex
+              items-center
+              justify-center
+            "
+                >
+                  <i className="fas fa-pen"></i>
+                </button>
+
+                <button
+                  onClick={() => onDelete(item)}
+                  className="
+              h-11
+              rounded-2xl
+              bg-red-100
+              text-red-600
+              flex
+              items-center
+              justify-center
+            "
+                >
+                  <i className="fas fa-trash"></i>
+                </button>
+              </div>
             </div>
+          </div>
+        ))}
+      </div>
 
-            {/* TABLE HEADER */}
-            <div className="
+      <div className="hidden lg:block">
+        {/* TABLE DESKTOP */}
+        <div
+          className="
                 hidden
                 lg:grid
                 grid-cols-12
@@ -140,43 +260,31 @@ export default function SertifikasiTable({
                 text-sm
                 font-bold
                 text-slate-500
-            ">
+            "
+        >
+          <div className="col-span-1">No</div>
 
-                <div className="col-span-1">
-                    No
-                </div>
+          <div className="col-span-2">Sampul</div>
 
-                <div className="col-span-2">
-                    Sampul
-                </div>
+          <div className="col-span-3">Nama Sertifikasi</div>
 
-                <div className="col-span-3">
-                    Nama Sertifikasi
-                </div>
+          <div className="col-span-2">Kategori</div>
 
-                <div className="col-span-2">
-                    Kategori
-                </div>
+          <div className="col-span-2">Harga</div>
 
-                <div className="col-span-2">
-                    Harga
-                </div>
+          <div className="col-span-2 text-center">Aksi</div>
+        </div>
 
-                <div className="col-span-2 text-center">
-                    Aksi
-                </div>
-
-            </div>
-
-            {/* EMPTY */}
-            {data.length === 0 ? (
-
-                <div className="
+        {/* EMPTY */}
+        {data.length === 0 ? (
+          <div
+            className="
                     p-20
                     text-center
-                ">
-
-                    <div className="
+                "
+          >
+            <div
+              className="
                         w-28
                         h-28
                         rounded-full
@@ -186,45 +294,42 @@ export default function SertifikasiTable({
                         justify-center
                         mx-auto
                         mb-6
-                    ">
-
-                        <i className="
+                    "
+            >
+              <i
+                className="
                             fas
                             fa-book-open
                             text-5xl
                             text-orange-500
-                        "></i>
+                        "
+              ></i>
+            </div>
 
-                    </div>
-
-                    <h3 className="
+            <h3
+              className="
                         text-3xl
                         font-black
                         text-slate-700
-                    ">
+                    "
+            >
+              Data Kosong
+            </h3>
 
-                        Data Kosong
-
-                    </h3>
-
-                    <p className="
+            <p
+              className="
                         text-slate-500
                         mt-3
-                    ">
-
-                        Belum ada data Sertifikasi tersedia
-
-                    </p>
-
-                </div>
-
-            ) : (
-
-                data.map((item, index) => (
-
-                    <div
-                        key={item.id}
-                        className="
+                    "
+            >
+              Belum ada data Sertifikasi tersedia
+            </p>
+          </div>
+        ) : (
+          data.map((item, index) => (
+            <div
+              key={item.id}
+              className="
                             grid
                             grid-cols-1
                             lg:grid-cols-12
@@ -236,32 +341,32 @@ export default function SertifikasiTable({
                             transition
                             items-center
                         "
-                    >
-
-                        {/* NO */}
-                        <div className="
+            >
+              {/* NO */}
+              <div
+                className="
                             lg:col-span-1
                             text-slate-500
                             font-bold
-                        ">
+                        "
+              >
+                #{index + 1}
+              </div>
 
-                            #{index + 1}
-
-                        </div>
-
-                        {/* IMAGE */}
-                        <div className="
+              {/* IMAGE */}
+              <div
+                className="
                             lg:col-span-2
-                        ">
-
-                            <img
-                                src={
-                                    item.sampul
-                                        ? `http://127.0.0.1:8000/uploads/sertifikasi/${item.sampul}`
-                                        : "https://placehold.co/600x400?text=No+Image"
-                                }
-                                alt=""
-                                className="
+                        "
+              >
+                <img
+                  src={
+                    item.sampul
+                      ? `http://127.0.0.1:8000/uploads/sertifikasi/${item.sampul}`
+                      : "https://placehold.co/600x400?text=No+Image"
+                  }
+                  alt=""
+                  className="
                                     w-full
                                     lg:w-32
                                     h-24
@@ -271,71 +376,71 @@ export default function SertifikasiTable({
                                     border
                                     border-slate-100
                                 "
-                            />
+                />
+              </div>
 
-                        </div>
-
-                        {/* NAMA */}
-                        <div className="
+              {/* NAMA */}
+              <div
+                className="
                             lg:col-span-3
-                        ">
-
-                            <h3 className="
+                        "
+              >
+                <h3
+                  className="
                                 text-lg
                                 font-black
                                 text-slate-800
-                            ">
+                            "
+                >
+                  {item.nama_sertifikasi}
+                </h3>
 
-                                {
-                                    item.nama_sertifikasi
-                                }
-
-                            </h3>
-
-                            <div className="
+                <div
+                  className="
                                 flex
                                 items-center
                                 gap-3
                                 mt-2
                                 flex-wrap
-                            ">
-
-                                <span className="
+                            "
+                >
+                  <span
+                    className="
                                     text-sm
                                     text-slate-500
-                                ">
+                                "
+                  >
+                    {item.metode}
+                  </span>
 
-                                    {item.metode}
-
-                                </span>
-
-                                <span className="
+                  <span
+                    className="
                                     w-1.5
                                     h-1.5
                                     rounded-full
                                     bg-slate-300
-                                "></span>
+                                "
+                  ></span>
 
-                                <span className="
+                  <span
+                    className="
                                     text-sm
                                     text-slate-500
-                                ">
+                                "
+                  >
+                    {item.lokasi}
+                  </span>
+                </div>
+              </div>
 
-                                    {item.lokasi}
-
-                                </span>
-
-                            </div>
-
-                        </div>
-
-                        {/* KATEGORI */}
-                        <div className="
+              {/* KATEGORI */}
+              <div
+                className="
                             lg:col-span-2
-                        ">
-
-                            <span
-                                className={`
+                        "
+              >
+                <span
+                  className={`
                                     inline-flex
                                     items-center
                                     gap-2
@@ -345,72 +450,61 @@ export default function SertifikasiTable({
                                     text-sm
                                     font-bold
                                     ${
-                                        item.kategori ===
-                                        "gratis"
-                                            ? "bg-green-100 text-green-700"
-                                            : "bg-orange-100 text-orange-700"
+                                      item.kategori === "gratis"
+                                        ? "bg-green-100 text-green-700"
+                                        : "bg-orange-100 text-orange-700"
                                     }
                                 `}
-                            >
-
-                                <div className={`
+                >
+                  <div
+                    className={`
                                     w-2
                                     h-2
                                     rounded-full
                                     ${
-                                        item.kategori ===
-                                        "gratis"
-                                            ? "bg-green-500"
-                                            : "bg-orange-500"
+                                      item.kategori === "gratis"
+                                        ? "bg-green-500"
+                                        : "bg-orange-500"
                                     }
-                                `}></div>
+                                `}
+                  ></div>
 
-                                {
-                                    item.kategori
-                                }
+                  {item.kategori}
+                </span>
+              </div>
 
-                            </span>
-
-                        </div>
-
-                        {/* HARGA */}
-                        <div className="
+              {/* HARGA */}
+              <div
+                className="
                             lg:col-span-2
-                        ">
-
-                            <h4 className="
+                        "
+              >
+                <h4
+                  className="
                                 text-lg
                                 font-black
                                 text-slate-700
-                            ">
+                            "
+                >
+                  Rp {Number(item.harga).toLocaleString("id-ID")}
+                </h4>
+              </div>
 
-                                Rp{" "}
-                                {Number(
-                                    item.harga
-                                ).toLocaleString(
-                                    "id-ID"
-                                )}
-
-                            </h4>
-
-                        </div>
-
-                        {/* AKSI */}
-                        <div className="
+              {/* AKSI */}
+              <div
+                className="
                             lg:col-span-2
                             flex
                             items-center
                             lg:justify-center
                             gap-3
                             flex-wrap
-                        ">
-
-                            {/* VIEW */}
-                            <button
-                                onClick={() =>
-                                    navigate(`/admin/sertifikasi/${item.id}`)
-                                }
-                                className="
+                        "
+              >
+                {/* VIEW */}
+                <button
+                  onClick={() => navigate(`/admin/sertifikasi/${item.id}`)}
+                  className="
                                     w-12
                                     h-12
                                     rounded-2xl
@@ -422,18 +516,14 @@ export default function SertifikasiTable({
                                     text-slate-600
                                     transition
                                 "
-                            >
+                >
+                  <i className="fas fa-eye"></i>
+                </button>
 
-                                <i className="fas fa-eye"></i>
-
-                            </button>
-
-                            {/* EDIT */}
-                            <button
-                                onClick={() =>
-                                    onEdit(item)
-                                }
-                                className="
+                {/* EDIT */}
+                <button
+                  onClick={() => onEdit(item)}
+                  className="
                                     flex
                                     items-center
                                     justify-center
@@ -447,21 +537,19 @@ export default function SertifikasiTable({
                                     transition
                                     shadow-sm
                                 "
-                            >
-
-                                <i className="
+                >
+                  <i
+                    className="
                                     fas
                                     fa-pen
-                                "></i>
+                                "
+                  ></i>
+                </button>
 
-                            </button>
-
-                            {/* DELETE */}
-                            <button
-                                onClick={() =>
-                                    onDelete(item)
-                                }
-                                className="
+                {/* DELETE */}
+                <button
+                  onClick={() => onDelete(item)}
+                  className="
                                     flex
                                     items-center
                                     justify-center
@@ -475,24 +563,19 @@ export default function SertifikasiTable({
                                     transition
                                     shadow-sm
                                 "
-                            >
-
-                                <i className="
+                >
+                  <i
+                    className="
                                     fas
                                     fa-trash
-                                "></i>
-
-                            </button>
-
-                        </div>
-
-                    </div>
-
-                ))
-
-            )}
-
-        </div>
-
-    );
+                                "
+                  ></i>
+                </button>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+    </div>
+  );
 }

@@ -118,7 +118,7 @@ export default function PelatihanTable({
           Total: {data.length}
         </div>
       </div>
-      {/* MOBILE VIEW */}
+      {/* MOBILE */}
       <div className="block lg:hidden p-4 space-y-4">
         {data.map((item, index) => (
           <div
@@ -261,15 +261,21 @@ export default function PelatihanTable({
           "
               >
                 <Link
-                  to={`/pelatihan/${item.slug}`}
+                  to={`/admin/pelatihan/${item.id}`}
                   className="
-              h-11
-              rounded-2xl
-              bg-slate-100
-              flex
-              items-center
-              justify-center
-            "
+    flex
+    items-center
+    justify-center
+    w-11
+    h-11
+    rounded-2xl
+    bg-slate-100
+    hover:bg-slate-800
+    hover:text-white
+    text-slate-600
+    transition
+    shadow-sm
+  "
                 >
                   <i className="fas fa-eye"></i>
                 </Link>
@@ -579,28 +585,23 @@ export default function PelatihanTable({
               >
                 {/* VIEW */}
                 <Link
-                  to={`/pelatihan/${item.slug}`}
+                  to={`/admin/pelatihan/${item.id}`}
                   className="
-                                    flex
-                                    items-center
-                                    justify-center
-                                    w-11
-                                    h-11
-                                    rounded-2xl
-                                    bg-slate-100
-                                    hover:bg-slate-800
-                                    hover:text-white
-                                    text-slate-600
-                                    transition
-                                    shadow-sm
-                                "
+                          flex
+                          items-center
+                          justify-center
+                          w-11
+                          h-11
+                          rounded-2xl
+                          bg-slate-100
+                          hover:bg-slate-800
+                          hover:text-white
+                          text-slate-600
+                          transition
+                          shadow-sm
+                        "
                 >
-                  <i
-                    className="
-                                    fas
-                                    fa-eye
-                                "
-                  ></i>
+                  <i className="fas fa-eye"></i>
                 </Link>
 
                 {/* EDIT */}

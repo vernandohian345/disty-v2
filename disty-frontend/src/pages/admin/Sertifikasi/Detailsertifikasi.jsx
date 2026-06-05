@@ -7,116 +7,99 @@ import AdminLayout from "../../../layouts/AdminLayout";
 import axios from "axios";
 
 export default function ShowSertifikasi() {
+  const { id } = useParams();
 
-    const { id } = useParams();
+  const navigate = useNavigate();
 
-    const navigate = useNavigate();
+  const [sertifikasi, setSertifikasi] = useState(null);
 
-    const [sertifikasi, setSertifikasi] = useState(null);
+  const formatTanggal = (tanggal) => {
+    return new Date(tanggal).toLocaleDateString("id-ID", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+  };
 
-    const formatTanggal = (tanggal) => {
+  useEffect(() => {
+    fetchDetail();
+  }, []);
 
-        return new Date(tanggal).toLocaleDateString(
-            "id-ID",
-            {
-                day: "numeric",
-                month: "long",
-                year: "numeric",
-            }
-        );
+  const fetchDetail = async () => {
+    try {
+      const token = localStorage.getItem("token");
 
-    };
+      const response = await axios.get(
+        `http://127.0.0.1:8000/api/sertifikasi/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
 
-    useEffect(() => {
-
-        fetchDetail();
-
-    }, []);
-
-    const fetchDetail = async () => {
-
-        try {
-
-            const token = localStorage.getItem("token");
-
-            const response = await axios.get(
-                `http://127.0.0.1:8000/api/sertifikasi/${id}`,
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
-
-            setSertifikasi(response.data.data);
-
-        } catch (error) {
-
-            console.log(error);
-
-        }
-
-    };
-
-    if (!sertifikasi) {
-
-        return (
-            <AdminLayout>
-                <div className="p-10">
-                    Loading...
-                </div>
-            </AdminLayout>
-        );
-
+      setSertifikasi(response.data.data);
+    } catch (error) {
+      console.log(error);
     }
+  };
 
+  if (!sertifikasi) {
     return (
-        <AdminLayout>
+      <AdminLayout>
+        <div className="p-10">Loading...</div>
+      </AdminLayout>
+    );
+  }
 
-            <div className="space-y-8">
-
-                {/* HEADER */}
-                <div className="
+  return (
+    <AdminLayout>
+      <div className="space-y-8">
+        {/* HEADER */}
+        <div
+          className="
                     bg-white
                     rounded-[32px]
                     overflow-hidden
                     shadow-sm
                     border
                     border-slate-100
-                ">
-
-                    {/* COVER */}
-                    <div className="relative">
-
-                        <img
-                            src={`http://127.0.0.1:8000/uploads/sertifikasi/${sertifikasi.sampul}`}
-                            alt=""
-                            className="
+                "
+        >
+          {/* COVER */}
+          <div className="relative">
+            <img
+              src={`http://127.0.0.1:8000/uploads/sertifikasi/${sertifikasi.sampul}`}
+              alt=""
+              className="
                                 w-full
                                 h-[350px]
                                 object-cover
                             "
-                        />
+            />
 
-                        <div className="
+            <div
+              className="
                             absolute
                             inset-0
                             bg-gradient-to-t
                             from-black/70
                             to-black/10
-                        "></div>
+                        "
+            ></div>
 
-                        {/* BUTTON KEMBALI */}
-                        <div className="
+            {/* BUTTON KEMBALI */}
+            <div
+              className="
                             absolute
                             top-6
                             right-6
                             z-20
-                        ">
-
-                            <button
-                                onClick={() => navigate("/admin/sertifikasi")}
-                                className="
+                        "
+            >
+              <button
+                onClick={() => navigate("/admin/sertifikasi")}
+                className="
                                     group
                                     flex
                                     items-center
@@ -139,31 +122,31 @@ export default function ShowSertifikasi() {
                                     border
                                     border-white/10
                                 "
-                            >
-
-                                <i className="
+              >
+                <i
+                  className="
                                     fas
                                     fa-arrow-left
                                     group-hover:-translate-x-1
                                     transition
-                                "></i>
+                                "
+                ></i>
+                Kembali
+              </button>
+            </div>
 
-                                Kembali
-
-                            </button>
-
-                        </div>
-
-                        {/* CONTENT */}
-                        <div className="
+            {/* CONTENT */}
+            <div
+              className="
                             absolute
                             bottom-0
                             left-0
                             p-10
                             text-white
-                        ">
-
-                            <span className={`
+                        "
+            >
+              <span
+                className={`
                                 inline-flex
                                 items-center
                                 gap-2
@@ -175,69 +158,66 @@ export default function ShowSertifikasi() {
                                 tracking-widest
                                 mb-5
                                 ${
-                                    sertifikasi.kategori === "gratis"
-                                        ? "bg-green-500"
-                                        : "bg-orange-500"
+                                  sertifikasi.kategori === "gratis"
+                                    ? "bg-green-500"
+                                    : "bg-orange-500"
                                 }
-                            `}>
+                            `}
+              >
+                {sertifikasi.kategori.toUpperCase()}
+              </span>
 
-                                {sertifikasi.kategori.toUpperCase()}
-
-                            </span>
-
-                            <h1 className="
+              <h1
+                className="
                                 text-5xl
                                 font-black
                                 mb-4
-                            ">
+                            "
+              >
+                {sertifikasi.nama_sertifikasi}
+              </h1>
 
-                                {sertifikasi.nama_sertifikasi}
-
-                            </h1>
-
-                            <div className="
+              <div
+                className="
                                 flex
                                 flex-wrap
                                 items-center
                                 gap-6
                                 text-lg
-                            ">
-
-                                <div className="flex items-center gap-2">
-                                    <i className="fas fa-building"></i>
-                                    {sertifikasi.penyelenggara}
-                                </div>
-
-                                <div className="flex items-center gap-2">
-                                    <i className="fas fa-laptop"></i>
-                                    {sertifikasi.metode}
-                                </div>
-
-                                <div className="flex items-center gap-2">
-                                    <i className="fas fa-map-marker-alt"></i>
-                                    {sertifikasi.lokasi}
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
+                            "
+              >
+                <div className="flex items-center gap-2">
+                  <i className="fas fa-building"></i>
+                  {sertifikasi.penyelenggara}
                 </div>
 
-                
-                {/* INFO GRID */}
-                <div className="
+                <div className="flex items-center gap-2">
+                  <i className="fas fa-laptop"></i>
+                  {sertifikasi.metode}
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <i className="fas fa-map-marker-alt"></i>
+                  {sertifikasi.lokasi}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* INFO GRID */}
+        <div
+          className="
                     grid
                     grid-cols-1
                     md:grid-cols-2
                     lg:grid-cols-4
                     gap-6
-                ">
-
-                    {/* HARGA */}
-                    <div className="
+                "
+        >
+          {/* HARGA */}
+          <div
+            className="
                         relative
                         overflow-hidden
                         rounded-[30px]
@@ -247,9 +227,10 @@ export default function ShowSertifikasi() {
                         to-orange-400
                         text-white
                         shadow-xl
-                    ">
-
-                        <div className="
+                    "
+          >
+            <div
+              className="
                             absolute
                             top-0
                             right-0
@@ -259,9 +240,11 @@ export default function ShowSertifikasi() {
                             rounded-full
                             -translate-y-10
                             translate-x-10
-                        "></div>
+                        "
+            ></div>
 
-                        <div className="
+            <div
+              className="
                             flex
                             items-center
                             justify-center
@@ -270,39 +253,42 @@ export default function ShowSertifikasi() {
                             rounded-2xl
                             bg-white/20
                             mb-5
-                        ">
-
-                            <i className="
+                        "
+            >
+              <i
+                className="
                                 fas
                                 fa-wallet
                                 text-2xl
-                            "></i>
+                            "
+              ></i>
+            </div>
 
-                        </div>
-
-                        <p className="
+            <p
+              className="
                             text-center
                             font-semibold
                             text-orange-100
                             mb-3
-                        ">
-                            Harga
-                        </p>
+                        "
+            >
+              Harga
+            </p>
 
-                        <h2 className="
+            <h2
+              className="
                             text-3xl
                             font-black
                             text-center
-                        ">
-                            Rp {Number(
-                                sertifikasi.harga
-                            ).toLocaleString("id-ID")}
-                        </h2>
+                        "
+            >
+              Rp {Number(sertifikasi.harga).toLocaleString("id-ID")}
+            </h2>
+          </div>
 
-                    </div>
-
-                    {/* TANGGAL */}
-                    <div className="
+          {/* TANGGAL */}
+          <div
+            className="
                         relative
                         overflow-hidden
                         rounded-[30px]
@@ -312,9 +298,10 @@ export default function ShowSertifikasi() {
                         to-sky-400
                         text-white
                         shadow-xl
-                    ">
-
-                        <div className="
+                    "
+          >
+            <div
+              className="
                             absolute
                             top-0
                             right-0
@@ -324,9 +311,11 @@ export default function ShowSertifikasi() {
                             rounded-full
                             -translate-y-10
                             translate-x-10
-                        "></div>
+                        "
+            ></div>
 
-                        <div className="
+            <div
+              className="
                             flex
                             items-center
                             justify-center
@@ -335,42 +324,43 @@ export default function ShowSertifikasi() {
                             rounded-2xl
                             bg-white/20
                             mb-5
-                        ">
-
-                            <i className="
+                        "
+            >
+              <i
+                className="
                                 fas
                                 fa-calendar-alt
                                 text-2xl
-                            "></i>
+                            "
+              ></i>
+            </div>
 
-                        </div>
-
-                        <p className="
+            <p
+              className="
                             text-center
                             font-semibold
                             text-blue-100
                             mb-3
-                        ">
-                            Tanggal Sertifikasi
-                        </p>
+                        "
+            >
+              Tanggal Sertifikasi
+            </p>
 
-                        <h2 className="
+            <h2
+              className="
                             text-2xl
                             font-black
                             text-center
                             leading-snug
-                        ">
-                            {
-                                formatTanggal(
-                                    sertifikasi.tanggal_sertifikasi
-                                )
-                            }
-                        </h2>
+                        "
+            >
+              {formatTanggal(sertifikasi.tanggal_sertifikasi)}
+            </h2>
+          </div>
 
-                    </div>
-
-                    {/* DEADLINE */}
-                    <div className="
+          {/* DEADLINE */}
+          <div
+            className="
                         relative
                         overflow-hidden
                         rounded-[30px]
@@ -380,9 +370,10 @@ export default function ShowSertifikasi() {
                         to-pink-400
                         text-white
                         shadow-xl
-                    ">
-
-                        <div className="
+                    "
+          >
+            <div
+              className="
                             absolute
                             top-0
                             right-0
@@ -392,9 +383,11 @@ export default function ShowSertifikasi() {
                             rounded-full
                             -translate-y-10
                             translate-x-10
-                        "></div>
+                        "
+            ></div>
 
-                        <div className="
+            <div
+              className="
                             flex
                             items-center
                             justify-center
@@ -403,42 +396,43 @@ export default function ShowSertifikasi() {
                             rounded-2xl
                             bg-white/20
                             mb-5
-                        ">
-
-                            <i className="
+                        "
+            >
+              <i
+                className="
                                 fas
                                 fa-clock
                                 text-2xl
-                            "></i>
+                            "
+              ></i>
+            </div>
 
-                        </div>
-
-                        <p className="
+            <p
+              className="
                             text-center
                             font-semibold
                             text-red-100
                             mb-3
-                        ">
-                            Deadline
-                        </p>
+                        "
+            >
+              Deadline
+            </p>
 
-                        <h2 className="
+            <h2
+              className="
                             text-2xl
                             font-black
                             text-center
                             leading-snug
-                        ">
-                            {
-                                formatTanggal(
-                                    sertifikasi.deadline_pendaftaran
-                                )
-                            }
-                        </h2>
+                        "
+            >
+              {formatTanggal(sertifikasi.deadline_pendaftaran)}
+            </h2>
+          </div>
 
-                    </div>
-
-                    {/* PESERTA */}
-                    <div className="
+          {/* PESERTA */}
+          <div
+            className="
                         relative
                         overflow-hidden
                         rounded-[30px]
@@ -448,9 +442,10 @@ export default function ShowSertifikasi() {
                         to-green-400
                         text-white
                         shadow-xl
-                    ">
-
-                        <div className="
+                    "
+          >
+            <div
+              className="
                             absolute
                             top-0
                             right-0
@@ -460,9 +455,11 @@ export default function ShowSertifikasi() {
                             rounded-full
                             -translate-y-10
                             translate-x-10
-                        "></div>
+                        "
+            ></div>
 
-                        <div className="
+            <div
+              className="
                             flex
                             items-center
                             justify-center
@@ -471,75 +468,78 @@ export default function ShowSertifikasi() {
                             rounded-2xl
                             bg-white/20
                             mb-5
-                        ">
-
-                            <i className="
+                        "
+            >
+              <i
+                className="
                                 fas
                                 fa-users
                                 text-2xl
-                            "></i>
+                            "
+              ></i>
+            </div>
 
-                        </div>
-
-                        <p className="
+            <p
+              className="
                             text-center
                             font-semibold
                             text-green-100
                             mb-3
-                        ">
-                            Total Peserta
-                        </p>
+                        "
+            >
+              Total Peserta
+            </p>
 
-                        <h2 className="
+            <h2
+              className="
                             text-4xl
                             font-black
                             text-center
-                        ">
-                            {sertifikasi?.peserta?.length || 0}
-                        </h2>
+                        "
+            >
+              {sertifikasi?.peserta?.length || 0}
+            </h2>
+          </div>
+        </div>
 
-                    </div>
-
-                </div>
-
-
-                {/* DESKRIPSI */}
-                <div className="
+        {/* DESKRIPSI */}
+        <div
+          className="
                     bg-white
                     rounded-[32px]
                     p-10
                     shadow-sm
                     border
                     border-slate-100
-                ">
-
-                    <h2 className="
+                "
+        >
+          <h2
+            className="
                         text-3xl
                         font-black
                         mb-6
-                    ">
+                    "
+          >
+            Deskripsi Sertifikasi
+          </h2>
 
-                        Deskripsi Sertifikasi
-
-                    </h2>
-
-                    <div className="
+          <div
+            className="
                         text-slate-700
                         leading-[2.3]
                         text-lg
                         whitespace-pre-line
                         break-words
                         text-justify
-                    ">
+                    "
+          >
+            {sertifikasi.deskripsi}
+          </div>
+        </div>
 
-                        {sertifikasi.deskripsi}
-
-                    </div>
-
-                </div>
-
-                {/* LINK GROUP */}
-                <div className="
+        {/* LINK GROUP */}
+        <div
+          className="
                     bg-gradient-to-r
                     from-green-500
                     to-green-400
@@ -552,24 +552,24 @@ export default function ShowSertifikasi() {
                     items-center
                     justify-between
                     gap-6
-                ">
-
-                    <div>
-
-                        <h2 className="
+                "
+        >
+          <div>
+            <h2
+              className="
                             text-3xl
                             font-black
                             mb-3
-                        ">
-                            Grup Sertifikasi
-                        </h2>
+                        "
+            >
+              Grup Sertifikasi
+            </h2>
+          </div>
 
-                    </div>
-
-                    <a
-                        href={sertifikasi.link_grup}
-                        target="_blank"
-                        className="
+          <a
+            href={sertifikasi.link_grup}
+            target="_blank"
+            className="
                             px-8
                             py-4
                             rounded-2xl
@@ -578,117 +578,92 @@ export default function ShowSertifikasi() {
                             font-bold
                             shadow-lg
                         "
-                    >
-                        Lihat Grup WhatsApp
-                    </a>
+          >
+            Lihat Grup WhatsApp
+          </a>
+        </div>
 
-                </div>
-
-                {/* DATA PESERTA */}
-                <div className="
+        {/* DATA PESERTA */}
+        <div
+          className="
                     bg-white
                     rounded-[32px]
                     shadow-sm
                     border
                     border-slate-100
                     overflow-hidden
-                ">
-
-                    <div className="
+                "
+        >
+          <div
+            className="
                         p-8
                         border-b
                         border-slate-100
-                    ">
-
-                        <h2 className="
+                    "
+          >
+            <h2
+              className="
                             text-3xl
                             font-black
-                        ">
-                            Peserta Sertifikasi
-                        </h2>
+                        "
+            >
+              Peserta Sertifikasi
+            </h2>
+          </div>
 
-                    </div>
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead className="bg-slate-50">
+                <tr>
+                  <th className="p-5 text-left">Nama</th>
 
-                    <div className="overflow-x-auto">
+                  <th className="p-5 text-left">Email</th>
 
-                        <table className="w-full">
+                  <th className="p-5 text-left">No Handphone</th>
 
-                            <thead className="bg-slate-50">
+                  <th className="p-5 text-left">Status</th>
+                </tr>
+              </thead>
 
-                                <tr>
-
-                                    <th className="p-5 text-left">
-                                        Nama
-                                    </th>
-
-                                    <th className="p-5 text-left">
-                                        Email
-                                    </th>
-
-                                    <th className="p-5 text-left">
-                                        No Handphone
-                                    </th>
-
-                                    <th className="p-5 text-left">
-                                        Status
-                                    </th>
-
-                                </tr>
-
-                            </thead>
-
-                            <tbody>
-
-                                {
-                                    sertifikasi.peserta?.length > 0 ? (
-
-                                        sertifikasi.peserta.map((peserta) => (
-
-                                            <tr
-                                                key={peserta.id}
-                                                className="
+              <tbody>
+                {sertifikasi.peserta?.length > 0 ? (
+                  sertifikasi.peserta.map((peserta) => (
+                    <tr
+                      key={peserta.id}
+                      className="
                                                     border-b
                                                     border-slate-100
                                                 "
-                                            >
+                    >
+                      <td className="p-5">{peserta.user?.name}</td>
 
-                                                <td className="p-5">
-                                                    {peserta.user?.name}
-                                                </td>
+                      <td className="p-5">{peserta.user?.email}</td>
 
-                                                <td className="p-5">
-                                                    {peserta.user?.email}
-                                                </td>
-
-                                                <td className="p-5">
-
-                                                    <div className="
+                      <td className="p-5">
+                        <div
+                          className="
                                                         flex
                                                         items-center
                                                         gap-2
                                                         text-slate-700
                                                         font-medium
-                                                    ">
-
-                                                        <i className="
+                                                    "
+                        >
+                          <i
+                            className="
                                                             fas
                                                             fa-phone-alt
                                                             text-green-500
-                                                        "></i>
+                                                        "
+                          ></i>
 
-                                                        {
-                                                            peserta.user?.no_hp ||
-                                                            peserta.user?.phone ||
-                                                            "-"
-                                                        }
+                          {peserta.user?.no_hp || peserta.user?.phone || "-"}
+                        </div>
+                      </td>
 
-                                                    </div>
-
-                                                </td>
-
-                                                <td className="p-5">
-
-                                                    <span className="
+                      <td className="p-5">
+                        <span
+                          className="
                                                         px-4
                                                         py-2
                                                         rounded-full
@@ -696,52 +671,32 @@ export default function ShowSertifikasi() {
                                                         text-green-700
                                                         text-sm
                                                         font-bold
-                                                    ">
-
-                                                        Lunas
-
-                                                    </span>
-
-                                                </td>
-
-                                            </tr>
-
-                                        ))
-
-                                    ) : (
-
-                                        <tr>
-
-                                            <td
-                                                colSpan="4"
-                                                className="
+                                                    "
+                        >
+                          Lunas
+                        </span>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td
+                      colSpan="4"
+                      className="
                                                     text-center
                                                     p-10
                                                     text-slate-500
                                                 "
-                                            >
-
-                                                Belum ada peserta mendaftar
-
-                                            </td>
-
-                                        </tr>
-
-                                    )
-                                }
-
-                            </tbody>
-
-                        </table>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </AdminLayout>
-    );
-
+                    >
+                      Belum ada peserta mendaftar
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </AdminLayout>
+  );
 }
-

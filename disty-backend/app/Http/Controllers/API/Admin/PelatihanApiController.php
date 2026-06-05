@@ -22,15 +22,30 @@ class PelatihanApiController extends Controller
 
     // ✅ GET detail pelatihan
     public function show(int $id)
-    {
-        $pelatihan = Pelatihan::with('moduls')
-            ->findOrFail($id);
+{
+    try {
+
+        $pelatihan = Pelatihan::with([
+            'moduls',
+            'transaksi.user'
+        ])
+        ->withCount('transaksi')
+        ->findOrFail($id);
 
         return response()->json([
             'status' => 'success',
             'data' => $pelatihan
         ]);
+
+    } catch (\Throwable $e) {
+
+        return response()->json([
+            'message' => $e->getMessage(),
+            'line' => $e->getLine(),
+            'file' => $e->getFile(),
+        ], 500);
     }
+}
 
     // ✅ POST tambah pelatihan
     public function store(Request $request)

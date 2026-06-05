@@ -37,6 +37,8 @@ export default function ProgramSection() {
   };
 
   const renderCard = (
+    id,
+    slug,
     image,
     title,
     category,
@@ -44,7 +46,7 @@ export default function ProgramSection() {
     link,
     type = "pelatihan",
   ) => (
-    <Reveal key={title}>
+    <Reveal key={slug}>
       <Link
         to={link}
         className="

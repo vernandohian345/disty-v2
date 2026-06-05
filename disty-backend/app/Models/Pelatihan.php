@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\PelatihanModul;
+use App\Models\TransaksiPelatihan;
 
 class Pelatihan extends Model
 {

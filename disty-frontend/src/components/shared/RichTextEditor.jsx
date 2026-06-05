@@ -1,4 +1,5 @@
 import { useEditor, EditorContent } from "@tiptap/react";
+import { useEffect } from "react";
 
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
@@ -13,25 +14,25 @@ export default function RichTextEditor({
   placeholder = "Tulis sesuatu...",
 }) {
   const editor = useEditor({
-        extensions: [
-        StarterKit.configure({
-            link: false,
-        }),
+    extensions: [
+      StarterKit.configure({
+        link: false,
+      }),
 
-        Underline,
+      Underline,
 
-        Placeholder.configure({
-            placeholder,
-        }),
+      Placeholder.configure({
+        placeholder,
+      }),
 
-        TextAlign.configure({
-            types: ["heading", "paragraph"],
-        }),
+      TextAlign.configure({
+        types: ["heading", "paragraph"],
+      }),
 
-        Link.configure({
-            openOnClick: false,
-        }),
-        Youtube.configure({
+      Link.configure({
+        openOnClick: false,
+      }),
+      Youtube.configure({
         controls: true,
         nocookie: true,
       }),
@@ -52,7 +53,7 @@ export default function RichTextEditor({
 
   if (!editor) return null;
 
-   const addYoutubeVideo = () => {
+  const addYoutubeVideo = () => {
     const url = prompt("Masukkan URL YouTube");
 
     if (url) {
@@ -63,8 +64,6 @@ export default function RichTextEditor({
       });
     }
   };
-
-  
 
   const setLink = () => {
     const previousUrl = editor.getAttributes("link").href;
@@ -81,6 +80,12 @@ export default function RichTextEditor({
 
     editor.chain().focus().setLink({ href: url }).run();
   };
+
+  useEffect(() => {
+    if (editor && content !== undefined) {
+      editor.commands.setContent(content || "");
+    }
+  }, [editor, content]);
 
   return (
     <div className="border border-slate-200 rounded-2xl overflow-hidden bg-white">

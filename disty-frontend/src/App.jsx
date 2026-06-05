@@ -13,7 +13,7 @@ import BootcampDetail from "./pages/frontend/BootcampDetail";
 import Certification from "./pages/frontend/Certification";
 import CertificationDetail from "./pages/frontend/CertificationDetail";
 import Checkout from "./pages/frontend/Checkout";
-import Payment from "./pages/frontend/Payment";
+// import Payment from "./pages/frontend/Payment";
 import MyProgram from "./pages/frontend/MyProgram";
 import Profile from "./pages/frontend/Profile";
 import MyTransactions from "./pages/frontend/MyTransactions";
@@ -23,6 +23,7 @@ import Dashboard from "./pages/admin/Dashboard";
 
 import IndexPelatihan from "./pages/admin/Pelatihan/Index";
 import CreatePelatihan from "./pages/admin/Pelatihan/Create";
+import DetailPelatihan from "./pages/admin/pelatihan/DetailPelatihan";
 
 import IndexSertifikasi from "./pages/admin/Sertifikasi/Index";
 import CreateSertifikasi from "./pages/admin/Sertifikasi/Create";
@@ -62,7 +63,7 @@ export default function App() {
 
         <Route path="/checkout/:slug" element={<Checkout />} />
         <Route path="/checkout/:type/:slug" element={<Checkout />} />
-        <Route path="/payment" element={<Payment />} />
+        {/* <Route path="/payment" element={<Payment />} /> */}
 
         <Route path="/learning/:id" element={<LearningPage />} />
         <Route path="/profile" element={<Profile />} />
@@ -105,6 +106,15 @@ export default function App() {
           }
         />
 
+        <Route
+          path="/admin/pelatihan/:id"
+          element={
+            <RouteAdmin>
+              <DetailPelatihan />
+            </RouteAdmin>
+          }
+        />
+
         {/* ADMIN SERTIFIKASI */}
         <Route
           path="/admin/sertifikasi"
@@ -125,8 +135,12 @@ export default function App() {
         />
 
         <Route
-            path="/admin/sertifikasi/:id"
-            element={<DetailSertifikasi />}
+          path="/admin/sertifikasi/:id"
+          element={
+            <RouteAdmin>
+              <DetailSertifikasi />
+            </RouteAdmin>
+          }
         />
 
         {/* ADMIN PEMBAYARAN */}
@@ -190,7 +204,11 @@ export default function App() {
         {/* SERTIFIKAT SERTIFIKASI */}
         <Route
           path="/admin/sertifikat-bnsp"
-          element={<SertifikatSertifikasi />}
+          element={
+            <RouteAdmin>
+              <SertifikatSertifikasi />
+            </RouteAdmin>
+          }
         />
       </Routes>
     </BrowserRouter>
