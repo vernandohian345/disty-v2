@@ -26,6 +26,7 @@ import CreatePelatihan from "./pages/admin/Pelatihan/Create";
 
 import IndexSertifikasi from "./pages/admin/Sertifikasi/Index";
 import CreateSertifikasi from "./pages/admin/Sertifikasi/Create";
+import DetailSertifikasi from "./pages/admin/Sertifikasi/Detailsertifikasi";
 
 import IndexPembayaran from "./pages/admin/pembayaran/Index";
 
@@ -121,6 +122,11 @@ export default function App() {
               <CreateSertifikasi />
             </RouteAdmin>
           }
+        />
+
+        <Route
+            path="/admin/sertifikasi/:id"
+            element={<DetailSertifikasi />}
         />
 
         {/* ADMIN PEMBAYARAN */}

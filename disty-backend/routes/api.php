@@ -148,6 +148,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/sertifikasi', [SertifikasiApiController::class, 'store']);
     Route::post('/sertifikasi/update/{id}', [SertifikasiApiController::class, 'update']);
     Route::delete('/sertifikasi/{id}', [SertifikasiApiController::class, 'destroy']);
+    Route::get('/sertifikasi/{id}',[SertifikasiApiController::class, 'show']);
 
     // ================= BLOG =================
     Route::get('/blog', [BlogController::class, 'index']);

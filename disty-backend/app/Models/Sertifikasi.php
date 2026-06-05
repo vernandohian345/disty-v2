@@ -13,14 +13,15 @@ class Sertifikasi extends Model
         'slug',
         'tanggal_sertifikasi',
         'harga',
-        'durasi',
-        'bahasa',
         'deskripsi',
-        'materi',
         'kategori',
         'link_grup',
         'sampul',
         'syarat',
+        'deadline_pendaftaran',
+        'metode',
+        'penyelenggara',
+        'lokasi',
     ];
 
     public function transaksi()
@@ -38,5 +39,10 @@ class Sertifikasi extends Model
     public function getSampulUrlAttribute()
     {
         return asset('storage/sertifikasi/' . $this->sampul);
+    }
+
+    public function peserta()
+    {
+        return $this->hasMany(PendaftaranSertifikasi::class);
     }
 }

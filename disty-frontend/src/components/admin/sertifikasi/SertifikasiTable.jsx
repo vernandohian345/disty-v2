@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 export default function SertifikasiTable({
     data,
     loading,
@@ -5,6 +7,8 @@ export default function SertifikasiTable({
     onEdit,
     onDelete,
 }) {
+
+    const navigate = useNavigate();
 
     if (loading) {
 
@@ -301,9 +305,7 @@ export default function SertifikasiTable({
                                     text-slate-500
                                 ">
 
-                                    {
-                                        item.bahasa
-                                    }
+                                    {item.metode}
 
                                 </span>
 
@@ -319,9 +321,7 @@ export default function SertifikasiTable({
                                     text-slate-500
                                 ">
 
-                                    {
-                                        item.durasi
-                                    }
+                                    {item.lokasi}
 
                                 </span>
 
@@ -408,28 +408,23 @@ export default function SertifikasiTable({
                             {/* VIEW */}
                             <button
                                 onClick={() =>
-                                    onView(item)
+                                    navigate(`/admin/sertifikasi/${item.id}`)
                                 }
                                 className="
+                                    w-12
+                                    h-12
+                                    rounded-2xl
+                                    bg-slate-100
+                                    hover:bg-slate-200
                                     flex
                                     items-center
                                     justify-center
-                                    w-11
-                                    h-11
-                                    rounded-2xl
-                                    bg-slate-100
-                                    hover:bg-slate-800
-                                    hover:text-white
                                     text-slate-600
                                     transition
-                                    shadow-sm
                                 "
                             >
 
-                                <i className="
-                                    fas
-                                    fa-eye
-                                "></i>
+                                <i className="fas fa-eye"></i>
 
                             </button>
 
