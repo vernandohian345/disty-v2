@@ -147,7 +147,7 @@ class PelatihanApiController extends Controller
         ], 201);
     }
 
-    // ✅ UPDATE
+    // UPDATE
     public function update(Request $request, int $id)
     {
         $pelatihan = \App\Models\Pelatihan::findOrFail($id);

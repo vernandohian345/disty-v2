@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   FaUserCircle,
   FaCamera,
@@ -9,11 +9,13 @@ import {
   FaDownload,
 } from "react-icons/fa";
 import { getProfileStats } from "../../services/profileService";
+import SertifikatPreviewModal from "../../components/admin/sertifikat-pelatihan/SertifikatPreviewModal";
 import { getMyCertificates } from "../../services/SertifikatPelatihanService";
 import Navbar from "../../components/frontend/Navbar";
 import Footer from "../../components/frontend/Footer";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { downloadPdfSertifikat } from "../../utils/sertifikatPdf";
 
 // ── SMALL ICONS (SVG inline agar tidak perlu install extra) ──────────────────
 const BookIcon = () => (
@@ -134,7 +136,7 @@ function StatCard({ icon, iconColor, value, label, onClick }) {
 }
 
 // ── CERTIFICATE ITEM ─────────────────────────────────────────────────────────
-function CertItem({ title }) {
+function CertItem({ title, onPreview, onDownload }) {
   return (
     <div
       className="
@@ -167,9 +169,20 @@ function CertItem({ title }) {
           </span>
         </div>
       </div>
-
+      <button
+        onClick={onPreview}
+        className="
+          inline-flex items-center gap-2 shrink-0
+          h-9 px-4 rounded-xl
+          border border-orange-300
+          text-orange-500 text-[11px] font-bold
+        "
+      >
+        Lihat
+      </button>
       {/* Download */}
       <button
+        onClick={onDownload}
         className="
         inline-flex items-center gap-2 shrink-0
         h-9 px-4 rounded-xl
@@ -218,6 +231,8 @@ export default function Profile() {
   const [certificates, setCertificates] = useState([]);
   const [profileImage, setProfileImage] = useState(null);
   const navigate = useNavigate();
+  const [previewData, setPreviewData] = useState(null);
+  const sertifikatRef = useRef(null);
 
   const [stats, setStats] = useState({
     total_pelatihan: 0,
@@ -241,9 +256,12 @@ export default function Profile() {
     const fetchCertificates = async () => {
       try {
         const response = await getMyCertificates();
-        setCertificates(response.data);
+
+        console.log("CERTIFICATES:", response);
+
+        setCertificates(response.data.data);
       } catch (error) {
-        console.log(error);
+        console.log("STATE CERTIFICATES:", certificates);
       }
     };
 
@@ -263,6 +281,14 @@ export default function Profile() {
       setProfileImage(imageUrl);
       localStorage.setItem("profileImage", imageUrl);
     }
+  };
+
+  const handleDownload = async (item) => {
+    setPreviewData(item);
+
+    setTimeout(async () => {
+      await downloadPdfSertifikat(sertifikatRef);
+    }, 300);
   };
 
   // ── LOADING ────────────────────────────────────────────────────────────────
@@ -495,7 +521,12 @@ export default function Profile() {
                 {certificates.length > 0 ? (
                   <div className="flex flex-col gap-3">
                     {certificates.map((item) => (
-                      <CertItem key={item.id} title={item.title} />
+                      <CertItem
+                        key={item.id}
+                        title={item.pelatihan?.title || item.title}
+                        onPreview={() => setPreviewData(item)}
+                        onDownload={() => handleDownload(item)}
+                      />
                     ))}
                   </div>
                 ) : (
@@ -506,6 +537,12 @@ export default function Profile() {
           </div>
         </div>
       </section>
+      <SertifikatPreviewModal
+        previewData={previewData}
+        setPreviewData={setPreviewData}
+        handleDownload={handleDownload}
+        sertifikatRef={sertifikatRef}
+      />
       <Footer />
     </>
   );

@@ -53,6 +53,24 @@ Route::get('/blogs/{slug}', [BlogController::class, 'publicShow']);
 // =====================================================
 
 Route::middleware('auth:sanctum')->group(function () {
+
+    Route::get(
+        '/my-certificates',
+        [SertifikatPelatihanApiController::class, 'myCertificates']
+    );
+
+    // Route::get(
+    //     '/certificate/{id}/view',
+    //     [SertifikatPelatihanApiController::class, 'viewCertificate']
+    // );
+
+    // Route::get(
+    //     '/certificate/{id}/download',
+    //     [SertifikatPelatihanApiController::class, 'downloadCertificate']
+    // );
+});
+
+Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthApiController::class, 'logout']);
     Route::get('/me', [AuthApiController::class, 'me']);
 

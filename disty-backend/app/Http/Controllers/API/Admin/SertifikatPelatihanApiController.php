@@ -15,29 +15,26 @@ class SertifikatPelatihanApiController extends Controller
 {
 
     public function myCertificates()
-    {
-        $user = auth()->user();
+{
+    $user = auth()->user();
 
-        $certificates = TransaksiPelatihan::with([
-            'pelatihan'
-        ])
-            ->where('user_id', $user->id)
-            ->whereNotNull('sertifikat_pelatihan')
-            ->get()
-            ->map(function ($item) {
-                return [
-                    'id' => $item->id,
-                    'title' => $item->pelatihan->title ??
-                        $item->pelatihan->nama_pelatihan,
-                    'certificate' => $item->sertifikat_pelatihan,
-                ];
-            });
+    $certificates = TransaksiPelatihan::with('pelatihan')
+        ->where('user_id', $user->id)
+        ->where('status', 'completed')
+        ->get()
+        ->map(function ($item) {
+            return [
+                'id' => $item->id,
+                'nama' => $item->nama,
+                'pelatihan' => $item->pelatihan,
+            ];
+        });
 
-        return response()->json([
-            'success' => true,
-            'data' => $certificates
-        ]);
-    }
+    return response()->json([
+        'success' => true,
+        'data' => $certificates
+    ]);
+}
 
     // ✅ LIST PESERTA
     public function index(Request $request)
@@ -318,33 +315,70 @@ class SertifikatPelatihanApiController extends Controller
     }
 
     // ✅ DOWNLOAD
-    public function download(int $id)
-    {
-        $transaksi = TransaksiPelatihan::with([
-            'user',
-            'pelatihan'
-        ])->findOrFail($id);
+    // public function download(int $id)
+    // {
+    //     $transaksi = TransaksiPelatihan::with([
+    //         'user',
+    //         'pelatihan'
+    //     ])->findOrFail($id);
 
-        if (!$transaksi->sertifikat_pelatihan) {
+    //     if (!$transaksi->sertifikat_pelatihan) {
 
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Sertifikat belum tersedia'
-            ], 400);
-        }
+    //         return response()->json([
+    //             'status' => 'error',
+    //             'message' => 'Sertifikat belum tersedia'
+    //         ], 400);
+    //     }
 
-        $pdf = Pdf::loadView(
-            'sertifikat.pelatihan',
-            [
-                'transaksi' => $transaksi
-            ]
-        )->setPaper('a4', 'landscape');
+    //     $pdf = Pdf::loadView(
+    //         'sertifikat.pelatihan',
+    //         [
+    //             'transaksi' => $transaksi
+    //         ]
+    //     )->setPaper('a4', 'landscape');
 
-        return $pdf->download(
-            'sertifikat-pelatihan.pdf'
-        );
-    }
+    //     return $pdf->download(
+    //         'sertifikat-pelatihan.pdf'
+    //     );
+    // }
 
+    //   public function viewCertificate($id)
+    // {
+    //     $certificate = TransaksiPelatihan::where('user_id', auth()->id())
+    //         ->where('id', $id)
+    //         ->firstOrFail();
+
+    //     $path = storage_path(
+    //         'app/public/' . $certificate->sertifikat_pelatihan
+    //     );
+
+    //     if (!file_exists($path)) {
+    //         return response()->json([
+    //             'message' => 'File tidak ditemukan'
+    //         ], 404);
+    //     }
+
+    //     return response()->file($path);
+    // }
+
+    //     public function downloadCertificate($id)
+    // {
+    //     $certificate = TransaksiPelatihan::where('user_id', auth()->id())
+    //         ->where('id', $id)
+    //         ->firstOrFail();
+
+    //     $path = storage_path(
+    //         'app/public/' . $certificate->sertifikat_pelatihan
+    //     );
+
+    //     if (!file_exists($path)) {
+    //         return response()->json([
+    //             'message' => 'File tidak ditemukan'
+    //         ], 404);
+    //     }
+
+    //     return response()->download($path);
+    // }
 
 
     private function generateCertificateHtml(
