@@ -344,28 +344,12 @@ export default function Profile() {
           <div className="absolute -bottom-10 left-10 w-[200px] h-[200px] bg-amber-300/10 blur-[60px] rounded-full pointer-events-none" />
           <div className="relative z-10 max-w-7xl mx-auto">
             {/* BARIS UTAMA: TOMBOL KEMBALI & BREADCRUMB */}
-            <div className="flex items-center justify-between gap-4 mb-10">
-              <Link
-                to="/pelatihan"
-                className="
-    inline-flex items-center gap-2.5
-    h-10 px-5 rounded-2xl
-    bg-white border border-orange-100/80
-  "
-              >
-                <FaArrowLeft className="text-[10px]" />
-                Kembali
-              </Link>
-            </div>
+            <div className="flex items-center justify-between gap-4 mb-10"></div>
 
             {/* PAGE HEADER TITLE */}
             <div className="max-w-3xl mx-auto text-center">
-              <div className="flex items-center justify-center gap-3 mb-4">
+              <div className="flex items-center justify-center gap-3 mb-7">
                 <div className="w-8 h-[2px] bg-orange-400 rounded-full" />
-
-                <span className="text-[10px] font-extrabold text-orange-500 uppercase tracking-[0.25em]">
-                  Dashboard Pengguna
-                </span>
 
                 <div className="w-8 h-[2px] bg-orange-400 rounded-full" />
               </div>

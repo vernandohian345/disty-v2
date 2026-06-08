@@ -37,9 +37,9 @@ export default function Blog() {
 
       <BlogHero />
 
-      <section id="blog-content" className="bg-[#fdfaf7] py-20">
-        <div className="max-w-[1800px] mx-auto px-4 lg:px-6">
-          <div className="grid lg:grid-cols-[280px_1fr] gap-10">
+      <section id="blog-content" className="bg-[#fdfaf7] py-10 lg:py-20">
+        <div className="max-w-[1800px] mx-auto px-3 sm:px-4 lg:px-6">
+          <div className="grid lg:grid-cols-[320px_1fr] gap-5 lg:gap-10">
             {/* LEFT */}
             <BlogFilter
               activeCategory={activeCategory}

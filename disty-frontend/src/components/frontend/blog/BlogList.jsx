@@ -58,7 +58,7 @@ export default function BlogList({
             key={index}
             className="bg-[#fffaf5] rounded-2xl border border-slate-200 overflow-hidden p-4 animate-pulse"
           >
-            <div className="grid lg:grid-cols-[180px_1fr] gap-4">
+            <div className="grid md:grid-cols-[180px_1fr] gap-4">
               {/* Image */}
               <div className="bg-slate-200 rounded-2xl h-[170px]" />
 
@@ -88,12 +88,21 @@ export default function BlogList({
   return (
     <div>
       {/* Top */}
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex items-center justify-between mb-5 lg:mb-8">
         {/* Sort */}
         <div className="relative">
           <button
             onClick={() => setOpenSort(!openSort)}
-            className="flex items-center justify-between gap-4 w-[190px] bg-white border border-slate-200 rounded-2xl px-4 py-2.5 hover:border-orange-300 hover:shadow-md transition-all duration-300"
+            className="
+              flex items-center justify-between gap-4
+              w-full sm:w-[190px]
+              bg-white
+              border border-slate-200
+              rounded-2xl
+              px-4 py-2.5
+              hover:border-orange-300
+              transition-all
+              hover:shadow-md  duration-300"
           >
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-xl bg-orange-50 flex items-center justify-center">
@@ -115,7 +124,18 @@ export default function BlogList({
 
           {/* Dropdown */}
           {openSort && (
-            <div className="absolute right-0 mt-3 w-[190px] bg-white border border-slate-200 rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.08)] overflow-hidden z-30">
+            <div
+              className="
+              absolute left-0 sm:right-0 sm:left-auto
+              mt-3
+              w-full sm:w-[190px]
+              bg-white
+              border border-slate-200
+              rounded-2xl
+              shadow-xl
+              overflow-hidden
+              z-30 "
+            >
               <button
                 onClick={() => {
                   setSortType("Terbaru");
@@ -158,12 +178,12 @@ export default function BlogList({
           ))}
         </div>
       ) : (
-        <div className="bg-white border border-slate-200 rounded-[32px] p-14 text-center">
-          <div className="w-20 h-20 rounded-full bg-orange-100 text-orange-500 flex items-center justify-center text-3xl mx-auto">
+        <div className="bg-white border border-slate-200 rounded-[24px] lg:rounded-[32px] p-6 lg:p-14 text-center">
+          <div className="w-16 h-16 lg:w-20 lg:h-20 rounded-full bg-orange-100 text-orange-500 flex items-center justify-center text-3xl mx-auto">
             🔍
           </div>
 
-          <h3 className="text-2xl font-black text-slate-900 mt-6">
+          <h3 className="text-xl lg:text-2xl font-black text-slate-900 mt-6">
             Artikel Tidak Ditemukan
           </h3>
 
@@ -184,30 +204,39 @@ export default function BlogList({
       )}
 
       {/* Pagination */}
-      <div className="flex justify-center items-center gap-3 mt-10">
+      <div className="flex justify-center items-center gap-2 mt-6 lg:mt-10 flex-wrap">
         {/* Prev */}
         <button
           disabled={currentPage === 1}
           onClick={() => setCurrentPage((prev) => prev - 1)}
-          className="w-10 h-10 rounded-xl border border-slate-200 bg-white hover:border-orange-300 disabled:opacity-40 transition-all"
+          className=" w-9 h-9 lg:w-10 lg:h-10 text-sm rounded-xl border border-slate-200 bg-white hover:border-orange-300 disabled:opacity-40 transition-all"
         >
           ←
         </button>
 
         {/* Pages */}
-        {[...Array(totalPages)].map((_, index) => (
-          <button
-            key={index}
-            onClick={() => setCurrentPage(index + 1)}
-            className={`w-10 h-10 rounded-xl font-bold transition-all ${
-              currentPage === index + 1
-                ? "bg-orange-500 text-white"
-                : "border border-slate-200 bg-white hover:border-orange-300"
-            }`}
-          >
-            {index + 1}
-          </button>
-        ))}
+        {[...Array(totalPages)]
+          .slice(
+            Math.max(0, currentPage - 3),
+            Math.min(totalPages, currentPage + 2),
+          )
+          .map((_, idx) => {
+            const page = Math.max(0, currentPage - 3) + idx + 1;
+
+            return (
+              <button
+                key={page}
+                onClick={() => setCurrentPage(page)}
+                className={`w-9 h-9 lg:w-10 lg:h-10 rounded-xl font-bold ${
+                  currentPage === page
+                    ? "bg-orange-500 text-white"
+                    : "border border-slate-200 bg-white"
+                }`}
+              >
+                {page}
+              </button>
+            );
+          })}
 
         {/* Next */}
         <button
