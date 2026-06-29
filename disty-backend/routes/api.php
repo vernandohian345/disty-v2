@@ -59,15 +59,11 @@ Route::middleware('auth:sanctum')->group(function () {
         [SertifikatPelatihanApiController::class, 'myCertificates']
     );
 
-    // Route::get(
-    //     '/certificate/{id}/view',
-    //     [SertifikatPelatihanApiController::class, 'viewCertificate']
-    // );
+    Route::get(
+        '/my-certification-certificates',
+        [SertifikatSertifikasiApiController::class, 'myCertificationCertificates']
+    );
 
-    // Route::get(
-    //     '/certificate/{id}/download',
-    //     [SertifikatPelatihanApiController::class, 'downloadCertificate']
-    // );
 });
 
 Route::middleware('auth:sanctum')->group(function () {

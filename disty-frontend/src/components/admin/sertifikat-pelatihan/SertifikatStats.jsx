@@ -11,7 +11,7 @@ export default function SertifikatStats({ peserta }) {
       <div className="bg-white rounded-2xl p-5 shadow-sm">
         <h5 className="text-slate-500 text-sm">Paid</h5>
         <h2 className="text-3xl font-black text-green-600 mt-2">
-          {peserta.filter((item) => item.status === "paid").length}
+          {peserta.filter((item) => item.status === "completed").length}
         </h2>
       </div>
 
@@ -28,7 +28,7 @@ export default function SertifikatStats({ peserta }) {
       <div className="bg-white rounded-2xl p-5 shadow-sm">
         <h5 className="text-slate-500 text-sm">Sudah Bersertifikat</h5>
         <h2 className="text-3xl font-black text-blue-600 mt-2">
-          {peserta.filter((item) => item.sertifikat_pelatihan).length}
+          {peserta.filter((item) => item.status === "completed").length}
         </h2>
       </div>
     </div>

@@ -11,6 +11,7 @@ import {
 import { getProfileStats } from "../../services/profileService";
 import SertifikatPreviewModal from "../../components/admin/sertifikat-pelatihan/SertifikatPreviewModal";
 import { getMyCertificates } from "../../services/SertifikatPelatihanService";
+import { getMySertifikasi } from "../../services/SertifikatSertifikasiService";
 import Navbar from "../../components/frontend/Navbar";
 import Footer from "../../components/frontend/Footer";
 import { useNavigate } from "react-router-dom";
@@ -136,7 +137,7 @@ function StatCard({ icon, iconColor, value, label, onClick }) {
 }
 
 // ── CERTIFICATE ITEM ─────────────────────────────────────────────────────────
-function CertItem({ title, onPreview, onDownload }) {
+function CertItem({ title, jenis, onPreview, onDownload }) {
   return (
     <div
       className="
@@ -162,9 +163,19 @@ function CertItem({ title, onPreview, onDownload }) {
       {/* Info */}
       <div className="flex-1 min-w-0">
         <p className="text-sm font-black text-[#1e130e] truncate">{title}</p>
-        <div className="flex items-center gap-1.5 mt-1">
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
-          <span className="text-[11px] text-[#8a7870] font-medium">
+
+        <div className="flex items-center gap-2 mt-1">
+          <span
+            className={`text-[10px] font-bold px-2 py-1 rounded-full ${
+              jenis === "Pelatihan"
+                ? "bg-blue-100 text-blue-600"
+                : "bg-green-100 text-green-600"
+            }`}
+          >
+            {jenis}
+          </span>
+
+          <span className="text-[11px] text-[#8a7870]">
             Sertifikat tersedia
           </span>
         </div>
@@ -255,13 +266,28 @@ export default function Profile() {
 
     const fetchCertificates = async () => {
       try {
-        const response = await getMyCertificates();
+        // Sertifikat Pelatihan
+        const pelatihanRes = await getMyCertificates();
 
-        console.log("CERTIFICATES:", response);
+        // Sertifikat Sertifikasi
+        const sertifikasiRes = await getMySertifikasi();
 
-        setCertificates(response.data.data);
+        // Tambahkan jenis
+        const pelatihan = pelatihanRes.data.data.map((item) => ({
+          ...item,
+          jenis: "Pelatihan",
+        }));
+
+        const sertifikasi = sertifikasiRes.data.data.map((item) => ({
+          ...item,
+          jenis: "Sertifikasi",
+        }));
+        console.log("DATA SERTIFIKASI", sertifikasiRes.data.data);
+
+        // Gabungkan
+        setCertificates([...pelatihan, ...sertifikasi]);
       } catch (error) {
-        console.log("STATE CERTIFICATES:", certificates);
+        console.error(error);
       }
     };
 
@@ -284,11 +310,15 @@ export default function Profile() {
   };
 
   const handleDownload = async (item) => {
-    setPreviewData(item);
+    if (item.jenis === "Pelatihan") {
+      setPreviewData(item);
 
-    setTimeout(async () => {
-      await downloadPdfSertifikat(sertifikatRef);
-    }, 300);
+      setTimeout(async () => {
+        await downloadPdfSertifikat(sertifikatRef);
+      }, 300);
+    } else {
+      window.open(item.file, "_blank");
+    }
   };
 
   // ── LOADING ────────────────────────────────────────────────────────────────
@@ -522,9 +552,20 @@ export default function Profile() {
                   <div className="flex flex-col gap-3">
                     {certificates.map((item) => (
                       <CertItem
-                        key={item.id}
-                        title={item.pelatihan?.title || item.title}
-                        onPreview={() => setPreviewData(item)}
+                        key={`${item.jenis}-${item.id}`}
+                        title={
+                          item.pelatihan?.title ||
+                          item.title ||
+                          item.nama_sertifikasi
+                        }
+                        jenis={item.jenis}
+                        onPreview={() => {
+                          if (item.jenis === "Pelatihan") {
+                            setPreviewData(item);
+                          } else {
+                            window.open(item.file, "_blank");
+                          }
+                        }}
                         onDownload={() => handleDownload(item)}
                       />
                     ))}

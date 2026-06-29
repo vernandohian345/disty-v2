@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\TransaksiSertifikasi;
 use App\Models\Sertifikasi;
 use App\Models\Notification;
@@ -396,6 +397,55 @@ class SertifikatSertifikasiApiController extends Controller
             'status' => 'success',
             'message' =>
                 'Sertifikat BNSP berhasil dihapus'
+        ]);
+    }
+
+    public function myCertificationCertificates()
+    {
+        $data = TransaksiSertifikasi::with('sertifikasi')
+            ->where('user_id', Auth::id())
+            ->where('status', 'approved')
+            ->latest()
+            ->get()
+            ->map(function ($item) {
+
+                $file = null;
+
+                if ($item->sertifikat_bnsp) {
+
+                    $file = asset(
+                        'uploads/sertifikat_bnsp/' .
+                        $item->sertifikat_bnsp
+                    );
+
+                } elseif ($item->sertifikat_internal) {
+
+                    $file = asset(
+                        'uploads/sertifikat_internal/' .
+                        $item->sertifikat_internal
+                    );
+
+                }
+
+                return [
+
+                    'id' => $item->id,
+
+                    'title' =>
+                        $item->sertifikasi->nama_sertifikasi,
+
+                    'file' => $file,
+
+                    'jenis' => 'Sertifikasi',
+
+                ];
+            })
+            ->filter(fn($item) => $item['file'] != null)
+            ->values();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $data
         ]);
     }
 }
